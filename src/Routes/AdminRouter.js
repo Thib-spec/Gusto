@@ -14,8 +14,7 @@ function AdminRouter() {
         <Route exact path='/testHistory' component={Test2}/>
       </Switch> 
     </Router>
-      
-
+    
       
   )
 }
