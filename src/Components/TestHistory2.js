@@ -8,7 +8,7 @@ export default function Test2(){
 
 
     function handleTest(){
-        history.push("/");
+        history.push("/testHistory1");
     }
 
     return(
