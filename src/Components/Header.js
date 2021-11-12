@@ -1,6 +1,7 @@
 import '../CSS/header.css'
 import logo from '../Images/logoGusto1.png'
 import profilpp from '../Images/imageprofil.png'
+import DATAUtilisateurs from '../Data/utilisateurs'
 
 export default function Header(){
 
@@ -10,8 +11,8 @@ export default function Header(){
             <div className="header-top-name-container"><div className="header-top-name">Olivia</div></div>
             <div className="header-top-profil-container">
                 <div className="header-top-profil-whiteContainer">
-                    <div className="header-top-profil-whiteContainer-name">Nicolas Defoort</div>
-                    <div className="header-top-profil-whiteContainer-statut">Dieu</div>
+                    <div className="header-top-profil-whiteContainer-name">{DATAUtilisateurs.utilisateurs[0].firstname} {DATAUtilisateurs.utilisateurs[0].lasname}</div>
+                    <div className="header-top-profil-whiteContainer-statut">{DATAUtilisateurs.utilisateurs[0].statut}</div>
                    
                 </div>
                 <div className="header-top-profil-whiteSpace">

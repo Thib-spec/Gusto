@@ -18,7 +18,7 @@ import TestData from "../Components/TestData";
 import Header from "../Components/Header";
 
 function AdminRouter() {
-  const connected = false;
+  const connected = true;
   const authToken =
     localStorage.getItem("authToken") & connected
       ? localStorage.getItem("authToken")
