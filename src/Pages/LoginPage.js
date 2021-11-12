@@ -1,9 +1,11 @@
+import '../CSS/header.css'
+
 export default function LoginPage({location}){
 
     console.log(location)
 
     return(
-       <div>
+       <div class="body">
            Login
        </div> 
     )
