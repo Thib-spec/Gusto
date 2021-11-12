@@ -1,5 +1,5 @@
-import Test1 from "../Components/TestHistory";
-import Test2 from "../Components/TestHistory2";
+import Test1 from "Components/TestHistory";
+import Test2 from "Components/TestHistory2";
 import {
   BrowserRouter as Router,
   Switch,
@@ -10,12 +10,12 @@ import {
   useLocation,
 } from "react-router-dom";
 import CategoriesPage from "Pages/CategoriesPage";
-import HomePage from "../Pages/HomePage";
+import HomePage from "Pages/HomePage";
 import LoginPage from "Pages/LoginPage";
-import ProductsPage from "../Pages/ProductPage";
-import NotFoundPage from "../Pages/NotFoundPage";
-import TestData from "../Components/TestData";
-import Header from "../Components/Header";
+import ProductsPage from "Pages/ProductPage";
+import NotFoundPage from "Pages/NotFoundPage";
+import TestData from "Components/TestData";
+import Header from "Components/Header";
 
 function AdminRouter() {
   const connected = false;
