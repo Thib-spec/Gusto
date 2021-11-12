@@ -9,7 +9,7 @@ export default function Test1(){
 
 
     function handleTest(){
-        history.push("/testHistory");
+        history.push("/testHistory2");
     }
 
     return(
