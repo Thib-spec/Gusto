@@ -1,4 +1,7 @@
-export default function LoginPage(){
+export default function LoginPage({location}){
+
+    console.log(location)
+
     return(
        <div>
            Login
