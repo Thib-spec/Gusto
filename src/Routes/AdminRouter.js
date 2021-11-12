@@ -6,6 +6,9 @@ import CategoriesPage from '../Pages/CategoriesPage';
 import HomePage from '../Pages/HomePage';
 import LoginPage from '../Pages/LoginPage';
 import ProductsPage from '../Pages/ProductPage';
+import TestData from '../Components/TestData';
+import Header from '../Components/Header'
+
 
 function AdminRouter() {
   
@@ -13,6 +16,8 @@ function AdminRouter() {
 
   return (
     <Router>
+
+      <Header/>
       <Switch>
         <Route exact path='/' component={HomePage}/>
 
@@ -21,6 +26,8 @@ function AdminRouter() {
         <Route path='/Products' component={ProductsPage}/>
         <Route path='/testHistory1' component={Test1}/>
         <Route path='/testHistory2' component={Test2}/>
+        <Route path='/testData' component={TestData}/>
+
 
 
       </Switch> 
