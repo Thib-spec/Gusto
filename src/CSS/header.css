@@ -1,0 +1,49 @@
+.header-top{
+    display: flex;
+    flex-direction: row;
+    width:100%
+}
+
+.header-top-logo-container{
+    width: 30%;
+    height: 5em;
+    background-color: rgb(255, 255, 255);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.header-top-logo{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+    
+    height: 160%;
+}
+
+.header-top-name{
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    font-size: 280%;
+    font-weight: 700;
+    font-family: 'Montserrat', sans-serif;
+}
+
+.header-top-name-container{
+    width:50%;
+    height: 5em;
+    background-color: greenyellow;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    width:80%;
+}
+
+.header-top-profil-container{
+    width: 20%;
+    background-color: grey;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
