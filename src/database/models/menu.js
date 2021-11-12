@@ -1,9 +1,7 @@
 const { Model, DataTypes } = require("sequelize");
 
 class Menu extends Model {
-    getFullName() {
-        return [this.firstname, this.lastname].join(' ')
-    }
+
 }
 
 Menu.init({
@@ -28,10 +26,32 @@ Menu.init({
     fridge_label: {
         type: DataTypes.CHAR,
         allowNull: false
+    },
+    fk_Id_client:{
+        type: DataTypes.INTEGER,
+        allowNull = false,
+        references:{
+            model : 'Client',
+            key: 'Id_client'
+        }
     }
 }, {
     sequelize,
     modelName: 'Menu'
 })
+
+Menu.Client = Menu.belongsTo(Client, {
+    foreignKey: 'fk_Id_client'
+})
+
+Menu.belongsToMany(Products, {
+    through: "menus_products",
+    foreignKey: "Id_product",
+  });
+
+Products.belongsToMany(Menu, {
+    through: "menus_products",
+    foreignKey: "Id_menu",
+});
 
 module.exports = Menu

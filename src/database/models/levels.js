@@ -1,23 +1,19 @@
 const { Model, DataTypes } = require("sequelize");
 
-class Tech extends Model {
+class Levels extends Model {
 
 }
 
-Tech.init({
-    Id_tech: {
+Levels.init({
+    Id_level: {
         type: DataTypes.INTEGER,
         primaryKey: true,
         autoIncrement: true,
         allowNull: false
-    },
-    Label: {
-        type: DataTypes.CHAR,
-        allowNull: false
     }
 }, {
     sequelize,
-    modelName: 'Tech'
+    modelName: 'Levels'
 })
 
-module.exports = Tech
+module.exports = Levels

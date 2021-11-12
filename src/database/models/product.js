@@ -1,12 +1,11 @@
+const { genSalt } = require("bcrypt");
 const { Model, DataTypes } = require("sequelize");
 
-class Product extends Model {
-    getFullName() {
-        return [this.firstname, this.lastname].join(' ')
-    }
+class Products extends Model {
+
 }
 
-Product.init({
+Products.init({
     Id_product: {
         type: DataTypes.INTEGER,
         primaryKey: true,
@@ -44,10 +43,32 @@ Product.init({
     Description: {
         type: DataTypes.CHAR(150),
         allowNull: false
+    },
+    fk_Id_category:{
+        type: DataTypes.INTEGER,
+        allowNull = false,
+        references:{
+            model : 'Categories',
+            key: 'Id_category'
+        }
     }
 }, {
     sequelize,
-    modelName: 'Product'
+    modelName: 'Products'
 })
 
-module.exports = Product
+Products.Categories = Products.belongsTo(Categories, {
+    foreignKey: 'fk_Id_category'
+})
+
+Products.belongsToMany(Sales, {
+    through: "products_sales",
+    foreignKey: "Id_product",
+});
+
+Sales.belongsToMany(Products, {
+    through: "products_sales",
+    foreignKey: "Id_sale",
+});
+
+module.exports = Products

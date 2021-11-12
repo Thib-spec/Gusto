@@ -1,9 +1,7 @@
 const { Model, DataTypes } = require("sequelize");
 
 class Client extends Model {
-    getFullName() {
-        return [this.firstname, this.lastname].join(' ')
-    }
+
 }
 
 Client.init({
@@ -21,5 +19,15 @@ Client.init({
     sequelize,
     modelName: 'Client'
 })
+
+Client.belongsToMany(Fridges, {             //association many-to-many (en cas de création de table de liaison)
+    through: "clients_fridges",
+    foreignKey: "Id_fridge",
+  });
+
+Fridges.belongsToMany(Client, {
+  through: "clients_fridges",
+  foreignKey: "Id_client",
+});
 
 module.exports = Client

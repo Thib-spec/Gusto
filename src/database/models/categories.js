@@ -1,9 +1,8 @@
 const { Model, DataTypes } = require("sequelize");
+const { Client } = require("./Users");
 
 class Categories extends Model {
-    getFullName() {
-        return [this.firstname, this.lastname].join(' ')
-    }
+
 }
 
 Categories.init({
@@ -29,5 +28,15 @@ Categories.init({
     sequelize,
     modelName: 'Categories'
 })
+
+Categories.belongsToMany(Client, {
+    through: "clients_categories",
+    foreignKey: "Id_category",
+  });
+
+Client.belongsToMany(Categories, {
+  through: "clients_categories",
+  foreignKey: "Id_client",
+});
 
 module.exports = Categories
