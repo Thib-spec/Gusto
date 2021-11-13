@@ -1,10 +1,8 @@
-const { Model, DataTypes } = require("sequelize");
+const { Model, DataTypes,sequelize } = require("./connexion");
+const Fridges = require("./fridges")
 
-class Client extends Model {
 
-}
-
-Client.init({
+const Client = sequelize.define('Client',{
     Id_client: {
         type: DataTypes.INTEGER,
         primaryKey: true,
@@ -12,7 +10,7 @@ Client.init({
         allowNull: false
     },
     Label: {
-        type: DataTypes.CHAR,
+        type: DataTypes.STRING,
         allowNull: false
     }
 }, {

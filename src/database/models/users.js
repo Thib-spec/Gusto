@@ -1,14 +1,13 @@
-const { Model, DataTypes } = require("sequelize");
+const {DataTypes,sequelize } = require("./connexion");
 const security = require('../../helpers/security');
 const Levels = require("./levels");
+const Client = require("./client")
 
-class Users extends Model {
-}
 
-Users.init({
+const Users = sequelize.define('Users',{
     fk_Id_client:{
         type: DataTypes.INTEGER,
-        allowNull = false,
+        allowNull: false,
         references:{
             model : 'Client',
             key: 'Id_client'
@@ -16,7 +15,7 @@ Users.init({
     },
     fk_Id_level:{
         type: DataTypes.INTEGER,
-        allowNull = false,
+        allowNull: false,
         references:{
             model : 'Levels',
             key: 'Id_level'
@@ -72,7 +71,7 @@ module.exports = Users
    * @param {string} username
    * @returns {user}
    */
-  User.findOneByUsername = function(username){
+  Users.findOneByUsername = function(username){
     return this.findOne({
       where:{username}
     })
@@ -85,7 +84,7 @@ module.exports = Users
    * @param {string} password
    * @returns {Boolean}
    */
-  User.prototype.isPasswordValid = function (password){
+  Users.prototype.isPasswordValid = function (password){
     return security.bcryptCompareSync(password, this.password)
   }
 
@@ -94,7 +93,7 @@ module.exports = Users
   * 1. cree une session et la lie avec un jwt
   * @returns {Promise<jwtToken>}
   */
-  User.prototype.genAuthToken = async function () {
+  Users.prototype.genAuthToken = async function () {
     try {
       const session = await this.createSession()
       return security.jwtGenTokenSync({
@@ -112,7 +111,7 @@ module.exports = Users
    * @param {object} payload
    * @returns {Boolean}
    */
-  User.prototype.isAuthTokenPayloadValid = async function (payload) {
+  Users.prototype.isAuthTokenPayloadValid = async function (payload) {
     try {
       const sessions = await this.getSessions({where:{id:payload.sessionId}})
       if (sessions.length) return true
@@ -121,4 +120,4 @@ module.exports = Users
       throw err
     }
   }
-  return User
+  return Users

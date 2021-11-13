@@ -1,10 +1,7 @@
-const { Model, DataTypes } = require("sequelize");
+const { Model, DataTypes,sequelize } = require("./connexion");
 
-class Levels extends Model {
 
-}
-
-Levels.init({
+const Levels = sequelize.define('Levels',{
     Id_level: {
         type: DataTypes.INTEGER,
         primaryKey: true,

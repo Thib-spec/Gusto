@@ -1,10 +1,7 @@
-const { Model, DataTypes } = require("sequelize");
+const { Model, DataTypes,sequelize } = require("./connexion");
 
-class Tech extends Model {
 
-}
-
-Tech.init({
+const Tech = sequelize.define('Tech',{
     Id_tech: {
         type: DataTypes.INTEGER,
         primaryKey: true,
@@ -12,7 +9,7 @@ Tech.init({
         allowNull: false
     },
     Label: {
-        type: DataTypes.CHAR,
+        type: DataTypes.STRING,
         allowNull: false
     }
 }, {
