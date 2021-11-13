@@ -1,61 +1,70 @@
-'use strict';
-const {
-  Model, DataTypes
-} = require('sequelize');
+const { Model, DataTypes } = require("sequelize");
+const security = require('../../helpers/security');
+const Levels = require("./levels");
 
-const security = require('../../helpers/security')
+class Users extends Model {
+}
 
-module.exports = (sequelize) => {
-
-  class User extends Model {
-    /**
-     * Helper method for defining associations.
-     * This method is not a part of Sequelize lifecycle.
-     * The `models/index` file will call this method automatically.
-     */
-    static associate(models) {
-      // define association here
-
-
-      // ---------- Session relation ---------- //
-
-      // Session relation
-      this.hasMany(models.Session,{
-        as: 'sessions',
-        foreignKey: {
-          name: 'userId',
-          allowNull: false
-        },
-        sourceKey:'id',
-        onDelete: "cascade"
-      })
-
-    }
-  };
-
-  User.init({
-    username: DataTypes.STRING,
+Users.init({
+    fk_Id_client:{
+        type: DataTypes.INTEGER,
+        allowNull = false,
+        references:{
+            model : 'Client',
+            key: 'Id_client'
+        }
+    },
+    fk_Id_level:{
+        type: DataTypes.INTEGER,
+        allowNull = false,
+        references:{
+            model : 'Levels',
+            key: 'Id_level'
+        }
+    },
     password: {
-      type: DataTypes.STRING,
-      set(v){
-        this.setDataValue('password', security.bcryptHashSync(v))
-      }
+        type: DataTypes.STRING,
+        set(v){
+          this.setDataValue('password', security.bcryptHashSync(v))
+        }
+      },
+    email: {
+        type: DataTypes.STRING,
+        allowNull: false
     },
-    email: DataTypes.STRING,
-    phoneNumber: DataTypes.STRING,
-    isAdmin: {
-      type: DataTypes.BOOLEAN,
-      defaultValue: false
+    firstname: {
+        type: DataTypes.STRING,
+        allowNull: false
     },
-    
-  }, {
-    sequelize,
-    modelName: 'User',
-    timestamps: true,
-    createdAt: true,
-    updatedAt: true
-  });
+    lastname: {
+        type: DataTypes.STRING,
+        allowNull: false
+    },
+    image: {
+        type: DataTypes.STRING(150),
+        allowNull: false
+    },
+    user_language: {
+        type: DataTypes.STRING,
+        allowNull: false
+    }
+},
+    {
+        sequelize,
+        modelName: 'Users'
+    })
 
+    Users.Client = Users.belongsTo(Client, {
+        foreignKey: 'fk_Id_client'
+    })
+
+    Users.Levels = Users.belongsTo(Levels, {
+        foreignKey: 'fk_Id_level'
+    })
+
+module.exports = Users
+
+ 
   // classMethod
 
   /**
@@ -67,7 +76,7 @@ module.exports = (sequelize) => {
     return this.findOne({
       where:{username}
     })
-  }
+ }
 
   //instanceMethod
 
@@ -112,6 +121,4 @@ module.exports = (sequelize) => {
       throw err
     }
   }
-
   return User
-};
