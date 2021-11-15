@@ -36,7 +36,7 @@ function AdminRouter() {
         <Header />
         <Switch>
           <Route exact path="/" component={HomePage} />
-          <Route path="/categories" component={CategoriesPage} />
+          <Route path="/categories" component={CategoriesPage}  />
           <Route path="/products" component={ProductsPage} />
           <Route path="/testHistory1" component={Test1} />
           <Route path="/testHistory2" component={Test2} />

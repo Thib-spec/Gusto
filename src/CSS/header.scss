@@ -118,3 +118,64 @@
     margin-top:2%;
     margin-bottom: 2%;
 }
+
+
+
+
+
+
+
+
+
+
+.header-bottom{
+    
+    height: 50px;
+    background-color: #2F4057;
+    color: white;
+    display: flex;
+    flex-direction: row;
+    
+}
+.header-bottom-path{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding-left: 3%;
+    font-size: 150%;
+    
+}
+
+
+.header-bottom-menuIcone{
+    width: 5%;
+    margin-left: 0.8%;
+    
+}
+
+.header-bottom-menuList{
+    background-color: #1e4272;
+    width: 200px;
+   
+    color: white;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    z-index:2;
+    
+}
+
+.header-bottom-menuList-button{
+    height: 3em;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding-left: 10px;
+    
+    
+    &:hover{
+        color:#2F4057;
+        background-color: white;
+        cursor: pointer;
+    }
+}

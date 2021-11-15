@@ -19,10 +19,6 @@ export default function HomePage(){
 
 
     return(
-       <div>
-           <button type="button" class="btn btn-primary" onClick={handleLogin}>LoginPage</button>
-           <button type="button" class="btn btn-primary" onClick={handleProducts}>ProductPage</button>
-           <button type="button" class="btn btn-primary" onClick={handleCategories}>CategoriesPage</button>
-       </div> 
+       <div></div>
     )
 }
