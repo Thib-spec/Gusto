@@ -1,0 +1,36 @@
+.products-container{
+    background-color:rgb(220, 220, 220);
+    padding:5%
+}
+
+.addProduct-container{
+
+    
+    background-color: white;
+    border-radius: 10px;
+    
+    
+}
+
+.addProduct-container-title{
+    padding: 1%;
+    padding-left: 3%;
+    background-color: #2F4057;
+    color: white;
+    font-size: 180%;
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+
+
+}
+.addProduct-container-form{
+    padding: 1%;
+}
+
+.addProduct-container-form-categories{
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    
+}
+

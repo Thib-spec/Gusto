@@ -1,3 +1,4 @@
+import CheckboxForm from 'Components/FormComponent/CheckboxForm';
 import { useHistory } from 'react-router';
 
 
@@ -19,6 +20,8 @@ export default function HomePage(){
 
 
     return(
-       <div></div>
+       <div>
+           <CheckboxForm/>
+       </div>
     )
 }
