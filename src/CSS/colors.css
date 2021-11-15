@@ -1,0 +1,28 @@
+.grey{
+    background-color: #eee;
+}
+
+.red{
+    background-color: #D0495C;
+}
+
+.blue, 
+.blue-checked:checked{
+    background-color: #2F4057;
+}
+
+.green{
+    background-color: green;
+}
+
+.yellow{
+    background-color: #EDAE49;
+}
+
+.blueviolet{
+    background-color: blueviolet;
+}
+
+.opacity{
+    opacity: 30%;
+}

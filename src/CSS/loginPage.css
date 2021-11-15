@@ -1,3 +1,6 @@
-.body{
-    background-color: black;
+.card{
+    border-radius: 1rem;
+    border: transparent;
+    background-color: transparent;
 }
+    

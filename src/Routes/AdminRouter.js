@@ -1,5 +1,5 @@
-import Test1 from "../Components/TestHistory";
-import Test2 from "../Components/TestHistory2";
+import Test1 from "Components/TestHistory";
+import Test2 from "Components/TestHistory2";
 import {
   BrowserRouter as Router,
   Switch,
@@ -10,22 +10,28 @@ import {
   useLocation,
 } from "react-router-dom";
 import CategoriesPage from "Pages/CategoriesPage";
-import HomePage from "../Pages/HomePage";
+import HomePage from "Pages/HomePage";
 import LoginPage from "Pages/LoginPage";
-import ProductsPage from "../Pages/ProductPage";
-import NotFoundPage from "../Pages/NotFoundPage";
-import TestData from "../Components/TestData";
-import Header from "../Components/Header";
+import ProductsPage from "Pages/ProductPage";
+import NotFoundPage from "Pages/NotFoundPage";
+import TestData from "Components/TestData";
+import Header from "Components/Header";
+import { useSelector, useDispatch } from "react-redux";
+
 
 function AdminRouter() {
-  const connected = true;
-  const authToken =
-    localStorage.getItem("authToken") & connected
-      ? localStorage.getItem("authToken")
-      : connected
-      ? "vjsbhjvbk"
-      : undefined;
-  console.log(authToken);
+  const user = useSelector((state) => state.user.value);
+  console.log("user : ", user)
+  const authToken = user.authToken
+
+  // const connected = false;
+  // const authToken =
+    // localStorage.getItem("authToken") & connected
+    //   ? localStorage.getItem("authToken")
+    //   : connected
+    //   ? "vjsbhjvbk"
+    //   : undefined;
+  console.log("authToken : ",authToken);
 
   const location = useLocation();
   const searchParams = new URLSearchParams(location.search);
