@@ -6,7 +6,8 @@ import iconeMenu from '../Images/iconeMenu.png'
 import React, { useState } from 'react';
 import { useHistory } from 'react-router';
 import { useSelector, useDispatch } from "react-redux";
-import userActions from "store/actions/userActions";
+import userController from "helpers/controllers/userController";
+
 
 
 export default function Header(){
@@ -30,11 +31,11 @@ export default function Header(){
         history.push("/Login");
         setpath("Login")
     }
-    function handleLogout(){
-        dispatch(
-            userActions.logout()
-          )
-    }
+    // function handleLogout(){
+    //     dispatch(
+    //         userActions.logout()
+    //       )
+    // }
     function handleProducts(){
         history.push("/Products");
         setpath("Produits")
@@ -98,7 +99,7 @@ export default function Header(){
                         <div className="header-bottom-menuList-button" onClick={handleProducts}>Produits</div>
                         <div className="header-bottom-menuList-button" onClick={handleCategories}>Catégories</div>
                         {/* <div className="header-bottom-menuList-button" onClick={handleLogin}>Login</div> */}
-                        <div className="header-bottom-menuList-button" onClick={handleLogout}>Logout</div>
+                        <div className="header-bottom-menuList-button" onClick={userController.logout({dispatch, history})}>Logout</div>
 
 
                     </div>:false

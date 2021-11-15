@@ -20,18 +20,12 @@ import { useSelector, useDispatch } from "react-redux";
 
 
 function AdminRouter() {
-  const user = useSelector((state) => state.user.value);
-  console.log("user : ", user)
-  const authToken = user.authToken
+  // const user = useSelector((state) => state.user.value);
+  // console.log("user : ", user)
 
-  // const connected = false;
-  // const authToken =
-    // localStorage.getItem("authToken") & connected
-    //   ? localStorage.getItem("authToken")
-    //   : connected
-    //   ? "vjsbhjvbk"
-    //   : undefined;
-  console.log("authToken : ",authToken);
+  const authToken = localStorage.getItem("authToken")
+
+  console.log(authToken)
 
   const location = useLocation();
   const searchParams = new URLSearchParams(location.search);

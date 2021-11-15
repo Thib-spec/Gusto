@@ -10,18 +10,21 @@ const API = function({url, authToken, fake}){
 
 // ---------- auth ---------- //
 
-API.prototype.login = async function({body}){
-    if (this.fake) return require("helpers/api/fakeData/user.json")
+API.prototype.login = async function({body, err}={}){
+    if (this.fake & !err) return require("helpers/api/fakeData/login.json")
+    else if (this.fake & err) return require("helpers/api/fakeData/login_err.json")
     const res = await this.requester({method:"POST", path:"/auth/login", body})
     return res
 }
 
-API.prototype.logout = async function({}){
+API.prototype.logout = async function({err}={}){
+    if (this.fake & !err) return require("helpers/api/fakeData/logout.json")
+    else if (this.fake & err) return require("helpers/api/fakeData/logout_err.json")
     const res = await this.requester({method:"GET", path:"/auth/logout"})
     return res
 }
 
-API.prototype.getMyInfo = async function({body}){
+API.prototype.getMyInfo = async function({body}={}){
     const res = await this.requester({method:"GET", path:"/auth/me", body})
     return res
 }
