@@ -1,10 +1,18 @@
-const {DataTypes,sequelize } = require("./connexion");
+const {DataTypes,sequelize, Model } = require("sequelize");
 const security = require('../../helpers/security');
-const Levels = require("./levels");
-const Client = require("./client")
+// const Levels = require("./levels");
+// const Client = require("./client")
 
 
-const Users = sequelize.define('Users',{
+module.exports = (sequelize) =>{
+class Users extends Model{}
+
+Users.init({
+    Id_user:{
+      type:DataTypes.INTEGER,
+      allowNull:false,
+      primaryKey:true
+    },
     fk_Id_client:{
         type: DataTypes.INTEGER,
         allowNull: false,
@@ -53,71 +61,72 @@ const Users = sequelize.define('Users',{
         modelName: 'Users'
     })
 
-    Users.Client = Users.belongsTo(Client, {
-        foreignKey: 'fk_Id_client'
-    })
+    // Users.Client = Users.belongsTo(Client, {
+    //     foreignKey: 'fk_Id_client'
+    // })
 
-    Users.Levels = Users.belongsTo(Levels, {
-        foreignKey: 'fk_Id_level'
-    })
+    // Users.Levels = Users.belongsTo(Levels, {
+    //     foreignKey: 'fk_Id_level'
+    // })
+    return Users
 
-module.exports = Users
+  }
 
  
-  // classMethod
+//   // classMethod
 
-  /**
-   * recherche user par username
-   * @param {string} username
-   * @returns {user}
-   */
-  Users.findOneByUsername = function(username){
-    return this.findOne({
-      where:{username}
-    })
- }
+//   /**
+//    * recherche user par username
+//    * @param {string} username
+//    * @returns {user}
+//    */
+//   Users.findOneByUsername = function(username){
+//     return this.findOne({
+//       where:{username}
+//     })
+//  }
 
-  //instanceMethod
+//   //instanceMethod
 
-  /**
-   * validate le password de l'user
-   * @param {string} password
-   * @returns {Boolean}
-   */
-  Users.prototype.isPasswordValid = function (password){
-    return security.bcryptCompareSync(password, this.password)
-  }
+//   /**
+//    * validate le password de l'user
+//    * @param {string} password
+//    * @returns {Boolean}
+//    */
+//   Users.prototype.isPasswordValid = function (password){
+//     return security.bcryptCompareSync(password, this.password)
+//   }
 
-  /**
-  * génère authToken en fonction de l'user
-  * 1. cree une session et la lie avec un jwt
-  * @returns {Promise<jwtToken>}
-  */
-  Users.prototype.genAuthToken = async function () {
-    try {
-      const session = await this.createSession()
-      return security.jwtGenTokenSync({
-        sub: this.id,
-        sessionId:session.id,
-        expiresIn: 3600, // en seconde
-      })
-    } catch (err) {
-      throw err
-    }
-  }
+//   /**
+//   * génère authToken en fonction de l'user
+//   * 1. cree une session et la lie avec un jwt
+//   * @returns {Promise<jwtToken>}
+//   */
+//   Users.prototype.genAuthToken = async function () {
+//     try {
+//       const session = await this.createSession()
+//       return security.jwtGenTokenSync({
+//         sub: this.id,
+//         sessionId:session.id,
+//         expiresIn: 3600, // en seconde
+//       })
+//     } catch (err) {
+//       throw err
+//     }
+//   }
 
-  /**
-   * Valid un jwtPayload en fonction des sessions existantes
-   * @param {object} payload
-   * @returns {Boolean}
-   */
-  Users.prototype.isAuthTokenPayloadValid = async function (payload) {
-    try {
-      const sessions = await this.getSessions({where:{id:payload.sessionId}})
-      if (sessions.length) return true
-      else return false
-    } catch (err) {
-      throw err
-    }
-  }
-  return Users
+//   /**
+//    * Valid un jwtPayload en fonction des sessions existantes
+//    * @param {object} payload
+//    * @returns {Boolean}
+//    */
+//   Users.prototype.isAuthTokenPayloadValid = async function (payload) {
+//     try {
+//       const sessions = await this.getSessions({where:{id:payload.sessionId}})
+//       if (sessions.length) return true
+//       else return false
+//     } catch (err) {
+//       throw err
+//     }
+//   }
+//   return Users

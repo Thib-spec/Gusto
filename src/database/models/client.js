@@ -1,8 +1,10 @@
-const { Model, DataTypes,sequelize } = require("./connexion");
-const Fridges = require("./fridges")
+const { Model, DataTypes} = require("sequelize");
+const Fridges = require("../../helpers/fridges")
 
+module.exports = (sequelize) => {
+    class Client extends Model{}
 
-const Client = sequelize.define('Client',{
+Client.init({
     Id_client: {
         type: DataTypes.INTEGER,
         primaryKey: true,
@@ -18,14 +20,6 @@ const Client = sequelize.define('Client',{
     modelName: 'Client'
 })
 
-Client.belongsToMany(Fridges, {             //association many-to-many (en cas de création de table de liaison)
-    through: "clients_fridges",
-    foreignKey: "Id_fridge",
-  });
+return Client
+}
 
-Fridges.belongsToMany(Client, {
-  through: "clients_fridges",
-  foreignKey: "Id_client",
-});
-
-module.exports = Client

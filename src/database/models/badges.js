@@ -1,10 +1,31 @@
-const { DataTypes,sequelize } = require("./connexion");
+const {Model, DataTypes} = require('sequelize');
+  
 const Client = require('./client')
 const Users = require("./users")
-const Fridges = require("./fridges")
 
 
-const Badges = sequelize.define('Badges',{
+
+
+module.exports = (sequelize) => {
+
+class Badges extends Model{
+    static associate (models){
+        Badges.belongsTo(models.Client, {
+            foreignKey: 'fk_Id_client'      // rajouter id badge + mettre alter à false
+        })
+        
+        // Badges.belongsTo(models.Users, {
+        //     foreignKey: 'fk_Id_user'
+        // })
+        
+        // Badges.belongsToMany(Fridges, {
+        //   through: "fridges_badges",
+        //   foreignKey: "Id_badge",
+        // });
+    }
+}
+
+Badges.init({
     Id_badge: {
         type: DataTypes.INTEGER,
         primaryKey: true,
@@ -26,24 +47,14 @@ const Badges = sequelize.define('Badges',{
             key: 'Id_badges'
         }
     }
-}})
+}},
+{
+    sequelize,
+    modelName: 'Badges',
+    timestamps: true,
+    createdAt: true,
+    updatedAt: true
+  })
 
-Badges.Client = Badges.belongsTo(Client, {
-    foreignKey: 'fk_Id_client'
-})
-
-Badges.Users = Badges.belongsTo(Users, {
-    foreignKey: 'fk_Id_user'
-})
-
-Fridges.belongsToMany(Badges, {             //association many-to-many (en cas de création de table de liaison)
-    through: "fridges_badges",
-    foreignKey: "Id_fridge",
-  });
-
-Badges.belongsToMany(Fridges, {
-  through: "fridges_badges",
-  foreignKey: "Id_badge",
-});
-
-module.exports = Badges
+  return Badges
+}
