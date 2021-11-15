@@ -5,13 +5,17 @@ import DATAUtilisateurs from '../Data/utilisateurs'
 import iconeMenu from '../Images/iconeMenu.png'
 import React, { useState } from 'react';
 import { useHistory } from 'react-router';
-
+import { useSelector, useDispatch } from "react-redux";
+import userActions from "store/actions/userActions";
 
 
 export default function Header(){
 
     const [over, setover] = useState(false);
     const [path, setpath] = useState("Accueil");
+
+    const user = useSelector((state) => state.user.value);
+    const dispatch = useDispatch();
 
 
     function onOver(){
@@ -25,6 +29,11 @@ export default function Header(){
     function handleLogin(){
         history.push("/Login");
         setpath("Login")
+    }
+    function handleLogout(){
+        dispatch(
+            userActions.logout()
+          )
     }
     function handleProducts(){
         history.push("/Products");
@@ -88,7 +97,8 @@ export default function Header(){
                         <div className="header-bottom-menuList-button" onClick={handlePromo}>Promotions</div>
                         <div className="header-bottom-menuList-button" onClick={handleProducts}>Produits</div>
                         <div className="header-bottom-menuList-button" onClick={handleCategories}>Catégories</div>
-                        <div className="header-bottom-menuList-button" onClick={handleLogin}>Login</div>
+                        {/* <div className="header-bottom-menuList-button" onClick={handleLogin}>Login</div> */}
+                        <div className="header-bottom-menuList-button" onClick={handleLogout}>Logout</div>
 
 
                     </div>:false

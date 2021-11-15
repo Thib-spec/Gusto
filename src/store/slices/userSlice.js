@@ -7,6 +7,8 @@ const initValue = {
   pp_url: undefined,
   language: undefined,
   authToken: undefined,
+  client: undefined,
+  level: undefined,
 };
 export const userSlice = createSlice({
   name: "user",

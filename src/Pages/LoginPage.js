@@ -2,13 +2,14 @@ import "CSS/colors.css";
 import "CSS/loginPage.css";
 
 import { useSelector, useDispatch } from "react-redux";
-// import { login } from 'store/actions/userActions'
-import userActions from "store/actions/userActions";
+
+import userController from "helpers/controllers/userController";
 
 export default function LoginPage({ location, history }) {
-  console.log("location : ", location);
   const user = useSelector((state) => state.user.value);
   const dispatch = useDispatch();
+
+  console.log("location : ", location);
   console.log("user : ", user);
 
   return (
@@ -85,20 +86,29 @@ export default function LoginPage({ location, history }) {
                     </div>
                     {/* <button type="submit" class="btn btn-dark blue mb-2 col-12"> */}
                     <button
-                      onClick={() =>{
-                        dispatch(
-                          userActions.login({
-                            firstName: "fred",
-                            lastName: "dumont",
-                            email: "fred.dumont@hotmail.fr",
-                            pp_url: undefined,
-                            language: "fr",
-                            authToken: "fbdhbfrz",
-                          })
-                        )
-                        history.push("/");
-                      }
-                      }
+                      onClick={userController.login({dispatch, history, body:{}})}
+                      // onClick={async () => {
+                      //   console.log("test : ", dispatch);
+                      //   const res = await api.login({});
+                      //   console.log("res : ", res);
+                      //   dispatch(userActions.login(res));
+                      //   history.push("/");
+                      // }}
+                      // onClick={async () => {
+                      //   const res = await api.login({});
+                      //   console.log("res : ", res);
+                      //   dispatch(userActions.login({
+                      //     "firstName": "fred",
+                      //     "lastName": "dumont",
+                      //     "email": "fred.dumont@hotmail.fr",
+                      //     "pp_url": "http://yes.gustosolutions/api/me/pp",
+                      //     "language": "fr",
+                      //     "authToken": "fbdhbfrz",
+                      //     "client": "Olivia",
+                      //     "level": "1"
+                      //   }));
+                      //   history.push("/");
+                      // }}
                       type="submit"
                       class="btn btn-dark blue mb-2 col-12"
                     >
