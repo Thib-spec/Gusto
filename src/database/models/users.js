@@ -6,17 +6,17 @@ const security = require('../../helpers/security');
 
 module.exports = (sequelize) =>{
 class Users extends Model{
-  static associate(models){
-    
+
+static associate(models){
     Users.belongsTo(models.Client, {
-        foreignKey: 'fk_Id_client'
-    }) 
-    
-    Users.belongsTo(models.Levels, {
-        foreignKey: 'fk_Id_level'
-    })
-  }
-  
+    foreignKey: 'fk_Id_client'
+  }) 
+
+  Users.belongsTo(models.Levels, {
+    foreignKey: 'fk_Id_level'
+})
+}
+
 }
 
 Users.init({
@@ -76,7 +76,6 @@ Users.init({
         updatedAt: true
     })
 
-   
     return Users
 
   }

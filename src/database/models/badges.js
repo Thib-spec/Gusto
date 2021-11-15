@@ -1,10 +1,5 @@
 const {Model, DataTypes} = require('sequelize');
 
-const Client = require("./client")
-const Users = require("./users")
-  
-
-
 
 
 module.exports = (sequelize) => {
@@ -16,7 +11,7 @@ class Badges extends Model{
         Badges.belongsTo(models.Client, {
             foreignKey: 'fk_Id_client',
         })
-        
+
         Badges.belongsTo(models.Users, {
             foreignKey: 'fk_Id_user'
         })
