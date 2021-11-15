@@ -13,6 +13,9 @@ const db = {};
 const sequelizeOptions = {
   logging: false // enlève les prints des requêtes sql dans la console
 }
+
+console.log(config.username)
+console.log(config.password)
 const sequelize = new Sequelize({
   host: config.host,
   port: config.port,
@@ -32,9 +35,7 @@ fs
     return (file.indexOf('.') !== 0) && (file !== basename) && (file.slice(-3) === '.js');
   })
   .forEach(file => {
-    console.log(file)
     const model = require(path.join(__dirname, file))(sequelize);
-    console.log(model)
     db[model.name] = model;
   });
 

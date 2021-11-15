@@ -11,12 +11,12 @@ module.exports = (sequelize) => {
 class Badges extends Model{
     static associate (models){
         Badges.belongsTo(models.Client, {
-            foreignKey: 'fk_Id_client'      // rajouter id badge + mettre alter à false
+            foreignKey: 'fk_Id_client',
         })
         
-        // Badges.belongsTo(models.Users, {
-        //     foreignKey: 'fk_Id_user'
-        // })
+        Badges.belongsTo(models.Users, {
+            foreignKey: 'fk_Id_user'
+        })
         
         // Badges.belongsToMany(Fridges, {
         //   through: "fridges_badges",
@@ -26,7 +26,7 @@ class Badges extends Model{
 }
 
 Badges.init({
-    Id_badge: {
+    Id_badges: {
         type: DataTypes.INTEGER,
         primaryKey: true,
         autoIncrement: true,

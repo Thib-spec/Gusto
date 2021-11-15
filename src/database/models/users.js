@@ -58,7 +58,10 @@ Users.init({
 },
     {
         sequelize,
-        modelName: 'Users'
+        modelName: 'Users',
+        timestamps: true,
+        createdAt: true,
+        updatedAt: true
     })
 
     // Users.Client = Users.belongsTo(Client, {
