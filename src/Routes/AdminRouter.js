@@ -16,16 +16,22 @@ import ProductsPage from "Pages/ProductPage";
 import NotFoundPage from "Pages/NotFoundPage";
 import TestData from "Components/TestData";
 import Header from "Components/Header";
+import { useSelector, useDispatch } from "react-redux";
+
 
 function AdminRouter() {
-  const connected = false;
-  const authToken =
-    localStorage.getItem("authToken") & connected
-      ? localStorage.getItem("authToken")
-      : connected
-      ? "vjsbhjvbk"
-      : undefined;
-  console.log(authToken);
+  const user = useSelector((state) => state.user.value);
+  console.log("user : ", user)
+  const authToken = user.authToken
+
+  // const connected = false;
+  // const authToken =
+    // localStorage.getItem("authToken") & connected
+    //   ? localStorage.getItem("authToken")
+    //   : connected
+    //   ? "vjsbhjvbk"
+    //   : undefined;
+  console.log("authToken : ",authToken);
 
   const location = useLocation();
   const searchParams = new URLSearchParams(location.search);

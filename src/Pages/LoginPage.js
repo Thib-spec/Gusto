@@ -1,8 +1,15 @@
 import "CSS/colors.css";
 import "CSS/loginPage.css";
 
-export default function LoginPage({ location }) {
-  console.log(location);
+import { useSelector, useDispatch } from "react-redux";
+// import { login } from 'store/actions/userActions'
+import userActions from "store/actions/userActions";
+
+export default function LoginPage({ location, history }) {
+  console.log("location : ", location);
+  const user = useSelector((state) => state.user.value);
+  const dispatch = useDispatch();
+  console.log("user : ", user);
 
   return (
     <>
@@ -13,7 +20,11 @@ export default function LoginPage({ location }) {
               <div class="card h-100">
                 <div class="card-body p-5 text-center">
                   <div class="">
-                    <img class="card-img-top" src="/Logo_Gusto_Colors.svg" alt="Card image cap"/>
+                    <img
+                      class="card-img-top"
+                      src="/Logo_Gusto_Colors.svg"
+                      alt="Card image cap"
+                    />
                     <div class="input-group mb-3">
                       <span class="input-group-text" id="basic-addon1">
                         <svg
@@ -69,10 +80,28 @@ export default function LoginPage({ location }) {
                         // checked
                       />
                       <label class="form-check-label" for="flexCheckChecked">
-                        &nbsp; Restez connectez ?
+                        &nbsp; Restez connecté ?
                       </label>
                     </div>
-                    <button type="submit" class="btn btn-dark blue mb-2 col-12">
+                    {/* <button type="submit" class="btn btn-dark blue mb-2 col-12"> */}
+                    <button
+                      onClick={() =>{
+                        dispatch(
+                          userActions.login({
+                            firstName: "fred",
+                            lastName: "dumont",
+                            email: "fred.dumont@hotmail.fr",
+                            pp_url: undefined,
+                            language: "fr",
+                            authToken: "fbdhbfrz",
+                          })
+                        )
+                        history.push("/");
+                      }
+                      }
+                      type="submit"
+                      class="btn btn-dark blue mb-2 col-12"
+                    >
                       Connexion
                     </button>
                   </div>
