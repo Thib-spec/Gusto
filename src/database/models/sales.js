@@ -1,10 +1,9 @@
-const { Model, DataTypes } = require("sequelize");
+const { Model, DataTypes,sequelize } = require("./connexion");
 const Tags = require("./tags");
+const Fridges = require("./fridges")
 
-class Sales extends Model {
 
-}
-Sales.init({
+const Sales = sequelize.define('Sales',{
     Id_sale: {
         type: DataTypes.INTEGER,
         primaryKey: true,
@@ -12,7 +11,7 @@ Sales.init({
         allowNull: false
     },
     Sales_timestamp: {
-        type: DataTypes.CHAR,
+        type: DataTypes.STRING,
         allowNull: false
     },
     Cbemv_amount: {
@@ -20,7 +19,7 @@ Sales.init({
         allowNull: false
     },
     Cbcless_amount: {
-        type: DataTypes.CHAR,
+        type: DataTypes.STRING,
         allowNull: false
     },
     Lv_amount: {

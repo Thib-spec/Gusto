@@ -1,10 +1,9 @@
-const { Model, DataTypes } = require("sequelize");
+const { Model, DataTypes,sequelize } = require("./connexion");
 
-class Tags extends Model {
+const Products = require("./product")
 
-}
 
-Tags.init({
+const Tags = sequelize.define('Tags',{
     Id_tags: {
         type: DataTypes.INTEGER,
         primaryKey: true,
@@ -24,7 +23,7 @@ Tags.init({
     modelName: 'Tags'
 })
 
-Tags.Products = Tags.belongsTo(this.Products, {
+Tags.Products = Tags.belongsTo(Products, {
     foreignKey: 'fk_Id_product'
 })
 

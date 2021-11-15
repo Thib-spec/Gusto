@@ -1,11 +1,9 @@
-const { genSalt } = require("bcrypt");
-const { Model, DataTypes } = require("sequelize");
+const { Model, DataTypes,sequelize } = require("./connexion");
+const Categories = require("./categories")
+const Sales = require("./sales")
 
-class Products extends Model {
 
-}
-
-Products.init({
+const Products = sequelize.define('Products',{
     Id_product: {
         type: DataTypes.INTEGER,
         primaryKey: true,
@@ -13,7 +11,7 @@ Products.init({
         allowNull: false
     },
     Image: {
-        type: DataTypes.CHAR(150),
+        type: DataTypes.STRING(150),
         allowNull: false
     },
     Price: {
@@ -33,15 +31,15 @@ Products.init({
         allowNull: false
     },
     Label: {
-        type: DataTypes.CHAR,
+        type: DataTypes.STRING,
         allowNull: false
     },
     Ubd: {
-        type: DataTypes.CHAR,
+        type: DataTypes.STRING,
         allowNull: false
     },
     Description: {
-        type: DataTypes.CHAR(150),
+        type: DataTypes.STRING(150),
         allowNull: false
     },
     fk_Id_category:{

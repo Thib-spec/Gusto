@@ -1,11 +1,8 @@
-const { Model, DataTypes } = require("sequelize");
-const { Client } = require("./Users");
+const { Model, DataTypes,sequelize } = require("./connexion");
+const  Client  = require("./Users");
 
-class Categories extends Model {
 
-}
-
-Categories.init({
+const Categories = sequelize.define('Categories',{
     Id_categories: {
         type: DataTypes.INTEGER,
         primaryKey: true,
@@ -13,15 +10,15 @@ Categories.init({
         allowNull: false
     },
     Label: {
-        type: DataTypes.CHAR,
+        type: DataTypes.STRING,
         allowNull: false
     },
     Image: {
-        type: DataTypes.CHAR(150),
+        type: DataTypes.STRING(150),
         allowNull: false
     },
     Description: {
-        type: DataTypes.CHAR(150),
+        type: DataTypes.STRING(150),
         allowNull: false
     }
 }, {

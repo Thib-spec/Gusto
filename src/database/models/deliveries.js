@@ -1,8 +1,11 @@
-const { Model, DataTypes } = require("sequelize");
-class Deliveries extends Model {
+const { Model, DataTypes,sequelize } = require("./connexion");
+const Users = require("./users")
+const Fridges = require("./fridges")
+const Tags = require("./tags")
+const Products = require("./product")
 
-}
-Deliveries.init({
+
+const Deliveries = sequelize.define('Deliveries',{
     Id_delivery: {
         type: DataTypes.INTEGER,
         primaryKey: true,
@@ -10,7 +13,7 @@ Deliveries.init({
         allowNull: false
     },
     Delivery_timestamp: {
-        type: DataTypes.CHAR,
+        type: DataTypes.STRING,
         allowNull: false
     },
     fk_Id_user:{

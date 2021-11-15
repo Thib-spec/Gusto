@@ -1,10 +1,8 @@
-const { Model, DataTypes } = require("sequelize");
+const { Model, DataTypes,sequelize } = require("./connexion");
 const Users = require("./Users");
 
-class Sessions extends Model {
-}
 
-Sessions.init({                                                 //définition du modèle  
+const Sessions = sequelize.define('Sessions',{                                                 //définition du modèle  
     fk_Id_user:{                                                //définition des attributs (clés primaires, étrangères)
         type: DataTypes.INTEGER,
         allowNull = false,

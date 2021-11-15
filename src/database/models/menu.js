@@ -1,10 +1,9 @@
-const { Model, DataTypes } = require("sequelize");
+const { Model, DataTypes,sequelize } = require("./connexion");
+const Products = require("./product")
+const Client = require("./client")
 
-class Menu extends Model {
 
-}
-
-Menu.init({
+const Menus = sequelize.define('Menus',{
     Id_menu: {
         type: DataTypes.INTEGER,
         primaryKey: true,
@@ -12,7 +11,7 @@ Menu.init({
         allowNull: false
     },
     Image: {
-        type: DataTypes.CHAR(150),
+        type: DataTypes.STRING(150),
         allowNull: false
     },
     Price: {
@@ -20,11 +19,11 @@ Menu.init({
         allowNull: false
     },
     web_label: {
-        type: DataTypes.CHAR,
+        type: DataTypes.STRING,
         allowNull: false
     },
     fridge_label: {
-        type: DataTypes.CHAR,
+        type: DataTypes.STRING,
         allowNull: false
     },
     fk_Id_client:{
