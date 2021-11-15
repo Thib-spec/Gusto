@@ -9,9 +9,9 @@ import {
   useHistory,
   useLocation,
 } from "react-router-dom";
-import CategoriesPage from "../Pages/CategoriesPage";
+import CategoriesPage from "Pages/CategoriesPage";
 import HomePage from "../Pages/HomePage";
-import LoginPage from "../Pages/LoginPage";
+import LoginPage from "Pages/LoginPage";
 import ProductsPage from "../Pages/ProductPage";
 import NotFoundPage from "../Pages/NotFoundPage";
 import TestData from "../Components/TestData";

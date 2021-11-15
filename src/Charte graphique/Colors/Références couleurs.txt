@@ -1,0 +1,11 @@
+Bleu foncé :
+
+#2F4057
+
+Rouge :
+
+#D0495C
+
+Jaune :
+
+#EDAE49
