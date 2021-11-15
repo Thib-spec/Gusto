@@ -1,4 +1,4 @@
-import '../CSS/header.css'
+
 
 export default function LoginPage({location}){
 

@@ -1,0 +1,10 @@
+
+
+export default function InputForm(props){
+    return(
+      <div class="mb-3">
+        
+        <input type={props.type} class="form-control" id="formGroupExampleInput" placeholder={props.label}/>
+      </div>
+)
+}
