@@ -18,7 +18,7 @@ import TestData from "../Components/TestData";
 import Header from "../Components/Header";
 
 function AdminRouter() {
-  const connected = false;
+  const connected = true;
   const authToken =
     localStorage.getItem("authToken") & connected
       ? localStorage.getItem("authToken")
@@ -36,7 +36,7 @@ function AdminRouter() {
         <Header />
         <Switch>
           <Route exact path="/" component={HomePage} />
-          <Route path="/categories" component={CategoriesPage} />
+          <Route path="/categories" component={CategoriesPage}  />
           <Route path="/products" component={ProductsPage} />
           <Route path="/testHistory1" component={Test1} />
           <Route path="/testHistory2" component={Test2} />
