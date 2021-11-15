@@ -1,27 +1,5 @@
 .card{
     border-radius: 1rem;
-}
-
-.red{
-    background-color: red;
-}
-
-.blue{
-    background-color: blue;
-}
-
-.green{
-    background-color: green;
-}
-
-.yellow{
-    background-color: yellow;
-}
-
-.blueviolet{
-    background-color: blueviolet;
-}
-
-.opacity{
-    opacity: 30%;
+    border: transparent;
+    background-color: transparent;
 }
