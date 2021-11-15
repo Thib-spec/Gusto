@@ -5,7 +5,19 @@ const security = require('../../helpers/security');
 
 
 module.exports = (sequelize) =>{
-class Users extends Model{}
+class Users extends Model{
+  static associate(models){
+    
+    Users.belongsTo(models.Client, {
+        foreignKey: 'fk_Id_client'
+    }) 
+    
+    Users.belongsTo(models.Levels, {
+        foreignKey: 'fk_Id_level'
+    })
+  }
+  
+}
 
 Users.init({
     Id_user:{
@@ -17,16 +29,16 @@ Users.init({
         type: DataTypes.INTEGER,
         allowNull: false,
         references:{
-            model : 'Client',
-            key: 'Id_client'
+            model : 'Users',
+            key: 'Id_user'
         }
     },
     fk_Id_level:{
         type: DataTypes.INTEGER,
         allowNull: false,
         references:{
-            model : 'Levels',
-            key: 'Id_level'
+            model : 'Users',
+            key: 'Id_user'
         }
     },
     password: {
@@ -64,13 +76,7 @@ Users.init({
         updatedAt: true
     })
 
-    // Users.Client = Users.belongsTo(Client, {
-    //     foreignKey: 'fk_Id_client'
-    // })
-
-    // Users.Levels = Users.belongsTo(Levels, {
-    //     foreignKey: 'fk_Id_level'
-    // })
+   
     return Users
 
   }

@@ -1,7 +1,8 @@
 const {Model, DataTypes} = require('sequelize');
-  
-const Client = require('./client')
+
+const Client = require("./client")
 const Users = require("./users")
+  
 
 
 
@@ -9,7 +10,9 @@ const Users = require("./users")
 module.exports = (sequelize) => {
 
 class Badges extends Model{
-    static associate (models){
+
+    static associate(models){
+        
         Badges.belongsTo(models.Client, {
             foreignKey: 'fk_Id_client',
         })
@@ -55,6 +58,7 @@ Badges.init({
     createdAt: true,
     updatedAt: true
   })
+
 
   return Badges
 }

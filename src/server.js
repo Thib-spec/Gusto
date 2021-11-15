@@ -2,7 +2,6 @@
 // contiendra la configuration entre le server http et l'application express
 const http = require('http')
 const path = require('path')
-const routes = require("./route")
 
 // config variables d'environnement du projet
 let envPath = __dirname + '/../.env'
@@ -20,7 +19,6 @@ console.log(process.env.DB_PASSWORD)
 const app = require("express")()
 const serverHttp = http.createServer(app)
 const passport = require("passport")
-app.use('/api', routes)
 
 const models=require("./database/models")
 // config passport
