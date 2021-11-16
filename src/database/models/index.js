@@ -54,7 +54,7 @@ db.Sequelize = Sequelize;
 let syncOptions
 if (env=="development"){
   syncOptions = {
-    alter: true, // si true : change la db en fonctions d'ajout de key dans les schemas des models
+    alter: false, // si true : change la db en fonctions d'ajout de key dans les schemas des models
     force: false // si true : drop the tables et recrée avec les nouveaux schemas des models
   }
 }

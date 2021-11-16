@@ -14,7 +14,7 @@ module.exports = (sequelize) => {
             });
             
             Sales.belongsToMany(models.Products, {
-                through: "product_sales",
+                through: "products_sales",
                 foreignKey: "fk_Id_product",
             });
         }

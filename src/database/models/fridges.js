@@ -4,7 +4,7 @@ module.exports = (sequelize) => {
     class Fridges extends Model{
         static associate(models){
 
-            Fridges.belongsTo(models.Tech, {
+            Fridges.belongsTo(models.Technologies, {
                 foreignKey: 'fk_Id_tech'
             });
 

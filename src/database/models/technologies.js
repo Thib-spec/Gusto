@@ -1,16 +1,15 @@
 const {DataTypes, Model } = require("sequelize");
 
 module.exports = (sequelize) => {
-    class Levels extends Model{
+    class Technologies extends Model{
         static associate(models){
-            Levels.hasMany(models.Users, {
-            foreignKey: 'fk_Id_level'
-          }) 
+
+         
         }
     }
 
-Levels.init({
-    Id_level: {
+    Technologies.init({
+    Id_technologies: {
         type: DataTypes.INTEGER,
         primaryKey: true,
         autoIncrement: true,
@@ -19,16 +18,15 @@ Levels.init({
     Label: {
         type: DataTypes.STRING,
         allowNull: false
-    },
+    }
 }, {
     sequelize,
-    modelName: 'Levels',
+    modelName: 'Technologies',
     timestamps: true,
     createdAt: true,
     updatedAt: true
+})
 
+return Technologies
 
-    })
-    return Levels
 }
-

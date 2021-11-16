@@ -8,19 +8,19 @@ module.exports = (sequelize) => {
                 foreignKey: 'fk_Id_category'
             })
             
-            Products.belongsToMany(model.Sales, {   // faire la même en sale
+            Products.belongsToMany(models.Sales, {   
                 through: "products_sales",
                 foreignKey: "fk_Id_sale",
             });
             
             Products.belongsToMany(models.Deliveries, {
                 through: "products_deliveries",
-                foreignKey: "Id_delivery",
+                foreignKey: "fk_Id_delivery",
             });
 
-            Products.belongsToMany(models.Menus, {      
+            Products.belongsToMany(models.Menu, {      
                 through: "menus_products",
-                foreignKey: "Id_menu",
+                foreignKey: "fk_Id_menu",
             });
         }
     }

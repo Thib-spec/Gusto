@@ -14,14 +14,14 @@ module.exports = (sequelize) => {
             })
 
             Tags.belongsToMany(models.Sales,{       // liaison belongstomany avec sales
-                through:"tag_sales",
+                through:"tags_sales",
                 foreignKey:"fk_Id_sale"
             })
         }
     }
 
     Tags.init({
-    Id_tags: {
+    Id_tag: {
         type: DataTypes.INTEGER,
         primaryKey: true,
         autoIncrement: true,

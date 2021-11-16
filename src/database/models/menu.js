@@ -2,15 +2,16 @@ const {DataTypes, Model } = require("sequelize");
 
 module.exports = (sequelize) => {
     class Menus extends Model{
+
         static associate(models){
 
-            Menu.belongsTo(models.Client, {
+            Menus.belongsTo(models.Client, {
                 foreignKey: 'fk_Id_client'
             })
             
-            Menu.belongsToMany(models.Products, {
+            Menus.belongsToMany(models.Products, {
                 through: "menus_products",
-                foreignKey: "Id_product",
+                foreignKey: "fk_Id_product",
             });
             
         }
