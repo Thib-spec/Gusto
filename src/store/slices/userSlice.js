@@ -22,6 +22,9 @@ export const userSlice = createSlice({
     logout: (state) => {
       state.value = { ...initValue };
     },
+    update: (state, action) => {
+      state.value = { ...state.value, ...action.payload };
+    },
   },
 });
 

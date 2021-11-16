@@ -14,11 +14,12 @@ const requester = (thiss)=>{
             },
             body : body instanceof Object ? JSON.stringify(body) : null
           })
-          return (await response.json())
+          // return (await response.json())
+          return ("response : ", response)
         } catch (err) {
           return {
               success: 0,
-              err
+              // err
           }
         }
     }

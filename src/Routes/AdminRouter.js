@@ -17,15 +17,21 @@ import NotFoundPage from "Pages/NotFoundPage";
 import TestData from "Components/TestData";
 import Header from "Components/Header";
 import { useSelector, useDispatch } from "react-redux";
-
+import userController from "helpers/controllers/userController";
 
 function AdminRouter() {
-  // const user = useSelector((state) => state.user.value);
-  // console.log("user : ", user)
+  const user = useSelector((state) => state.user.value);
+  const dispatch = useDispatch();
+  
+  if (!user.email){
+    userController.getInfo({dispatch})
+  }
+
+  console.log("user : ", user)
 
   const authToken = localStorage.getItem("authToken")
 
-  console.log(authToken)
+  console.log("authToken : ",authToken)
 
   const location = useLocation();
   const searchParams = new URLSearchParams(location.search);

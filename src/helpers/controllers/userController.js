@@ -1,15 +1,15 @@
 import API from "helpers/api";
 import userActions from "store/actions/userActions";
 
-const api = new API({});
+const api = new API({fake:true});
 
 const controller = {
   login:
     ({ dispatch, history, body }) =>
     async () => {
       const res = await api.login({ body });
-      dispatch(userActions.login(res.user));
-      localStorage.setItem("authToken",res.user.authToken)
+      dispatch(userActions.login(res));
+      localStorage.setItem("authToken",res.authToken)
       history.push("/");
     },
   logout:
@@ -17,8 +17,14 @@ const controller = {
     async () => {
       const res = await api.logout();
       dispatch(userActions.logout());
-      localStorage.setItem("authToken","")
+      localStorage.removeItem("authToken")
       history.push("/");
+    },
+    getInfo:
+    ({ dispatch }) =>
+    async () => {
+      const res = await api.getInfo();
+      dispatch(userActions.update(res));
     },
 };
 export default controller;
