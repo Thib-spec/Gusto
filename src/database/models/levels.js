@@ -1,9 +1,9 @@
-const {DataTypes,sequelize, Model } = require("sequelize");
+const {DataTypes, Model } = require("sequelize");
 
 module.exports = (sequelize) => {
     class Levels extends Model{
         static associate(models){
-            Levels.hasOne(models.Users, {
+            Levels.hasMany(models.Users, {
             foreignKey: 'fk_Id_level'
           }) 
         }

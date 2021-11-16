@@ -1,8 +1,6 @@
 const {Model, DataTypes} = require('sequelize');
 
 
-
-
 module.exports = (sequelize) => {
 
 class Badges extends Model{
@@ -31,22 +29,6 @@ Badges.init({
         autoIncrement: true,
         allowNull: false
     },
-//     fk_Id_client: {
-//         type: DataTypes.INTEGER,
-//         allowNull:false,
-//         references:{
-//             model : 'Badges',
-//             key: 'Id_badges'
-//     },
-//     fk_Id_user: {
-//         type: DataTypes.INTEGER,
-//         allowNull:false,
-//         references:{
-//             model : 'Badges',
-//             key: 'Id_badges'
-//         }
-//     }
-// }
 },
 {
     sequelize,

@@ -1,11 +1,15 @@
-const Users = require("../database/models/users");
-const {DataTypes,sequelize, Model } = require("sequelize");
+const Model = require("../database/models");
+// const Model = {
+//     Users: require("../database/models/users")(),           // config pour que l'ide propose les fonctions possibles
+// }
 
+
+
+const {DataTypes,sequelize } = require("sequelize");
 
 
     exports.listUsers = (req, res) => {
-        console.log(Users)
-        Model.findAll()
+        Model.Users.findAll()
         .then(user => res.status(200).json(user))
         .catch(error => res.status(400).json(error))
         // return users

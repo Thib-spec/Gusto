@@ -1,8 +1,5 @@
-const {DataTypes,sequelize, Model } = require("sequelize");
+const {DataTypes, Model } = require("sequelize");
 const security = require('../../helpers/security');
-// const Levels = require("./levels");
-// const Client = require("./client")
-
 
 module.exports = (sequelize) =>{
 class Users extends Model{
@@ -20,24 +17,10 @@ Users.init({
     Id_user:{
       type:DataTypes.INTEGER,
       allowNull:false,
-      primaryKey:true
+      primaryKey:true,
+      autoIncrement:true
     },
-    // fk_Id_client:{
-    //     type: DataTypes.INTEGER,
-    //     allowNull: false,
-    //     references:{
-    //         model : 'Users',
-    //         key: 'Id_user'
-    //     }
-    // },
-    // fk_Id_level:{
-    //     type: DataTypes.INTEGER,
-    //     allowNull: false,
-    //     references:{
-    //         model : 'Users',
-    //         key: 'Id_user'
-    //     }
-    // },
+    
     password: {
         type: DataTypes.STRING,
         set(v){

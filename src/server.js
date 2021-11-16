@@ -5,14 +5,11 @@ const path = require('path')
 
 // config variables d'environnement du projet
 let envPath = __dirname + '/../.env'
-console.log(envPath)
 require('dotenv').config({ path: envPath })
 
 // config serveur
 const HOST = "localhost"
 const PORT = process.env.PORT
-console.log(process.env.DB_USER)
-console.log(process.env.DB_PASSWORD)
 
 // configuration
 
