@@ -14,8 +14,6 @@ const sequelizeOptions = {
   logging: false // enlève les prints des requêtes sql dans la console
 }
 
-console.log(config.username)
-console.log(config.password)
 const sequelize = new Sequelize({
   host: config.host,
   port: config.port,
