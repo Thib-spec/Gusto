@@ -97,7 +97,7 @@ export default function LoginPage({ location, history }) {
                         // checked
                       />
                       <label
-                        className="form-check-label"
+                        className="form-check-label "
                         htmlFor="flexCheckChecked"
                       >
                         &nbsp; Restez connecté ?
