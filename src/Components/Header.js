@@ -1,8 +1,12 @@
 import '../CSS/header.scss'
-import logo from '../Images/logoGusto1.png'
-import profilpp from '../Images/imageprofil.png'
+import logo from 'Charte_graphique/Logo/Colors/Logo_Gusto_Colors.svg'
+import profilpp from 'Charte_graphique/Logo/Colors/user.svg'
+import profilpp1 from '../Images/imageprofil.png'
+
 import DATAUtilisateurs from '../Data/utilisateurs'
-import iconeMenu from '../Images/iconeMenu.png'
+import iconeMenu from 'Charte_graphique/Logo/Colors/menu.svg'
+import iconeMenu1 from '../Images/iconeMenu.png'
+
 import React, { useState } from 'react';
 import { useHistory } from 'react-router';
 
