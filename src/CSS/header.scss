@@ -89,11 +89,13 @@
     justify-content: center;
     margin:0%;
     z-index: 1;
+
     
 }
 
 .header-logo-pp{
     border-radius: 50%;
+    border: solid black 0.1em;
     
     
 }
@@ -123,11 +125,6 @@
 
 
 
-
-
-
-
-
 .header-bottom{
     
     width: 100%;
@@ -141,27 +138,28 @@
     display: flex;
     flex-direction: column;
     justify-content: center;
-    padding-left: 3%;
+    padding-left: 2%;
     font-size: 150%;
     
 }
 
 
 .header-bottom-menuIcone{
-    width: 5%;
+    width: 4%;
     margin-left: 0.8%;
+    height: 5em;
     
 }
 
 .header-bottom-menuList{
     background-color: #1e4272;
     width: 200px;
-   
     color: white;
     display: flex;
     flex-direction: column;
-    position: relative;
-    z-index:2;
+    position: absolute;
+    top: 10em; left: 0px;
+    
     
 }
 
@@ -179,3 +177,45 @@
         cursor: pointer;
     }
 }
+
+
+@media (max-width: 1000px) {
+    .header-top-name-container{
+        display: none;
+    }
+
+    .header-top{
+        display: flex;
+        flex-direction: row;
+        justify-content: space-evenly;
+    }
+  }
+
+
+  @media (max-width: 500px) {
+    .header-top-logo-container{
+        display: none;
+    }
+    .header-top
+    {
+        display: flex;
+        flex-direction: row;
+        justify-content: center;
+       
+
+    }
+    .header-top-profil-whiteContainer{
+        
+        left: 0px;
+       
+    }
+    .header-top-profil-whiteSpace{
+        left: 0px;
+        border-top-right-radius: 8px;
+        border-bottom-right-radius: 8px;
+
+    }
+    .header-top-profil-container{
+        justify-content: center;
+    }
+  }
