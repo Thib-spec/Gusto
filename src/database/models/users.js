@@ -12,9 +12,6 @@ static associate(models){
     foreignKey: 'fk_Id_client'
   }) 
 
-  Users.belongsTo(models.Levels, {
-    foreignKey: 'fk_Id_level'
-})
 }
 
 }
@@ -25,22 +22,22 @@ Users.init({
       allowNull:false,
       primaryKey:true
     },
-    fk_Id_client:{
-        type: DataTypes.INTEGER,
-        allowNull: false,
-        references:{
-            model : 'Users',
-            key: 'Id_user'
-        }
-    },
-    fk_Id_level:{
-        type: DataTypes.INTEGER,
-        allowNull: false,
-        references:{
-            model : 'Users',
-            key: 'Id_user'
-        }
-    },
+    // fk_Id_client:{
+    //     type: DataTypes.INTEGER,
+    //     allowNull: false,
+    //     references:{
+    //         model : 'Users',
+    //         key: 'Id_user'
+    //     }
+    // },
+    // fk_Id_level:{
+    //     type: DataTypes.INTEGER,
+    //     allowNull: false,
+    //     references:{
+    //         model : 'Users',
+    //         key: 'Id_user'
+    //     }
+    // },
     password: {
         type: DataTypes.STRING,
         set(v){

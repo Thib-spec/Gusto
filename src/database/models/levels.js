@@ -2,7 +2,11 @@ const {DataTypes,sequelize, Model } = require("sequelize");
 
 module.exports = (sequelize) => {
     class Levels extends Model{
-
+        static associate(models){
+            Levels.hasOne(models.Users, {
+            foreignKey: 'fk_Id_level'
+          }) 
+        }
     }
 
 Levels.init({

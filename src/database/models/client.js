@@ -2,7 +2,8 @@ const { Model, DataTypes} = require("sequelize");
 
 
 module.exports = (sequelize) => {
-    class Client extends Model{}
+    class Client extends Model{
+    }
 
 Client.init({
     Id_client: {

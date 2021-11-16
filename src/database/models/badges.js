@@ -2,6 +2,7 @@ const {Model, DataTypes} = require('sequelize');
 
 
 
+
 module.exports = (sequelize) => {
 
 class Badges extends Model{
@@ -11,7 +12,7 @@ class Badges extends Model{
         Badges.belongsTo(models.Client, {
             foreignKey: 'fk_Id_client',
         })
-
+        
         Badges.belongsTo(models.Users, {
             foreignKey: 'fk_Id_user'
         })
@@ -30,22 +31,23 @@ Badges.init({
         autoIncrement: true,
         allowNull: false
     },
-    fk_Id_client: {
-        type: DataTypes.INTEGER,
-        allowNull:false,
-        references:{
-            model : 'Badges',
-            key: 'Id_badges'
-    },
-    fk_Id_user: {
-        type: DataTypes.INTEGER,
-        allowNull:false,
-        references:{
-            model : 'Badges',
-            key: 'Id_badges'
-        }
-    }
-}},
+//     fk_Id_client: {
+//         type: DataTypes.INTEGER,
+//         allowNull:false,
+//         references:{
+//             model : 'Badges',
+//             key: 'Id_badges'
+//     },
+//     fk_Id_user: {
+//         type: DataTypes.INTEGER,
+//         allowNull:false,
+//         references:{
+//             model : 'Badges',
+//             key: 'Id_badges'
+//         }
+//     }
+// }
+},
 {
     sequelize,
     modelName: 'Badges',
