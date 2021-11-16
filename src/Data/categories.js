@@ -1,7 +1,7 @@
 const DATACatégories = [
-    { id: 1, name: "Fruit", list:['Pomme','Poire','Banane']},
-    { id: 2, name: "plat", list:['riz','pate','sandwitch','burger'] },
-    { id: 3, name: "dessert",list: ['yahourt','donuts','éclair']},
+    { id: 1, name: "Fruit"},
+    { id: 2, name: "plat"},
+    { id: 3, name: "dessert"},
   ];
 
 export default DATACatégories

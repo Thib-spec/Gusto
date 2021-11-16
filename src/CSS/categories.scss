@@ -2,7 +2,7 @@
     background-color: gainsboro;
     display: flex;
     flex-direction: row;
-    justify-content: center;
+    justify-content: space-evenly;
     
 }
 
@@ -32,4 +32,11 @@
 
 .categories-list-element-sub{
     background-color: yellowgreen;
+    display: flex;
+    flex-direction: column;
+}
+
+.categories-list-element-sub-element{
+    display: flex;
+    flex-direction: row;
 }

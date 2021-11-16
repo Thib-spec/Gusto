@@ -1,5 +1,6 @@
 import "CSS/categories.scss"
 import DATACatégories from "../Data/categories"
+import DATAProducts from "../Data/products"
 
 
 export default function CategoriesPage(){
@@ -12,7 +13,13 @@ export default function CategoriesPage(){
                 {DATACatégories.map((categories) => (
                 <div className="categories-list-element">
                     <div className="categories-list-element-name">{categories.name}</div>
-                    <div className="categories-list-element-sub">{categories.list.map((elementInCategorie)=>(<div>{elementInCategorie}</div>))}</div>
+                    <div className="categories-list-element-sub">
+                        {DATAProducts.map((product)=>(
+                            <div className="categories-list-element-sub-element">
+                                {product.categorie===categories.id?<div>{product.name}</div>:false}<div></div>
+                            </div>
+                        ))}
+                    </div>
                 </div>
                 ))}
             </div>
