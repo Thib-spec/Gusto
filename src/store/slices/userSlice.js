@@ -9,6 +9,7 @@ const initValue = {
   authToken: undefined,
   client: undefined,
   level: undefined,
+  isLogged: false
 };
 export const userSlice = createSlice({
   name: "user",

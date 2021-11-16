@@ -5,16 +5,25 @@ import logoGustoColors from "Images/Logo_Gusto_Colors.svg";
 import React, { useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 
-import userController from "helpers/controllers/userController";
+import api from "helpers/api";
+import userActions from "store/actions/userActions";
+
 export default function LoginPage({ location, history }) {
   const user = useSelector((state) => state.user.value);
   const dispatch = useDispatch();
 
-  const [username, setUsername] = useState("a");
-  const [password, setPassword] = useState("");
+  async function handleLogin() {
+    const res = await api.login({ body: { username, password } });
+    if (res.ok){
+      const resJSON = await res.json()
+      dispatch(userActions.login({...resJSON, isLogged:true}));
+      localStorage.setItem("authToken", resJSON.authToken);
+      history.push("/");
+    }
+  }
 
-  // console.log("location : ", location);
-  console.log("user : ", user);
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
 
   return (
     <>
@@ -54,7 +63,7 @@ export default function LoginPage({ location, history }) {
                         placeholder="Username"
                         aria-label="Username"
                         aria-describedby="basic-addon1"
-                        onChange={(event)=>setUsername(event.target.value)}
+                        onChange={(event) => setUsername(event.target.value)}
                       />
                     </div>
                     <div className="input-group mb-3">
@@ -76,7 +85,7 @@ export default function LoginPage({ location, history }) {
                         placeholder="Password"
                         aria-label="Password"
                         aria-describedby="basic-addon2"
-                        onChange={(event)=>setPassword(event.target.value)}
+                        onChange={(event) => setPassword(event.target.value)}
                       />
                     </div>
                     <div className="form-check d-flex mb-2">
@@ -95,11 +104,7 @@ export default function LoginPage({ location, history }) {
                       </label>
                     </div>
                     <button
-                      onClick={userController.login({
-                        dispatch,
-                        history,
-                        body: { username, password },
-                      })}
+                      onClick={handleLogin}
                       type="submit"
                       className="btn btn-dark blue mb-2 col-12"
                     >

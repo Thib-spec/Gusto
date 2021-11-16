@@ -5,7 +5,8 @@ const requester = (thiss)=>{
         body:null, 
     }) => {
         try {
-          const response = await fetch(thiss.url+path, {
+          // const response = await fetch(thiss.url+path, {
+          return await fetch(thiss.url+path, {
             method : method,
             headers : {
               'Accept': 'application/json',
@@ -14,8 +15,9 @@ const requester = (thiss)=>{
             },
             body : body instanceof Object ? JSON.stringify(body) : null
           })
+          // console.log("response : ", response)
           // return (await response.json())
-          return ("response : ", response)
+          // return response
         } catch (err) {
           return {
               success: 0,

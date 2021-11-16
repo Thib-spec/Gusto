@@ -1,6 +1,10 @@
 import { ip } from "./config.js";
 import requester from "./requester";
 
+import loginData from "./fakeData/login";
+import logoutData from "./fakeData/logout";
+import getInfoData from "./fakeData/getInfo";
+
 const API = function ({ url, authToken, fake }) {
   this.fake = fake == undefined ? true : fake;
   this.url = this.url
@@ -8,31 +12,36 @@ const API = function ({ url, authToken, fake }) {
     : this.fake
     ? "https://jsonplaceholder.typicode.com"
     : ip;
-    console.log("url : ", this.url)
+  console.log("url : ", this.url);
   this.authToken = authToken ? authToken : null;
   this.requester = requester(this);
 };
 
 // ---------- auth ---------- //
 
-API.prototype.login = async function ({ body, err } = {}) {
-  if (this.fake & !err) return require("helpers/api/fakeData/login.json");
-  else if (this.fake & err)
-    return require("helpers/api/fakeData/login_err.json");
-  const res = await this.requester({ method: "POST", path: "/", body });
-  return res;
+API.prototype.login = async function ({ body } = {}) {
+  if (this.fake) return loginData;
+  // const res = await this.requester({
+  return await this.requester({
+    method: "POST",
+    path: "/auth/login",
+    body,
+  });
+  // return res;
 };
 
 API.prototype.logout = async function ({ err } = {}) {
-  if (this.fake & !err) return require("helpers/api/fakeData/logout.json");
-  else if (this.fake & err)
-    return require("helpers/api/fakeData/logout_err.json");
-  const res = await this.requester({ method: "GET", path: "/" });
+  if (this.fake) return logoutData;
+  // if (this.fake & !err) return require("helpers/api/fakeData/logout.json");
+  // else if (this.fake & err)
+  //   return require("helpers/api/fakeData/logout_err.json");
+  const res = await this.requester({ method: "GET", path: "/auth/logout" });
   return res;
 };
 
-API.prototype.getMyInfo = async function ({ body } = {}) {
-  const res = await this.requester({ method: "GET", path: "/auth/me", body });
+API.prototype.getInfo = async function ({ body } = {}) {
+  if (this.fake) return getInfoData;
+  const res = await this.requester({ method: "GET", path: "/me/info", body });
   return res;
 };
 
@@ -77,4 +86,4 @@ API.prototype.deleteOneUser = async function ({ id }) {
   return res;
 };
 
-export default API;
+export default new API({ fake: true });
