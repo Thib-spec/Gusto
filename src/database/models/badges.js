@@ -15,10 +15,10 @@ class Badges extends Model{
             foreignKey: 'fk_Id_user'
         })
         
-        // Badges.belongsToMany(Fridges, {
-        //   through: "fridges_badges",
-        //   foreignKey: "Id_badge",
-        // });
+        Badges.belongsToMany(models.Fridges,{       
+            through:"fridges_badges",
+            foreignKey:"fk_Id_fridge"
+        })
     }
 }
 

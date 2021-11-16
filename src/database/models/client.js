@@ -3,6 +3,18 @@ const { Model, DataTypes} = require("sequelize");
 
 module.exports = (sequelize) => {
     class Client extends Model{
+        static associate(models){
+        
+            Client.belongsToMany(models.Categories,{
+                through: 'clients_categories',
+                foreignKey: 'fk_Id_category'               
+            })
+
+            Client.belongsToMany(models.Fridges,{      
+                through:"clients_fridges",
+                foreignKey:"fk_Id_fridge"
+            })
+         }
     }
 
 Client.init({
