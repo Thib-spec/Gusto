@@ -12,7 +12,6 @@ const API = function ({ url, authToken, fake }) {
     : this.fake
     ? "https://jsonplaceholder.typicode.com"
     : ip;
-  console.log("url : ", this.url);
   this.authToken = authToken ? authToken : null;
   this.requester = requester(this);
 };
@@ -21,13 +20,11 @@ const API = function ({ url, authToken, fake }) {
 
 API.prototype.login = async function ({ body } = {}) {
   if (this.fake) return loginData;
-  // const res = await this.requester({
   return await this.requester({
     method: "POST",
     path: "/auth/login",
     body,
   });
-  // return res;
 };
 
 API.prototype.logout = async function ({ err } = {}) {

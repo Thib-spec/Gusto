@@ -22,36 +22,29 @@ import { useSelector, useDispatch } from "react-redux";
 import api from "helpers/api";
 import userActions from "store/actions/userActions";
 
-function AdminRouter({history}) {
+function AdminRouter({ history }) {
   const user = useSelector((state) => state.user.value);
   const dispatch = useDispatch();
 
-  useEffect( ()=>{
-    if (localStorage.getItem("authToken")){
+  const authToken = localStorage.getItem("authToken")
+
+  useEffect(() => {
+    if (authToken) {
       getUserInfoAndDispatch();
     }
-  },[])
-
-  // if (!user.email) {
-  //   getUserInfoAndDispatch();
-  // }
+  }, []);
 
   async function getUserInfoAndDispatch() {
     const res = await api.getInfo();
-    console.log("res : ", res);
-    dispatch(userActions.update({...(await res.json()), isLogged:true}));
+    dispatch(userActions.update({ ...(await res.json()), isLogged: true }));
   }
 
-  console.log("user : ", user);
-
-  const authToken = localStorage.getItem("authToken");
-
-  console.log("authToken : ", authToken);
+  // console.log("user : ", user);
 
   const location = useLocation();
-  const searchParams = new URLSearchParams(location.search);
+  // const searchParams = new URLSearchParams(location.search);
 
-  if (authToken)
+  if (authToken){
     return (
       <>
         <Header />
@@ -66,7 +59,8 @@ function AdminRouter({history}) {
         </Switch>
       </>
     );
-  else
+  }
+  else{
     return (
       <>
         <Switch>
@@ -85,6 +79,7 @@ function AdminRouter({history}) {
         </Switch>
       </>
     );
+  }
 }
 
 export default AdminRouter;
