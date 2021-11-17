@@ -2,6 +2,16 @@ const JwtStrategy = require('passport-jwt').Strategy,
     ExtractJwt = require('passport-jwt').ExtractJwt,
     userModel=require('../../database/models').User
 
+	async function isAuthTokenPayloadValid(user,payload) {
+		try {
+		  const sessions = await user.getSessions({where:{Id_session:payload.sessionId}})
+		  if (sessions.length) return true
+		  else return false
+		} catch (err) {
+		  throw err
+		}
+	  }
+
 module.exports = ({passport, models})=>{
 
     let opts = {
@@ -10,6 +20,7 @@ module.exports = ({passport, models})=>{
     }
 
 	passport.use(new JwtStrategy(opts, async (jwtPayload, done) =>{
+		console.log("test")
 		/*
 		jwt de la forme :
 		{
@@ -32,13 +43,14 @@ module.exports = ({passport, models})=>{
 			voir http://www.passportjs.org/packages/passport-jwt/ pur plus d'info
 
 		*/
+		 
 
 		try{
-			const user= await models.User.findOne({where:{id: jwtPayload.sub}})
+			const user= await models.Users.findOne({where:{Id_user: jwtPayload.sub}})
 			if (user) {
-				const isValid = await user.isAuthTokenPayloadValid(jwtPayload)
+				const isValid = await isAuthTokenPayloadValid(user,jwtPayload)
 				if (isValid){
-					const session = (await user.getSessions({where:{id:jwtPayload.sessionId}}))[0]
+					const session = (await user.getSessions({where:{Id_session:jwtPayload.sessionId}}))[0]
 					if (session){
 						user.session = session
 						return done(null,user)

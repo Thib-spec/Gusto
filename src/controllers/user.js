@@ -1,4 +1,6 @@
+const { session } = require("passport");
 const Model = require("../database/models");
+const security = require("../helpers/security")
 // const Model = {
 //     Users: require("../database/models/users")(),           // config pour que l'ide propose les fonctions possibles
 // }
@@ -62,6 +64,19 @@ const Model = require("../database/models");
 exports.editUser = (req,res) => {
     const { firstname, lastname, email, password, image,user_language} = req.body;
 
+    Model.Users.findOne({
+        where: {
+            Id_user: req.params.id
+        }
+    })
+    .then((user) => {
+        if (!user) {
+            return res.status(400).json({
+                message: 'User not found',
+            });
+        }
+    })
+
     Model.Users.update({
                 firstname: firstname,
                 lastname: lastname,
@@ -69,15 +84,12 @@ exports.editUser = (req,res) => {
                 password: password,
                 image:image,
                 user_language:user_language
-            },
-            {
-                where:{Id_user: req.params.id}
-                
-            })
+            }
     
     .then(res.send("Modification apply"))
     .catch(error => res.status(400).json(error))
-}
+)}
+        
 
 exports.deleteUser = (req,res) => {
     
@@ -103,6 +115,66 @@ exports.deleteUser = (req,res) => {
             )
             .catch(error => res.status(400).json(error))
         }
+
+
+
+        exports.login = (req,res) => {
+            const { email,password} = req.body
+
+            Model.Users.findOne({
+
+                where:{
+                    email:email,
+                }
+            }).then((user) => {
+                console.log
+                if (!user) {
+                    console.log("azerty")
+                    const test = security.bcryptCompareSync(password, "fsdgfs")
+                    console.log(test)
+                    return res.status(400).json({
+                        message: 'User not found',
+                    })
+                }
+                
+                else if (security.bcryptCompareSync(password, user.password)){
+                    console.log("ok")
+                    user.createSession()
+                    .then(session=> {
+                        console.log(session)
+                        const token = security.jwtGenTokenSync({
+                        sub: user.Id_user,
+                        sessionId:session.Id_session,
+                        expiresIn: 3600, // en seconde
+                        })
+
+                        res.status(200).json({user,token})
+                        res.send("complete")
+                    })
+                    .catch(error => console.log(error))
+                }
+
+                else{
+                    console.log("ok1")
+                    console.log(error)
+                }
+            })
+            .catch(error => console.log(error))
+               
+        }
+
+
+        exports.logout = (req,res) =>{
+            console.log("os")
+            const user = req.user
+            const sessions = user.session
+            sessions.destroy()
+            .then(vgh => res.send("OK"))
+            .catch(error => console.log(error))
+        }
+
+
+
 
 
 
@@ -141,7 +213,7 @@ exports.deleteUser = (req,res) => {
 //   Users.prototype.isAuthTokenPayloadValid = async function (payload) {
 //     try {
 //       const sessions = await this.getSessions({where:{id:payload.sessionId}})
-//       if (sessions.length) return true
+//       if (sesnsios.length) return true
 //       else return false
 //     } catch (err) {
 //       throw err

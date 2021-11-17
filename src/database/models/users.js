@@ -8,6 +8,10 @@ static associate(models){
     Users.belongsTo(models.Client, {
     foreignKey: 'fk_Id_client'
   }) 
+  Users.hasMany(models.Sessions, {
+    foreignKey: 'fk_Id_user',
+    sourceKey:"Id_user"
+  }) 
 
 }
 
