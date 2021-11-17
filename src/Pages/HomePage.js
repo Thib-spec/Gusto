@@ -3,7 +3,8 @@ import { useHistory } from 'react-router';
 import React, { Component }  from 'react'
 
 
-
+import "CSS/test.css"
+import 'react-dropdown/style.css';
 
 export default function HomePage(){
 
@@ -20,10 +21,12 @@ export default function HomePage(){
     }
     
 
-
+    
     return(
-       <div>
-           <CheckboxForm/>
+       <div className="">
+           
+
+            
        </div>
     )
 }
