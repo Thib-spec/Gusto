@@ -59,6 +59,53 @@ const Model = require("../database/models");
 }
 
 
+exports.editUser = (req,res) => {
+    const { firstname, lastname, email, password, image,user_language} = req.body;
+
+    Model.Users.update({
+                firstname: firstname,
+                lastname: lastname,
+                email: email,
+                password: password,
+                image:image,
+                user_language:user_language
+            },
+            {
+                where:{Id_user: req.params.id}
+                
+            })
+    
+    .then(res.send("Modification apply"))
+    .catch(error => res.status(400).json(error))
+}
+
+exports.deleteUser = (req,res) => {
+    
+            Model.Users.findOne({
+                where: {
+                    Id_user: req.params.id
+                }
+            })
+            .then((user) => {
+                if (!user) {
+                    return res.status(400).json({
+                        message: 'User not found',
+                    });
+                }
+            Model.Users
+                    .destroy({
+                        where: {
+                            Id_user: req.params.id
+                        }
+                    }).then(() => res.send(`User with id : ${req.params.id} has been deleted`))
+                }
+
+            )
+            .catch(error => res.status(400).json(error))
+        }
+
+
+
 //   /**
 //    * validate le password de l'user
 //    * @param {string} password
