@@ -1,32 +1,106 @@
 import "CSS/refrigerateursPage.css";
-import "CSS/colors.css";
+// import "CSS/colors.css";
 import React, { Component, useState } from "react";
+import Page from "Components/Page";
+
 
 export default function RefrigerateursPage() {
-  const [click, setClicked] = useState(false);
-
-  function handleClick() {
-    if (click === true) {
-      setClicked(false);
-    } else {
-      setClicked(true);
-    }
-  }
+  
   return (
     <>
-      <div className="container-fluid vh-100 grey">
-        <div className="container-fluid h-100 py-5 red">
-          <div className="row h-100 justify-content-center d-flex blue">
-            <div className="col-12 col-md-11 col-lg-10 col-xl-9 yellow">
-              <div className="frigoCard">
-                <div className="row justify-content-center d-flex blueviolet">
-                  <div className="green col-8">Salut</div>
-                </div>
+      <Page>
+        <div className={`row my-1 ${global.colorFull ? "green" : ""}`}>
+          <div className={`col-11 ${global.colorFull ? "red" : ""}`}>a</div>
+        </div>
+        <div className={`row my-1 ${global.colorFull ? "green" : ""}`}>
+          <div className={`col-11 ${global.colorFull ? "red" : ""}`}>a</div>
+        </div>
+
+        <div class="accordion accordion-flush" id="accordionFlushExample">
+          <div class="accordion-item">
+            <h2 class="accordion-header" id="flush-headingOne">
+              <button
+                class="accordion-button collapsed"
+                type="button"
+                data-bs-toggle="collapse"
+                data-bs-target="#flush-collapseOne"
+                aria-expanded="false"
+                aria-controls="flush-collapseOne"
+              >
+                Accordion Item #1
+              </button>
+            </h2>
+            <div
+              id="flush-collapseOne"
+              class="accordion-collapse collapse"
+              aria-labelledby="flush-headingOne"
+              data-bs-parent="#accordionFlushExample"
+            >
+              <div class="accordion-body">
+                Placeholder content for this accordion, which is intended to
+                demonstrate the <code>.accordion-flush</code> class. This is the
+                first item's accordion body.
+              </div>
+            </div>
+          </div>
+          <div class="accordion-item">
+            <h2 class="accordion-header" id="flush-headingTwo">
+              <button
+                class="accordion-button collapsed"
+                type="button"
+                data-bs-toggle="collapse"
+                data-bs-target="#flush-collapseTwo"
+                aria-expanded="false"
+                aria-controls="flush-collapseTwo"
+              >
+                Accordion Item #2
+              </button>
+            </h2>
+            <div
+              id="flush-collapseTwo"
+              class="accordion-collapse collapse"
+              aria-labelledby="flush-headingTwo"
+              data-bs-parent="#accordionFlushExample"
+            >
+              <div class="accordion-body">
+                Placeholder content for this accordion, which is intended to
+                demonstrate the <code>.accordion-flush</code> class. This is the
+                second item's accordion body. Let's imagine this being filled
+                with some actual content.
+              </div>
+            </div>
+          </div>
+          <div class="accordion-item">
+            <h2 class="accordion-header" id="flush-headingThree">
+              <button
+                class="accordion-button collapsed"
+                type="button"
+                data-bs-toggle="collapse"
+                data-bs-target="#flush-collapseThree"
+                aria-expanded="false"
+                aria-controls="flush-collapseThree"
+              >
+                Accordion Item #3
+              </button>
+            </h2>
+            <div
+              id="flush-collapseThree"
+              class="accordion-collapse collapse"
+              aria-labelledby="flush-headingThree"
+              data-bs-parent="#accordionFlushExample"
+            >
+              <div class="accordion-body">
+                Placeholder content for this accordion, which is intended to
+                demonstrate the <code>.accordion-flush</code> class. This is the
+                third item's accordion body. Nothing more exciting happening
+                here in terms of content, but just filling up the space to make
+                it look, at least at first glance, a bit more representative of
+                how this would look in a real-world application.
               </div>
             </div>
           </div>
         </div>
-      </div>
+      </Page>
     </>
   );
 }
