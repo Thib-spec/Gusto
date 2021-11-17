@@ -11,7 +11,8 @@ const requester = (thiss)=>{
             headers : {
               'Accept': 'application/json',
               'Content-Type': 'application/json',
-              'Authorization' : thiss.authToken instanceof String ? thiss.authToken : null,
+              // 'Authorization' : thiss.authToken instanceof String ? thiss.authToken : null,
+              'Authorization' : localStorage.getItem("authToken"),
             },
             body : body instanceof Object ? JSON.stringify(body) : null
           })
