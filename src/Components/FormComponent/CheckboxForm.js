@@ -1,4 +1,5 @@
 import "CSS/FormComponent.scss"
+import React, { Component, useState }  from 'react'
 
 export default function CheckboxForm(){
   return(

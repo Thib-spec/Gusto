@@ -1,5 +1,4 @@
 import "CSS/categories.scss"
-import { useState } from "react"
 import DATACatégories from "../Data/categories"
 import DATAProducts from "../Data/products"
 import dot from "Images/dots.png"
@@ -7,6 +6,7 @@ import InputForm from "Components/FormComponent/InputForm"
 import imgcategorie from "Images/imgcategorie.svg"
 
 
+import React, { Component, useState }  from 'react'
 export default function CategoriesPage(){
     
    const[click,setClicked]= useState(false);

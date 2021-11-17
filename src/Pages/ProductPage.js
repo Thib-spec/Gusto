@@ -4,7 +4,9 @@ import UploadForm from "Components/FormComponent/UploadForm"
 import SelectForm from "Components/FormComponent/SelectForm"
 import InputForm from "Components/FormComponent/InputForm"
 import CheckboxForm from "Components/FormComponent/CheckboxForm"
-import { useState } from "react"
+// import { useState } from "react"
+import React, { Component, useState }  from 'react'
+
 
 
 export default function ProductsPage(){

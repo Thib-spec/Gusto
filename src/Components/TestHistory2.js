@@ -1,5 +1,5 @@
 import { useHistory } from 'react-router';
-
+import React, { Component }  from 'react'
 
 
 export default function Test2(){
