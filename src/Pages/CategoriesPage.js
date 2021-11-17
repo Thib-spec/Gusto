@@ -1,5 +1,4 @@
 import "CSS/categories.scss"
-import { useState } from "react"
 import DATACatégories from "../Data/categories"
 import DATAProducts from "../Data/products"
 import dot from "Images/dots.png"
