@@ -27,10 +27,14 @@ export default function LoginPage({ location, history }) {
 
   return (
     <>
-      <div className="container-fluid vh-100 grey">
+      {/* <div className="container-fluid vh-100 grey">
         <div className="container h-100 py-5">
           <div className="row h-100 justify-content-center d-flex">
-            <div className="col-12 col-md-9 col-lg-8 col-xl-7">
+            <div className="col-12 col-md-9 col-lg-8 col-xl-7"> */}
+      <div className="container-fluid vh-100 grey">
+        <div className="container h-100 py-5 red">
+          <div className="row h-100 justify-content-center d-flex blue">
+            <div className="col-12 col-md-9 col-lg-8 col-xl-7 yellow">
               <div className="card h-100">
                 <div className="card-body p-5 text-center">
                   <div className="">

@@ -41,11 +41,11 @@ export default function Header(){
       history.push("/");
     }
     function handleProducts(){
-        history.push("/Products");
+        history.push("/products");
         setpath("Produits")
     }
     function handleCategories(){
-        history.push("/Categories");
+        history.push("/categories");
         setpath("Catégories")
     }
     function handleAccueil(){
@@ -53,7 +53,7 @@ export default function Header(){
         setpath("Accueil")
     }
     function handleFrigo(){
-        history.push("/");
+        history.push("/refrigerateurs");
         setpath("Réfrigérateurs")
     }
     function handleMenus(){
