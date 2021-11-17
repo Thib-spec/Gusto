@@ -4,6 +4,8 @@ import DATAProducts from "../Data/products"
 import dot from "Images/dots.png"
 import InputForm from "Components/FormComponent/InputForm"
 import imgcategorie from "Images/imgcategorie.svg"
+import fold from "../Images/fold.svg"
+import unfold from "../Images/unfold.svg"
 
 
 import React, { Component, useState }  from 'react'
@@ -25,11 +27,19 @@ export default function CategoriesPage(){
             <div className="categories-list">
                 {DATACatégories.map((categories) => (
                 <div className="categories-list-element">
-                    <div className="categories-list-element-title">
-                        <div>{categories.name}</div>
-                        <div className="categories-dot" onClick={handleClick}><img width="100%" src={dot} alt=""/></div>
+                    {click?
+                        <div className="categories-list-element-title-fold" onClick={handleClick}>
+                            <div>{categories.name}</div>
+                            <div className="categories-dot" ><img width="100%" src={fold} alt=""/></div>
+                        </div>
+                        :
+                        <div className="categories-list-element-title-unfold" onClick={handleClick}>
+                            <div>{categories.name}</div>
+                            <div className="categories-dot" ><img width="100%" src={unfold} alt=""/></div>
+                        </div>
+                        
+                        }
                        
-                    </div>
                     {
                         click?
                             
@@ -38,6 +48,10 @@ export default function CategoriesPage(){
                                     <img src={imgcategorie} alt=""/>
                                     <textarea type="text" className=" categories-list-element-sub-description-input"  placeholder="Description de la catégorie" value={categories.description}/>
                                     
+                                </div>
+                                <div class="categories-list-element-sub-buttons ">
+                                    <button type="button" className="categories-list-element-sub-buttons-element btn btn-info">Enregistrer</button>
+                                    <button type="button" className="categories-list-element-sub-buttons-element btn btn-danger">Supprimer</button>
                                 </div>
                             </div>
                             
