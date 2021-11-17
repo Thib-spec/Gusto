@@ -1,5 +1,7 @@
 import CheckboxForm from 'Components/FormComponent/CheckboxForm';
 import { useHistory } from 'react-router';
+import React, { Component }  from 'react'
+
 
 import "CSS/test.css"
 import 'react-dropdown/style.css';

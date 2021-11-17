@@ -7,6 +7,9 @@ const initValue = {
   pp_url: undefined,
   language: undefined,
   authToken: undefined,
+  client: undefined,
+  level: undefined,
+  isLogged: false
 };
 export const userSlice = createSlice({
   name: "user",
@@ -19,6 +22,9 @@ export const userSlice = createSlice({
     },
     logout: (state) => {
       state.value = { ...initValue };
+    },
+    update: (state, action) => {
+      state.value = { ...state.value, ...action.payload };
     },
   },
 });

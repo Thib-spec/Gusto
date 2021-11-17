@@ -1,5 +1,7 @@
 import Test1 from "Components/TestHistory";
 import Test2 from "Components/TestHistory2";
+import React, { Component, useState, useEffect } from "react";
+
 import {
   BrowserRouter as Router,
   Switch,
@@ -17,32 +19,38 @@ import NotFoundPage from "Pages/NotFoundPage";
 import TestData from "Components/TestData";
 import Header from "Components/Header";
 import { useSelector, useDispatch } from "react-redux";
+import api from "helpers/api";
+import userActions from "store/actions/userActions";
 
-
-function AdminRouter() {
+function AdminRouter({ history }) {
   const user = useSelector((state) => state.user.value);
-  console.log("user : ", user)
-  const authToken = user.authToken
+  const dispatch = useDispatch();
 
-  // const connected = false;
-  // const authToken =
-    // localStorage.getItem("authToken") & connected
-    //   ? localStorage.getItem("authToken")
-    //   : connected
-    //   ? "vjsbhjvbk"
-    //   : undefined;
-  console.log("authToken : ",authToken);
+  const authToken = localStorage.getItem("authToken")
+
+  useEffect(() => {
+    if (authToken) {
+      getUserInfoAndDispatch();
+    }
+  }, []);
+
+  async function getUserInfoAndDispatch() {
+    const res = await api.getInfo();
+    dispatch(userActions.update({ ...(await res.json()), isLogged: true }));
+  }
+
+  // console.log("user : ", user);
 
   const location = useLocation();
-  const searchParams = new URLSearchParams(location.search);
+  // const searchParams = new URLSearchParams(location.search);
 
-  if (authToken)
+  if (authToken){
     return (
       <>
         <Header />
         <Switch>
           <Route exact path="/" component={HomePage} />
-          <Route path="/categories" component={CategoriesPage}  />
+          <Route path="/categories" component={CategoriesPage} />
           <Route path="/products" component={ProductsPage} />
           <Route path="/testHistory1" component={Test1} />
           <Route path="/testHistory2" component={Test2} />
@@ -51,7 +59,8 @@ function AdminRouter() {
         </Switch>
       </>
     );
-  else
+  }
+  else{
     return (
       <>
         <Switch>
@@ -70,6 +79,7 @@ function AdminRouter() {
         </Switch>
       </>
     );
+  }
 }
 
 export default AdminRouter;

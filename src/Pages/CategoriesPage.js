@@ -7,6 +7,7 @@ import InputForm from "Components/FormComponent/InputForm"
 import imgcategorie from "Images/imgcategorie.svg"
 
 
+import React, { Component, useState }  from 'react'
 export default function CategoriesPage(){
     
    const[click,setClicked]= useState(false);
