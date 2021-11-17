@@ -2,7 +2,8 @@
     background-color: gainsboro;
     display: flex;
     flex-direction: row;
-    justify-content: space-evenly;
+    justify-content: center;
+    
     
 }
 
@@ -42,10 +43,13 @@
 }
 
 .categories-list-element-sub-description{
-    padding-left: 5%;
-    padding-right: 5%;
-    padding-top: 2%;
-    padding-bottom: 2%;
+    
+    padding-top: 1%;
+    padding-bottom: 1%;
+    display: flex;
+    flex-direction: row;
+    
+   
 }
 .categories-dot{
     display: flex;
@@ -53,4 +57,36 @@
     justify-content: center;
     width:3%
 
+}
+
+.categories-dot-menu-container{
+    display: flex;
+    flex-direction: row;
+    justify-content: end;
+}
+.categories-dot-menu{
+    background-color: brown;
+    position: absolute;
+    display: flex;
+    flex-direction: column;
+    width: 100px; 
+
+    
+}
+
+.categories-dot-menu-element{
+    padding: 5%;
+    padding-left: 10%;
+    padding-right: 10%;
+    color: white;
+    &:hover{
+        background-color: white;
+        color: black;
+        cursor: pointer;
+    }
+}
+
+.categories-list-element-sub-description-input{
+   height: 100px;
+   width: 90%;
 }
