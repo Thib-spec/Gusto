@@ -1,11 +1,20 @@
-const { Model, DataTypes } = require("sequelize");
-const { Client } = require("./Users");
+const {Model, DataTypes} = require('sequelize');
 
-class Categories extends Model {
+module.exports = (sequelize) => {
 
+class Categories extends Model{
+
+    static associate(models){
+        
+       Categories.belongsToMany(models.Client,{
+           through: 'clients_categories',
+           foreignKey: 'fk_Id_client'               // à tester
+       })
+    }
 }
 
 Categories.init({
+
     Id_categories: {
         type: DataTypes.INTEGER,
         primaryKey: true,
@@ -13,30 +22,29 @@ Categories.init({
         allowNull: false
     },
     Label: {
-        type: DataTypes.CHAR,
+        type: DataTypes.STRING,
         allowNull: false
     },
     Image: {
-        type: DataTypes.CHAR(150),
+        type: DataTypes.STRING(150),
         allowNull: false
     },
     Description: {
-        type: DataTypes.CHAR(150),
+        type: DataTypes.STRING(150),
         allowNull: false
     }
+
 }, {
     sequelize,
-    modelName: 'Categories'
+    modelName: 'Categories',
+    timestamps: true,
+    createdAt: true,
+    updatedAt: true
 })
 
-Categories.belongsToMany(Client, {
-    through: "clients_categories",
-    foreignKey: "Id_category",
-  });
+return Categories
 
-Client.belongsToMany(Categories, {
-  through: "clients_categories",
-  foreignKey: "Id_client",
-});
+}
 
-module.exports = Categories
+
+

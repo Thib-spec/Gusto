@@ -1,31 +1,42 @@
-const { Model, DataTypes } = require("sequelize");
+const {DataTypes, Model } = require("sequelize");
 
-class Tags extends Model {
+module.exports = (sequelize) => {
+    class Tags extends Model{
+        static associate(models){
 
-}
+            Tags.belongsTo(models.Products, {
+                foreignKey: 'fk_Id_product'
+            })
 
-Tags.init({
-    Id_tags: {
+            Tags.belongsToMany(models.Deliveries,{
+                through:"tags_deliveries",
+                foreignKey:"fk_Id_delivery"
+            })
+
+            Tags.belongsToMany(models.Sales,{       // liaison belongstomany avec sales
+                through:"tags_sales",
+                foreignKey:"fk_Id_sale"
+            })
+        }
+    }
+
+    Tags.init({
+    Id_tag: {
         type: DataTypes.INTEGER,
         primaryKey: true,
         autoIncrement: true,
         allowNull: false
     },
-    fk_Id_product:{
-        type: DataTypes.INTEGER,
-        allowNull = false,
-        references:{
-            model : 'Products',
-            key: 'Id_product'
-        }
-    }
+    
 }, {
     sequelize,
-    modelName: 'Tags'
+    modelName: 'Tags',
+    timestamps: true,
+    createdAt: true,
+    updatedAt: true
 })
 
-Tags.Products = Tags.belongsTo(this.Products, {
-    foreignKey: 'fk_Id_product'
-})
+return Tags
+}
 
-module.exports = Tags
+

@@ -1,7 +1,30 @@
-const { Model, DataTypes } = require("sequelize");
-class Deliveries extends Model {
+const { Model, DataTypes} = require("sequelize");
 
-}
+module.exports = (sequelize) => {
+    class Deliveries extends Model{
+        static associate(models){
+        
+            Deliveries.belongsTo(models.Users, {
+                foreignKey: 'fk_Id_user'
+            })
+            Deliveries.belongsTo(models.Fridges, {
+                foreignKey: 'fk_Id_fridge'
+            })
+            
+            Deliveries.belongsToMany(models.Tags, {     
+                through: "tags_deliveries",
+                foreignKey: "fk_Id_tag",
+            });
+            
+       
+            Deliveries.belongsToMany(models.Products, { 
+                through: "products_deliveries",
+                foreignKey: "fk_Id_product",
+            });
+            
+        }
+    }
+
 Deliveries.init({
     Id_delivery: {
         type: DataTypes.INTEGER,
@@ -10,55 +33,17 @@ Deliveries.init({
         allowNull: false
     },
     Delivery_timestamp: {
-        type: DataTypes.CHAR,
+        type: DataTypes.STRING,
         allowNull: false
     },
-    fk_Id_user:{
-        type: DataTypes.INTEGER,
-        allowNull = false,
-        references:{
-            model : 'Deliveries',
-            key: 'Id_delivery'
-        }
-    },
-    fk_Id_fridge:{
-        type: DataTypes.INTEGER,
-        allowNull = false,
-        references:{
-            model : 'Deliveries',
-            key: 'Id_delivery'
-        }
-    }
+   
 }, {
     sequelize,
-    modelName: 'Deliveries'
+    modelName: 'Deliveries',
+    timestamps: true,
+    createdAt: true,
+    updatedAt: true
 })
 
-Deliveries.Users = Deliveries.belongsTo(Users, {
-    foreignKey: 'fk_Id_user'
-})
-Deliveries.Fridges = Deliveries.belongsTo(Fridges, {
-    foreignKey: 'fk_Id_fridge'
-})
-
-Deliveries.belongsToMany(Tags, {
-    through: "tags_deliveries",
-    foreignKey: "Id_tag",
-});
-
-Tags.belongsToMany(Deliveries, {
-  through: "clients_categories",
-  foreignKey: "Id_delivery",
-});
-
-Deliveries.belongsToMany(Products, {
-    through: "products_deliveries",
-    foreignKey: "Id_product",
-});
-
-Products.belongsToMany(Deliveries, {
-    through: "products_deliveries",
-    foreignKey: "Id_delivery",
-});
-
-module.exports = Deliveries
+return Deliveries
+}

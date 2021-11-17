@@ -13,6 +13,7 @@ const db = {};
 const sequelizeOptions = {
   logging: false // enlève les prints des requêtes sql dans la console
 }
+
 const sequelize = new Sequelize({
   host: config.host,
   port: config.port,
@@ -51,7 +52,7 @@ db.Sequelize = Sequelize;
 let syncOptions
 if (env=="development"){
   syncOptions = {
-    alter: true, // si true : change la db en fonctions d'ajout de key dans les schemas des models
+    alter: false, // si true : change la db en fonctions d'ajout de key dans les schemas des models
     force: false // si true : drop the tables et recrée avec les nouveaux schemas des models
   }
 }

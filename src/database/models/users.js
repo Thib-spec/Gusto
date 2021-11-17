@@ -1,27 +1,26 @@
-const { Model, DataTypes } = require("sequelize");
+const {DataTypes, Model } = require("sequelize");
 const security = require('../../helpers/security');
-const Levels = require("./levels");
 
-class Users extends Model {
+module.exports = (sequelize) =>{
+class Users extends Model{
+
+static associate(models){
+    Users.belongsTo(models.Client, {
+    foreignKey: 'fk_Id_client'
+  }) 
+
+}
+
 }
 
 Users.init({
-    fk_Id_client:{
-        type: DataTypes.INTEGER,
-        allowNull = false,
-        references:{
-            model : 'Client',
-            key: 'Id_client'
-        }
+    Id_user:{
+      type:DataTypes.INTEGER,
+      allowNull:false,
+      primaryKey:true,
+      autoIncrement:true
     },
-    fk_Id_level:{
-        type: DataTypes.INTEGER,
-        allowNull = false,
-        references:{
-            model : 'Levels',
-            key: 'Id_level'
-        }
-    },
+    
     password: {
         type: DataTypes.STRING,
         set(v){
@@ -51,74 +50,71 @@ Users.init({
 },
     {
         sequelize,
-        modelName: 'Users'
+        modelName: 'Users',
+        timestamps: true,
+        createdAt: true,
+        updatedAt: true
     })
 
-    Users.Client = Users.belongsTo(Client, {
-        foreignKey: 'fk_Id_client'
-    })
+    return Users
 
-    Users.Levels = Users.belongsTo(Levels, {
-        foreignKey: 'fk_Id_level'
-    })
-
-module.exports = Users
+  }
 
  
-  // classMethod
+//   // classMethod
 
-  /**
-   * recherche user par username
-   * @param {string} username
-   * @returns {user}
-   */
-  User.findOneByUsername = function(username){
-    return this.findOne({
-      where:{username}
-    })
- }
+//   /**
+//    * recherche user par username
+//    * @param {string} username
+//    * @returns {user}
+//    */
+//   Users.findOneByUsername = function(username){
+//     return this.findOne({
+//       where:{username}
+//     })
+//  }
 
-  //instanceMethod
+//   //instanceMethod
 
-  /**
-   * validate le password de l'user
-   * @param {string} password
-   * @returns {Boolean}
-   */
-  User.prototype.isPasswordValid = function (password){
-    return security.bcryptCompareSync(password, this.password)
-  }
+//   /**
+//    * validate le password de l'user
+//    * @param {string} password
+//    * @returns {Boolean}
+//    */
+//   Users.prototype.isPasswordValid = function (password){
+//     return security.bcryptCompareSync(password, this.password)
+//   }
 
-  /**
-  * génère authToken en fonction de l'user
-  * 1. cree une session et la lie avec un jwt
-  * @returns {Promise<jwtToken>}
-  */
-  User.prototype.genAuthToken = async function () {
-    try {
-      const session = await this.createSession()
-      return security.jwtGenTokenSync({
-        sub: this.id,
-        sessionId:session.id,
-        expiresIn: 3600, // en seconde
-      })
-    } catch (err) {
-      throw err
-    }
-  }
+//   /**
+//   * génère authToken en fonction de l'user
+//   * 1. cree une session et la lie avec un jwt
+//   * @returns {Promise<jwtToken>}
+//   */
+//   Users.prototype.genAuthToken = async function () {
+//     try {
+//       const session = await this.createSession()
+//       return security.jwtGenTokenSync({
+//         sub: this.id,
+//         sessionId:session.id,
+//         expiresIn: 3600, // en seconde
+//       })
+//     } catch (err) {
+//       throw err
+//     }
+//   }
 
-  /**
-   * Valid un jwtPayload en fonction des sessions existantes
-   * @param {object} payload
-   * @returns {Boolean}
-   */
-  User.prototype.isAuthTokenPayloadValid = async function (payload) {
-    try {
-      const sessions = await this.getSessions({where:{id:payload.sessionId}})
-      if (sessions.length) return true
-      else return false
-    } catch (err) {
-      throw err
-    }
-  }
-  return User
+//   /**
+//    * Valid un jwtPayload en fonction des sessions existantes
+//    * @param {object} payload
+//    * @returns {Boolean}
+//    */
+//   Users.prototype.isAuthTokenPayloadValid = async function (payload) {
+//     try {
+//       const sessions = await this.getSessions({where:{id:payload.sessionId}})
+//       if (sessions.length) return true
+//       else return false
+//     } catch (err) {
+//       throw err
+//     }
+//   }
+//   return Users

@@ -1,11 +1,31 @@
-const { genSalt } = require("bcrypt");
-const { Model, DataTypes } = require("sequelize");
+const {DataTypes, Model } = require("sequelize");
 
-class Products extends Model {
+module.exports = (sequelize) => {
+    class Products extends Model{
+        static associate(models){
 
-}
+            Products.belongsTo(models.Categories, {
+                foreignKey: 'fk_Id_category'
+            })
+            
+            Products.belongsToMany(models.Sales, {   
+                through: "products_sales",
+                foreignKey: "fk_Id_sale",
+            });
+            
+            Products.belongsToMany(models.Deliveries, {
+                through: "products_deliveries",
+                foreignKey: "fk_Id_delivery",
+            });
 
-Products.init({
+            Products.belongsToMany(models.Menu, {      
+                through: "menus_products",
+                foreignKey: "fk_Id_menu",
+            });
+        }
+    }
+
+    Products.init({
     Id_product: {
         type: DataTypes.INTEGER,
         primaryKey: true,
@@ -13,7 +33,7 @@ Products.init({
         allowNull: false
     },
     Image: {
-        type: DataTypes.CHAR(150),
+        type: DataTypes.STRING(150),
         allowNull: false
     },
     Price: {
@@ -33,42 +53,25 @@ Products.init({
         allowNull: false
     },
     Label: {
-        type: DataTypes.CHAR,
+        type: DataTypes.STRING,
         allowNull: false
     },
     Ubd: {
-        type: DataTypes.CHAR,
+        type: DataTypes.STRING,
         allowNull: false
     },
     Description: {
-        type: DataTypes.CHAR(150),
+        type: DataTypes.STRING(150),
         allowNull: false
     },
-    fk_Id_category:{
-        type: DataTypes.INTEGER,
-        allowNull = false,
-        references:{
-            model : 'Categories',
-            key: 'Id_category'
-        }
-    }
+    
 }, {
     sequelize,
-    modelName: 'Products'
+    modelName: 'Products',
+    timestamps: true,
+    createdAt: true,
+    updatedAt: true
 })
 
-Products.Categories = Products.belongsTo(Categories, {
-    foreignKey: 'fk_Id_category'
-})
-
-Products.belongsToMany(Sales, {
-    through: "products_sales",
-    foreignKey: "Id_product",
-});
-
-Sales.belongsToMany(Products, {
-    through: "products_sales",
-    foreignKey: "Id_sale",
-});
-
-module.exports = Products
+return Products
+}

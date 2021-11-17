@@ -1,10 +1,24 @@
-const { Model, DataTypes } = require("sequelize");
+const {DataTypes, Model } = require("sequelize");
 
-class Menu extends Model {
+module.exports = (sequelize) => {
+    class Menus extends Model{
 
-}
+        static associate(models){
 
-Menu.init({
+            Menus.belongsTo(models.Client, {
+                foreignKey: 'fk_Id_client'
+            })
+            
+            Menus.belongsToMany(models.Products, {
+                through: "menus_products",
+                foreignKey: "fk_Id_product",
+            });
+            
+        }
+    }
+
+
+Menus.init({
     Id_menu: {
         type: DataTypes.INTEGER,
         primaryKey: true,
@@ -12,7 +26,7 @@ Menu.init({
         allowNull: false
     },
     Image: {
-        type: DataTypes.CHAR(150),
+        type: DataTypes.STRING(150),
         allowNull: false
     },
     Price: {
@@ -20,38 +34,22 @@ Menu.init({
         allowNull: false
     },
     web_label: {
-        type: DataTypes.CHAR,
+        type: DataTypes.STRING,
         allowNull: false
     },
     fridge_label: {
-        type: DataTypes.CHAR,
+        type: DataTypes.STRING,
         allowNull: false
     },
-    fk_Id_client:{
-        type: DataTypes.INTEGER,
-        allowNull = false,
-        references:{
-            model : 'Client',
-            key: 'Id_client'
-        }
-    }
 }, {
     sequelize,
-    modelName: 'Menu'
+    modelName: 'Menu',
+    timestamps: true,
+    createdAt: true,
+    updatedAt: true
+
 })
 
-Menu.Client = Menu.belongsTo(Client, {
-    foreignKey: 'fk_Id_client'
-})
+return Menus
 
-Menu.belongsToMany(Products, {
-    through: "menus_products",
-    foreignKey: "Id_product",
-  });
-
-Products.belongsToMany(Menu, {
-    through: "menus_products",
-    foreignKey: "Id_menu",
-});
-
-module.exports = Menu
+}

@@ -6,6 +6,7 @@ const cookieParser = require('cookie-parser')
 const path = require('path')
 const passport = require("passport")
 var createError = require('http-errors')
+const route = require("./routes/user")
 
 // ========== routers ========== //
 
@@ -31,6 +32,8 @@ module.exports=(app)=>{
     // ========== routes ========== //
 
     app.use('/api-docs',swaggerRouter)
+
+    app.use('/api', route);
 
     // ========== Handler Routing ========== //
 

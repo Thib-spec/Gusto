@@ -1,10 +1,27 @@
-const { Model, DataTypes } = require("sequelize");
-const Tags = require("./tags");
+const {DataTypes, Model } = require("sequelize");
 
-class Sales extends Model {
+module.exports = (sequelize) => {
+    class Sales extends Model{
+        static associate(models){
 
-}
-Sales.init({
+            Sales.belongsTo(models.Fridges, {
+                foreignKey: 'fk_Id_fridge'
+            })
+            
+            Sales.belongsToMany(models.Tags, {
+                through: "tags_sales",
+                foreignKey: "fk_Id_tag",
+            });
+            
+            Sales.belongsToMany(models.Products, {
+                through: "products_sales",
+                foreignKey: "fk_Id_product",
+            });
+        }
+    }
+
+
+    Sales.init({
     Id_sale: {
         type: DataTypes.INTEGER,
         primaryKey: true,
@@ -12,7 +29,7 @@ Sales.init({
         allowNull: false
     },
     Sales_timestamp: {
-        type: DataTypes.CHAR,
+        type: DataTypes.STRING,
         allowNull: false
     },
     Cbemv_amount: {
@@ -20,7 +37,7 @@ Sales.init({
         allowNull: false
     },
     Cbcless_amount: {
-        type: DataTypes.CHAR,
+        type: DataTypes.STRING,
         allowNull: false
     },
     Lv_amount: {
@@ -35,31 +52,14 @@ Sales.init({
         type: DataTypes.DECIMAL(5,2),   
         allowNull: false
     },
-    fk_Id_frige:{
-        type: DataTypes.INTEGER,
-        allowNull = false,
-        references:{
-            model : 'Fridges',
-            key: 'Id_fridge'
-        }
-    }
 }, {
     sequelize,
-    modelName: 'Sales'
+    modelName: 'Sales',
+    timestamps: true,
+    createdAt: true,
+    updatedAt: true
 })
 
-Sales.Fridges = Sales.belongsTo(Fridges, {
-    foreignKey: 'fk_Id_fridge'
-})
+return Sales
 
-Sales.belongsToMany(Tags, {
-    through: "tags_sales",
-    foreignKey: "Id_tag",
-});
-
-Tags.belongsToMany(Sales, {
-    through: "tags_sales",
-    foreignKey: "Id_sale",
-});
-
-module.exports = Sales
+}

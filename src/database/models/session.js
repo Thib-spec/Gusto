@@ -1,61 +1,30 @@
-const { Model, DataTypes } = require("sequelize");
-const Users = require("./Users");
+const {DataTypes, Model, Sequelize } = require("sequelize");
 
-class Sessions extends Model {
-}
+module.exports = (sequelize) => {
+    class Sessions extends Model{
+        static associate(models){
 
-Sessions.init({                                                 //définition du modèle  
-    fk_Id_user:{                                                //définition des attributs (clés primaires, étrangères)
-        type: DataTypes.INTEGER,
-        allowNull = false,
-        references:{
-            model : 'Users',
-            key: 'Id_user'
+            Sessions.belongsTo(models.Users, {                   
+                foreignKey: 'fk_Id_user'
+            })
         }
     }
+
+    Sessions.init({                                                 
+        Id_session: {
+            type: DataTypes.INTEGER,
+            primaryKey: true,
+            autoIncrement: true,
+            allowNull: false
+        }
 }, {
     sequelize,
-    modelName: 'Sessions'
+    modelName: 'Sessions',
+    timestamps: true,
+    createdAt: true,
+    updatedAt: true
 })
 
-Sessions.Users = Sessions.belongsTo(Users, {                    //association Users-Sessions
-    foreignKey: 'fk_Id_user'
-})
+return Sessions
 
-module.exports = Sessions
-
-
-// const {
-//   Model
-// } = require('sequelize');
-// module.exports = (sequelize, DataTypes) => {
-//   class Session extends Model {
-//     /**
-//      * Helper method for defining associations.
-//      * This method is not a part of Sequelize lifecycle.
-//      * The `models/index` file will call this method automatically.
-//      */
-//     static associate(models) {
-//       // define association here
-
-//      // ---------- Session relation ---------- //
-     
-//       this.belongsTo(models.User, {
-//         as: 'user',
-//         foreignKey: {
-//           name: "userId",
-//           allowNull: false
-//         },
-//         targetKey: 'id',
-//                 onDelete: "cascade"
-//       })
-//     }
-//   };
-//   Session.init({
-    
-//   }, {
-//     sequelize,
-//     modelName: 'Session',
-//   });
-//   return Session;
-// };
+}
