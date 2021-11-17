@@ -27,15 +27,16 @@ module.exports = (sequelize) => {
         primaryKey: true,
         autoIncrement: true,
         allowNull: false
+    }, 
+    Label: {
+        type: DataTypes.STRING,
+        allowNull: false
     },
     Status:{
         type: DataTypes.STRING,
         allowNull:false,
     },
-    Label: {
-        type: DataTypes.STRING,
-        allowNull: false
-    },
+   
 }, {
     sequelize,
     modelName: 'Fridges',

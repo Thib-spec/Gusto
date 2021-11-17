@@ -1,16 +1,20 @@
 const {DataTypes, Model } = require("sequelize");
 
 module.exports = (sequelize) => {
-    class Menus extends Model{
+    class Orders extends Model{
 
         static associate(models){
 
-            Menus.belongsTo(models.Client, {
-                foreignKey: 'fk_Id_client'
+            Orders.belongsTo(models.Users, {
+                foreignKey: 'fk_Id_user'
+            })
+
+            Orders.belongsTo(models.Fridges,{
+                foreignKey:"fk_Id_fridge"
             })
             
-            Menus.belongsToMany(models.Products, {
-                through: "menus_products",
+            Orders.belongsToMany(models.Products, {
+                through: models.products_orders,
                 foreignKey: "fk_Id_product",
             });
             
@@ -18,40 +22,30 @@ module.exports = (sequelize) => {
     }
 
 
-Menus.init({
-    Id_menu: {
+Orders.init({
+    Id_order: {
         type: DataTypes.INTEGER,
         primaryKey: true,
         autoIncrement: true,
         allowNull: false
     },
-    
-    web_label: {
+    Delivery_date: {
         type: DataTypes.STRING,
         allowNull: false
     },
-    fridge_label: {
+    Expected_delivery_date: {
         type: DataTypes.STRING,
         allowNull: false
     },
-    Image: {
-        type: DataTypes.STRING(150),
-        allowNull: false
-    },
-    Price: {
-        type: DataTypes.DECIMAL(5,2),
-        allowNull: false
-    },
-    
 }, {
     sequelize,
-    modelName: 'Menu',
+    modelName: 'Orders',
     timestamps: true,
     createdAt: true,
     updatedAt: true
 
 })
 
-return Menus
+return Orders
 
 }
