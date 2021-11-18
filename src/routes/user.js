@@ -3,7 +3,7 @@ const userController = require("../controllers/user")
 const passport = require("passport")
 
 users.get('/user/:id',userController.getUserById)
-users.get('/users', userController.listUsers)
+users.get('/user', userController.listUsers)
 users.post('/user',userController.addUser)
 users.put('/user/:id',userController.editUser)
 users.delete('/user/:id',userController.deleteUser)

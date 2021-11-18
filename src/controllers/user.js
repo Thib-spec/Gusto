@@ -1,10 +1,10 @@
 const { session } = require("passport");
 const Model = require("../database/models");
 const security = require("../helpers/security")
+const Joi = require('joi');
 // const Model = {
 //     Users: require("../database/models/users")(),           // config pour que l'ide propose les fonctions possibles
 // }
-
 
     exports.listUsers = (req, res) => {
         Model.Users.findAll()
@@ -19,76 +19,138 @@ const security = require("../helpers/security")
                 Id_user : req.params.id
             }
         })
-        .then(user => res.status(200).json(user))
+        .then((user) => {
+            if (!user) {
+                return res.status(400).json({
+                    message: 'User not found',
+                });
+            }
+
+            else {
+                return res.status(200).json(user)
+            }
+        })
         .catch(error => res.status(400).json(error))
      
         
     }
 
     exports.addUser = (req,res) =>{
-        const { firstname, lastname, email, password, image, user_language,fk_Id_level,fk_Id_client } = req.body;
+        const { firstname, lastname, email, image, user_language,fk_Id_level,fk_Id_client } = req.body;
 
         // Check general account fields
-        if (!firstname || !lastname || !image || !email || !password || !user_language || !fk_Id_level || !fk_Id_client) {
+        if (!firstname || !lastname || !image || !email || !user_language || !fk_Id_level || !fk_Id_client) {
             return res.status(400).json({
                 message: 'Missing required parameters',
-                info: 'Requires: firstname, lastname, image, email, password, user_language, fk_Id_level, fk_Id_client'
+                info: 'Requires: firstname, lastname, image, email, user_language, fk_Id_level, fk_Id_client'
             })
         }
 
-       // Check email format 
-       if(!email.match("^.{1,}@[^.]{1,}")){
-           return res.status(400).json({
-               message: "Invalid format for email",
-               info:"email must match following pattern : abc@gmail.com"
-           })
-       }
+     // vérification Joie pour post ne marche pas   
+
+    //    // Check email format 
+    //    if(!email.match("^.{1,}@[^.]{1,}")){
+    //        return res.status(400).json({
+    //            message: "Invalid format for email",
+    //            info:"email must match following pattern : abc@gmail.com"
+    //        })
+    //    }
+
+    //    const postUserSchema = Joi.object().keys({ 
+    //     firstname: Joi.string().required,
+    //     lastname: Joi.string().required,
+    //     email: Joi.string().required, 
+    //     image:Joi.string().required,
+    //     user_language:Joi.string().required,
+    //     fk_Id_client:Joi.required,
+    //     fk_Id_level:Joi.required
+    // })
+
+
+    // const result = postUserSchema.validate(req.body)
+
+    // const {error } = result;
+
+    // const valid = error == null;
+
+    // if (!valid) { 
+    //   res.status(400).json({ 
+    //     message: 'Missing required parameters',
+    //     info: 'Requires: firstname, lastname, image, email, user_language, fk_Id_level, fk_Id_client' 
+    //   })
+    // }
+
+    else {
 
        Model.Users.create({
         firstname: firstname,
         lastname:lastname,
         email:email,
-        password:password,
         image:image,
         user_language:user_language,
         fk_Id_client:fk_Id_client,
         fk_Id_level:fk_Id_level
     })
-
+    
     .then(user => res.status(200).json(user))
     .catch(error => res.status(400).json(error))
-        
+    }
 }
 
 
 exports.editUser = (req,res) => {
-    const { firstname, lastname, email, password, image,user_language} = req.body;
+    const { firstname, lastname, email, image,user_language} = req.body;
 
     Model.Users.findOne({
         where: {
             Id_user: req.params.id
         }
     })
+
     .then((user) => {
         if (!user) {
             return res.status(400).json({
                 message: 'User not found',
             });
         }
-    })
 
-    Model.Users.update({
+        const editUserSchema = Joi.object().keys({ 
+            firstname: Joi.string(),
+            lastname: Joi.string(),
+            email: Joi.string().email(), 
+            image:Joi.string(),
+            user_language:Joi.string()
+        })
+
+        const result = editUserSchema.validate(req.body)
+
+        const {error } = result; 
+        const valid = error == null; 
+        if (!valid) { 
+          res.status(400).json({ 
+            message: 'One or more fields are not well written', 
+          }) 
+        } 
+        
+        else { 
+            Model.Users.update({
                 firstname: firstname,
                 lastname: lastname,
                 email: email,
-                password: password,
                 image:image,
                 user_language:user_language
-            }
+            },
+            {
+                where : {
+                    Id_user: req.params.id
+                }
+            })
+            return res.send("Modification apply")
+        }
+    })
     
-    .then(res.send("Modification apply"))
-    .catch(error => res.status(400).json(error))
-)}
+    .catch(error => console.log(error))
+}
         
 
 exports.deleteUser = (req,res) => {

@@ -5,8 +5,10 @@ module.exports = (sequelize) =>{
 class Users extends Model{
 
 static associate(models){
+  
     Users.belongsTo(models.Client, {
-    foreignKey: 'fk_Id_client'
+    foreignKey: 'fk_Id_client',
+    targetKey: "Id_client"
   }) 
   Users.hasMany(models.Sessions, {
     foreignKey: 'fk_Id_user',
