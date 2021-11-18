@@ -8,7 +8,7 @@ import { Provider } from "react-redux";
 
 import store from "store"
 
-global.colorFull = true
+global.colorFull = false
 
 ReactDOM.render(
   <React.StrictMode>

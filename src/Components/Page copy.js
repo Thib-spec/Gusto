@@ -1,5 +1,5 @@
 import React, {Component, useState }  from 'react'
-import "CSS/colors.css";
+// import "CSS/colors.css";
 
 
 export default function Page({children}){

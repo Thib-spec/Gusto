@@ -1,21 +1,44 @@
-import 'CSS/Nav.css'
+import "CSS/Nav.css";
 
-import React, { Component, useState } from "react";
-import { Nav, NavDropdown, Navbar, Container } from "react-bootstrap";
-import { Link } from "react-router-dom";
+import React, { Component, useState, useEffect } from "react";
+import { Nav, NavDropdown, Navbar, Container, Dropdown } from "react-bootstrap";
+import { Link, useLocation } from "react-router-dom";
+import { useSelector, useDispatch } from "react-redux";
+import { useHistory } from 'react-router';
+import api from "helpers/api";
+import userActions from "store/actions/userActions";
 
-const paths = [
-  { name: "Home", path: "/" },
-  { name: "Réfrigérateurs", path: "/refrigerateurs" },
-  { name: "Menus", path: "/menus" },
-  { name: "Promotions", path: "/promotions" },
-  { name: "Produits", path: "/produits" },
-  { name: "Catégories", path: "/catégories" },
-];
+export default function NavBar({ }) {
+  const location = useLocation();
+  const dispatch = useDispatch()
+  const history = useHistory()
 
-export default function NavBar({ children }) {
+  async function handleLogout() {
+    const res = await api.logout();
+    dispatch(userActions.logout());
+    localStorage.removeItem("authToken");
+    history.push("/");
+  }
 
-  const [pathName, setPathName] = useState("Home")
+  const paths = [
+    { name: "Home", path: "/" },
+    { name: "Réfrigérateurs", path: "/refrigerateurs" },
+    { name: "Menus", path: "/menus" },
+    { name: "Promotions", path: "/promotions" },
+    { name: "Produits", path: "/produits" },
+    { name: "Catégories", path: "/categories" },
+  ];
+
+  const pathFound = paths.find((el) => {
+    // const isFound = el.path.match(`/\/${location.pathname}/`);
+    const isFound = new RegExp(`/${location.pathname}`, "i").test(`${el.path}`);
+    // const isFound = new RegExp(`/Categories`,"i").test(`/categories`);
+    return isFound;
+  });
+
+  const [pathName, setPathName] = useState(pathFound ? pathFound.name : "");
+
+  useEffect(() => {}, []);
 
   return (
     <>
@@ -45,15 +68,27 @@ export default function NavBar({ children }) {
                 id="nav-dropdown"
               >
                 {paths.map((path) => (
-                  <NavDropdown.Item>
-                    <Nav.Link as={Link} to={`${path.path}`} onClick={(event) => setPathName(path.name)}>
+                  <NavDropdown.Item
+                    key={path.name}
+                  >
+                    <Nav.Link
+                      as={Link}
+                      to={`${path.path}`}
+                      onClick={(event) => setPathName(path.name)}
+                    >
                       {path.name}
                     </Nav.Link>
                   </NavDropdown.Item>
                 ))}
+                <Dropdown.Divider />
+                <NavDropdown.Item>
+                  <Nav.Link onClick={handleLogout}>Logout</Nav.Link>
+                </NavDropdown.Item>
               </NavDropdown>
               <Nav.Item>
-                <Nav.Link className="h1"><p className="white">{pathName}</p></Nav.Link>
+                <Nav.Link className="h1">
+                  <p className="white">{pathName}</p>
+                </Nav.Link>
               </Nav.Item>
             </Nav>
           </Navbar.Collapse>

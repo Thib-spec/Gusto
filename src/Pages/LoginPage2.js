@@ -1,4 +1,4 @@
-import "CSS/colors.css";
+// import "CSS/colors.css";
 import "CSS/loginPage.css";
 import logoGustoColors from "Images/Logo_Gusto_Colors.svg";
 

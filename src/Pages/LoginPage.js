@@ -1,5 +1,5 @@
-import "CSS/loginPage.css";
 import logoGustoColors from "Images/Logo_Gusto_Colors.svg";
+// import "CSS/loginPage.css";
 
 import React, { useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
@@ -43,7 +43,7 @@ export default function LoginPage({ location, history }) {
               // className={`card h-100 col-12 col-sm-11 col-md-9 col-lg-8 col-xl-6 ${
               //   global.colorFull ? "bg-dark" : ""
               // }`}
-              className={`card ${global.colorFull ? "bg-dark" : ""}`}
+              className={`card mycard ${global.colorFull ? "bg-dark" : ""}`}
             >
               <div className="card-body p-5 text-center">
                 <div className="">
