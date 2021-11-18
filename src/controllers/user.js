@@ -275,6 +275,4 @@ exports.deleteUser = (req,res) => {
 //     }
 //   }
 
-// route put et delete login et logout
-
 
