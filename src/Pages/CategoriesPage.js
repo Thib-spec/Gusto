@@ -6,23 +6,28 @@ import InputForm from "Components/FormComponent/InputForm"
 import imgcategorie from "Images/imgcategorie.svg"
 import fold from "../Images/fold.svg"
 import unfold from "../Images/unfold.svg"
+import {Modal, Button} from 'react-bootstrap'
 
+import UploadForm from "Components/FormComponent/UploadForm"
+import SelectForm from "Components/FormComponent/SelectForm"
 
 import React, { Component, useState }  from 'react'
 
 
-const clickk =[DATACatégories.map((categories)=>categories.name)] 
-const clickk1=[]
-for (let step = 0; step < clickk[0].length; step++) {
-    clickk1[step]=false
+const categorieList =[DATACatégories.map((categories)=>categories.name)] 
+const inittab=[]
+for (let step = 0; step < categorieList[0].length; step++) {
+    inittab[step]=false
 }
 
 export default function CategoriesPage(){
     
+    const [show, setShow] = useState(false);
+    const handleClose = () => setShow(false);
+    const handleShow = () => setShow(true);
     
-    const[click,setClicked]= useState(clickk1);
-    console.log("click : " + click)
-    
+    const[click,setClicked]= useState(inittab);
+  
 
 
     function handleClick(id){
@@ -33,7 +38,6 @@ export default function CategoriesPage(){
             click[id]=false
         }
         setClicked([...click])
-        console.log(click,click)
    }
 
     return(
@@ -42,17 +46,14 @@ export default function CategoriesPage(){
                 {DATACatégories.map((categories) => (
                 <div className="categories-list-element">
                     
-                    {console.log(click)}
                     {click[categories.id-1]===true?
                         <div className="categories-list-element-title-fold" onClick={()=>handleClick(categories.id-1)}>
-                            
-                            <div>{categories.name}{}{categories.id}{clickk1[categories.id-1]}</div>
+                            <div>{categories.name}</div>
                             <div className="categories-dot" ><img width="100%" src={fold} alt=""/></div>
                         </div>
                         :
                         <div className="categories-list-element-title-unfold" onClick={()=>handleClick(categories.id-1)}>
-                            <div>{categories.name}{categories.id}{}{clickk1[categories.id-1]}</div>
-                          
+                            <div>{categories.name}</div>
                             <div className="categories-dot" ><img width="100%" src={unfold} alt=""/></div>
                         </div>
                         
@@ -73,7 +74,6 @@ export default function CategoriesPage(){
                                 </div>
                             </div>
                             
-                            
                         :false
                         } 
 
@@ -82,7 +82,44 @@ export default function CategoriesPage(){
                     
                 </div>
                 ))}
+                
+                <button type="button" class="btn btn-warning categories-list-element-sub-buttons-element-addButton" onClick={handleShow}>Ajouter une catégorie</button>
             </div>
+
+            
+
+
+
+
+            <Modal show={show} onHide={handleClose}>
+            <Modal.Header closeButton>
+            <Modal.Title>Ajouter un produit</Modal.Title>
+            </Modal.Header>
+            <Modal.Body>
+            <div className="addProduct-container">
+                
+                <div className="addProduct-container-form">
+                    <div className="addProduct-container-form-categories">
+                        <SelectForm className="" one="Fruit" two="Boisson" three="dessert"/>
+                    </div> 
+                    <InputForm label="Prix" type="number"/>
+                    <InputForm label="Nom du produit" type="text"/>
+                    <UploadForm/>
+                </div>
+            </div> 
+            </Modal.Body>
+            <Modal.Footer>
+            <Button variant="secondary" onClick={handleClose}>
+                Close
+            </Button>
+            <Button variant="primary" onClick={handleClose}>
+                Save Changes
+            </Button>
+            </Modal.Footer>
+        </Modal>
+
+
+
         {/* {DATAProducts.map((product)=>(
                             <div className="categories-list-element-sub-element">
                                 {product.categorie===categories.id?<div>{product.name}</div>:false}<div></div>

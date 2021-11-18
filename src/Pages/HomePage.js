@@ -7,6 +7,9 @@ import "CSS/test.css"
 import 'react-dropdown/style.css';
 import { useEffect } from 'react';
 
+import {Modal, Button} from 'react-bootstrap'
+
+
 
 
 
@@ -27,12 +30,24 @@ export default function HomePage(){
         history.push("/Categories");
     }
     
+    const [test, setTest] = useState(false);
+    function handleTest(){
+      
+      setTest(true)
+    }
+    
 
 
     
     return(
-        <div className="">
-           
+        <div className="" onClick={()=>setTest(true) }>
+          not ok
+
+          {
+            test?<div>ok</div>:<div>not ok</div>
+          }
         </div>
+ 
+        
     )
 }
