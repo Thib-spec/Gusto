@@ -11,7 +11,8 @@ import DATACatégories from "Data/categories"
 
 export default function ProductsPage(){
 
-    
+    //Add product
+
     //show the addProduct window or not
     const [show, setShow] = useState(false);
     const handleClose = () => setShow(false);
@@ -66,7 +67,6 @@ export default function ProductsPage(){
         setOpen([...open])
     }
 
-
     return(
         <div className="products-container">
             <div className="products-list">
@@ -95,8 +95,10 @@ export default function ProductsPage(){
                                         </div>   
                                     :
                                         <div className="products-list-element-title-unfold" onClick={()=>handleClick(product.id-1)}>
-                                            <div>{product.name}</div>
-                                            <div className="products-fold" ><img width="100%" src={unfold} alt=""/></div>
+                                            <div className="product-title-name">{product.name}</div>
+                                            <div className="product-title-dlc">{product.dlc}</div>
+                                            <div className="product-title-prix">{product.prix}</div>
+                                            <div className="products-fold"><img width="100%" src={unfold} alt=""/></div>
                                         </div>
                                     }
                                 </div>
