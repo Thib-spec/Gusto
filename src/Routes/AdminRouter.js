@@ -1,6 +1,8 @@
 import Test1 from "Components/TestHistory";
 import Test2 from "Components/TestHistory2";
 import React, { Component, useState, useEffect } from "react";
+import "CSS/colors.css";
+import "CSS/loginPage.css";
 
 import {
   BrowserRouter as Router,
@@ -15,9 +17,12 @@ import CategoriesPage from "Pages/CategoriesPage";
 import HomePage from "Pages/HomePage";
 import LoginPage from "Pages/LoginPage";
 import ProductsPage from "Pages/ProductPage";
+import RefrigerateursPage from "Pages/RefrigerateursPage";
+import RefrigerateursPage2 from "Pages/RefrigerateursPage2";
 import NotFoundPage from "Pages/NotFoundPage";
 import TestData from "Components/TestData";
 import Header from "Components/Header";
+import HeaderL from "Components/HeaderL";
 import { useSelector, useDispatch } from "react-redux";
 import api from "helpers/api";
 import userActions from "store/actions/userActions";
@@ -48,10 +53,13 @@ function AdminRouter({ history }) {
     return (
       <>
         <Header />
+        {/* <HeaderL /> */}
         <Switch>
           <Route exact path="/" component={HomePage} />
           <Route path="/categories" component={CategoriesPage} />
           <Route path="/products" component={ProductsPage} />
+          {/* <Route path="/refrigerateurs" component={RefrigerateursPage} /> */}
+          <Route path="/refrigerateurs" component={RefrigerateursPage2} />
           <Route path="/testHistory1" component={Test1} />
           <Route path="/testHistory2" component={Test2} />
           <Route path="/testData" component={TestData} />
