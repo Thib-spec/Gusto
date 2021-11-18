@@ -36,49 +36,41 @@ const Joi = require('joi');
     }
 
     exports.addUser = (req,res) =>{
-        const { firstname, lastname, email, image, user_language,fk_Id_level,fk_Id_client } = req.body;
+        const { firstname, lastname, email, image,password, user_language,fk_Id_level,fk_Id_client } = req.body;
 
-        // Check general account fields
-        if (!firstname || !lastname || !image || !email || !user_language || !fk_Id_level || !fk_Id_client) {
-            return res.status(400).json({
-                message: 'Missing required parameters',
-                info: 'Requires: firstname, lastname, image, email, user_language, fk_Id_level, fk_Id_client'
-            })
-        }
+       // Check email format 
+       if(!email.match("^.{1,}@[^.]{1,}")){
+           return res.status(400).json({
+               message: "Invalid format for email",
+               info:"email must match following pattern : abc@gmail.com"
+           })
+       }
 
-     // vérification Joie pour post ne marche pas   
+       const postUserSchema = Joi.object().keys({ 
+        firstname: Joi.string().required(),
+        lastname: Joi.string().required(),
+        password: Joi.string().required(),
+        email:Joi.string().email().required(), 
+        image:Joi.string().required(),
+        user_language:Joi.string().required(),
+        fk_Id_client:Joi.required(),
+        fk_Id_level:Joi.required()
+    })
 
-    //    // Check email format 
-    //    if(!email.match("^.{1,}@[^.]{1,}")){
-    //        return res.status(400).json({
-    //            message: "Invalid format for email",
-    //            info:"email must match following pattern : abc@gmail.com"
-    //        })
-    //    }
+    const result = postUserSchema.validate(req.body)
 
-    //    const postUserSchema = Joi.object().keys({ 
-    //     firstname: Joi.string().required,
-    //     lastname: Joi.string().required,
-    //     email: Joi.string().required, 
-    //     image:Joi.string().required,
-    //     user_language:Joi.string().required,
-    //     fk_Id_client:Joi.required,
-    //     fk_Id_level:Joi.required
-    // })
+    const {error } = result;
 
+    const valid = error == null;
 
-    // const result = postUserSchema.validate(req.body)
+    if (!valid) {
+      res.status(400).json({ 
+        message: 'Missing required parameters',
+        info: 'Requires: firstname, lastname, password, image, email, user_language, fk_Id_level, fk_Id_client' 
+      })
+    }
 
-    // const {error } = result;
-
-    // const valid = error == null;
-
-    // if (!valid) { 
-    //   res.status(400).json({ 
-    //     message: 'Missing required parameters',
-    //     info: 'Requires: firstname, lastname, image, email, user_language, fk_Id_level, fk_Id_client' 
-    //   })
-    // }
+   
 
     else {
 
@@ -87,6 +79,7 @@ const Joi = require('joi');
         lastname:lastname,
         email:email,
         image:image,
+        password:password,
         user_language:user_language,
         fk_Id_client:fk_Id_client,
         fk_Id_level:fk_Id_level
