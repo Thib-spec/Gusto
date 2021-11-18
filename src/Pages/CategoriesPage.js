@@ -9,17 +9,31 @@ import unfold from "../Images/unfold.svg"
 
 
 import React, { Component, useState }  from 'react'
+
+
+const clickk =[DATACatégories.map((categories)=>categories.name)] 
+const clickk1=[]
+for (let step = 0; step < clickk[0].length; step++) {
+    clickk1[step]=false
+}
+
 export default function CategoriesPage(){
     
-   const[click,setClicked]= useState(false);
-   function handleClick(){
-       if (click===true){
-           setClicked(false)
-       }
-       else{
-        setClicked(true)
-       }
-       
+    
+    const[click,setClicked]= useState(clickk1);
+    console.log("click : " + click)
+    
+
+
+    function handleClick(id){
+        if (click[id]===false){
+            click[id]=true
+        }
+        else{
+            click[id]=false
+        }
+        setClicked([...click])
+        console.log(click,click)
    }
 
     return(
@@ -27,21 +41,25 @@ export default function CategoriesPage(){
             <div className="categories-list">
                 {DATACatégories.map((categories) => (
                 <div className="categories-list-element">
-                    {click?
-                        <div className="categories-list-element-title-fold" onClick={handleClick}>
-                            <div>{categories.name}</div>
+                    
+                    {console.log(click)}
+                    {click[categories.id-1]===true?
+                        <div className="categories-list-element-title-fold" onClick={()=>handleClick(categories.id-1)}>
+                            
+                            <div>{categories.name}{}{categories.id}{clickk1[categories.id-1]}</div>
                             <div className="categories-dot" ><img width="100%" src={fold} alt=""/></div>
                         </div>
                         :
-                        <div className="categories-list-element-title-unfold" onClick={handleClick}>
-                            <div>{categories.name}</div>
+                        <div className="categories-list-element-title-unfold" onClick={()=>handleClick(categories.id-1)}>
+                            <div>{categories.name}{categories.id}{}{clickk1[categories.id-1]}</div>
+                          
                             <div className="categories-dot" ><img width="100%" src={unfold} alt=""/></div>
                         </div>
                         
                         }
                        
                     {
-                        click?
+                      click[categories.id-1]===true?
                             
                             <div className="categories-list-element-sub">
                                 <div className="categories-list-element-sub-description">

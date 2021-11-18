@@ -1,12 +1,19 @@
 import CheckboxForm from 'Components/FormComponent/CheckboxForm';
 import { useHistory } from 'react-router';
-import React, { Component }  from 'react'
+import React, { Component, useState }  from 'react'
 
-
+import DATACatégories from 'Data/categories';
 import "CSS/test.css"
 import 'react-dropdown/style.css';
+import { useEffect } from 'react';
+
+
+
 
 export default function HomePage(){
+
+
+    
 
     let history=useHistory();
 
@@ -21,12 +28,11 @@ export default function HomePage(){
     }
     
 
+
     
     return(
-       <div className="">
+        <div className="">
            
-
-            
-       </div>
+        </div>
     )
 }
