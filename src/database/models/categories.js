@@ -15,7 +15,7 @@ class Categories extends Model{
 
 Categories.init({
 
-    Id_categories: {
+    Id_category: {
         type: DataTypes.INTEGER,
         primaryKey: true,
         autoIncrement: true,
@@ -23,15 +23,12 @@ Categories.init({
     },
     Label: {
         type: DataTypes.STRING,
-        allowNull: false
     },
     Image: {
         type: DataTypes.STRING(150),
-        allowNull: false
     },
     Description: {
         type: DataTypes.STRING(150),
-        allowNull: false
     }
 
 }, {

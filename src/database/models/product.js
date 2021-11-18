@@ -22,6 +22,11 @@ module.exports = (sequelize) => {
                 through: "menus_products",
                 foreignKey: "fk_Id_menu",
             });
+
+            Products.belongsToMany(models.Orders, {
+                through: models.products_orders,
+                foreignKey: "fk_Id_order",
+            });
         }
     }
 
@@ -31,13 +36,18 @@ module.exports = (sequelize) => {
         primaryKey: true,
         autoIncrement: true,
         allowNull: false
+    }, 
+    
+    Label: {
+        type: DataTypes.STRING,
+        allowNull: false
     },
     Image: {
         type: DataTypes.STRING(150),
         allowNull: false
     },
     Price: {
-        type: DataTypes.DECIMAL(5,2),
+        type: DataTypes.INTEGER,
         allowNull: false
     },
     Quantity: {
@@ -52,10 +62,7 @@ module.exports = (sequelize) => {
         type: DataTypes.INTEGER,
         allowNull: false
     },
-    Label: {
-        type: DataTypes.STRING,
-        allowNull: false
-    },
+   
     Ubd: {
         type: DataTypes.STRING,
         allowNull: false

@@ -17,6 +17,11 @@ module.exports = (sequelize) => {
                 through:"fridges_badges",
                 foreignKey:"fk_Id_badge"
             })
+
+            Fridges.belongsToMany(models.State,{
+                through:"fridges_state",
+                foreignKey:"fk_Id_state"
+            })
         }
     }
 
@@ -27,15 +32,12 @@ module.exports = (sequelize) => {
         primaryKey: true,
         autoIncrement: true,
         allowNull: false
-    },
-    Status:{
-        type: DataTypes.STRING,
-        allowNull:false,
-    },
+    }, 
     Label: {
         type: DataTypes.STRING,
         allowNull: false
     },
+   
 }, {
     sequelize,
     modelName: 'Fridges',
