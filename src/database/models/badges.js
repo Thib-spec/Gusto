@@ -8,22 +8,22 @@ class Badges extends Model{
     static associate(models){
         
         Badges.belongsTo(models.Client, {
-            foreignKey: 'fk_Id_client',
+            foreignKey: 'fk_id_client',
         })
         
         Badges.belongsTo(models.Users, {
-            foreignKey: 'fk_Id_user'
+            foreignKey: 'fk_id_user'
         })
         
         Badges.belongsToMany(models.Fridges,{       
             through:"fridges_badges",
-            foreignKey:"fk_Id_fridge"
+            foreignKey:"fk_id_fridge"
         })
     }
 }
 
 Badges.init({
-    Id_badges: {
+    id_badges: {
         type: DataTypes.INTEGER,
         primaryKey: true,
         autoIncrement: true,

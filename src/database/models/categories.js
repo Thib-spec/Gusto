@@ -8,30 +8,27 @@ class Categories extends Model{
         
        Categories.belongsToMany(models.Client,{
            through: 'clients_categories',
-           foreignKey: 'fk_Id_client'               // à tester
+           foreignKey: 'fk_id_client'               // à tester
        })
     }
 }
 
 Categories.init({
 
-    Id_categories: {
+    id_category: {
         type: DataTypes.INTEGER,
         primaryKey: true,
         autoIncrement: true,
         allowNull: false
     },
-    Label: {
+    label: {
         type: DataTypes.STRING,
-        allowNull: false
     },
-    Image: {
+    image: {
         type: DataTypes.STRING(150),
-        allowNull: false
     },
-    Description: {
+    description: {
         type: DataTypes.STRING(150),
-        allowNull: false
     }
 
 }, {

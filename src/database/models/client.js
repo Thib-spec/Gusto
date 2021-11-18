@@ -4,27 +4,32 @@ const { Model, DataTypes} = require("sequelize");
 module.exports = (sequelize) => {
     class Client extends Model{
         static associate(models){
+
+            Client.hasMany(models.Users,{
+                foreignKey: "fk_id_client",
+                sourceKey: "id_client"
+            })
         
             Client.belongsToMany(models.Categories,{
                 through: 'clients_categories',
-                foreignKey: 'fk_Id_category'               
+                foreignKey: 'fk_id_category'               
             })
 
             Client.belongsToMany(models.Fridges,{      
                 through:"clients_fridges",
-                foreignKey:"fk_Id_fridge"
+                foreignKey:"fk_id_fridge"
             })
          }
     }
 
 Client.init({
-    Id_client: {
+    id_client: {
         type: DataTypes.INTEGER,
         primaryKey: true,
         autoIncrement: true,
         allowNull: false
     },
-    Label: {
+    label: {
         type: DataTypes.STRING,
         allowNull: false
     }

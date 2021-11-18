@@ -5,62 +5,69 @@ module.exports = (sequelize) => {
         static associate(models){
 
             Products.belongsTo(models.Categories, {
-                foreignKey: 'fk_Id_category'
+                foreignKey: 'fk_id_category'
             })
             
             Products.belongsToMany(models.Sales, {   
                 through: "products_sales",
-                foreignKey: "fk_Id_sale",
+                foreignKey: "fk_id_sale",
             });
             
             Products.belongsToMany(models.Deliveries, {
                 through: "products_deliveries",
-                foreignKey: "fk_Id_delivery",
+                foreignKey: "fk_id_delivery",
             });
 
             Products.belongsToMany(models.Menu, {      
                 through: "menus_products",
-                foreignKey: "fk_Id_menu",
+                foreignKey: "fk_id_menu",
+            });
+
+            Products.belongsToMany(models.Orders, {
+                through: models.products_orders,
+                foreignKey: "fk_id_order",
             });
         }
     }
 
     Products.init({
-    Id_product: {
+    id_product: {
         type: DataTypes.INTEGER,
         primaryKey: true,
         autoIncrement: true,
         allowNull: false
+    }, 
+    
+    label: {
+        type: DataTypes.STRING,
+        allowNull: false
     },
-    Image: {
+    image: {
         type: DataTypes.STRING(150),
         allowNull: false
     },
-    Price: {
-        type: DataTypes.DECIMAL(5,2),
-        allowNull: false
-    },
-    Quantity: {
+    price: {
         type: DataTypes.INTEGER,
         allowNull: false
     },
-    Quantity_min: {
+    quantity: {
         type: DataTypes.INTEGER,
         allowNull: false
     },
-    Quantity_max: {
+    quantity_min: {
         type: DataTypes.INTEGER,
         allowNull: false
     },
-    Label: {
+    quantity_max: {
+        type: DataTypes.INTEGER,
+        allowNull: false
+    },
+   
+    ubd: {
         type: DataTypes.STRING,
         allowNull: false
     },
-    Ubd: {
-        type: DataTypes.STRING,
-        allowNull: false
-    },
-    Description: {
+    description: {
         type: DataTypes.STRING(150),
         allowNull: false
     },

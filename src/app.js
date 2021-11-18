@@ -6,7 +6,7 @@ const cookieParser = require('cookie-parser')
 const path = require('path')
 const passport = require("passport")
 var createError = require('http-errors')
-const route = require("./routes/user")
+const route = require("./routes/index")
 
 // ========== routers ========== //
 
