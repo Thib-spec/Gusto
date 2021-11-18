@@ -8,6 +8,8 @@ import { Provider } from "react-redux";
 
 import store from "store"
 
+global.colorFull = false
+
 ReactDOM.render(
   <React.StrictMode>
     <Provider store={store}>

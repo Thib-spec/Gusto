@@ -41,11 +41,11 @@ export default function Header(){
       history.push("/");
     }
     function handleProducts(){
-        history.push("/Products");
+        history.push("/products");
         setpath("Produits")
     }
     function handleCategories(){
-        history.push("/Categories");
+        history.push("/categories");
         setpath("Catégories")
     }
     function handleAccueil(){
@@ -53,9 +53,13 @@ export default function Header(){
         setpath("Accueil")
     }
     function handleFrigo(){
-        history.push("/");
+        history.push("/refrigerateurs");
         setpath("Réfrigérateurs")
     }
+    function handleFrigo2(){
+      history.push("/refrigerateurs2");
+      setpath("Réfrigérateurs2")
+  }
     function handleMenus(){
         history.push("/");
         setpath("Menus")
@@ -122,6 +126,12 @@ export default function Header(){
               onClick={handleFrigo}
             >
               Réfrigérateurs
+            </div>
+            <div
+              className="header-bottom-menuList-button"
+              onClick={handleFrigo2}
+            >
+              Réfrigérateurs2
             </div>
             <div
               className="header-bottom-menuList-button"
