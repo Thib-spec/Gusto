@@ -7,12 +7,12 @@ class Users extends Model{
 static associate(models){
   
     Users.belongsTo(models.Client, {
-    foreignKey: 'fk_Id_client',
-    targetKey: "Id_client"
+    foreignKey: 'fk_id_client',
+    targetKey: "id_client"
   }) 
   Users.hasMany(models.Sessions, {
-    foreignKey: 'fk_Id_user',
-    sourceKey:"Id_user"
+    foreignKey: 'fk_id_user',
+    sourceKey:"id_user"
   }) 
 
 }
@@ -20,7 +20,7 @@ static associate(models){
 }
 
 Users.init({
-    Id_user:{
+    id_user:{
       type:DataTypes.INTEGER,
       allowNull:false,
       primaryKey:true,

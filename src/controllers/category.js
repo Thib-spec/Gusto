@@ -2,7 +2,7 @@ const Model = require("../database/models");
 const Joi = require('joi');
 
 // const Model = {
-//     Users: require("../database/models/users")(),           // config pour que l'ide propose les fonctions possibles
+//     Categories: require("../database/models/categories")(),           // config pour que l'ide propose les fonctions possibles
 // }
 
 exports.listCategories = (req, res) => {
@@ -14,7 +14,7 @@ exports.listCategories = (req, res) => {
 exports.getCategoryById = (req,res) => {
     Model.Categories.findOne({
         where:{
-            Id_category : req.params.id
+            id_category : req.params.id
         }
     })
     .then((category) => {
@@ -36,32 +36,12 @@ exports.getCategoryById = (req,res) => {
 
 
 exports.addCategory = (req,res) =>{
-    const { label, image, description} = req.body;
+    const { label, image, description} = req.body
 
-    const postCategorySchema = Joi.object().keys({ 
-    label: Joi.string().required(),
-    image: Joi.string().required(),
-    description: Joi.string().required(),
-})
-
-    const result = postCategorySchema.validate(req.body)
-
-    const {error } = result;
-
-    const valid = error == null;
-
-    if (!valid) {
-    res.status(400).json({ 
-        message: 'Missing required parameters',
-        info: 'Requires: label, image, description'
-    })
-    }
-    
-    else {
+    console.log(req.body.label)
         
-        console.log(req.body)
         Model.Categories.create({
-        label: "label",
+        label : label,
         image:image,
         description:description
     })
@@ -70,5 +50,4 @@ exports.addCategory = (req,res) =>{
         console.log(category)
         res.status(200).json(category)})
     .catch(error => res.status(400).json(error))
-    }
 }

@@ -7,14 +7,14 @@ module.exports = (sequelize) => {
 
 products_orders.init({
 
-Id_products_orders:{
+id_products_orders:{
     type:DataTypes.INTEGER,
     primaryKey:true,
     allowNull:false,
     autoIncrement:true
 },
 
-    Quantity_product: {
+    quantity_product: {
         type: DataTypes.INTEGER,
         allowNull: false
     },

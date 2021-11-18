@@ -5,34 +5,34 @@ module.exports = (sequelize) => {
         static associate(models){
         
             Deliveries.belongsTo(models.Users, {
-                foreignKey: 'fk_Id_user'
+                foreignKey: 'fk_id_user'
             })
             Deliveries.belongsTo(models.Fridges, {
-                foreignKey: 'fk_Id_fridge'
+                foreignKey: 'fk_id_fridge'
             })
             
             Deliveries.belongsToMany(models.Tags, {     
                 through: "tags_deliveries",
-                foreignKey: "fk_Id_tag",
+                foreignKey: "fk_id_tag",
             });
             
        
             Deliveries.belongsToMany(models.Products, { 
                 through: "products_deliveries",
-                foreignKey: "fk_Id_product",
+                foreignKey: "fk_id_product",
             });
             
         }
     }
 
 Deliveries.init({
-    Id_delivery: {
+    id_delivery: {
         type: DataTypes.INTEGER,
         primaryKey: true,
         autoIncrement: true,
         allowNull: false
     },
-    Delivery_timestamp: {
+    delivery_timestamp: {
         type: DataTypes.STRING,
         allowNull: false
     },

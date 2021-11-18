@@ -5,35 +5,35 @@ module.exports = (sequelize) => {
         static associate(models){
 
             Fridges.belongsTo(models.Technologies, {
-                foreignKey: 'fk_Id_technology'
+                foreignKey: 'fk_id_technology'
             });
 
             Fridges.belongsToMany(models.Client,{      
                 through:"clients_fridges",
-                foreignKey:"fk_Id_client"
+                foreignKey:"fk_id_client"
             })
 
             Fridges.belongsToMany(models.Badges,{       
                 through:"fridges_badges",
-                foreignKey:"fk_Id_badge"
+                foreignKey:"fk_id_badge"
             })
 
             Fridges.belongsToMany(models.State,{
                 through:"fridges_state",
-                foreignKey:"fk_Id_state"
+                foreignKey:"fk_id_state"
             })
         }
     }
 
 
     Fridges.init({
-    Id_fridge: {
+    id_fridge: {
         type: DataTypes.INTEGER,
         primaryKey: true,
         autoIncrement: true,
         allowNull: false
     }, 
-    Label: {
+    label: {
         type: DataTypes.STRING,
         allowNull: false
     },

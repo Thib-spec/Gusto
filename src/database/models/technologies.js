@@ -9,13 +9,13 @@ module.exports = (sequelize) => {
     }
 
     Technologies.init({
-    Id_technologies: {
+    id_technologies: {
         type: DataTypes.INTEGER,
         primaryKey: true,
         autoIncrement: true,
         allowNull: false
     },
-    Label: {
+    label: {
         type: DataTypes.STRING,
         allowNull: false
     }
