@@ -6,6 +6,7 @@ const userRouter = require('./user');
 const categoryRouter = require('./category');
 const productRouter = require('./product')
 const fridgeRouter = require("./fridge")
+const menuRouter = require('./menu');
 
 
 /* ----------------------- */
@@ -29,6 +30,7 @@ router.use('/user', userRouter);
 router.use('/category', categoryRouter);
 router.use('/product', productRouter)
 router.use('/fridge',fridgeRouter)
+router.use('/menu', menuRouter);
 
 
 
