@@ -5,23 +5,23 @@ module.exports = (sequelize) => {
         static associate(models){
 
             Tags.belongsTo(models.Products, {
-                foreignKey: 'fk_Id_product'
+                foreignKey: 'fk_id_product'
             })
 
             Tags.belongsToMany(models.Deliveries,{
                 through:"tags_deliveries",
-                foreignKey:"fk_Id_delivery"
+                foreignKey:"fk_id_delivery"
             })
 
             Tags.belongsToMany(models.Sales,{       // liaison belongstomany avec sales
                 through:"tags_sales",
-                foreignKey:"fk_Id_sale"
+                foreignKey:"fk_id_sale"
             })
         }
     }
 
     Tags.init({
-    Id_tag: {
+    id_tag: {
         type: DataTypes.INTEGER,
         primaryKey: true,
         autoIncrement: true,

@@ -5,50 +5,50 @@ module.exports = (sequelize) => {
         static associate(models){
 
             Sales.belongsTo(models.Fridges, {
-                foreignKey: 'fk_Id_fridge'
+                foreignKey: 'fk_id_fridge'
             })
             
             Sales.belongsToMany(models.Tags, {
                 through: "tags_sales",
-                foreignKey: "fk_Id_tag",
+                foreignKey: "fk_id_tag",
             });
             
             Sales.belongsToMany(models.Products, {
                 through: "products_sales",
-                foreignKey: "fk_Id_product",
+                foreignKey: "fk_id_product",
             });
         }
     }
 
 
     Sales.init({
-    Id_sale: {
+    id_sale: {
         type: DataTypes.INTEGER,
         primaryKey: true,
         autoIncrement: true,
         allowNull: false
     },
-    Sales_timestamp: {
+    sales_timestamp: {
         type: DataTypes.STRING,
         allowNull: false
     },
-    Cbemv_amount: {
+    cbemv_amount: {
         type: DataTypes.DECIMAL(5,2),
         allowNull: false
     },
-    Cbcless_amount: {
+    cbcless_amount: {
         type: DataTypes.STRING,
         allowNull: false
     },
-    Lv_amount: {
+    lv_amount: {
         type: DataTypes.DECIMAL(5,2),
         allowNull: false
     },
-    Lv_quantity: {
+    lv_quantity: {
         type: DataTypes.INTEGER,
         allowNull: false
     },
-    Cash_amount: {
+    cash_amount: {
         type: DataTypes.DECIMAL(5,2),   
         allowNull: false
     },

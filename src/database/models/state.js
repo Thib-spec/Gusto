@@ -6,19 +6,19 @@ module.exports = (sequelize) => {
 
             State.belongsToMany(models.Fridges,{
                 through: "fridges_state",
-                foreignKey:"fk_Id_fridge"
+                foreignKey:"fk_id_fridge"
             })
         }
     }
 
     State.init({                                                 
-        Id_state: {
+        id_state: {
             type: DataTypes.INTEGER,
             primaryKey: true,
             autoIncrement: true,
             allowNull: false
         },
-        Label : {
+        label : {
             type:DataTypes.STRING,
             allowNull:false
         }

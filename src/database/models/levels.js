@@ -4,19 +4,19 @@ module.exports = (sequelize) => {
     class Levels extends Model{
         static associate(models){
             Levels.hasMany(models.Users, {
-            foreignKey: 'fk_Id_level'
+            foreignKey: 'fk_id_level'
           }) 
         }
     }
 
 Levels.init({
-    Id_level: {
+    id_level: {
         type: DataTypes.INTEGER,
         primaryKey: true,
         autoIncrement: true,
         allowNull: false
     },
-    Label: {
+    label: {
         type: DataTypes.STRING,
         allowNull: false
     },

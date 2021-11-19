@@ -6,16 +6,16 @@ module.exports = (sequelize) => {
         static associate(models){
 
             Orders.belongsTo(models.Users, {
-                foreignKey: 'fk_Id_user'
+                foreignKey: 'fk_id_user'
             })
 
             Orders.belongsTo(models.Fridges,{
-                foreignKey:"fk_Id_fridge"
+                foreignKey:"fk_id_fridge"
             })
             
             Orders.belongsToMany(models.Products, {
                 through: models.products_orders,
-                foreignKey: "fk_Id_product",
+                foreignKey: "fk_id_product",
             });
             
         }
@@ -23,17 +23,17 @@ module.exports = (sequelize) => {
 
 
 Orders.init({
-    Id_order: {
+    id_order: {
         type: DataTypes.INTEGER,
         primaryKey: true,
         autoIncrement: true,
         allowNull: false
     },
-    Delivery_date: {
+    delivery_date: {
         type: DataTypes.STRING,
         allowNull: false
     },
-    Expected_delivery_date: {
+    expected_delivery_date: {
         type: DataTypes.STRING,
         allowNull: false
     },

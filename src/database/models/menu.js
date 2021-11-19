@@ -6,12 +6,12 @@ module.exports = (sequelize) => {
         static associate(models){
 
             Menus.belongsTo(models.Client, {
-                foreignKey: 'fk_Id_client'
+                foreignKey: 'fk_id_client'
             })
             
             Menus.belongsToMany(models.Products, {
                 through: "menus_products",
-                foreignKey: "fk_Id_product",
+                foreignKey: "fk_id_product",
             });
             
         }
@@ -19,7 +19,7 @@ module.exports = (sequelize) => {
 
 
 Menus.init({
-    Id_menu: {
+    id_menu: {
         type: DataTypes.INTEGER,
         primaryKey: true,
         autoIncrement: true,
@@ -34,11 +34,11 @@ Menus.init({
         type: DataTypes.STRING,
         allowNull: false
     },
-    Image: {
+    image: {
         type: DataTypes.STRING(150),
         allowNull: false
     },
-    Price: {
+    price: {
         type: DataTypes.DECIMAL(5,2),
         allowNull: false
     },

@@ -5,14 +5,14 @@ module.exports = (sequelize) => {
         static associate(models){
 
             Sessions.belongsTo(models.Users, {                   
-                foreignKey: 'fk_Id_user',
-                targetKey:"Id_user"
+                foreignKey: 'fk_id_user',
+                targetKey:"id_user"
             })
         }
     }
 
     Sessions.init({                                                 
-        Id_session: {
+        id_session: {
             type: DataTypes.INTEGER,
             primaryKey: true,
             autoIncrement: true,

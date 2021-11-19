@@ -16,7 +16,7 @@ const Joi = require('joi');
     exports.getUserById = (req,res) => {
         Model.Users.findOne({
             where:{
-                Id_user : req.params.id
+                id_user : req.params.id
             }
         })
         .then((user) => {
@@ -36,7 +36,7 @@ const Joi = require('joi');
     }
 
     exports.addUser = (req,res) =>{
-        const { firstname, lastname, email, image,password, user_language,fk_Id_level,fk_Id_client } = req.body;
+        const { firstname, lastname, email, image,password, user_language,fk_id_level,fk_id_client } = req.body;
 
        // Check email format 
        if(!email.match("^.{1,}@[^.]{1,}")){
@@ -53,8 +53,8 @@ const Joi = require('joi');
         email:Joi.string().email().required(), 
         image:Joi.string().required(),
         user_language:Joi.string().required(),
-        fk_Id_client:Joi.required(),
-        fk_Id_level:Joi.required()
+        fk_id_client:Joi.required(),
+        fk_id_level:Joi.required()
     })
 
     const result = postUserSchema.validate(req.body)
@@ -66,7 +66,7 @@ const Joi = require('joi');
     if (!valid) {
       res.status(400).json({ 
         message: 'Missing required parameters',
-        info: 'Requires: firstname, lastname, password, image, email, user_language, fk_Id_level, fk_Id_client' 
+        info: 'Requires: firstname, lastname, password, image, email, user_language, fk_id_level, fk_id_client' 
       })
     }
 
@@ -81,8 +81,8 @@ const Joi = require('joi');
         image:image,
         password:password,
         user_language:user_language,
-        fk_Id_client:fk_Id_client,
-        fk_Id_level:fk_Id_level
+        fk_id_client:fk_id_client,
+        fk_id_level:fk_id_level
     })
     
     .then(user => res.status(200).json(user))
@@ -96,7 +96,7 @@ exports.editUser = (req,res) => {
 
     Model.Users.findOne({
         where: {
-            Id_user: req.params.id
+            id_user: req.params.id
         }
     })
 
@@ -135,7 +135,7 @@ exports.editUser = (req,res) => {
             },
             {
                 where : {
-                    Id_user: req.params.id
+                    id_user: req.params.id
                 }
             })
             return res.send("Modification apply")
@@ -150,7 +150,7 @@ exports.deleteUser = (req,res) => {
     
             Model.Users.findOne({
                 where: {
-                    Id_user: req.params.id
+                    id_user: req.params.id
                 }
             })
             .then((user) => {
@@ -162,7 +162,7 @@ exports.deleteUser = (req,res) => {
             Model.Users
                     .destroy({
                         where: {
-                            Id_user: req.params.id
+                            id_user: req.params.id
                         }
                     }).then(() => res.send(`User with id : ${req.params.id} has been deleted`))
                 }
@@ -198,8 +198,8 @@ exports.deleteUser = (req,res) => {
                     .then(session=> {
                         console.log(session)
                         const token = security.jwtGenTokenSync({
-                        sub: user.Id_user,
-                        sessionId:session.Id_session,
+                        sub: user.id_user,
+                        sessionId:session.id_session,
                         expiresIn: 3600, // en seconde
                         })
 

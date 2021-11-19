@@ -7,14 +7,14 @@ module.exports = (sequelize) => {
 
 fridges_state.init({
 
-Id_fridges_state:{
+id_fridges_state:{
     type:DataTypes.INTEGER,
     primaryKey:true,
     allowNull:false,
     autoIncrement:true
 },
 
-    Timestamp: {
+    timestamp: {
         type: DataTypes.INTEGER,
         allowNull: false
     },
