@@ -26,18 +26,8 @@ export default function FridgesAccordion({ id, fridgeName, fridgeStatus }) {
 
   return (
     <>
-      <Card>
-        <Card.Header>
-          {/* <Accordion.Toggle  eventKey={id}>
-            title 1
-          </Accordion.Toggle> */}
-        </Card.Header>
-        <Accordion.Collapse eventKey="0">
-          <Card.Body>body 1</Card.Body>
-        </Accordion.Collapse>
-      </Card>
-      {/* <Accordion.Item eventKey={id}>
-        <Accordion.Header as={}>
+      <Accordion.Item eventKey={id}>
+        <Accordion.Header>
           <div className="col">{fridgeName}</div>
           <div className="col"></div>
           <div className="col">{fridgeStatus}</div>
@@ -61,7 +51,7 @@ export default function FridgesAccordion({ id, fridgeName, fridgeStatus }) {
             </div>
           </div>
         </Accordion.Body>
-      </Accordion.Item> */}
+      </Accordion.Item>
     </>
   );
 }
