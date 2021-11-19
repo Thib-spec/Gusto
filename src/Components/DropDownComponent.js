@@ -33,7 +33,6 @@ export default function DropdownComponent(props){
                         <div className="products-list-element-sub-description">
                             {props.description}
                         </div>
-                        
                     </div>
                 </div>   
             :
