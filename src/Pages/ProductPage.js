@@ -14,12 +14,10 @@ export default function ProductsPage(){
 
     //Add product
 
-    //show the addProduct window or not
+    //show the addProduct modal or not
     const [show, setShow] = useState(false);
     const handleClose = () => setShow(false);
     const handleShow = () => setShow(true);
-    
-
 
     //hooks value of added products
     const[prixadd,setPrixAdd]=useState(0)
@@ -69,9 +67,8 @@ export default function ProductsPage(){
         initTab[step]=false
     }
 
-
-    const[open,setOpen]= useState(initTab);//contain an array of boolean value that define if the product window is open 
-    //open and close the window on click
+    const[open,setOpen]= useState(initTab);//contain an array of boolean value that define if the product dropdown is open 
+    //open and close the dropdown on click
     function handleClick(id){
         if (open[id]===false){
             open[id]=true
