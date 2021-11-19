@@ -8,6 +8,8 @@ import 'react-dropdown/style.css';
 import { useEffect } from 'react';
 
 import {Modal, Button} from 'react-bootstrap'
+import DropdownComponent from 'Components/DropDownComponent';
+
 
 
 
@@ -40,12 +42,8 @@ export default function HomePage(){
 
     
     return(
-        <div className="" onClick={()=>setTest(true) }>
-          not ok
-
-          {
-            test?<div>ok</div>:<div>not ok</div>
-          }
+        <div>
+          <DropdownComponent title="titre" description="description"/>
         </div>
  
         
