@@ -1,35 +1,31 @@
-'use strict';
-const {
-  Model
-} = require('sequelize');
-module.exports = (sequelize, DataTypes) => {
-  class Session extends Model {
-    /**
-     * Helper method for defining associations.
-     * This method is not a part of Sequelize lifecycle.
-     * The `models/index` file will call this method automatically.
-     */
-    static associate(models) {
-      // define association here
+const {DataTypes, Model, Sequelize } = require("sequelize");
 
-     // ---------- Session relation ---------- //
-     
-      this.belongsTo(models.User, {
-        as: 'user',
-        foreignKey: {
-          name: "userId",
-          allowNull: false
-        },
-        targetKey: 'id',
-				onDelete: "cascade"
-      })
+module.exports = (sequelize) => {
+    class Sessions extends Model{
+        static associate(models){
+
+            Sessions.belongsTo(models.Users, {                   
+                foreignKey: 'fk_id_user',
+                targetKey:"id_user"
+            })
+        }
     }
-  };
-  Session.init({
-    
-  }, {
+
+    Sessions.init({                                                 
+        id_session: {
+            type: DataTypes.INTEGER,
+            primaryKey: true,
+            autoIncrement: true,
+            allowNull: false
+        }
+}, {
     sequelize,
-    modelName: 'Session',
-  });
-  return Session;
-};
+    modelName: 'Sessions',
+    timestamps: true,
+    createdAt: true,
+    updatedAt: true
+})
+
+return Sessions
+
+}
