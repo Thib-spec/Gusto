@@ -7,6 +7,7 @@ import imgcategorie from "Images/imgcategorie.svg"
 import unfold from "../Images/unfold.svg"
 import {Modal, Button} from 'react-bootstrap'
 import DATACatégories from "Data/categories"
+import { computeHeadingLevel } from "@testing-library/dom"
 
 
 export default function ProductsPage(){
@@ -21,9 +22,9 @@ export default function ProductsPage(){
 
 
     //hooks value of added products
-    const[prix,setPrix]=useState(0)
-    const[categorie,setCategorie]=useState(0)
-    const[label,setLabel]=useState("")
+    const[prixadd,setPrixAdd]=useState(0)
+    const[categorieadd,setCategorieAdd]=useState(0)
+    const[labeladd,setLabelAdd]=useState("")
     //when the client add a product and save it, 
     function handleSave(){
         try{
@@ -34,10 +35,24 @@ export default function ProductsPage(){
             if (c=="Catégories"){
                 c=0
             }
-            setPrix(a)
-            setCategorie(c)
-            setLabel(b)
+            setPrixAdd(a)
+            setCategorieAdd(c)
+            setLabelAdd(b)
             handleClose()
+        }
+        catch(e){
+            console.log(e)
+        }
+    }
+
+    //Delete product
+
+    //hook value of deleted products
+    const[idDel,setIdDel]=useState(0)    
+    //when the client delete a product and confirm it, 
+    function handleDelete(id){
+        try{
+            setIdDel(id)
         }
         catch(e){
             console.log(e)
@@ -89,7 +104,7 @@ export default function ProductsPage(){
                                                 </div>
                                                 <div class="products-list-element-sub-buttons ">
                                                     <button type="button" className="products-list-element-sub-buttons-element btn btn-info">Enregistrer</button>
-                                                    <button type="button" className="products-list-element-sub-buttons-element btn btn-danger">Supprimer</button>
+                                                    <button type="button" className="products-list-element-sub-buttons-element btn btn-danger" onClick={()=>handleDelete(product.id)}>Supprimer</button>
                                                 </div>
                                             </div>
                                         </div>   
@@ -106,7 +121,8 @@ export default function ProductsPage(){
                         ))}
                     </div> 
                 ))}
-                <div>add product nom : {label} prix : {prix} catégorie : {categorie}</div>
+                <div>add product nom : {labeladd} prix : {prixadd} catégorie : {categorieadd}</div>
+                <div>delete product id : {idDel}</div>
                 <button type="button" class="btn btn-warning products-addProductButton" onClick={handleShow}>Ajouter un produit</button>
             </div>
         
@@ -118,9 +134,8 @@ export default function ProductsPage(){
                     <div className="">
                         <select class="form-select" aria-label="Default select example" id ="categorie">
                             <option selected disabled="true">Catégories</option>
-                            <option value="1">Fruit</option>
-                            <option value="2">Legumes</option>
-                            <option value="3">dessert</option>
+                            {DATACatégories.map((catégorie) => (<option value={catégorie.id}>{catégorie.name}</option>))}
+                            
                         </select>
                     </div> 
                     <input type="number" class="form-control" id="prix" placeholder="Prix" />
