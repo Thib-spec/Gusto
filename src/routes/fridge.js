@@ -8,5 +8,7 @@ fridges.post('/',fridgeController.addFridge)
 fridges.put('/:id',fridgeController.editFridge)
 fridges.delete('/:id',fridgeController.deleteFridge)
 
+fridges.get('/:id/products',fridgeController.listProductByFridge)
+
 
 module.exports = fridges

@@ -1,4 +1,4 @@
-// const Model = require("../database/models");
+const Model = require("../database/models");
 const Joi = require('joi');
 
 
@@ -66,9 +66,7 @@ exports.addCategory = (req,res) =>{
     .then(category => res.status(200).json(category))
     .catch(error => res.status(400).json(error))
 
-    }
-
-        
+    }    
 }
 
 

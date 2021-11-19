@@ -11,6 +11,28 @@ exports.listFridges = (req, res) => {
     .catch(error => res.status(400).json(error))
 }
 
+exports.listProductByFridge = (req,res) => {
+    Model.Fridges.findOne({
+        where:{
+            id_fridge : req.params.id
+        }
+    })
+
+    .then((fridge) => {
+        if (!fridge) {
+            return res.status(400).json({
+                message: 'Fridge does not exist',
+            });
+        }
+        else {
+            Model.Products.findAll()
+            .then(product => res.status(200).json(product))
+            .catch(error => res.status(400).json(error))
+        }
+    })
+    .catch(error => res.status(400).json(error))
+}
+
 
 exports.getFridgeById = (req,res) => {
     Model.Fridges.findOne({
@@ -56,7 +78,6 @@ exports.addFridge = (req,res) =>{
         info: 'Requires: label, fk_id_technologie, fk_id_menu_preset' 
       })
     }
-
     else {
         
         Model.Fridges.create({
