@@ -38,7 +38,26 @@ exports.getCategoryById = (req,res) => {
 exports.addCategory = (req,res) =>{
     const { label, image, description} = req.body
 
-    console.log(req.body.label)
+    const postCategorySchema = Joi.object().keys({ 
+        label : Joi.string().required(),
+        image:Joi.string().required(),
+        description:Joi.string().required()
+    })
+
+    const result = postCategorySchema.validate(req.body)
+
+    const {error } = result;
+
+    const valid = error == null;
+
+    if (!valid) {
+      res.status(400).json({ 
+        message: 'Missing required parameters',
+        info: 'Requires: label, image, description' 
+      })
+    }
+
+    else {
         
         Model.Categories.create({
         label : label,
@@ -46,8 +65,10 @@ exports.addCategory = (req,res) =>{
         description:description
     })
 
-    .then(category => {
-        console.log(category)
-        res.status(200).json(category)})
+    .then(category => res.status(200).json(category))
     .catch(error => res.status(400).json(error))
+
+    }
+
+        
 }
