@@ -2,13 +2,12 @@ import React, { Component, useState } from "react";
 import Page from "Components/Page";
 import { Accordion, Row, Table, Card } from "react-bootstrap";
 
-const products = [
-  { id: 0, name: "Banane", quantity: 2, min: 10, max: 10 },
-  { id: 1, name: "Kiwi", quantity: 2, min: 10, max: 10 },
-  { id: 2, name: "Ananas", quantity: 2, min: 10, max: 10 },
+const menus = [
+  { id: 0, name: "Midi Lunch"},
+  { id: 1, name: "Soir Lunch"},
 ];
 
-export default function FrigesProduitCard({ name }) {
+export default function FrigesMenuCard({ name }) {
   return (
     <div class="card text-center h-100">
       <div class="card-header">{name}</div>
@@ -19,21 +18,15 @@ export default function FrigesProduitCard({ name }) {
             <thead>
               <tr>
                 {/* <th>#</th> */}
-                <th>Product</th>
-                <th>Quantity</th>
-                <th>Min</th>
-                <th>Max</th>
+                <th>Menu</th>
               </tr>
             </thead>
             <tbody>
-              {products.map((product) => {
+              {menus.map((menu) => {
                 return (
                   <tr>
                     {/* <td>{product.id}</td> */}
-                    <td>{product.name}</td>
-                    <td>{product.quantity}</td>
-                    <td>{product.min}</td>
-                    <td>{product.max}</td>
+                    <td>{menu.name}</td>
                   </tr>
                 );
               })}
@@ -41,13 +34,10 @@ export default function FrigesProduitCard({ name }) {
           </Table>
         </p>
         <a href="#" class="btn btn-primary m-1">
-          Add a product
+          Add a menu
         </a>
         <a href="#" class="btn btn-primary m-1">
-          Remove a product
-        </a>
-        <a href="#" class="btn btn-primary m-1">
-          passer une commande
+          Remove a menu
         </a>
       </div>
       {/* <div class="card-footer text-muted">Produits</div> */}

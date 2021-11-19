@@ -6,18 +6,12 @@ import '../CSS/dropdownComponent.scss'
 
 
 
-export default function DropdownComponent(props){
+export default function DropdownComponent({ description, title, status }){
     
     const[open,setOpen]= useState(false);
     
-    function handleClick(){
-        if (open===false){
-            setOpen(true)
-        }
-        else{
-            setOpen(false)
-        }
-        
+    function handleClick() {
+      setOpen(!open);
     }
 
 
@@ -26,18 +20,18 @@ export default function DropdownComponent(props){
             {open===true?
                 <div>
                     <div className="products-list-element-title-fold" onClick={()=>handleClick()}>
-                        <div>{props.title}</div>
+                        <div>{title}</div>
                         <div className="products-fold"><img width="100%" src={fold} alt=""/></div>
                     </div>
                     <div className="products-list-element-sub">
                         <div className="products-list-element-sub-description">
-                            {props.description}
+                            {description}
                         </div>
                     </div>
                 </div>   
             :
                 <div className="products-list-element-title-unfold" onClick={()=>handleClick()}>
-                    <div className="product-title-name">{props.title}</div>
+                    <div className="product-title-name">{title}</div>
                     
                     <div className="products-fold"><img width="100%" src={unfold} alt=""/></div>
                 </div>
