@@ -36,11 +36,12 @@ exports.getFridgeById = (req,res) => {
 /*********************** Ajouter le fait que la foreign key ne peut avoir comme valeur que les id présent dans la table source (level : 1:2:3 => user ne peut avoir en fk que 1, 2 et 3) */
 
 exports.addFridge = (req,res) =>{
-    const { label, fk_id_technology} = req.body
+    const { label, fk_id_technology, fk_id_menu_preset} = req.body
 
     const postFridgeSchema = Joi.object().keys({ 
         label : Joi.string().required(),
-        fk_id_technology:Joi.number().required()
+        fk_id_technology:Joi.number().required(),
+        fk_id_menu_preset:Joi.number().required()
     })
 
     const result = postFridgeSchema.validate(req.body)
@@ -52,7 +53,7 @@ exports.addFridge = (req,res) =>{
     if (!valid) {
       res.status(400).json({ 
         message: 'Missing required parameters',
-        info: 'Requires: label, fk_id_technologie' 
+        info: 'Requires: label, fk_id_technologie, fk_id_menu_preset' 
       })
     }
 
@@ -60,7 +61,8 @@ exports.addFridge = (req,res) =>{
         
         Model.Fridges.create({
         label : label,
-        fk_id_technology:fk_id_technology
+        fk_id_technology:fk_id_technology,
+        fk_id_menu_preset:fk_id_menu_preset
     })
 
     .then(fridge => res.status(200).json(fridge))

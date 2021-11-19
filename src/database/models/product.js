@@ -24,9 +24,14 @@ module.exports = (sequelize) => {
             });
 
             Products.belongsToMany(models.Orders, {
-                through: models.products_orders,
+                through: "products_orders",
                 foreignKey: "fk_id_order",
             });
+
+            Products.belongsToMany(models.MenusPresets,{
+                through:"menusPresets_products",
+                foreignKey:"fk_id_menu_preset"
+            })
         }
     }
 
