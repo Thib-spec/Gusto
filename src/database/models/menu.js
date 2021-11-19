@@ -45,7 +45,7 @@ Menus.init({
     
 }, {
     sequelize,
-    modelName: 'Menu',
+    modelName: 'Menus',
     timestamps: true,
     createdAt: true,
     updatedAt: true
