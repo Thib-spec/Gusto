@@ -56,7 +56,6 @@ exports.addFridge = (req,res) =>{
         info: 'Requires: label, fk_id_technologie, fk_id_menu_preset' 
       })
     }
-
     else {
         
         Model.Fridges.create({
