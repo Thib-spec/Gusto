@@ -1,9 +1,6 @@
-const Model = require("../database/models");
+// const Model = require("../database/models");
 const Joi = require('joi');
 
-// const Model = {
-//     Categories: require("../database/models/categories")(),           // config pour que l'ide propose les fonctions possibles
-// }
 
 exports.listCategories = (req, res) => {
     Model.Categories.findAll()
@@ -49,6 +46,7 @@ exports.addCategory = (req,res) =>{
     const {error } = result;
 
     const valid = error == null;
+
 
     if (!valid) {
       res.status(400).json({ 
