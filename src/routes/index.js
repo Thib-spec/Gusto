@@ -5,6 +5,7 @@ const router = express.Router();
 const userRouter = require('./user');
 const categoryRouter = require('./category');
 const productRouter = require('./product')
+const fridgeRouter = require("./fridge")
 
 
 /* ----------------------- */
@@ -27,6 +28,7 @@ const productRouter = require('./product')
 router.use('/user', userRouter);
 router.use('/category', categoryRouter);
 router.use('/product', productRouter)
+router.use('/fridge',fridgeRouter)
 
 
 
