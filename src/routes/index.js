@@ -4,6 +4,7 @@ const router = express.Router();
 // Include API routes
 const userRouter = require('./user');
 const categoryRouter = require('./category');
+const menuRouter = require('./menu');
 
 
 /* ----------------------- */
@@ -25,6 +26,7 @@ const categoryRouter = require('./category');
 // Handle main API routes
 router.use('/user', userRouter);
 router.use('/category', categoryRouter);
+router.use('/menu', menuRouter);
 
 
 
