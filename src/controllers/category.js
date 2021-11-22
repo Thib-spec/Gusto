@@ -30,6 +30,17 @@ exports.getCategoryById = (req,res) => {
     
 }
 
+exports.listProductByCategory = (req,res) => {
+    Model.Products.findAll({
+        where: {
+            fk_id_category:req.params.id
+        }
+    })
+    .then(product => res.status(200).json(product))
+    .catch(error => res.status(400).json(error))
+    
+}
+
 
 
 exports.addCategory = (req,res) =>{

@@ -12,24 +12,30 @@ exports.listFridges = (req, res) => {
 }
 
 exports.listProductByFridge = (req,res) => {
+
     Model.Fridges.findOne({
         where:{
-            id_fridge : req.params.id
+            id_fridge:req.params.id
         }
     })
-
+    
     .then((fridge) => {
         if (!fridge) {
             return res.status(400).json({
                 message: 'Fridge does not exist',
             });
         }
-        else {
-            Model.Products.findAll()
-            .then(product => res.status(200).json(product))
-            .catch(error => res.status(400).json(error))
-        }
-    })
+
+    else {
+        Model.Categories.findOne()
+        .then(category => Model.Products.findAll({
+            where:{
+                fk_id_category:category.id_category
+            }
+        }))
+        .then(products => res.status(200).json(products))
+    }})
+
     .catch(error => res.status(400).json(error))
 }
 
