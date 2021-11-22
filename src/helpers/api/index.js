@@ -18,11 +18,12 @@ const API = function ({ url, authToken, fake }) {
 
 // ---------- auth ---------- //
 
-API.prototype.login = async function ({ body } = {}) {
+API.prototype.login = function ({ body } = {}) {
+  console.log("wsh")
   if (this.fake) return loginData;
-  return await this.requester({
+  return this.requester({
     method: "POST",
-    path: "/auth/login",
+    path: "/api/user/login",
     body,
   });
 };
@@ -32,7 +33,7 @@ API.prototype.logout = async function ({ err } = {}) {
   // if (this.fake & !err) return require("helpers/api/fakeData/logout.json");
   // else if (this.fake & err)
   //   return require("helpers/api/fakeData/logout_err.json");
-  const res = await this.requester({ method: "GET", path: "/auth/logout" });
+  const res = await this.requester({ method: "GET", path: "/api/user/logout" });
   return res;
 };
 

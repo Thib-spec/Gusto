@@ -42,15 +42,50 @@ export default function FrigesProduitCard({ name }) {
               </tbody>
             </table>
           </p>
-          <a href="#" class="btn btn-primary m-1">
-            Add a product
-          </a>
-          <a href="#" class="btn btn-primary m-1">
-            Remove a product
-          </a>
-          <a href="#" class="btn btn-primary m-1">
-            passer une commande
-          </a>
+          <div className="row justify-content-center mb-2">
+            <div class="col m-1" align="center">
+              <button
+                onClick={() => {}}
+                type="submit"
+                className="btn btn-dark blue m-1"
+              >
+                Add a product
+              </button>
+              <button
+                onClick={() => {}}
+                type="submit"
+                className="btn btn-dark blue m-1"
+              >
+                Remove a product
+              </button>
+              <button
+                onClick={() => {}}
+                type="submit"
+                className="btn btn-dark blue m-1"
+              >
+                passer une commande
+              </button>
+            </div>
+          </div>
+
+          <div className="row justify-content-center">
+            <div class="col-6 m-1" align="center">
+              <button
+                onClick={() => {}}
+                type="submit"
+                className="btn btn-dark blue m-1"
+              >
+                Save
+              </button>
+              <button
+                onClick={() => {}}
+                type="submit"
+                className="btn btn-dark blue m-1"
+              >
+                Cancel
+              </button>
+            </div>
+          </div>
         </div>
         {/* <div class="card-footer text-muted">Produits</div> */}
       </div>

@@ -13,16 +13,27 @@ export default function LoginPage({ location, history }) {
   const dispatch = useDispatch();
 
   async function handleLogin() {
-    const res = await api.login({ body: { username, password } });
-    if (res.ok) {
-      const resJSON = await res.json();
-      dispatch(userActions.login({ ...resJSON, isLogged: true }));
-      localStorage.setItem("authToken", resJSON.authToken);
-      history.push("/");
-    } else {
+    console.log("salut")
+    try {
+      const res = await api.login({ body: { email:username, password } });
+      console.log(res)
+      if (res.ok) {
+        const resJSON = await res.json();
+        dispatch(userActions.login({ ...resJSON, isLogged: true }));
+        localStorage.setItem("authToken", resJSON.authToken);
+        history.push("/");
+      } else {
+        setAlert(
+          <div class="alert alert-danger" role="alert">
+            response status : {res.status}
+          </div>
+        );
+      }
+    } catch (error) {
+      console.log(error)
       setAlert(
         <div class="alert alert-danger" role="alert">
-          response status : {res.status}
+          error : 
         </div>
       );
     }

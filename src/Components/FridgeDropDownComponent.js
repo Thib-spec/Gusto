@@ -61,24 +61,6 @@ export default function FridgeDropDownComponent({
                     <FridgesGestionCard name="Gestion VMC" />
                     <div class="w-100"></div>
                   </div>
-                  <div className="row">
-                    <div class="col m-1">
-                      <button
-                        onClick={() => {}}
-                        type="submit"
-                        className="btn btn-dark blue mb-2 col"
-                      >
-                        Save
-                      </button>
-                      <button
-                        onClick={() => {}}
-                        type="submit"
-                        className="btn btn-dark blue mb-2 col"
-                      >
-                        Cancel
-                      </button>
-                    </div>
-                  </div>
                 </div>
               </div>
             </div>
