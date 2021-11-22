@@ -1,5 +1,6 @@
 const Model = require("../database/models");
 const Joi = require('joi');
+const { Op } = require("sequelize");
 
 
 // const Model = {
@@ -13,30 +14,46 @@ exports.listFridges = (req, res) => {
 }
 
 exports.listProductByFridge = (req,res) => {
+    let table= new Array()
 
     Model.Fridges.findOne({
-        include:Model.Client,
         where:{
             id_fridge:req.params.id
-        }
-    })
-    .then(Model.Categories.findOne({          // f.id_client
-        include:Model.Client,
-    })       
-    .then(a => res.json()))
+        },
+        include:[
+            { 
+              model: Model.Client, 
+              required: true,
+              include: [{model: Model.Categories, required: true }]
+            }
+          ]
+        })
+    .then(f => 
         
+            {
+                for (let i=0; i< 2;i++){
+      
+                    for(let j= 0;j<2;j++){
+                        table.push(f.Clients[i].Categories[0].id_category)
+                        console.log(table)
+                    }
+                
+                }
+                console.log(table)
+            })
 
-            
+            .then(Model.Products.findAll({
+                where:{
+                   fk_id_category: 1 
+                }
+
+            })
+            .then(a => res.json(a)))
+        
+        
+                       // f.Clients[0].Categories[0].id_category)
+                                                         // Clients[0] =>categories[0] et Clients [1] => categories [1]
     
-
-
-        // .then(f => res.json(f))
-        // .then(category => Model.Products.findAll({
-        //     where:{
-        //         fk_id_category:category.id_category
-        //     }
-        // }))
-        // .then(products => res.status(200).json(products))
     
 
     .catch(error => res.status(400).json(error))
