@@ -1,4 +1,3 @@
-// import "CSS/refrigerateursPage.css";
 // import "CSS/colors.css";
 import React, { Component, useState } from "react";
 import Page from "Components/Page";

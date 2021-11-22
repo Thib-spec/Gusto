@@ -45,7 +45,7 @@ export default function FridgesAccordion({ id, fridgeName, fridgeStatus }) {
               <div className="col blueviolet">
                 <FrigesProduitCard />
               </div>
-              <div className="col yellow">
+              <div className="col blue">
                 <FrigesProduitCard />
               </div>
             </div>

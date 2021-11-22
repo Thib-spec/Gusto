@@ -17,8 +17,8 @@ import CategoriesPage from "Pages/CategoriesPage";
 import HomePage from "Pages/HomePage";
 import LoginPage from "Pages/LoginPage";
 import ProductsPage from "Pages/ProductPage";
-import RefrigerateursPage from "Pages/RefrigerateursPage";
-import RefrigerateursPage2 from "Pages/RefrigerateursPage2";
+import FridgesPage from "Pages/FridgesPage";
+import FridgesPage2 from "Pages/FridgesPage2";
 import NotFoundPage from "Pages/NotFoundPage";
 import TestData from "Components/TestData";
 import Header from "Components/Header";
@@ -59,8 +59,8 @@ function AdminRouter({ history }) {
           <Route exact path="/" component={HomePage} />
           <Route path="/categories" component={CategoriesPage} />
           <Route path="/products" component={ProductsPage} />
-          {/* <Route path="/refrigerateurs" component={RefrigerateursPage} /> */}
-          <Route path="/refrigerateurs" component={RefrigerateursPage2} />
+          {/* <Route path="/friges" component={RefrigerateursPage} /> */}
+          <Route path="/fridges" component={FridgesPage2} />
           <Route path="/testHistory1" component={Test1} />
           <Route path="/testHistory2" component={Test2} />
           <Route path="/testData" component={TestData} />

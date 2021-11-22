@@ -54,8 +54,8 @@ export default function Header(){
         setpath("Accueil")
     }
     function handleFrigo(){
-        history.push("/refrigerateurs");
-        setpath("Réfrigérateurs")
+        history.push("/fridges");
+        setpath("Fridges")
     }
     function handleFrigo2(){
       history.push("/refrigerateurs2");
@@ -113,7 +113,7 @@ export default function Header(){
               className="header-bottom-menuList-button"
               onClick={handleFrigo}
             >
-              Réfrigérateurs
+              Fridges
             </div>
             <div
               className="header-bottom-menuList-button"
