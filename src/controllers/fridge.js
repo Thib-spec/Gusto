@@ -1,6 +1,7 @@
 const Model = require("../database/models");
 const Joi = require('joi');
 
+
 // const Model = {
 //     Categories: require("../database/models/categories")(),           // config pour que l'ide propose les fonctions possibles
 // }
@@ -8,6 +9,36 @@ const Joi = require('joi');
 exports.listFridges = (req, res) => {
     Model.Fridges.findAll()
     .then(fridge => res.status(200).json(fridge))
+    .catch(error => res.status(400).json(error))
+}
+
+exports.listProductByFridge = (req,res) => {
+
+    Model.Fridges.findOne({
+        include:Model.Client,
+        where:{
+            id_fridge:req.params.id
+        }
+    })
+    .then(Model.Categories.findOne({          // f.id_client
+        include:Model.Client,
+    })       
+    .then(a => res.json()))
+        
+
+            
+    
+
+
+        // .then(f => res.json(f))
+        // .then(category => Model.Products.findAll({
+        //     where:{
+        //         fk_id_category:category.id_category
+        //     }
+        // }))
+        // .then(products => res.status(200).json(products))
+    
+
     .catch(error => res.status(400).json(error))
 }
 
@@ -56,7 +87,6 @@ exports.addFridge = (req,res) =>{
         info: 'Requires: label, fk_id_technologie, fk_id_menu_preset' 
       })
     }
-
     else {
         
         Model.Fridges.create({

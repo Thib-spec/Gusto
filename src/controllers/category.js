@@ -1,4 +1,4 @@
-// const Model = require("../database/models");
+const Model = require("../database/models");
 const Joi = require('joi');
 
 
@@ -27,6 +27,17 @@ exports.getCategoryById = (req,res) => {
     })
     .catch(error => res.json(error))
  
+    
+}
+
+exports.listProductByCategory = (req,res) => {
+    Model.Products.findAll({
+        where: {
+            fk_id_category:req.params.id
+        }
+    })
+    .then(product => res.status(200).json(product))
+    .catch(error => res.status(400).json(error))
     
 }
 
@@ -66,9 +77,7 @@ exports.addCategory = (req,res) =>{
     .then(category => res.status(200).json(category))
     .catch(error => res.status(400).json(error))
 
-    }
-
-        
+    }    
 }
 
 
