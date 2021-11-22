@@ -12,6 +12,7 @@ import { useHistory } from 'react-router';
 import { useSelector, useDispatch } from "react-redux";
 import api from "helpers/api";
 import userActions from "store/actions/userActions";
+import HeaderProfil from './HeaderProfil'
 
 
 export default function Header(){
@@ -82,21 +83,8 @@ export default function Header(){
             <div className="header-top-name">{user.client}</div>
           </div>
           <div className="header-top-profil-container">
-            <div className="header-top-profil-whiteContainer">
-              {/* <div className="header-top-profil-whiteContainer-name">{DATAUtilisateurs.utilisateurs[0].firstname} {DATAUtilisateurs.utilisateurs[0].lasname}</div> */}
-              <div className="header-top-profil-whiteContainer-name">
-                {user.firstName} {user.lastName}
-              </div>
-              {/* <div className="header-top-profil-whiteContainer-statut">{DATAUtilisateurs.utilisateurs[0].statut}</div> */}
-              <div className="header-top-profil-whiteContainer-statut">
-                {user.level}
-              </div>
+            <HeaderProfil lastName={user.lastName} firstName={user.firstName} level={user.level}/>
             </div>
-            <div className="header-top-profil-whiteSpace"></div>
-            <div className="header-logo-container">
-              <img className="header-logo-pp" src={profilpp} alt="" />
-            </div>
-          </div>
         </div>
 
         <div className="header-bottom">

@@ -9,7 +9,8 @@ import { useEffect } from 'react';
 
 import {Modal, Button} from 'react-bootstrap'
 import DropdownComponent from 'Components/DropDownComponent';
-
+import Footer from 'Components/Footer';
+import HeaderProfil from 'Components/HeaderProfil';
 
 
 
@@ -43,7 +44,7 @@ export default function HomePage(){
     
     return(
         <div>
-          <DropdownComponent title="titre" description="description"/>
+            <HeaderProfil lastName="Defoort" firstName="Nicolas" level="admin"/>
         </div>
  
         
