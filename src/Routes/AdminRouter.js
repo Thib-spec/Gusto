@@ -26,6 +26,7 @@ import HeaderL from "Components/HeaderL";
 import { useSelector, useDispatch } from "react-redux";
 import api from "helpers/api";
 import userActions from "store/actions/userActions";
+import Footer from "Components/Footer";
 
 function AdminRouter({ history }) {
   const user = useSelector((state) => state.user.value);
@@ -65,6 +66,7 @@ function AdminRouter({ history }) {
           <Route path="/testData" component={TestData} />
           <Route path="/" component={NotFoundPage} />
         </Switch>
+        {/* <Footer/> */}
       </>
     );
   }

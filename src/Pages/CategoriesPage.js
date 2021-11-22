@@ -49,6 +49,24 @@ export default function CategoriesPage(){
         }
     }
 
+    //Update categorie
+
+    //hooks value of updated categories
+    const[idUpdate,setidUpdate]=useState(0)
+    const[descriptionUpdate,setDescriptionUpdate]=useState("")    
+
+    //when the client update a categorie and confirm it, 
+    function handleUpdateCategorie(id){
+        try{
+            let a = document.getElementById('descriptionCategorie'+id).value
+            setDescriptionUpdate(a)
+            setidUpdate(id)
+        }
+        catch(e){
+            console.log(e)
+        }
+    }
+
     //Dropdown categorie
 
     //initialise initTab as an array of false values (initTab.length = categorieList.length)
@@ -84,10 +102,10 @@ export default function CategoriesPage(){
                                 <div className="categories-list-element-sub">
                                     <div className="categories-list-element-sub-description">
                                         <img src={imgcategorie} alt=""/>
-                                        <textarea type="text" className=" categories-list-element-sub-description-input"  placeholder="Description de la catégorie" value={categories.description}/>
+                                        <textarea type="text" className=" categories-list-element-sub-description-input" id={"descriptionCategorie"+categories.id} placeholder="Description de la catégorie">{categories.description}</textarea>
                                     </div>
                                     <div class="categories-list-element-sub-buttons ">
-                                        <button type="button" className="categories-list-element-sub-buttons-element btn btn-info">Enregistrer</button>
+                                        <button type="button" className="categories-list-element-sub-buttons-element btn btn-info" onClick={()=>handleUpdateCategorie(categories.id)}>Enregistrer</button>
                                         <button type="button" className="categories-list-element-sub-buttons-element btn btn-danger" onClick={()=>handleDeleteCatégorie(categories.id)}>Supprimer</button>
                                     </div>
                                 </div>
@@ -102,6 +120,7 @@ export default function CategoriesPage(){
                 ))}
                 <div>add categorie nom : {catégorieAdd} </div>
                 <div>delete categorie id : {categorieDel}</div>
+                <div>update categorie id :{idUpdate} description :{descriptionUpdate}</div>
                 <button type="button" class="btn btn-warning categories-list-element-sub-buttons-element-addButton" onClick={handleShow}>Ajouter une catégorie</button>
             </div>
 
