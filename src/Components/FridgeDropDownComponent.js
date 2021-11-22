@@ -12,7 +12,8 @@ export default function FridgeDropDownComponent({
   title,
   status,
 }) {
-  const [open, setOpen] = useState(false);
+  const [open, setOpen] = useState(true);
+  // const [open, setOpen] = useState(false);
 
   function handleClick() {
     setOpen(!open);
@@ -49,28 +50,35 @@ export default function FridgeDropDownComponent({
               <div className="list-element-sub-description">
                 {/* {description} */}
 
-                <div className="container h-100 yellow">
+                <div className="container h-100">
                   {/* <div className="row row-cols-xl-2 d-flex flex-columns justify-content-center"> */}
-                  <div className="row row-cols-xl-2 justify-content-center red">
+                  <div className="row ">
                     {/* <div className="col red m-1 col-lg-4 col-md-6 col-sm-12"> */}
-                    <div className="col red m-1 col-lg-4 col-md-8 col-sm-12">
-                      <FrigesProduitCard name="Produits" />
-                    </div>
-                    <div className="col blue m-1 col-lg-4 col-md-6 col-sm-12">
-                      <FridgesMenusCard name="Menus" />
-                    </div>
-                    <div className="col blueviolet m-1 col-lg-4 col-md-6 col-sm-12">
-                      <FridgesGestionCard name="Gestion VMC" />
-                    </div>
-                    <div className="col blue m-1 col-lg-4 col-md-6 col-sm-12">
-                      <FridgesGestionCard name="Gestion VMC" />
+                    <FrigesProduitCard name="Produits" />
+                    <FridgesMenusCard name="Menus" />
+                    <div class="w-100"></div>
+                    <FridgesGestionCard name="Gestion VMC" />
+                    <FridgesGestionCard name="Gestion VMC" />
+                    <div class="w-100"></div>
+                  </div>
+                  <div className="row">
+                    <div class="col m-1">
+                      <button
+                        onClick={() => {}}
+                        type="submit"
+                        className="btn btn-dark blue mb-2 col"
+                      >
+                        Save
+                      </button>
+                      <button
+                        onClick={() => {}}
+                        type="submit"
+                        className="btn btn-dark blue mb-2 col"
+                      >
+                        Cancel
+                      </button>
                     </div>
                   </div>
-
-                  {/* <FrigesProduitCard name="Produits"/>
-                        <FridgesMenusCard name="Menus"/>
-                        <FridgesGestionCard name="Gestion VMC" />
-                        <FridgesGestionCard name="Gestion VMC" /> */}
                 </div>
               </div>
             </div>

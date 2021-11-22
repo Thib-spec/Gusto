@@ -59,7 +59,7 @@ function AdminRouter({ history }) {
           <Route path="/categories" component={CategoriesPage} />
           <Route path="/products" component={ProductsPage} />
           {/* <Route path="/friges" component={RefrigerateursPage} /> */}
-          <Route path="/friges" component={FridgesPage2} />
+          <Route path="/fridges" component={FridgesPage2} />
           <Route path="/testHistory1" component={Test1} />
           <Route path="/testHistory2" component={Test2} />
           <Route path="/testData" component={TestData} />

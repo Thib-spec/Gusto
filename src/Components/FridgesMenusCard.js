@@ -9,38 +9,41 @@ const menus = [
 
 export default function FrigesMenuCard({ name }) {
   return (
-    <div class="card text-center h-100">
-      <div class="card-header">{name}</div>
-      <div class="card-body">
-        {/* <h5 class="card-title">Special title treatment</h5> */}
-        <p class="card-text">
-          <Table striped bordered hover>
-            <thead>
-              <tr>
-                {/* <th>#</th> */}
-                <th>Menu</th>
-              </tr>
-            </thead>
-            <tbody>
-              {menus.map((menu) => {
-                return (
-                  <tr>
-                    {/* <td>{product.id}</td> */}
-                    <td>{menu.name}</td>
-                  </tr>
-                );
-              })}
-            </tbody>
-          </Table>
-        </p>
-        <a href="#" class="btn btn-primary m-1">
-          Add a menu
-        </a>
-        <a href="#" class="btn btn-primary m-1">
-          Remove a menu
-        </a>
+    // <div className="col red m-1 col-lg-4 col-md-8 col-sm-12">
+    <div className="col m-1" style={{ "min-width": "400px" }}>
+      <div class="card text-center h-100">
+        <div class="card-header">{name}</div>
+        <div class="card-body">
+          {/* <h5 class="card-title">Special title treatment</h5> */}
+          <p class="card-text">
+            <table class="table table-striped">
+              <thead>
+                <tr>
+                  {/* <th>#</th> */}
+                  <th>Menu</th>
+                </tr>
+              </thead>
+              <tbody>
+                {menus.map((menu) => {
+                  return (
+                    <tr>
+                      {/* <td>{product.id}</td> */}
+                      <td>{menu.name}</td>
+                    </tr>
+                  );
+                })}
+              </tbody>
+            </table>
+          </p>
+          <a href="#" class="btn btn-primary m-1">
+            Add a menu
+          </a>
+          <a href="#" class="btn btn-primary m-1">
+            Remove a menu
+          </a>
+        </div>
+        {/* <div class="card-footer text-muted">Produits</div> */}
       </div>
-      {/* <div class="card-footer text-muted">Produits</div> */}
     </div>
   );
 }

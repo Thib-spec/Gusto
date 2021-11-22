@@ -19,11 +19,18 @@ export default function LoginPage({ location, history }) {
       dispatch(userActions.login({ ...resJSON, isLogged: true }));
       localStorage.setItem("authToken", resJSON.authToken);
       history.push("/");
+    } else {
+      setAlert(
+        <div class="alert alert-danger" role="alert">
+          response status : {res.status}
+        </div>
+      );
     }
   }
 
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
+  const [alert, setAlert] = useState(<div></div>);
 
   return (
     <>
@@ -134,6 +141,7 @@ export default function LoginPage({ location, history }) {
             </div>
           </div>
         </div>
+        {alert}
       </Page>
     </>
   );
