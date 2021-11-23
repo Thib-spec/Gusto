@@ -2,6 +2,7 @@ const Model = require("../database/models");
 const Joi = require('joi');
 
 
+
 exports.listCategories = (req, res) => {
     Model.Categories.findAll()
     .then(category => res.status(200).json(category))
@@ -30,7 +31,29 @@ exports.getCategoryById = (req,res) => {
     
 }
 
+exports.listProductByCategory = (req, res) => {
+    Model.Categories.findOne({
+        where:{
+            Id_categories : req.params.id
+        }
+    })
+    .then((category) => {
+        if (!category) {
+            return res.status(400).json({
+                message: 'Category does not exist',
+            });
+        }
 
+        else {
+            Model.Products.findAll()
+                .then(product => res.status(200).json(product))
+                .catch(error => res.status(400).json(error))
+        }
+    })
+    .catch(error => res.json(error))
+ 
+    
+}
 
 exports.addCategory = (req,res) =>{
     const { label, image, description} = req.body

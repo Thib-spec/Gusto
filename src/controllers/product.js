@@ -1,6 +1,6 @@
 const Model = require("../database/models");
 const Joi = require('joi');
-const product = require("../database/models/product");
+const product = require("../database/models/products");
 
 // const Model = {
 //     Categories: require("../database/models/categories")(),           // config pour que l'ide propose les fonctions possibles
