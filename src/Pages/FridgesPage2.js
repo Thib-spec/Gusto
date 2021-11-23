@@ -1,30 +1,55 @@
 // import "CSS/colors.css";
-import React, { Component, useState } from "react";
+import React, { Component, useState, useEffect } from "react";
 import Page from "Components/Page";
 import { Accordion, Row, Table, Card } from "react-bootstrap";
-import FrigesProduitCard from "Components/FridgesProduitsCard";
-import FridgesAccordion from "Components/FridgesAccordion";
-import FridgeDropDownComponent from "Components/FridgeDropDownComponent";
+import FridgeProduitCard from "Components/FridgePage/FridgeProduitsCard";
+import FridgeAccordion from "Components/FridgePage/FridgeAccordion";
+import FridgeDropDownComponent from "Components/FridgePage/FridgeDropDownComponent";
 import DropDownComponent from "Components/DropDownComponent";
+import { useSelector, useDispatch } from "react-redux";
+import api from "helpers/api";
 
 export default function RefrigerateursPage() {
   function handleNothing() {}
 
-  const [produits, setProduits] = useState([
-    { id: 0, name: "Banane", quantity: 2, min: 10, max: 10 },
-    { id: 1, name: "Kiwi", quantity: 6, min: 3, max: 8 },
-    { id: 2, name: "Ananas", quantity: 2, min: 2, max: 4 },
-  ]);
+  useEffect(() => {
+    getFridges();
+  }, []);
 
+  async function getFridges() {
+    try {
+      const res = await api.getFridges();
+      if (res.ok) {
+        const resJSON = await res.json();
+        setFridges(resJSON)
+      } else {
+        
+      }
+    } catch (error) {
+      console.log(error)
+      
+    }
+  }
+  
   const status = [
     {id:1, message:"En production", inProduction:true},
     {id:2, message:"Hors service", horsService:true},
     {id:3, message:"Livraison en cours", livraison:true},
   ]
 
+  // const [fridges, setFridges] = useState([
+  //   { id: 0, name: "fridge1", status:status[2] },
+  //   { id: 1, name: "fridge2", status:status[1] },
+  //   { id: 2, name: "fridge3", status:status[0] },
+  // ]);
+  const [fridges, setFridges] = useState([]);
+
+
   return (
     <>
       <Page>
+
+        {/* test avec Accordion de Boostrap : ne marche pas */}
         <Accordion defaultActiveKey="1">
           <Accordion.Item eventKey="0">
             <Accordion.Header>Accordion Item #1</Accordion.Header>
@@ -39,36 +64,22 @@ export default function RefrigerateursPage() {
             </Accordion.Body>
           </Accordion.Item>
 
-          <FridgesAccordion
+          {/* <FridgeAccordion
             id={2}
             fridgeName="FRIDGE #2"
             fridgeStatus="En production"
-          />
-          
+          /> */}
+
         </Accordion>
-        
+        {/* fin test avec Accordion de Boostrap */}
 
-        <FridgeDropDownComponent
-          title={`fridge1`}
-          description="test"
-          status={status[2]}
-        />
-        <FridgeDropDownComponent
-          title={`fridge2`}
-          description="test"
-          status={status[1]}
-        />
-        <FridgeDropDownComponent
-          title={`fridge3`}
-          description="test"
-          status={status[0]}
-        />
+        {fridges.map(fridge=>{
+          return (<FridgeDropDownComponent
+            fridge={fridge}
+            key={fridge.id}
+          />)
+        })}
 
-        <DropDownComponent
-          title={`fridge1`}
-          description="test"
-          status={status[0]}
-        />
       </Page>
     </>
   );

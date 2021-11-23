@@ -12,6 +12,7 @@ export default function LoginPage({ location, history }) {
   const user = useSelector((state) => state.user.value);
   const dispatch = useDispatch();
 
+  // appel api
   async function handleLogin() {
     console.log("salut")
     try {
@@ -47,7 +48,6 @@ export default function LoginPage({ location, history }) {
     <>
       <Page>
         <div
-          // className={`row justify-content-center d-flex flex-column align-items-center ${
           className={`row justify-content-center ${
             global.colorFull ? "green" : ""
           }`}
@@ -58,16 +58,12 @@ export default function LoginPage({ location, history }) {
             }`}
           >
             <div
-              // className={`card h-100 col-12 col-sm-11 col-md-9 col-lg-8 col-xl-6 ${
-              //   global.colorFull ? "bg-dark" : ""
-              // }`}
               className={`card mycard ${global.colorFull ? "bg-dark" : ""}`}
             >
               <div className="card-body p-5 text-center">
                 <div className="">
                   <img
                     className="card-img-top"
-                    // src="/Logo_Gusto_Colors.svg"
                     src={logoGustoColors}
                     alt="Card image cap"
                   />

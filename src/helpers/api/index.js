@@ -4,6 +4,8 @@ import requester from "./requester";
 import loginData from "./fakeData/login";
 import logoutData from "./fakeData/logout";
 import getInfoData from "./fakeData/getInfo";
+import getFridgesData from "./fakeData/getFridgesData";
+import getProductsInFridgeData from "./fakeData/getProductsInFridgeData";
 
 const API = function ({ url, authToken, fake }) {
   this.fake = fake == undefined ? true : fake;
@@ -19,7 +21,6 @@ const API = function ({ url, authToken, fake }) {
 // ---------- auth ---------- //
 
 API.prototype.login = function ({ body } = {}) {
-  console.log("wsh")
   if (this.fake) return loginData;
   return this.requester({
     method: "POST",
@@ -28,19 +29,34 @@ API.prototype.login = function ({ body } = {}) {
   });
 };
 
-API.prototype.logout = async function ({ err } = {}) {
+API.prototype.logout = async function ({} = {}) {
   if (this.fake) return logoutData;
-  // if (this.fake & !err) return require("helpers/api/fakeData/logout.json");
-  // else if (this.fake & err)
-  //   return require("helpers/api/fakeData/logout_err.json");
   const res = await this.requester({ method: "GET", path: "/api/user/logout" });
   return res;
 };
 
-API.prototype.getInfo = async function ({ body } = {}) {
+API.prototype.getInfo = async function ({} = {}) {
   if (this.fake) return getInfoData;
-  const res = await this.requester({ method: "GET", path: "/me/info", body });
+  const res = await this.requester({ method: "GET", path: "/me/info" });
   return res;
+};
+
+// ---------- fridge ---------- //
+
+API.prototype.getFridges = function ({} = {}) {
+  if (this.fake) return getFridgesData;
+  return this.requester({
+    method: "GET",
+    path: "/fridges",
+  });
+};
+
+API.prototype.getProductsInFridge = function ({ id } = {}) {
+  if (this.fake) return getProductsInFridgeData;
+  return this.requester({
+    method: "GET",
+    path: `/fridges/${id}/products`,
+  });
 };
 
 // ---------- users ---------- //
@@ -51,16 +67,6 @@ API.prototype.getUsers = async function ({}) {
 };
 
 API.prototype.createUser = async function ({ body }) {
-  if (this.fake)
-    return {
-      success: 1,
-      userCreated: {
-        id: 1,
-        username: "luky",
-        phoneNumber: "0607080910",
-      },
-      token: "bhsbhjs",
-    };
   const res = await this.requester({ method: "POST", path: "/users", body });
   return res;
 };
