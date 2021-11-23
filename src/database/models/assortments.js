@@ -18,7 +18,10 @@ module.exports = (sequelize) => {
             Assortment.hasOne(models.Fridges,{
                 foreignKey:"fk_id_assortment"
             })
-            
+            Assortment.belongsToMany(models.Client,{
+                through:"clients_assortments",
+                foreignKey:"fk_id_client"
+            })
         }
     }
 
