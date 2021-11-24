@@ -37,7 +37,18 @@ exports.listProductByCategory = (req,res) => {
             fk_id_category:req.params.id
         }
     })
-    .then(product => res.status(200).json(product))
+    .then(product => {
+
+        if(product.length ==0){
+            res.status(200).json({
+                message:`Category with id ${req.params.id} does not have any product`
+            })
+        }
+        else {
+              res.status(200).json(product)
+        }
+    })
+
     .catch(error => res.status(400).json(error))
     
 }

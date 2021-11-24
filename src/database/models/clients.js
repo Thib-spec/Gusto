@@ -9,21 +9,12 @@ module.exports = (sequelize) => {
                 foreignKey: "fk_id_client",
                 sourceKey: "id_client"
             })
-        
-            Client.belongsToMany(models.Categories,{
-                through: 'clients_categories',
-                foreignKey: 'fk_id_category'               
-            })
 
-            Client.belongsToMany(models.Fridges,{      
+            Client.belongsToMany(models.Fridges,{     
                 through:"clients_fridges",
                 foreignKey:"fk_id_fridge"
             })
-            Client.belongsToMany(models.Assortment,{
-                through:"clients_assortments",
-                foreignKey:"fk_id_assortment"
-            })
-         }
+        }
     }
 
 Client.init({
