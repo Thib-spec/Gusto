@@ -37,15 +37,12 @@ exports.getProductById = (req,res) => {
 
 
 exports.addProduct = (req,res) =>{
-    const {label, image, price, quantity, quantity_min, quantity_max, ubd, description, fk_id_category } = req.body
+    const {label, image, price, ubd, description, fk_id_category } = req.body
 
     const postProductSchema = Joi.object().keys({ 
         label : Joi.string().required(),
         image:Joi.string().required(),
         price:Joi.number().required(),
-        quantity:Joi.number().required(),
-        quantity_min:Joi.number().required(),
-        quantity_max:Joi.number().required(),
         ubd:Joi.string().required(),
         description:Joi.string().required(),
         fk_id_category:Joi.number().required()
@@ -70,9 +67,6 @@ exports.addProduct = (req,res) =>{
         label : label,
         image:image,
         price:price,
-        quantity:quantity,
-        quantity_min:quantity_min,
-        quantity_max:quantity_max,
         ubd:ubd,
         description:description,
         fk_id_category:fk_id_category
@@ -88,7 +82,7 @@ exports.addProduct = (req,res) =>{
 
 exports.editProduct =(req,res) => {
 
-    const { label, image, price, quantity, quantity_min, quantity_max, ubd, description, fk_id_category} = req.body
+    const { label, image, price, ubd, description, fk_id_category} = req.body
 
     Model.Products.findOne({
         where: {
@@ -107,9 +101,6 @@ exports.editProduct =(req,res) => {
             label : Joi.string(),
             image:Joi.string(),
             price:Joi.number(),
-            quantity:Joi.number(),
-            quantity_min:Joi.number(),
-            quantity_max:Joi.number(),
             ubd:Joi.string(),
             description:Joi.string(),
             fk_id_category:Joi.number()
@@ -130,9 +121,6 @@ exports.editProduct =(req,res) => {
                 label : label,
                 image:image,
                 price:price,
-                quantity:quantity,
-                quantity_min:quantity_min,
-                quantity_max:quantity_max,
                 ubd:ubd,
                 description:description,
                 fk_id_category:fk_id_category
