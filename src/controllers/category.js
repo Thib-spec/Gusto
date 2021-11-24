@@ -31,29 +31,18 @@ exports.getCategoryById = (req,res) => {
     
 }
 
-exports.listProductByCategory = (req, res) => {
-    Model.Categories.findOne({
-        where:{
-            Id_categories : req.params.id
+exports.listProductByCategory = (req,res) => {
+    Model.Products.findAll({
+        where: {
+            fk_id_category:req.params.id
         }
     })
-    .then((category) => {
-        if (!category) {
-            return res.status(400).json({
-                message: 'Category does not exist',
-            });
-        }
-
-        else {
-            Model.Products.findAll()
-                .then(product => res.status(200).json(product))
-                .catch(error => res.status(400).json(error))
-        }
-    })
-    .catch(error => res.json(error))
- 
+    .then(product => res.status(200).json(product))
+    .catch(error => res.status(400).json(error))
     
 }
+
+
 
 exports.addCategory = (req,res) =>{
     const { label, image, description} = req.body

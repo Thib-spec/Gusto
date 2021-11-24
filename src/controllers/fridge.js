@@ -1,5 +1,9 @@
 const Model = require("../database/models");
 const Joi = require('joi');
+const { Op } = require("sequelize");
+const fridges = require("../routes/fridge");
+const product = require("../database/models/product");
+
 
 // const Model = {
 //     Categories: require("../database/models/categories")(),           // config pour que l'ide propose les fonctions possibles
@@ -11,26 +15,110 @@ exports.listFridges = (req, res) => {
     .catch(error => res.status(400).json(error))
 }
 
-exports.listProductByFridge = (req,res) => {
+
+
+exports.listProductByFridge = (req,res) =>{
     Model.Fridges.findOne({
         where:{
-            id_fridge : req.params.id
-        }
+            id_fridge:req.params.id
+        },
     })
+    .then(fridge=> {
+        return fridge.getProducts()
+    })
+    .then(products=> console.log(products))
+    .catch(error => console.log(error))
 
-    .then((fridge) => {
-        if (!fridge) {
-            return res.status(400).json({
-                message: 'Fridge does not exist',
-            });
-        }
-        else {
-            Model.Products.findAll()
-            .then(product => res.status(200).json(product))
-            .catch(error => res.status(400).json(error))
+}
+
+exports.addProduct = (req,res) =>{
+    Model.Fridges.findOne({
+        where:{
+            id_fridge:req.params.id
+        },
+    })
+    .then(fridge=> {
+        return fridge.addProducts(req.body) // [1,3]
+    })
+    .then(products=> console.log(products))
+    .catch(error => console.log(error))
+
+}
+
+
+// exports.listProductByFridge = (req,res) => {
+//     let table= new Array()
+
+//     Model.Fridges.findOne({
+//         where:{
+//             id_fridge:req.params.id
+//         },
+//         include: [
+//             {
+//               model: Model.Client,
+//               attributes:["id_client"],
+              
+//               include:{
+//                 model:Model.Categories,
+//                 attributes:["id_category"]
+//               }
+//             },
+          
+//         ]
+//     })
+
+//     .then(a => {
+//         for (let i=0;i< a.Clients.length;i++) {
+
+//             Model.Products.findAll({
+                
+//                 where:{
+//                     fk_id_category: a.Clients[i].Categories[0].clients_categories.fk_id_category        // a voir pour boucler sur Client
+//                 }
+               
+//             }) 
+//         }
+//         console.log(table)
+        
+// })
+        
+        
+    
+ 
+
+
+    // .then(r => {
+
+    //     Model.Client.count().then(c => {
+
+    //         for (let i = 0; i< c-1;i++)
+    //         {
+    //             table.push(r.Clients[i].id_client)
+    //         }
+
+    //         if(table.length != 0){
+    //             console.log(table)
+    //         }
+    // })
+
+        
+                       // f.Clients[0].Categories[0].id_category)
+                                                         // Clients[0] =>categories[0] et Clients [1] => categories [1]
+    
+    
+
+//     .catch(error => res.status(400).json(error))
+// }
+
+
+exports.getNumberOfClientByFridge = (req,res) => {
+    Model.Fridges.findOne({
+        include: Model.Client,
+        where:{
+            id_fridge:req.params.id
         }
     })
-    .catch(error => res.status(400).json(error))
+    .then(a => res.json(a.Clients.length))
 }
 
 
