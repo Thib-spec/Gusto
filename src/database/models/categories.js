@@ -6,8 +6,7 @@ class Categories extends Model{
 
     static associate(models){
         
-       Categories.belongsToMany(models.Client,{
-           through: 'clients_categories',
+       Categories.belongsTo(models.Client,{
            foreignKey: 'fk_id_client'               // à tester
        })
     }

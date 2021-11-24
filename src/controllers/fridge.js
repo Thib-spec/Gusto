@@ -1,8 +1,5 @@
 const Model = require("../database/models");
 const Joi = require('joi');
-const { Op } = require("sequelize");
-const fridges = require("../routes/fridge");
-const product = require("../database/models/product");
 
 
 // const Model = {
@@ -26,10 +23,162 @@ exports.listProductByFridge = (req,res) =>{
     .then(fridge=> {
         return fridge.getProducts()
     })
-    .then(products=> console.log(products))
+    .then(products =>{
+        if(products.length == 0){
+            return res.status(400).json({
+                message:`Fridge with id ${req.params.id} does not have any product`
+            })
+        }
+
+        else {
+            return res.status(200).json(products)
+        }
+    })
     .catch(error => console.log(error))
 
 }
+
+exports.listClientByFridge = (req,res) => {
+    Model.Fridges.findOne({
+        where:{
+            id_fridge : req.params.id
+        },
+    })
+
+    .then(fridge =>{
+        if (!fridge) {
+            return res.status(400).json({
+                message: 'Fridge does not exist',
+            });
+        }
+
+        else {
+            return fridge.getClients()
+        }
+
+    })
+    .then(clients =>{
+        if(clients.length == 0){
+            return res.status(400).json({
+                message:`Fridge with id ${req.params.id} does not have any client`
+            })
+        }
+
+        else {
+            return res.status(200).json(clients)
+        }
+    })
+    .catch(error => res.status(400).json(error))
+}
+
+
+exports.listBadgeByFridge = (req,res) => {
+    Model.Fridges.findOne({
+        where:{
+            id_fridge : req.params.id
+        },
+    })
+
+    .then(fridge =>{
+        if (!fridge) {
+            return res.status(400).json({
+                message: 'Fridge does not exist',
+            });
+        }
+
+        else {
+            return fridge.getBadges()
+
+        }
+
+    })
+    .then(badges =>{
+        if(badges.length == 0){
+            return res.status(400).json({
+                message:`Fridge with id ${req.params.id} does not have any badge`
+            })
+        }
+
+        else {
+            return res.status(200).json(badges)
+        }
+    })
+    .catch(error => res.status(400).json(error))
+}
+
+
+
+exports.listMenuByFridge = (req,res) => {
+    Model.Fridges.findOne({
+        where:{
+            id_fridge : req.params.id
+        },
+    })
+
+    .then(fridge =>{
+        if (!fridge) {
+            return res.status(400).json({
+                message: 'Fridge does not exist',
+            });
+        }
+
+        else {
+            return fridge.getMenus()  
+        }
+    })
+    .then(menus =>{
+        if(menus.length == 0){
+            return res.status(400).json({
+                message:`Fridge with id ${req.params.id} does not have any menu`
+            })
+        }
+
+        else {
+            return res.status(200).json(menus)
+        }
+    })
+    .catch(error => res.status(400).json(error))
+}
+
+
+exports.listDeliverybyProduct = (req,res) => {
+    Model.Fridges.findOne({
+        where:{
+            id_fridge : req.params.id
+        },
+    })
+
+    .then(fridge =>{
+        if (!fridge) {
+            return res.status(400).json({
+                message: 'Fridge does not exist',
+            });
+        }
+        else{
+            Model.Deliveries.findAll({
+                where:{
+                    fk_id_fridge: req.params.id
+                }
+
+            })
+            .then(delivery => {
+
+                if(delivery.length ==0){
+                    res.status(200).json({
+                        message:`Fridge with id ${req.params.id} does not have any delivery`
+                    })
+                }
+                else {
+                    res.status(200).json(delivery)
+                }
+        })
+    }
+})
+.catch(error => res.json(error))
+
+}
+
+
 
 exports.addProduct = (req,res) =>{
     Model.Fridges.findOne({

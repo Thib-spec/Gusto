@@ -36,6 +36,16 @@ Deliveries.init({
         type: DataTypes.STRING,
         allowNull: false
     },
+
+    planned_date:{
+        type:DataTypes.STRING,
+        allowNull:false
+    },
+
+    creation_date:{
+        type:DataTypes.STRING,
+        allowNull:false
+    }
    
 }, {
     sequelize,

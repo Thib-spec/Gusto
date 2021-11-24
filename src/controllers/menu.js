@@ -1,8 +1,6 @@
-const { session } = require("passport");
 const Model = require("../database/models");
-const security = require("../helpers/security")
 const Joi = require('joi');
-const menu = require("../database/models/menus");
+
 // const Model = {
 //     Users: require("../database/models/users")(),           // config pour que l'ide propose les fonctions possibles
 // }
@@ -50,9 +48,19 @@ const menu = require("../database/models/menus");
             }
     
             else {
-                Model.Products.findAll()
-                    .then(menu => res.status(200).json(menu))
-                    .catch(error => res.status(400).json(error))
+                menu.getProducts()
+                .then(products =>{
+            
+                    if(products.length == 0){
+                        return res.status(400).json({
+                            message:`Menu with id ${req.params.id} does not have any product`
+                        })
+                    }
+                    
+                    else {
+                        return res.status(200).json(products)
+                    }
+                })
             }
         })
         .catch(error => res.json(error))
@@ -60,14 +68,7 @@ const menu = require("../database/models/menus");
 
     exports.addMenu = (req,res) =>{
         const { image, price, web_label, fridge_label, fk_id_client } = req.body;
-
-    //    // Check email format 
-    //    if(!email.match("^.{1,}@[^.]{1,}")){
-    //        return res.status(400).json({
-    //            message: "Invalid format for email",
-    //            info:"email must match following pattern : abc@gmail.com"
-    //        })
-    //    }
+        const table = new Array()
 
        const postMenuSchema = Joi.object().keys({ 
         image: Joi.string().required(),
@@ -94,18 +95,41 @@ const menu = require("../database/models/menus");
 
     else {
 
-       Model.Menus.create({ 
-        image:image,
-        price:price,
-        web_label:web_label,
-        fridge_label:fridge_label,
-        fk_id_client:fk_id_client
-    })
-    
-    .then(menu => res.status(200).json(menu))
-    .catch(error => res.status(400).json(error))
+        Model.Client.findAll({
+            attributes:["id_client"]
+        })
+        .then(client => {
+            Model.Client.count()
+            .then(numberOfClient => {
+                for(let i = 0;i<numberOfClient;i++){
+                    table.push(client[i].id_client)
+                }
+                
+
+                console.log(table)
+                if(!table.includes(fk_id_client)){
+                    res.status(400).json({
+                        message: `fk_id_client does not match any id_client`
+                    })
+                }
+        
+                else {
+                
+               Model.Menus.create({ 
+                image:image,
+                price:price,
+                web_label:web_label,
+                fridge_label:fridge_label,
+                fk_id_client:fk_id_client
+            })
+            
+            .then(menu => res.status(200).json(menu))
+
+            }})
+        })
     }
 }
+
 
 
 exports.editMenu = (req,res) => {

@@ -1,6 +1,4 @@
-const { session } = require("passport");
 const Model = require("../database/models");
-const security = require("../helpers/security")
 const Joi = require('joi');
 // const Model = {
 //     Users: require("../database/models/users")(),           // config pour que l'ide propose les fonctions possibles
@@ -9,6 +7,42 @@ const Joi = require('joi');
     exports.listClients = (req, res) => {
         Model.Client.findAll()
         .then(client => res.status(200).json(client))
+        .catch(error => res.status(400).json(error))
+    }
+
+    exports.listCategoryByClient = (req,res) => {
+        Model.Client.findOne({
+            where:{
+                id_client : req.params.id
+            }
+        })
+        .then((client) => {
+            if (!client) {
+                return res.status(400).json({
+                    message: 'Client not found',
+                });
+            }
+
+            else {
+                Model.Categories.findAll({
+                    where:{
+                        fk_id_client: req.params.id
+                    }
+                })
+                .then(categories => { 
+                    if(categories.length ==0){
+                        res.status(200).json({
+                            message:`Client with id ${req.params.id} does not have any category`
+                        })
+                    }
+                    else {
+                          res.status(200).json(categories)
+                    }
+                })
+                      
+                
+            }
+        })
         .catch(error => res.status(400).json(error))
     }
 

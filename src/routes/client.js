@@ -8,4 +8,7 @@ clients.post('/',clientController.addClient)
 clients.put('/:id',clientController.editClient)
 clients.delete('/:id',clientController.deleteClient)
 
+
+clients.get('/:id/categories',clientController.listCategoryByClient)
+
 module.exports = clients
