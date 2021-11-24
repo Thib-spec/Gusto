@@ -19,6 +19,10 @@ module.exports = (sequelize) => {
                 through:"clients_fridges",
                 foreignKey:"fk_id_fridge"
             })
+            Client.belongsToMany(models.Assortment,{
+                through:"clients_assortments",
+                foreignKey:"fk_id_assortment"
+            })
          }
     }
 

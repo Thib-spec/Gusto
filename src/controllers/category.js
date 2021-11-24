@@ -2,6 +2,7 @@ const Model = require("../database/models");
 const Joi = require('joi');
 
 
+
 exports.listCategories = (req, res) => {
     Model.Categories.findAll()
     .then(category => res.status(200).json(category))
@@ -41,6 +42,16 @@ exports.listProductByCategory = (req,res) => {
     
 }
 
+        else {
+            Model.Products.findAll()
+                .then(product => res.status(200).json(product))
+                .catch(error => res.status(400).json(error))
+        }
+    })
+    .catch(error => res.json(error))
+ 
+    
+}
 
 
 exports.addCategory = (req,res) =>{
