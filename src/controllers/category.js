@@ -42,16 +42,6 @@ exports.listProductByCategory = (req,res) => {
     
 }
 
-        else {
-            Model.Products.findAll()
-                .then(product => res.status(200).json(product))
-                .catch(error => res.status(400).json(error))
-        }
-    })
-    .catch(error => res.json(error))
- 
-    
-}
 
 
 exports.addCategory = (req,res) =>{
