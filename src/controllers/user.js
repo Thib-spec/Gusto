@@ -12,6 +12,34 @@ const Joi = require('joi');
         .catch(error => res.status(400).json(error))
     }
 
+    exports.listUserByLevel = (req, res) => {
+        Model.Levels.findOne({
+            where:{
+                label : req.params.label
+            }
+        })
+
+        .then((level) => {
+            if (!level) {
+                return res.status(400).json({
+                    message: 'Level does not exist',
+                });
+            }
+    
+            else {
+                Model.Users.findAll({
+                    where:{
+                        fk_id_level: level.id_level
+                    }
+                })
+                    .then(user => res.status(200).json(user))
+                    .catch(error => res.status(400).json(error))
+            }
+        })
+        .catch(error => res.json(error))
+     
+        
+    }
 
     exports.getUserById = (req,res) => {
         Model.Users.findOne({

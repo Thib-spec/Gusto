@@ -2,7 +2,7 @@ const { session } = require("passport");
 const Model = require("../database/models");
 const security = require("../helpers/security")
 const Joi = require('joi');
-const menu = require("../database/models/menu");
+const menu = require("../database/models/menus");
 // const Model = {
 //     Users: require("../database/models/users")(),           // config pour que l'ide propose les fonctions possibles
 // }
@@ -34,6 +34,28 @@ const menu = require("../database/models/menu");
         .catch(error => res.status(400).json(error))
      
         
+    }
+
+    exports.listProductByMenu = (req, res) => {
+        Model.Menus.findOne({
+            where:{
+                id_menu : req.params.id
+            }
+        })
+        .then((menu) => {
+            if (!menu) {
+                return res.status(400).json({
+                    message: 'Menu does not exist',
+                });
+            }
+    
+            else {
+                Model.Products.findAll()
+                    .then(menu => res.status(200).json(menu))
+                    .catch(error => res.status(400).json(error))
+            }
+        })
+        .catch(error => res.json(error))
     }
 
     exports.addMenu = (req,res) =>{
