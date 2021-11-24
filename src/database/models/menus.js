@@ -10,6 +10,7 @@ module.exports = (sequelize) => {
             })
             
             Menus.belongsToMany(models.Products, {
+                as:"products",
                 through: "menus_products",
                 foreignKey: "fk_id_product",
             });

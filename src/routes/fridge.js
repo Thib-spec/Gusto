@@ -15,6 +15,7 @@ fridges.post('/:id/addProducts',fridgeController.addProduct) // [2,3]
 fridges.get('/:id/clients',fridgeController.listClientByFridge)
 fridges.get('/:id/badges',fridgeController.listBadgeByFridge)
 fridges.get('/:id/menus',fridgeController.listMenuByFridge)
+fridges.get('/:id/deliveries',fridgeController.listDeliverybyProduct)
 
 
 module.exports = fridges

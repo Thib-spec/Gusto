@@ -141,6 +141,44 @@ exports.listMenuByFridge = (req,res) => {
 }
 
 
+exports.listDeliverybyProduct = (req,res) => {
+    Model.Fridges.findOne({
+        where:{
+            id_fridge : req.params.id
+        },
+    })
+
+    .then(fridge =>{
+        if (!fridge) {
+            return res.status(400).json({
+                message: 'Fridge does not exist',
+            });
+        }
+        else{
+            Model.Deliveries.findAll({
+                where:{
+                    fk_id_fridge: req.params.id
+                }
+
+            })
+            .then(delivery => {
+
+                if(delivery.length ==0){
+                    res.status(200).json({
+                        message:`Fridge with id ${req.params.id} does not have any delivery`
+                    })
+                }
+                else {
+                    res.status(200).json(delivery)
+                }
+        })
+    }
+})
+.catch(error => res.json(error))
+
+}
+
+
 
 exports.addProduct = (req,res) =>{
     Model.Fridges.findOne({

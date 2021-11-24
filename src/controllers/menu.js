@@ -48,9 +48,19 @@ const Joi = require('joi');
             }
     
             else {
-                Model.Products.findAll()
-                    .then(menu => res.status(200).json(menu))
-                    .catch(error => res.status(400).json(error))
+                menu.getProducts()
+                .then(products =>{
+            
+                    if(products.length == 0){
+                        return res.status(400).json({
+                            message:`Menu with id ${req.params.id} does not have any product`
+                        })
+                    }
+                    
+                    else {
+                        return res.status(200).json(products)
+                    }
+                })
             }
         })
         .catch(error => res.json(error))
