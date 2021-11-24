@@ -1,13 +1,13 @@
 const {DataTypes, Model } = require("sequelize");
 
 module.exports = (sequelize) => {
-    class assortment_products extends Model{
+    class fridgePresets_products extends Model{
     }
 
 
-    assortment_products.init({
+    fridgePresets_products.init({
 
-    id_assortment: {
+    id_fridgePresets_products: {
         type: DataTypes.INTEGER,
         primaryKey: true,
         autoIncrement: true,
@@ -26,13 +26,13 @@ module.exports = (sequelize) => {
     
 }, {
     sequelize,
-    modelName: 'assortment_products',
+    modelName: 'fridgePresets_products',
     timestamps: true,
     createdAt: true,
     updatedAt: true
 
 })
 
-return assortment_products
+return fridgePresets_products
 
 }

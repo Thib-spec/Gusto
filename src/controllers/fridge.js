@@ -1,8 +1,5 @@
 const Model = require("../database/models");
 const Joi = require('joi');
-const { Op } = require("sequelize");
-const fridges = require("../routes/fridge");
-const product = require("../database/models/product");
 
 
 // const Model = {

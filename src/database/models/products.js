@@ -28,17 +28,15 @@ module.exports = (sequelize) => {
                 foreignKey: "fk_id_order",
             });
 
-            Products.belongsToMany(models.Assortment,{
-                through:"assortment_products",
-                foreignKey:"fk_id_assortment"
+            Products.belongsToMany(models.FridgePresets,{
+                through:"fridgePresets_products",
+                foreignKey:"fk_id_fridgePresets"
             })
 
             
             Products.belongsToMany(models.Fridges,{
-                through:"products_fridges",
+                through:"fridges_products",
                 foreignKey:"fk_id_fridge",
-                targetKey:"id_fridge",
-                sourceKey:"id_product"
                 
             })
         }
@@ -61,18 +59,6 @@ module.exports = (sequelize) => {
         allowNull: false
     },
     price: {
-        type: DataTypes.INTEGER,
-        allowNull: false
-    },
-    quantity: {
-        type: DataTypes.INTEGER,
-        allowNull: false
-    },
-    quantity_min: {
-        type: DataTypes.INTEGER,
-        allowNull: false
-    },
-    quantity_max: {
         type: DataTypes.INTEGER,
         allowNull: false
     },
