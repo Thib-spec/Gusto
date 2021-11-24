@@ -8,12 +8,14 @@ module.exports = (sequelize) => {
                 foreignKey: 'fk_id_technology'
             });
 
-            Fridges.belongsToMany(models.Client,{      
+            Fridges.belongsToMany(models.Client,{  
+                as: "clients",    
                 through:"clients_fridges",
                 foreignKey:"fk_id_client"
             })
 
-            Fridges.belongsToMany(models.Badges,{       
+            Fridges.belongsToMany(models.Badges,{
+                as:"badges",       
                 through:"fridges_badges",
                 foreignKey:"fk_id_badge"
             })
@@ -30,6 +32,7 @@ module.exports = (sequelize) => {
             })
 
             Fridges.belongsToMany(models.Menus,{
+                as:"menus",
                 through:"fridges_menus",
                 foreignKey:"fk_id_menu"
             })
