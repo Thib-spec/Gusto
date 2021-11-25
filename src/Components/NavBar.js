@@ -22,7 +22,7 @@ export default function NavBar({ }) {
 
   const paths = [
     { name: "Home", path: "/" },
-    { name: "Réfrigérateurs", path: "/refrigerateurs" },
+    { name: "Friges", path: "/friges" },
     { name: "Menus", path: "/menus" },
     { name: "Promotions", path: "/promotions" },
     { name: "Produits", path: "/produits" },

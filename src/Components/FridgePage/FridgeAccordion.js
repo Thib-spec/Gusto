@@ -1,6 +1,8 @@
+// component utilisé dans l'accordion Bootstrap qui ne marche pas
+
 import React, { Component, useState, useContext } from "react";
 import Page from "Components/Page";
-import FrigesProduitCard from "Components/FridgesProduitsCard";
+import FridgeProduitCard from "Components/FridgePage/FridgeProduitsCard";
 import { Accordion, Row, Table, Card, AccordionContext, useAccordionButton, Button } from "react-bootstrap";
 
 function CustomToggle({ children, eventKey, callback }) {
@@ -22,7 +24,7 @@ function CustomToggle({ children, eventKey, callback }) {
   );
 }
 
-export default function FridgesAccordion({ id, fridgeName, fridgeStatus }) {
+export default function FridgeAccordion({ id, fridgeName, fridgeStatus }) {
 
   return (
     <>
@@ -37,16 +39,16 @@ export default function FridgesAccordion({ id, fridgeName, fridgeStatus }) {
           <div className="container">
             <div className="row row-cols-lg-2 d-flex flex-columns justify-content-center">
               <div className="col red">
-                <FrigesProduitCard />
+                <FridgeProduitCard />
               </div>
               <div className="col blue">
-                <FrigesProduitCard />
+                <FridgeProduitCard />
               </div>
               <div className="col blueviolet">
-                <FrigesProduitCard />
+                <FridgeProduitCard />
               </div>
-              <div className="col yellow">
-                <FrigesProduitCard />
+              <div className="col blue">
+                <FridgeProduitCard />
               </div>
             </div>
           </div>
