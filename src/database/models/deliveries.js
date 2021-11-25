@@ -17,10 +17,14 @@ module.exports = (sequelize) => {
             });
             
        
-            Deliveries.belongsToMany(models.Products, { 
+            Deliveries.belongsToMany(models.Products, {
                 through: "products_deliveries",
                 foreignKey: "fk_id_product",
             });
+
+            Deliveries.belongsTo(models.Orders,{
+                foreignKey:"fk_id_order"
+            })
             
         }
     }

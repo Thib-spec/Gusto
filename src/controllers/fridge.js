@@ -1,5 +1,6 @@
 const Model = require("../database/models");
 const Joi = require('joi');
+const orders = require("../database/models/orders");
 
 
 // const Model = {
@@ -142,41 +143,44 @@ exports.listMenuByFridge = (req,res) => {
 
 
 exports.listDeliverybyProduct = (req,res) => {
-    Model.Fridges.findOne({
-        where:{
-            id_fridge : req.params.id
-        },
-    })
+    let fk_list = new Array()
 
-    .then(fridge =>{
-        if (!fridge) {
-            return res.status(400).json({
-                message: 'Fridge does not exist',
-            });
-        }
-        else{
-            Model.Deliveries.findAll({
+    Model.Orders.findAll()
+    .then(allOrders => {
+        Model.Orders.count()
+        .then(numberOfOrder =>{
+            for(let i=0;i<numberOfOrder;i++){
+                fk_list.push(allOrders[i].fk_id_fridge)
+            }
+
+            Model.Orders.findAll({
                 where:{
                     fk_id_fridge: req.params.id
-                }
-
+                },
+                include:{ model: Model.Products}
             })
-            .then(delivery => {
+        
+            .then(orders => {  
 
-                if(delivery.length ==0){
-                    res.status(200).json({
-                        message:`Fridge with id ${req.params.id} does not have any delivery`
+                if(!fk_list.includes(Number(req.params.id))){
+                 
+                    return res.status(400).json({
+                        message: "Fridge does not exist or does not have any order"
                     })
                 }
+        
                 else {
-                    res.status(200).json(delivery)
+                    
+                    return res.json(orders)
                 }
-        })
-    }
-})
-.catch(error => res.json(error))
+            })
 
+
+        }) 
+    })
+    .catch(error => res.json(error))
 }
+
 
 
 
