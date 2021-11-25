@@ -9,6 +9,7 @@ const fridgeRouter = require("./fridge");
 const menuRouter = require('./menu');
 const clientRouter = require('./client');
 const levelRouter = require('./level');
+const saleRouter = require("./sale")
 
 
 /* ----------------------- */
@@ -35,6 +36,7 @@ router.use('/fridge',fridgeRouter)
 router.use('/menu', menuRouter);
 router.use('/client', clientRouter);
 router.use('/level', levelRouter);
+router.use('/sale',saleRouter)
 
 
 // Handle other API routes, send Not found

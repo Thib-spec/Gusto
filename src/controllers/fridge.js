@@ -1,6 +1,5 @@
 const Model = require("../database/models");
 const Joi = require('joi');
-const orders = require("../database/models/orders");
 
 
 // const Model = {
@@ -142,7 +141,7 @@ exports.listMenuByFridge = (req,res) => {
 }
 
 
-exports.listDeliverybyProduct = (req,res) => {
+exports.listProductByOrderByFridge = (req,res) => {
     let fk_list = new Array()
 
     Model.Orders.findAll()
@@ -199,69 +198,6 @@ exports.addProduct = (req,res) =>{
 }
 
 
-// exports.listProductByFridge = (req,res) => {
-//     let table= new Array()
-
-//     Model.Fridges.findOne({
-//         where:{
-//             id_fridge:req.params.id
-//         },
-//         include: [
-//             {
-//               model: Model.Client,
-//               attributes:["id_client"],
-              
-//               include:{
-//                 model:Model.Categories,
-//                 attributes:["id_category"]
-//               }
-//             },
-          
-//         ]
-//     })
-
-//     .then(a => {
-//         for (let i=0;i< a.Clients.length;i++) {
-
-//             Model.Products.findAll({
-                
-//                 where:{
-//                     fk_id_category: a.Clients[i].Categories[0].clients_categories.fk_id_category        // a voir pour boucler sur Client
-//                 }
-               
-//             }) 
-//         }
-//         console.log(table)
-        
-// })
-        
-        
-    
- 
-
-
-    // .then(r => {
-
-    //     Model.Client.count().then(c => {
-
-    //         for (let i = 0; i< c-1;i++)
-    //         {
-    //             table.push(r.Clients[i].id_client)
-    //         }
-
-    //         if(table.length != 0){
-    //             console.log(table)
-    //         }
-    // })
-
-        
-                       // f.Clients[0].Categories[0].id_category)
-                                                         // Clients[0] =>categories[0] et Clients [1] => categories [1]
-    
-    
-
-//     .catch(error => res.status(400).json(error))
-// }
 
 
 exports.getNumberOfClientByFridge = (req,res) => {
