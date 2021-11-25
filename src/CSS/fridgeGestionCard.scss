@@ -1,0 +1,30 @@
+
+.container-gestion{
+    display: flex;
+    flex-direction: column;
+}
+
+
+.button-gestion{
+    width: 8em;
+    
+    margin-right: 10%;
+}
+
+.label-gestion{
+    margin-left: 10%;
+}
+
+
+.gestion-list-element{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    margin :1.5%
+}
+
+.gestion-list-element-element{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
