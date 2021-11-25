@@ -141,42 +141,45 @@ exports.listMenuByFridge = (req,res) => {
 }
 
 
-exports.listDeliverybyProduct = (req,res) => {
-    Model.Fridges.findOne({
-        where:{
-            id_fridge : req.params.id
-        },
-    })
+exports.listProductByOrderByFridge = (req,res) => {
+    let fk_list = new Array()
 
-    .then(fridge =>{
-        if (!fridge) {
-            return res.status(400).json({
-                message: 'Fridge does not exist',
-            });
-        }
-        else{
-            Model.Deliveries.findAll({
+    Model.Orders.findAll()
+    .then(allOrders => {
+        Model.Orders.count()
+        .then(numberOfOrder =>{
+            for(let i=0;i<numberOfOrder;i++){
+                fk_list.push(allOrders[i].fk_id_fridge)
+            }
+
+            Model.Orders.findAll({
                 where:{
                     fk_id_fridge: req.params.id
-                }
-
+                },
+                include:{ model: Model.Products}
             })
-            .then(delivery => {
+        
+            .then(orders => {  
 
-                if(delivery.length ==0){
-                    res.status(200).json({
-                        message:`Fridge with id ${req.params.id} does not have any delivery`
+                if(!fk_list.includes(Number(req.params.id))){
+                 
+                    return res.status(400).json({
+                        message: "Fridge does not exist or does not have any order"
                     })
                 }
+        
                 else {
-                    res.status(200).json(delivery)
+                    
+                    return res.json(orders)
                 }
-        })
-    }
-})
-.catch(error => res.json(error))
+            })
 
+
+        }) 
+    })
+    .catch(error => res.json(error))
 }
+
 
 
 
@@ -195,69 +198,6 @@ exports.addProduct = (req,res) =>{
 }
 
 
-// exports.listProductByFridge = (req,res) => {
-//     let table= new Array()
-
-//     Model.Fridges.findOne({
-//         where:{
-//             id_fridge:req.params.id
-//         },
-//         include: [
-//             {
-//               model: Model.Client,
-//               attributes:["id_client"],
-              
-//               include:{
-//                 model:Model.Categories,
-//                 attributes:["id_category"]
-//               }
-//             },
-          
-//         ]
-//     })
-
-//     .then(a => {
-//         for (let i=0;i< a.Clients.length;i++) {
-
-//             Model.Products.findAll({
-                
-//                 where:{
-//                     fk_id_category: a.Clients[i].Categories[0].clients_categories.fk_id_category        // a voir pour boucler sur Client
-//                 }
-               
-//             }) 
-//         }
-//         console.log(table)
-        
-// })
-        
-        
-    
- 
-
-
-    // .then(r => {
-
-    //     Model.Client.count().then(c => {
-
-    //         for (let i = 0; i< c-1;i++)
-    //         {
-    //             table.push(r.Clients[i].id_client)
-    //         }
-
-    //         if(table.length != 0){
-    //             console.log(table)
-    //         }
-    // })
-
-        
-                       // f.Clients[0].Categories[0].id_category)
-                                                         // Clients[0] =>categories[0] et Clients [1] => categories [1]
-    
-    
-
-//     .catch(error => res.status(400).json(error))
-// }
 
 
 exports.getNumberOfClientByFridge = (req,res) => {
