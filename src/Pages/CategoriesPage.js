@@ -8,7 +8,6 @@ import fold from "../Images/fold.svg"
 import unfold from "../Images/unfold.svg"
 import {Modal, Button} from 'react-bootstrap'
 import UploadForm from "Components/FormComponent/UploadForm"
-import SelectForm from "Components/FormComponent/SelectForm"
 import React, { Component, useState }  from 'react'
 
 
@@ -71,21 +70,25 @@ export default function CategoriesPage(){
 
     //initialise initTab as an array of false values (initTab.length = categorieList.length)
     const categorieList =[DATACatégories.map((categories)=>categories.name)] 
-    const initTab=[]
-    for (let step = 0; step < categorieList[0].length; step++) {
-        initTab[step]=false
-    }
+    console.log("data",categorieList)
 
-    const[click,setClicked]= useState(initTab);//contain an array of boolean value that define if the categorie dropdown is open 
+    const initTab = [];
+    
+    categorieList[0].map((el)=>initTab.push([false]))
+
+    console.log(initTab,typeof(initTab))
+    const[clicked,setClicked]= useState(initTab);//contain an array of boolean value that define if the categorie dropdown is open 
+    console.log("testclick : " ,clicked)
+    
     //open and close the dropdown on click
     function handleClick(id){
-        if (click[id]===false){
-            click[id]=true
+        if (clicked[id]===false){
+            clicked[id]=true
         }
         else{
-            click[id]=false
+            clicked[id]=false
         }
-        setClicked([...click])
+        setClicked([...clicked])
     }
 
     return(
@@ -93,7 +96,7 @@ export default function CategoriesPage(){
             <div className="categories-list">
                 {DATACatégories.map((categories) => (
                     <div className="categories-list-element">
-                        {click[categories.id-1]===true?
+                        {clicked[categories.id-1]===true?
                             <div>
                                 <div className="categories-list-element-title-fold" onClick={()=>handleClick(categories.id-1)}>
                                     <div>{categories.name}</div>

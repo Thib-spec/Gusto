@@ -11,6 +11,7 @@ import {Modal, Button} from 'react-bootstrap'
 import DropdownComponent from 'Components/DropDownComponent';
 import Footer from 'Components/Footer';
 import HeaderProfil from 'Components/HeaderProfil';
+import Test from 'Components/Test';
 
 
 
@@ -21,30 +22,12 @@ export default function HomePage(){
 
     
 
-    let history=useHistory();
-
-    function handleLogin(){
-        history.push("/Login");
-    }
-    function handleProducts(){
-        history.push("/Products");
-    }
-    function handleCategories(){
-        history.push("/Categories");
-    }
-    
-    const [test, setTest] = useState(false);
-    function handleTest(){
-      
-      setTest(true)
-    }
-    
-
+   
 
     
     return(
         <div>
-            <HeaderProfil lastName="Defoort" firstName="Nicolas" level="admin"/>
+            <Test/>
         </div>
  
         
