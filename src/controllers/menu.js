@@ -68,7 +68,7 @@ const Joi = require('joi');
 
     exports.addMenu = (req,res) =>{
         const { image, price, web_label, fridge_label, fk_id_client } = req.body;
-        const table = new Array()
+        const fk_client_list = new Array()
 
        const postMenuSchema = Joi.object().keys({ 
         image: Joi.string().required(),
@@ -102,12 +102,11 @@ const Joi = require('joi');
             Model.Client.count()
             .then(numberOfClient => {
                 for(let i = 0;i<numberOfClient;i++){
-                    table.push(client[i].id_client)
+                    fk_client_list.push(client[i].id_client)
                 }
                 
 
-                console.log(table)
-                if(!table.includes(fk_id_client)){
+                if(!fk_client_list.includes(fk_id_client)){
                     res.status(400).json({
                         message: `fk_id_client does not match any id_client`
                     })

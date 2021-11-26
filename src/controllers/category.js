@@ -2,7 +2,6 @@ const Model = require("../database/models");
 const Joi = require('joi');
 
 
-
 exports.listCategories = (req, res) => {
     Model.Categories.findAll()
     .then(category => res.status(200).json(category))
@@ -41,7 +40,7 @@ exports.listProductByCategory = (req,res) => {
 
         if(product.length ==0){
             res.status(200).json({
-                message:`Category with id ${req.params.id} does not have any product`
+                message:`Category with id ${req.params.id} does not have any product or does not exists`
             })
         }
         else {
@@ -56,12 +55,13 @@ exports.listProductByCategory = (req,res) => {
 
 
 exports.addCategory = (req,res) =>{
-    const { label, image, description} = req.body
+    const { label, image, description, fk_id_client} = req.body
 
     const postCategorySchema = Joi.object().keys({ 
         label : Joi.string().required(),
         image:Joi.string().required(),
-        description:Joi.string().required()
+        description:Joi.string().required(),
+        fk_id_client:Joi.number().required()
     })
 
     const result = postCategorySchema.validate(req.body)
@@ -74,7 +74,7 @@ exports.addCategory = (req,res) =>{
     if (!valid) {
       res.status(400).json({ 
         message: 'Missing required parameters',
-        info: 'Requires: label, image, description' 
+        info: 'Requires: label, image, description, fk_id_client' 
       })
     }
 
@@ -83,7 +83,8 @@ exports.addCategory = (req,res) =>{
         Model.Categories.create({
         label : label,
         image:image,
-        description:description
+        description:description,
+        fk_id_client:fk_id_client
     })
 
     .then(category => res.status(200).json(category))
