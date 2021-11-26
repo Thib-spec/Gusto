@@ -15,11 +15,14 @@ import {
   Modal,
 } from "react-bootstrap";
 
+import FridgeProductCard from "Components/FridgePage/FridgeProductCard"
+
 export default function FridgeProduitCard(props) {
 
   useEffect(() => {
     console.log("mount")
     getProductsInFridge();
+    getAllProducts();
   }, []);
 
   async function getProductsInFridge() {
@@ -38,12 +41,31 @@ export default function FridgeProduitCard(props) {
     }
   }
 
+  async function getAllProducts() {
+    try {
+      console.log(props.fridge.id)
+      const res = await api.getAllProducts();
+      if (res.ok) {
+        const resJSON = await res.json();
+        console.log(resJSON)
+        const productsAlreadyIn = products.map(el=>el.id)
+        console.log(products)
+        console.log(resJSON.filter((product) => productsAlreadyIn.includes(product.id)))
+        setProductsToAdd(
+          resJSON.filter((product) => productsAlreadyIn.includes(product.id))
+        );
+      } else {
+        
+      }
+    } catch (error) {
+      console.log(error)
+      
+    }
+  }
+
   const [products, setProducts] = useState([]);
 
-  const [productsToAdd, setProductsToAdd] = useState([
-    { name: "Raisin" },
-    { name: "Pomme" },
-  ]);
+  const [productsToAdd, setProductsToAdd] = useState([]);
   
 
   // modal
@@ -51,7 +73,6 @@ export default function FridgeProduitCard(props) {
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
 
-  function handleAddProductButton(event) {}
 
   return (
     <>
@@ -132,11 +153,12 @@ export default function FridgeProduitCard(props) {
           </div>
         </div>
       </div>
-      
+
       {/* Modal pour checker les produits a ajouter */}
       <Modal
         show={show}
         onHide={handleClose}
+        dialogClassName="mymodal"
         aria-labelledby="contained-modal-title-vcenter"
       >
         <Modal.Header closeButton>
@@ -147,24 +169,13 @@ export default function FridgeProduitCard(props) {
         <Modal.Body className="show-grid">
           {/* <div className=""></div> */}
           <Page>
-            {productsToAdd.map((product) => {
-              return (
-                <div className={`card`} key={product.id}>
-                  <div className="card-body p-5 text-center">
-                    <div className="">
-                      <img className="card-img-top" alt="Card image cap" />
-                    </div>
-                    <h5 class="card-title">{product.name}</h5>
-                    <hr className="my-2" />
-                    <div className="">
-                      <label className="form-check-label">
-                        Mot de passe oublié ?
-                      </label>
-                    </div>
-                  </div>
-                </div>
-              );
-            })}
+            <div className="row">
+              {productsToAdd.map((product) => {
+                return (
+                  <FridgeProductCard product={product} />
+                );
+              })}
+            </div>
           </Page>
         </Modal.Body>
         <Modal.Footer>

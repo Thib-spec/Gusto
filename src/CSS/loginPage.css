@@ -3,4 +3,12 @@
     border: transparent;
     background-color: transparent;
 }
+
+.mymodal{
+    min-width: 90%;
+}
+
+.productCard{
+    width: 200px;
+}
     

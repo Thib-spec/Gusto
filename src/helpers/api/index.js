@@ -6,6 +6,7 @@ import logoutData from "./fakeData/logout";
 import getInfoData from "./fakeData/getInfo";
 import getFridgesData from "./fakeData/getFridgesData";
 import getProductsInFridgeData from "./fakeData/getProductsInFridgeData";
+import getAllProductsData from "./fakeData/getAllProductsData";
 
 const API = function ({ url, authToken, fake }) {
   this.fake = fake == undefined ? true : fake;
@@ -56,6 +57,14 @@ API.prototype.getProductsInFridge = function ({ id } = {}) {
   return this.requester({
     method: "GET",
     path: `/fridges/${id}/products`,
+  });
+};
+
+API.prototype.getAllProducts = function ({ } = {}) {
+  if (this.fake) return getAllProductsData;
+  return this.requester({
+    method: "GET",
+    path: `/products`,
   });
 };
 
