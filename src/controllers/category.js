@@ -41,7 +41,7 @@ exports.listProductByCategory = (req,res) => {
 
         if(product.length ==0){
             res.status(200).json({
-                message:`Category with id ${req.params.id} does not have any product`
+                message:`Category with id ${req.params.id} does not have any product or does not exists`
             })
         }
         else {
