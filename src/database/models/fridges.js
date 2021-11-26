@@ -5,7 +5,7 @@ module.exports = (sequelize) => {
         static associate(models){
 
             Fridges.belongsTo(models.Technologies, {
-                foreignKey: 'fk_id_technology'
+                foreignKey: 'fk_id_technologies'
             });
 
             Fridges.belongsToMany(models.Client,{  

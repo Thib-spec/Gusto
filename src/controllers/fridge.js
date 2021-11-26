@@ -141,42 +141,45 @@ exports.listMenuByFridge = (req,res) => {
 }
 
 
-exports.listDeliverybyProduct = (req,res) => {
-    Model.Fridges.findOne({
-        where:{
-            id_fridge : req.params.id
-        },
-    })
+exports.listProductByOrderByFridge = (req,res) => {
+    let fk_list = new Array()
 
-    .then(fridge =>{
-        if (!fridge) {
-            return res.status(400).json({
-                message: 'Fridge does not exist',
-            });
-        }
-        else{
-            Model.Deliveries.findAll({
+    Model.Orders.findAll()
+    .then(allOrders => {
+        Model.Orders.count()
+        .then(numberOfOrder =>{
+            for(let i=0;i<numberOfOrder;i++){
+                fk_list.push(allOrders[i].fk_id_fridge)
+            }
+
+            Model.Orders.findAll({
                 where:{
                     fk_id_fridge: req.params.id
-                }
-
+                },
+                include:{ model: Model.Products}
             })
-            .then(delivery => {
+        
+            .then(orders => {  
 
-                if(delivery.length ==0){
-                    res.status(200).json({
-                        message:`Fridge with id ${req.params.id} does not have any delivery`
+                if(!fk_list.includes(Number(req.params.id))){
+                 
+                    return res.status(400).json({
+                        message: "Fridge does not exist or does not have any order"
                     })
                 }
+        
                 else {
-                    res.status(200).json(delivery)
+                    
+                    return res.json(orders)
                 }
-        })
-    }
-})
-.catch(error => res.json(error))
+            })
 
+
+        }) 
+    })
+    .catch(error => res.json(error))
 }
+
 
 
 
@@ -187,88 +190,22 @@ exports.addProduct = (req,res) =>{
         },
     })
     .then(fridge=> {
-        return fridge.addProducts(req.body) // [1,3]
+        if (!fridge) {
+            return res.status(400).json({
+                message: 'Fridge does not exist',
+            });
+        }
+
+        else{
+            return fridge.addProducts(req.body) // [1,3]
+        }
+      
     })
     .then(products=> console.log(products))
     .catch(error => console.log(error))
 
 }
 
-
-// exports.listProductByFridge = (req,res) => {
-//     let table= new Array()
-
-//     Model.Fridges.findOne({
-//         where:{
-//             id_fridge:req.params.id
-//         },
-//         include: [
-//             {
-//               model: Model.Client,
-//               attributes:["id_client"],
-              
-//               include:{
-//                 model:Model.Categories,
-//                 attributes:["id_category"]
-//               }
-//             },
-          
-//         ]
-//     })
-
-//     .then(a => {
-//         for (let i=0;i< a.Clients.length;i++) {
-
-//             Model.Products.findAll({
-                
-//                 where:{
-//                     fk_id_category: a.Clients[i].Categories[0].clients_categories.fk_id_category        // a voir pour boucler sur Client
-//                 }
-               
-//             }) 
-//         }
-//         console.log(table)
-        
-// })
-        
-        
-    
- 
-
-
-    // .then(r => {
-
-    //     Model.Client.count().then(c => {
-
-    //         for (let i = 0; i< c-1;i++)
-    //         {
-    //             table.push(r.Clients[i].id_client)
-    //         }
-
-    //         if(table.length != 0){
-    //             console.log(table)
-    //         }
-    // })
-
-        
-                       // f.Clients[0].Categories[0].id_category)
-                                                         // Clients[0] =>categories[0] et Clients [1] => categories [1]
-    
-    
-
-//     .catch(error => res.status(400).json(error))
-// }
-
-
-exports.getNumberOfClientByFridge = (req,res) => {
-    Model.Fridges.findOne({
-        include: Model.Client,
-        where:{
-            id_fridge:req.params.id
-        }
-    })
-    .then(a => res.json(a.Clients.length))
-}
 
 
 exports.getFridgeById = (req,res) => {
@@ -295,12 +232,13 @@ exports.getFridgeById = (req,res) => {
 /*********************** Ajouter le fait que la foreign key ne peut avoir comme valeur que les id présent dans la table source (level : 1:2:3 => user ne peut avoir en fk que 1, 2 et 3) */
 
 exports.addFridge = (req,res) =>{
-    const { label, fk_id_technology, fk_id_menu_preset} = req.body
+    const { label, fk_id_technologies} = req.body
+
+    const fk_tech_list = new Array()
 
     const postFridgeSchema = Joi.object().keys({ 
         label : Joi.string().required(),
-        fk_id_technology:Joi.number().required(),
-        fk_id_menu_preset:Joi.number().required()
+        fk_id_technologies:Joi.number().required(),
     })
 
     const result = postFridgeSchema.validate(req.body)
@@ -312,29 +250,47 @@ exports.addFridge = (req,res) =>{
     if (!valid) {
       res.status(400).json({ 
         message: 'Missing required parameters',
-        info: 'Requires: label, fk_id_technologie, fk_id_menu_preset' 
+        info: 'Requires: label, fk_id_technologies' 
       })
     }
     else {
-        
-        Model.Fridges.create({
-        label : label,
-        fk_id_technology:fk_id_technology,
-        fk_id_menu_preset:fk_id_menu_preset
-    })
 
-    .then(fridge => res.status(200).json(fridge))
-    .catch(error => res.status(400).json(error))
+        Model.Technologies.findAll({
+            attributes: ["id_technologies"]
+        })
+        .then(allTechs =>{
+            Model.Technologies.count()
+            .then(numberofTech =>{
+                for(let i=0;i<numberofTech;i++){
+                    fk_tech_list.push(allTechs[i].id_technologies)
+                }
+                
+                if(!fk_tech_list.includes(fk_id_technologies)){
+                    return res.status(400).json({
+                        message:"fk_id_technologies does not match any id_technologies"
+                    })
+                }
+
+                else {
+                    Model.Fridges.create({
+                    label : label,
+                    fk_id_technologies:fk_id_technologies,
+                })
+
+                .then(fridge => res.status(200).json(fridge))
+            }             
+        })
+    })
+        .catch(error => res.status(400).json(error))
 
     }
-
         
 }
 
 
 exports.editFridge =(req,res) => {
 
-    const { label, fk_id_technology} = req.body
+    const { label, fk_id_technologies} = req.body
 
     Model.Fridges.findOne({
         where: {
@@ -351,7 +307,7 @@ exports.editFridge =(req,res) => {
 
         const editFridgeSchema = Joi.object().keys({ 
             label: Joi.string(),
-            fk_id_technology: Joi.number()
+            fk_id_technologies: Joi.number()
         })
 
         const result = editFridgeSchema.validate(req.body)
@@ -368,7 +324,7 @@ exports.editFridge =(req,res) => {
         else { 
             Model.Fridges.update({
                 label: label,
-                fk_id_technology: fk_id_technology,
+                fk_id_technologies: fk_id_technologies,
             },
             {
                 where : {

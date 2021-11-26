@@ -66,6 +66,9 @@ const Joi = require('joi');
     exports.addUser = (req,res) =>{
         const { firstname, lastname, email, image,password, user_language,fk_id_level,fk_id_client } = req.body;
 
+        const fk_level_list = new Array()
+        const fk_client_list = new Array()
+
        // Check email format 
        if(!email.match("^.{1,}@[^.]{1,}")){
            return res.status(400).json({
@@ -78,11 +81,11 @@ const Joi = require('joi');
         firstname: Joi.string().required(),
         lastname: Joi.string().required(),
         password: Joi.string().required(),
-        email:Joi.string().email().required(), 
+        email:Joi.string().required(), 
         image:Joi.string().required(),
         user_language:Joi.string().required(),
-        fk_id_client:Joi.required(),
-        fk_id_level:Joi.required()
+        fk_id_client:Joi.number().required(),
+        fk_id_level:Joi.number().required()
     })
 
     const result = postUserSchema.validate(req.body)
@@ -98,25 +101,62 @@ const Joi = require('joi');
       })
     }
 
-   
-
-    else {
-
-       Model.Users.create({
-        firstname: firstname,
-        lastname:lastname,
-        email:email,
-        image:image,
-        password:password,
-        user_language:user_language,
-        fk_id_client:fk_id_client,
-        fk_id_level:fk_id_level
+    Model.Levels.findAll({
+        attributes:["id_level"]
     })
-    
-    .then(user => res.status(200).json(user))
+    .then(allLevels => {
+        Model.Levels.count()
+        .then(numberOfLevel => {
+            for(let i= 0;i<numberOfLevel;i++){
+                fk_level_list.push(allLevels[i].id_level)
+            }
+
+            Model.Client.findAll({
+                attributes:["id_client"]
+            })
+            .then(allClients => {
+                Model.Client.count()
+                .then(numberOfClient => {
+                    for(let j= 0;j<numberOfClient;j++){
+                        fk_client_list.push(allClients[j].id_client)
+                    }
+
+                    if(!fk_level_list.includes(fk_id_level)){
+                        return res.status(400).json({
+                            message:"fk_id_level does not match any id_level"
+                        })
+                    }
+
+                    else if(!fk_client_list.includes(fk_id_client)){
+                        return res.status(400).json({
+                            message:"fk_id_client does not match any id_client"
+                        })
+                    }
+
+                    else {
+                        Model.Users.create({
+                            firstname: firstname,
+                            lastname:lastname,
+                            email:email,
+                            image:image,
+                            password:password,
+                            user_language:user_language,
+                            fk_id_client:fk_id_client,
+                            fk_id_level:fk_id_level
+                        })
+                        
+                        .then(user => res.status(200).json(user))
+
+                    }
+
+                   
+                })
+            })
+        })
+    })     
     .catch(error => res.status(400).json(error))
-    }
 }
+
 
 
 exports.editUser = (req,res) => {
