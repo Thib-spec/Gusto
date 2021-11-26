@@ -73,7 +73,7 @@ export default function RefrigerateursPage() {
         </Accordion>
         {/* fin test avec Accordion de Boostrap */}
 
-        {fridges.map(fridge=>{
+        {fridges.map(fridge=>{    
           return (<FridgeDropDownComponent
             fridge={fridge}
             key={fridge.id}

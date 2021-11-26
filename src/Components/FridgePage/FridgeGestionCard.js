@@ -3,6 +3,8 @@
 import React, { Component, useState } from "react";
 import Page from "Components/Page";
 import { Accordion, Row, Table, Card } from "react-bootstrap";
+import "../../CSS/fridgeGestionCard.scss"
+import ButtonFridge from "./ButtonFridge";
 
 export default function FridgeProduitCard({ name }) {
   return (
@@ -10,37 +12,33 @@ export default function FridgeProduitCard({ name }) {
       <div class="card text-center h-100">
         <div class="card-header">{name}</div>
         <div class="card-body">
-          <p class="card-text">
-            <div className="row">
-              <div className="col"></div>
-              <div className="col"></div>
-            </div>
-            <div className="row">
-              <div className="col"></div>
-              <div className="col"></div>
-            </div>
-            <div className="row">
-              <div className="col"></div>
-              <div className="col"></div>
-            </div>
-            <div className="row">
-              <div className="col"></div>
-              <div className="col"></div>
-            </div>
-            <div className="row">
-              <div className="col"></div>
-              <div className="col"></div>
-            </div>
-          </p>
-          <a href="#" class="btn btn-primary m-1">
-            Add a product
-          </a>
-          <a href="#" class="btn btn-primary m-1">
-            Remove a product
-          </a>
-          <a href="#" class="btn btn-primary m-1">
-            passer une commande
-          </a>
+          <div className="container-gestion">
+              <div className="gestion-list-element">
+                <div className="gestion-list-element-element label-gestion">Ouvrir le frigo à distance</div>
+                <div className="gestion-list-element-element button-gestion"><ButtonFridge label="Ouvrir"/></div>
+
+              </div>
+              <div className="gestion-list-element">
+                <div className="gestion-list-element-element label-gestion">Bloquer/Débloquer le frigo</div>
+                <div className="gestion-list-element-element button-gestion"><ButtonFridge label="Blocage"/></div>
+                
+                
+              </div>
+              <div className="gestion-list-element">
+                <div className="gestion-list-element-element label-gestion">Redémarrer le frigo</div>
+                <div className="gestion-list-element-element button-gestion"><ButtonFridge label="Redémarrer"/></div>
+
+              </div>
+              <div className="gestion-list-element">
+                <div className="gestion-list-element-element label-gestion">Gérer les médias affiché</div>
+                <div className="gestion-list-element-element button-gestion"><ButtonFridge label="Média"/></div>
+
+              </div>
+              <div className="gestion-list-element">
+                <div className="gestion-list-element-element label-gestion">Forcer la mise à jour</div>
+                <div className="gestion-list-element-element button-gestion"><ButtonFridge label="Mise-à-jour"/></div>
+              </div>
+          </div>
         </div>
       </div>
     </div>

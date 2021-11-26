@@ -8,6 +8,7 @@ import "CSS/FridgeDropDownCoponent.scss";
 import FridgeProduitsCard from "Components/FridgePage/FridgeProduitsCard";
 import FridgeMenusCard from "Components/FridgePage/FridgeMenusCard";
 import FridgeGestionCard from "Components/FridgePage/FridgeGestionCard";
+import FridgeLogsCard from "Components/FridgePage/FridgeLogsCard"
 
 export default function FridgeDropDownComponent(props) {
   const [open, setOpen] = useState(true);
@@ -51,7 +52,7 @@ export default function FridgeDropDownComponent(props) {
                     <FridgeProduitsCard name="Produits" {...props}/>
                     <FridgeMenusCard name="Menus" />
                     <div class="w-100"></div>
-                    <FridgeGestionCard name="Gestion VMC" />
+                    <FridgeLogsCard name="Logs" />
                     <FridgeGestionCard name="Gestion VMC" />
                     <div class="w-100"></div>
                   </div>
@@ -62,8 +63,7 @@ export default function FridgeDropDownComponent(props) {
         ) : (
           <div
             className={`${bgColor} list-element-title-unfold`}
-            onClick={() => handleClick()}
-          >
+            onClick={() => handleClick()}>
             <div className="title-name">{props.fridge.title}</div>
             <div>{props.fridge.status.message}</div>
             <div className="el-fold">
