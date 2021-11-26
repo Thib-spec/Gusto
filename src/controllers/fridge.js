@@ -290,7 +290,7 @@ exports.addFridge = (req,res) =>{
 
 exports.editFridge =(req,res) => {
 
-    const { label, fk_id_technology} = req.body
+    const { label, fk_id_technologies} = req.body
 
     Model.Fridges.findOne({
         where: {
@@ -307,7 +307,7 @@ exports.editFridge =(req,res) => {
 
         const editFridgeSchema = Joi.object().keys({ 
             label: Joi.string(),
-            fk_id_technology: Joi.number()
+            fk_id_technologies: Joi.number()
         })
 
         const result = editFridgeSchema.validate(req.body)
@@ -324,7 +324,7 @@ exports.editFridge =(req,res) => {
         else { 
             Model.Fridges.update({
                 label: label,
-                fk_id_technology: fk_id_technology,
+                fk_id_technologies: fk_id_technologies,
             },
             {
                 where : {
