@@ -39,6 +39,8 @@ exports.getProductById = (req,res) => {
 exports.addProduct = (req,res) =>{
     const {label, image, price, ubd, description, fk_id_category } = req.body
 
+    const fk_category_list = new Array()
+
     const postProductSchema = Joi.object().keys({ 
         label : Joi.string().required(),
         image:Joi.string().required(),
@@ -62,27 +64,48 @@ exports.addProduct = (req,res) =>{
     }
 
     else {
-        
-        Model.Products.create({
-        label : label,
-        image:image,
-        price:price,
-        ubd:ubd,
-        description:description,
-        fk_id_category:fk_id_category
-    })
 
-    .then(product => res.status(200).json(product))
+        Model.Categories.findAll({
+            attributes:["id_category"]
+        })
+
+        .then(allCategories => {
+            Model.Categories.count()
+            .then(numberOfCategories =>{
+                for(let i=0;i<numberOfCategories;i++){
+                    fk_category_list.push(allCategories[i].id_category)
+                }
+
+                if(!fk_category_list.includes(fk_id_category)){
+                    return res.status(400).json({
+                        message:"fk_id_category does not match any id_category"
+                    })
+                }
+
+                else {
+                    Model.Products.create({
+                        label : label,
+                        image:image,
+                        price:price,
+                        ubd:ubd,
+                        description:description,
+                        fk_id_category:fk_id_category
+                    })
+                
+                    .then(product => res.status(200).json(product))
+
+                }
+            })
+        })
+
     .catch(error => res.status(400).json(error))
 
     }
-
-        
 }
 
 exports.editProduct =(req,res) => {
 
-    const { label, image, price, ubd, description, fk_id_category} = req.body
+    const { label, image, price, ubd, description} = req.body
 
     Model.Products.findOne({
         where: {
@@ -103,7 +126,6 @@ exports.editProduct =(req,res) => {
             price:Joi.number(),
             ubd:Joi.string(),
             description:Joi.string(),
-            fk_id_category:Joi.number()
         })
 
         const result = editProductSchema.validate(req.body)
@@ -123,7 +145,6 @@ exports.editProduct =(req,res) => {
                 price:price,
                 ubd:ubd,
                 description:description,
-                fk_id_category:fk_id_category
             },
             {
                 where : {

@@ -58,7 +58,7 @@ exports.listProductsBySales = (req,res) => {
                 .then(sales =>{
                     if (!sales) {
                         return res.status(400).json({
-                            message: 'Sale does not exist',
+                            message: 'Sale does not exist or does not have any product related',
                         });
                     }
     
@@ -77,6 +77,8 @@ exports.listProductsBySales = (req,res) => {
 
 exports.addSale = (req,res) =>{
     const { sales_timestamp, cbemv_amount, cbcless_amount,lv_amount,lv_quantity,cash_amount,fk_id_fridge} = req.body
+
+    const fk_fridge_list = new Array()
 
     const postSalesSchema = Joi.object().keys({ 
         sales_timestamp : Joi.string().required(),
@@ -102,18 +104,41 @@ exports.addSale = (req,res) =>{
       })
     }
     else {
-        
-        Model.Sales.create({
-            sales_timestamp :sales_timestamp,
-            cbemv_amount:cbemv_amount,
-            cbcless_amount:cbcless_amount,
-            lv_amount:lv_amount,
-            lv_quantity:lv_quantity,
-            cash_amount:cash_amount,
-            fk_id_fridge:fk_id_fridge
+
+        Model.Fridges.findAll({
+            attributes:['id_fridge']
         })
 
-    .then(sale => res.status(200).json(sale))
+        .then(allFridges =>{
+            Model.Fridges.count()
+            .then(numberOfFridges => {
+                for(let i= 0;i<numberOfFridges;i++){
+                    fk_fridge_list.push(allFridges[i].id_fridge)
+
+                }
+
+                if(!fk_fridge_list.includes(fk_id_fridge)){
+                    return res.status(400).json({
+                        message:"fk_id_fridge does not match any id_fridge"
+                    })
+                }
+
+                else {
+                    Model.Sales.create({
+                        sales_timestamp :sales_timestamp,
+                        cbemv_amount:cbemv_amount,
+                        cbcless_amount:cbcless_amount,
+                        lv_amount:lv_amount,
+                        lv_quantity:lv_quantity,
+                        cash_amount:cash_amount,
+                        fk_id_fridge:fk_id_fridge
+                    })
+            
+                    .then(sale => res.status(200).json(sale))
+                }
+            })
+        })
+         
     .catch(error => res.status(400).json(error))
 
     }
@@ -146,7 +171,6 @@ exports.editSale =(req,res) => {
             lv_amount:Joi.number(),
             lv_quantity:Joi.number(),
             cash_amount:Joi.number(),
-            fk_id_fridge:Joi.number()
         })
 
         const result = editSaleSchema.validate(req.body)
