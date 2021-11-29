@@ -260,7 +260,7 @@ paths:
             content:
               application/json:
                   example:
-                    id_category: 1
+                    id_client: 1
                     label: client1
                     createdAt: 2021-11-26T13:38:27.000Z
                     updatedAt : 2021-11-26T13:38:27.000Z
@@ -289,7 +289,7 @@ paths:
             content:
               application/json:
                   example:
-                    id_category: 1
+                    id_client: 1
                     label: client1
                     createdAt: 2021-11-26T13:38:27.000Z
                     updatedAt : 2021-11-26T13:38:27.000Z
@@ -298,7 +298,7 @@ paths:
             content:
               application/json:
                   example:
-                    message: "CLient does not exists"
+                    message: "Client does not exists"
 
       put:
         tags: [Client]
@@ -384,6 +384,321 @@ paths:
                   example:
                     message: "Client does not exists or doest not have any categories"
 
+  /fridge:
+      get:
+        tags: [Fridge]
+        summary: Returns the list of all fridges.
+        responses:
+          '200':    # status code
+            description: A JSON array of fridge
+            content:
+              application/json:
+                  example:
+                    id_fridge: 1
+                    label: fridge1
+                    createdAt: 2021-11-26T13:38:27.000Z
+                    updatedAt : 2021-11-26T13:38:27.000Z
+                    fk_id_technologies: 1
 
+      post:
+        tags: [Fridge]
+        summary: Add a fridge
+        requestBody:
+          required: true
+          content:
+            application/json:
+              schema: 
+                properties:
+                  label:
+                    type: string
+                  fk_id_technologies:
+                    type: integer
+        responses:
+          '200':    # status code
+            description: The fridge added
+            content:
+              application/json:
+                  example:
+                    id_fridge: 1
+                    label: fridge1
+                    createdAt: 2021-11-26T13:38:27.000Z
+                    updatedAt : 2021-11-26T13:38:27.000Z
+          '400':
+            description: An error message
+            content:
+              application/json:
+                  example:
+                    message: "Missing required parameters"
+
+
+
+  /fridge/{id}:
+      get:
+        tags: [Fridge]
+        summary: Returns the specified fridge.
+        parameters:
+        - name: id
+          in: path
+          type: integer
+          required: true
+          description: Numeric ID of the fridge to get.
+        responses:
+          '200':    # status code
+            description: The fridge to get
+            content:
+              application/json:
+                  example:
+                    id_fridge: 1
+                    label: fridge1
+                    createdAt: 2021-11-26T13:38:27.000Z
+                    updatedAt : 2021-11-26T13:38:27.000Z
+          '400':
+            description: An error message
+            content:
+              application/json:
+                  example:
+                    message: "Fridge does not exists"
+
+      put:
+        tags: [Fridge]
+        summary: Update fridge
+        parameters:
+        - name: id
+          in: path
+          type: integer
+          required: true
+          description: Numeric ID of the fridge to update.
+        requestBody:
+          required: true
+          content:
+            application/json:
+              schema: 
+                properties:
+                  label:
+                    type: string
+        responses:
+          '200':    # status code
+            description: A successful message
+            content:
+              application/json:
+                  example:
+                    message: "Modification apply"
+          '400':
+            description: An error message
+            content:
+              application/json:
+                  example:
+                    message: "Specified fridge does not exists"
+              
+      delete:
+        tags: [Fridge]
+        summary: Delete a fridge
+        parameters:
+        - name: id
+          in: path
+          type: integer
+          required: true
+          description: Numeric ID of the fridge to delete.
+        responses:
+          '200':   
+            description: A successful message
+            content: 
+              application/json:
+                  example:
+                    message: "Fridge with id : x has been deleted"
+          '400':
+            description: An error message
+            content:
+              application/json:
+                  example:
+                    message: "Fridge does not exists"
+
+  /fridge/{id}/products:
+      get:
+        tags: [Fridge]
+        summary: Returns all the products that belongs to a fridge.
+        parameters:
+        - name: id
+          in: path
+          type: integer
+          required: true
+          description: Numeric ID of the fridge to get.
+        responses:
+          '200':    # status code
+            description: A JSON array of products
+            content:
+              application/json:
+                  example:
+                    id_product: 1
+                    label: prod1
+                    image: https://www.google.com/imgres?imgurl=https%3A%2F%2Fmedia.istockphoto.com
+                    price: 1
+                    ubd: 10/09/2021
+                    description: description
+                    createdAt: 2021-11-26T13:38:54.000Z
+                    updatedAt: 2021-11-26T13:38:54.000Z
+                    fk_id_category: 1
+          '400':
+            description: An error message
+            content:
+              application/json:
+                  example:
+                    message: "Fridge does not exists or does not have any categories"
+
+
+  /fridge/{id}/clients:
+      get:
+        tags: [Fridge]
+        summary: Returns all the clients that owns this fridge.
+        parameters:
+        - name: id
+          in: path
+          type: integer
+          required: true
+          description: Numeric ID of the fridge to get.
+        responses:
+          '200':    # status code
+            description: A JSON array of clients
+            content:
+              application/json:
+                  example:
+                    id_client: 1
+                    label: client1
+                    createdAt: 2021-11-26T13:38:27.000Z
+                    updatedAt : 2021-11-26T13:38:27.000Z
+          '400':
+            description: An error message
+            content:
+              application/json:
+                  example:
+                    message: "Fridge does not exists or does not have any clients"
+
+  
+  /fridge/{id}/badges:
+      get:
+        tags: [Fridge]
+        summary: Returns all the badges that belongs to this fridge.
+        parameters:
+        - name: id
+          in: path
+          type: integer
+          required: true
+          description: Numeric ID of the fridge to get.
+        responses:
+          '200':    # status code
+            description: A JSON array of badges
+            content:
+              application/json:
+                  example:
+                    id_badge: 1
+                    createdAt: 2021-11-26T13:38:27.000Z
+                    updatedAt : 2021-11-26T13:38:27.000Z
+                    fk_id_client: 1
+                    fk_id_user: 1
+          '400':
+            description: An error message
+            content:
+              application/json:
+                  example:
+                    message: "Fridge does not exists or does not have any badge"
+
+
+  /fridge/{id}/menus:
+      get:
+        tags: [Fridge]
+        summary: Returns all the menus that belongs to this fridge.
+        parameters:
+        - name: id
+          in: path
+          type: integer
+          required: true
+          description: Numeric ID of the fridge to get.
+        responses:
+          '200':    # status code
+            description: A JSON array of menus
+            content:
+              application/json:
+                  example:
+                    id_menu: 1
+                    web_label: fruits
+                    fridge_label: fruits
+                    image: https://www.google.com/imgres?imgurl=https%3A%2F%2Fmedia.istockphoto.com
+                    price: 1.00
+                    createdAt: 2021-11-29T12:42:31.000Z
+                    updatedAt: 2021-11-29T12:42:32.000Z
+                    fk_id_client: 1
+          '400':
+            description: An error message
+            content:
+              application/json:
+                  example:
+                    message: "Fridge does not exists or does not have any menus"
+
+
+  /fridge/{id}/orders/products:
+      get:
+        tags: [Fridge]
+        summary: Returns all the products that belongs to the order which belongs to this fridge.
+        parameters:
+        - name: id
+          in: path
+          type: integer
+          required: true
+          description: Numeric ID of the fridge to get.
+        responses:
+          '200':    # status code
+            description: A JSON array of orders and their products
+            content:
+              application/json:
+                  example:
+                    id_order: 1
+                    delivery_date: 10/09:2021
+                    expected_delivery_date: 11/09/2021
+                    createdAt: 2021-11-29T12:49:06.000Z
+                    updatedAt: 2021-11-29T12:49:06.000Z
+                    fk_id_user: 1
+    
+          '400':
+            description: An error message
+            content:
+              application/json:
+                  example:
+                    message: "Fridge does not exists or does not have any orders"
+
+  /fridge/{id}/addProducts:
+      post:
+        tags: [Fridge]
+        summary: Add products in the specified fridge by their id
+        parameters:
+        - name: id
+          in: path
+          type: integer
+          required: true
+          description: Numeric ID of the fridge to get.
+        requestBody:
+          required: true
+          content:
+            application/json:
+              schema: 
+                properties:
+                  ids:
+                    type: array
+        responses:
+          '200':    # status code
+            description: A successful message
+            content:
+              application/json:
+                  example:
+                    message: "Products has been added"
+    
+          '400':
+            description: An error message
+            content:
+              application/json:
+                  example:
+                    message: "Fridge does not exists or products with such ids doest not exists"
+                    
+                    
+  
    
              
