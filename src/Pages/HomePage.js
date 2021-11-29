@@ -11,23 +11,18 @@ import {Modal, Button} from 'react-bootstrap'
 import DropdownComponent from 'Components/DropDownComponent';
 import Footer from 'Components/Footer';
 import HeaderProfil from 'Components/HeaderProfil';
-import Test from 'Components/Test';
+import Pie from 'Components/ChartJSComponent/PieChart';
+import LineChart from 'Components/ChartJSComponent/LineChart';
 
 
 
 
 
 export default function HomePage(){
-
-
-    
-
-   
-
     
     return(
         <div>
-            <Test/>
+            <LineChart/>
         </div>
  
         
