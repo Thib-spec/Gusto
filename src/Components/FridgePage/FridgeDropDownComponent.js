@@ -5,7 +5,8 @@ import imgcategorie from "Images/imgcategorie.svg";
 import unfold from "Images/unfold.svg";
 import React, { Component, useState } from "react";
 import "CSS/FridgeDropDownCoponent.scss";
-import FridgeProduitsCard from "Components/FridgePage/FridgeProduitsCard";
+import FridgeProductsCard from "Components/FridgePage/FridgeProductsCard";
+import FridgeProduitsCard2 from "Components/FridgePage/FridgeProductsCard copy";
 import FridgeMenusCard from "Components/FridgePage/FridgeMenusCard";
 import FridgeGestionCard from "Components/FridgePage/FridgeGestionCard";
 import FridgeLogsCard from "Components/FridgePage/FridgeLogsCard"
@@ -49,7 +50,8 @@ export default function FridgeDropDownComponent(props) {
               <div className="list-element-sub-description">
                 <div className="container h-100">
                   <div className="row ">
-                    <FridgeProduitsCard name="Produits" {...props}/>
+                    {/* <FridgeProductsCard name="Produits" {...props}/> */}
+                    <FridgeProduitsCard2 name="Produits" {...props}/>
                     <FridgeMenusCard name="Menus" />
                     <div class="w-100"></div>
                     <FridgeLogsCard name="Logs" />

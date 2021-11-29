@@ -2,7 +2,7 @@
 
 import React, { Component, useState, useContext } from "react";
 import Page from "Components/Page";
-import FridgeProduitCard from "Components/FridgePage/FridgeProduitsCard";
+import FridgeProductsCard from "Components/FridgePage/FridgeProductsCard";
 import { Accordion, Row, Table, Card, AccordionContext, useAccordionButton, Button } from "react-bootstrap";
 
 function CustomToggle({ children, eventKey, callback }) {
@@ -39,16 +39,16 @@ export default function FridgeAccordion({ id, fridgeName, fridgeStatus }) {
           <div className="container">
             <div className="row row-cols-lg-2 d-flex flex-columns justify-content-center">
               <div className="col red">
-                <FridgeProduitCard />
+                <FridgeProductsCard />
               </div>
               <div className="col blue">
-                <FridgeProduitCard />
+                <FridgeProductsCard />
               </div>
               <div className="col blueviolet">
-                <FridgeProduitCard />
+                <FridgeProductsCard />
               </div>
               <div className="col blue">
-                <FridgeProduitCard />
+                <FridgeProductsCard />
               </div>
             </div>
           </div>

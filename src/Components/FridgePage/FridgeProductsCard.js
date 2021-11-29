@@ -15,64 +15,83 @@ import {
   Modal,
 } from "react-bootstrap";
 
-import FridgeProductCard from "Components/FridgePage/FridgeProductCard"
+import FridgeProductCard from "Components/FridgePage/FridgeProductCard";
 
-export default function FridgeProduitCard(props) {
+export default function FridgeProductsCard(props) {
+  // produits déjà ajoutés dans le frigo
+  const [products, setProducts] = useState([]);
+  // produits pouvant être ajoutés dans le frigo
+  const [productsToAdd, setProductsToAdd] = useState([]);
+  // produits ajoutés dans le frigo mais pas encore save
+  const [productsAdded, setProductsAdded] = useState(new Set([]));
 
   useEffect(() => {
-    console.log("mount")
     getProductsInFridge();
-    getAllProducts();
   }, []);
+
+  useEffect(() => {
+    getAllProducts();
+  }, [products]);
+
+  useEffect(() => {
+    console.log([...productsAdded]);
+    console.log([...products]);
+  }, [productsAdded, products]);
 
   async function getProductsInFridge() {
     try {
-      console.log(props.fridge.id)
-      const res = await api.getProductsInFridge({id:props.fridge.id});
+      const res = await api.getProductsInFridge({ id: props.fridge.id });
       if (res.ok) {
         const resJSON = await res.json();
-        setProducts(resJSON)
+        setProducts(resJSON);
       } else {
-        
       }
     } catch (error) {
-      console.log(error)
-      
+      console.log(error);
     }
   }
 
   async function getAllProducts() {
     try {
-      console.log(props.fridge.id)
       const res = await api.getAllProducts();
       if (res.ok) {
         const resJSON = await res.json();
-        console.log(resJSON)
-        const productsAlreadyIn = products.map(el=>el.id)
-        console.log(products)
-        console.log(resJSON.filter((product) => productsAlreadyIn.includes(product.id)))
         setProductsToAdd(
-          resJSON.filter((product) => productsAlreadyIn.includes(product.id))
+          resJSON.filter(
+            (product) => !products.map((el) => el.id).includes(product.id)
+          )
         );
       } else {
-        
       }
     } catch (error) {
-      console.log(error)
-      
+      console.log(error);
     }
   }
 
-  const [products, setProducts] = useState([]);
-
-  const [productsToAdd, setProductsToAdd] = useState([]);
-  
-
-  // modal
+  // modal addProducts Button
   const [show, setShow] = useState(false);
-  const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
+  const handleClose = () => setShow(false);
+  const handleAddProducts = handleShow;
 
+  // handlers
+  const handleAddOneProduct = (product, added) => {
+    const newSet = new Set(productsAdded);
+    if (added) newSet.delete(product);
+    else newSet.add(product);
+    setProductsAdded(newSet);
+  };
+
+  // ParentsProps
+  const parentProps = {
+    handlers: {
+      handleAddOneProduct,
+    },
+    states: {
+      products,
+      productsAdded,
+    },
+  };
 
   return (
     <>
@@ -103,17 +122,36 @@ export default function FridgeProduitCard(props) {
                       </tr>
                     );
                   })}
+                  {[...productsAdded].map((product) => {
+                    return (
+                      <tr key={product.id}>
+                        {/* <td>{product.id}</td> */}
+                        <td>{product.name}</td>
+                        <input
+                          type="number"
+                          id="quantity"
+                          name="quantity"
+                          min="1"
+                          max="5"
+                          defaultValue={product.quantity}
+                        />
+                        {/* <td>{product.quantity}</td> */}
+                        <td>{product.min}</td>
+                        <td>{product.max}</td>
+                      </tr>
+                    );
+                  })}
                 </tbody>
               </table>
             </p>
             <div className="row justify-content-center mb-2">
               <div class="col m-1" align="center">
                 <button
-                  onClick={handleShow}
+                  onClick={handleAddProducts}
                   type="submit"
                   className="btn btn-dark blue m-1"
                 >
-                  Add a product
+                  Add products
                 </button>
                 <button
                   onClick={() => {}}
@@ -172,18 +210,19 @@ export default function FridgeProduitCard(props) {
             <div className="row">
               {productsToAdd.map((product) => {
                 return (
-                  <FridgeProductCard product={product} />
+                  <FridgeProductCard
+                    key={product.id}
+                    product={product}
+                    parentProps={parentProps}
+                  />
                 );
               })}
             </div>
           </Page>
         </Modal.Body>
         <Modal.Footer>
-          <Button variant="secondary" onClick={handleClose}>
-            Close
-          </Button>
           <Button variant="primary" onClick={handleClose}>
-            Save Changes
+            OK
           </Button>
         </Modal.Footer>
       </Modal>
