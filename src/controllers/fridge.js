@@ -207,6 +207,30 @@ exports.addProduct = (req,res) =>{
 }
 
 
+exports.removeProduct = (req,res) =>{
+    Model.Fridges.findOne({
+        where:{
+            id_fridge:req.params.id
+        },
+    })
+    .then(fridge=> {
+        if (!fridge) {
+            return res.status(400).json({
+                message: 'Fridge does not exist',
+            });
+        }
+
+        else{
+            return fridge.removeProducts(req.body) // [1,3]
+        }
+      
+    })
+    .then(products=> console.log(products))
+    .catch(error => console.log(error))
+
+}
+
+
 
 exports.getFridgeById = (req,res) => {
     Model.Fridges.findOne({
