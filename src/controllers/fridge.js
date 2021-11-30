@@ -21,86 +21,32 @@ exports.listProductByFridge = (req,res) =>{
         where:{
             id_fridge:req.params.id
         },
-        
-        
-    })
-    .then(fridge=> {
-        if (!fridge) {
-            return res.status(400).json({
-                message: 'Fridge does not exist',
-            });
-        }
-
-
-
-
-
-
-        else {
-            Model.fridges_products.findAll({
-                where:{
-                    fk_id_product:req.params.id
-                },
-            })
-
-            .then(a => res.json(a))
-            //     Model.fridgePresets_products.findAll({
-            //     where:{
-            //         fk_id_fridgePresets:a[0].fk_id_fridge
-            //     }
-                
-            // })
-            
-            // .then(a => res.json(a))
-            
-        }
-        })
-            
-
-
-
-
-        //   return fridge.getProducts()
-        //   .then(a => res.json(a[0].fridges_products))
-        // .then(info =>{ 
-        //     Model.fridges_products.count()
-        //     .then(numberOfField =>{
-        //         for(let i =0;i<numberOfField;i++){
-        //             Model.fridgePresets_products.findAll({
-        //             where:{
-        //                 fk_id_fridgePresets: info[i].fk_id_fridge
-        //             } 
-        //         }) .then(a => res.json(a))
-        //     }
-            
-          
-        //     })
-        //     }) 
-               
-                 
-          
-        // }
-
-}
-
-
-exports.listQminQmaxByProduct = (req,res) => {
-    Model.Fridges.findOne({
-        where:{
-            id_fridge:req.params.id
-        },
         include:[{
             model:Model.Products,
         include:[{
             model:Model.FridgePresets
         }]
     }]
-        
+})
+    
+    .then(fridge =>{
+        if (!fridge) {
+            return res.status(400).json({
+                message: 'Fridge does not exist',
+            });
+        }
+
+        else {
+            return res.json(fridge)
+        }
         
     })
-    .then(a=> res.json(a))
+    
+
 }
-        
+
+
+   
     
 
 exports.listClientByFridge = (req,res) => {

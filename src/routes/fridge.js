@@ -19,7 +19,4 @@ fridges.get('/:id/orders/products',fridgeController.listProductByOrderByFridge)
 
 fridges.post("/:id/removeProducts",fridgeController.removeProduct)
 
-fridges.get("/:id/qmin",fridgeController.listQminQmaxByProduct)
-
-
 module.exports = fridges
