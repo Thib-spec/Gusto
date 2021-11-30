@@ -19,16 +19,6 @@ quantity:{
     allowNull:false
 },
 
-quantity_min:{
-    type: DataTypes.INTEGER,
-    allowNull:false
-},
-
-quantity_max:{
-    type: DataTypes.INTEGER,
-    allowNull:false
-},
-
 }, {
     sequelize,
     modelName: 'fridges_products',

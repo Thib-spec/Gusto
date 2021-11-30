@@ -1,6 +1,7 @@
 const Model = require("../database/models");
 const Joi = require('joi');
-const { required } = require("joi");
+
+
 
 
 // const Model = {
@@ -20,6 +21,8 @@ exports.listProductByFridge = (req,res) =>{
         where:{
             id_fridge:req.params.id
         },
+        
+        
     })
     .then(fridge=> {
         if (!fridge) {
@@ -28,27 +31,77 @@ exports.listProductByFridge = (req,res) =>{
             });
         }
 
-        else {
-            return fridge.getProducts()
-        
-        
-  
-    .then(products =>{
-        if(products.length == 0){
-            return res.status(400).json({
-                message:`Fridge with id ${req.params.id} does not have any product`
-            })
-        }
+
+
+
+
 
         else {
-            return res.status(200).json(products)
+            Model.fridges_products.findAll({
+                where:{
+                    fk_id_product:req.params.id
+                },
+            })
+
+            .then(a => res.json(a))
+            //     Model.fridgePresets_products.findAll({
+            //     where:{
+            //         fk_id_fridgePresets:a[0].fk_id_fridge
+            //     }
+                
+            // })
+            
+            // .then(a => res.json(a))
+            
         }
-    })
-    }
-})
-    .catch(error => console.log(error))
+        })
+            
+
+
+
+
+        //   return fridge.getProducts()
+        //   .then(a => res.json(a[0].fridges_products))
+        // .then(info =>{ 
+        //     Model.fridges_products.count()
+        //     .then(numberOfField =>{
+        //         for(let i =0;i<numberOfField;i++){
+        //             Model.fridgePresets_products.findAll({
+        //             where:{
+        //                 fk_id_fridgePresets: info[i].fk_id_fridge
+        //             } 
+        //         }) .then(a => res.json(a))
+        //     }
+            
+          
+        //     })
+        //     }) 
+               
+                 
+          
+        // }
 
 }
+
+
+exports.listQminQmaxByProduct = (req,res) => {
+    Model.Fridges.findOne({
+        where:{
+            id_fridge:req.params.id
+        },
+        include:[{
+            model:Model.Products,
+        include:[{
+            model:Model.FridgePresets
+        }]
+    }]
+        
+        
+    })
+    .then(a=> res.json(a))
+}
+        
+    
 
 exports.listClientByFridge = (req,res) => {
     Model.Fridges.findOne({
