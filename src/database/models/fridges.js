@@ -26,7 +26,7 @@ module.exports = (sequelize) => {
             })
 
             Fridges.belongsToMany(models.Products,{
-                as: "products",
+                
                 through:'fridges_products',
                 foreignKey:"fk_id_product",
             })
