@@ -46,6 +46,30 @@ const Joi = require('joi');
         .catch(error => res.status(400).json(error))
     }
 
+    exports.listTagsbyClients = (req,res) =>{
+        Model.Client.findOne({
+            where:{
+                id_client: req.params.id
+            }
+        })
+    
+        .then(
+            Model.Tags.findAll({
+                where:{
+                    fk_id_client: req.params.id
+                }
+            })
+            .then(tags => {
+                if(tags.length == 0){
+                    return res.status(400).json({
+                        message: `Client with id ${req.params.id} does not have any tag`
+                    })
+                }
+            })
+        )
+        .catch(error => res.status(400).json(error))
+    }
+
 
     exports.getClientById = (req,res) => {
         Model.Client.findOne({

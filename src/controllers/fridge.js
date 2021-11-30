@@ -37,7 +37,7 @@ exports.listProductByFridge = (req,res) =>{
         }
 
         else {
-            return res.json(fridge)
+            return res.status(200).json(fridge)
         }
         
     })
@@ -192,9 +192,11 @@ exports.listProductByOrderByFridge = (req,res) => {
 
 
 // besoin d'ajouter une route editproduct
+// id product est ajouté en front
+// fridgePreset à contraindre
 
-exports.addProduct = (req,res) =>{
-    const {quantity, quantity_min, quantity_max, fk_id_product} = req.body
+exports.addFrontProduct = (req,res) =>{
+    const {quantity, quantity_min} = req.body
 
     const postProductSchema = Joi.object().keys({ 
         quantity : Joi.number().required(),

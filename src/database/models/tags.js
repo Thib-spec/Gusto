@@ -17,6 +17,10 @@ module.exports = (sequelize) => {
                 through:"tags_sales",
                 foreignKey:"fk_id_sale"
             })
+
+            Tags.belongsTo(models.Client,{
+                foreignKey:"fk_id_client"
+            })
         }
     }
 
