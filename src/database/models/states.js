@@ -5,8 +5,8 @@ module.exports = (sequelize) => {
         static associate(models){
 
             State.belongsToMany(models.Fridges,{
-                through: "fridges_state",
-                foreignKey:"fk_id_fridge"
+                through: "fridges_states",
+                foreignKey:"fk_id_state"
             })
         }
     }

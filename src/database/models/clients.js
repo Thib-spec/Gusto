@@ -12,7 +12,7 @@ module.exports = (sequelize) => {
 
             Client.belongsToMany(models.Fridges,{     
                 through:"clients_fridges",
-                foreignKey:"fk_id_fridge"
+                foreignKey:"fk_id_client"
             })
         }
     }

@@ -4,6 +4,7 @@ const Joi = require('joi');
 
 
 
+
 // const Model = {
 //     Categories: require("../database/models/categories")(),           // config pour que l'ide propose les fonctions possibles
 // }
@@ -196,13 +197,12 @@ exports.listProductByOrderByFridge = (req,res) => {
 // fridgePreset à contraindre
 
 exports.addFrontProduct = (req,res) =>{
-    const {quantity, quantity_min} = req.body
+    const {quantity_max, quantity_min, fk_id_product} = req.body
 
     const postProductSchema = Joi.object().keys({ 
-        quantity : Joi.number().required(),
         quantity_min:Joi.number().required(),
         quantity_max: Joi.number().required(),
-        fk_id_product: Joi.number().required()
+        fk_id_product: Joi.number().required(),
     })
 
     const result = postProductSchema.validate(req.body)
@@ -225,28 +225,36 @@ exports.addFrontProduct = (req,res) =>{
             });
         }
 
-        else{
+        else {
             if (!valid) {
                 res.status(400).json({ 
                   message: 'Missing required parameters',
-                  info: 'Requires: quantity, quantity_min, quantity_max, id' 
+                  info: 'Requires: quantity_min, quantity_max, fk_id_product, fk_id_fridgePreset' 
                 })
               }
               else{
-                    // fridge.addProducts() // [1,3]
-                Model.fridges_products.create({
-                quantity:quantity,
-                quantity_max:quantity_max,
-                quantity_min:quantity_min,
-                fk_id_fridge:req.params.id,
-                fk_id_product:fk_id_product
 
-            })
-            .then(products=> res.json(products))
-            }
-          
+                Model.FridgePresets.findAll({
+                    where:{
+                        id_fridgePresets: fridge.fk_id_fridgePreset
+
+                    }
+                })
+
+                .then(preset => {
+                    Model.fridgePresets_products.create({
+                        quantity_max:quantity_max,
+                        quantity_min:quantity_min,
+                        fk_id_fridgePresets:fk_id_product,
+                        fk_id_product:preset[0].id_fridgePresets
+        
+                    })
+                    .then(products=> res.json(products))
+                    
+                })
            
         }
+    }
       
     })
     

@@ -10,33 +10,33 @@ module.exports = (sequelize) => {
             
             Products.belongsToMany(models.Sales, {   
                 through: "products_sales",
-                foreignKey: "fk_id_sale",
+                foreignKey: "fk_id_product",
             });
             
             Products.belongsToMany(models.Deliveries, {
                 through: "products_deliveries",
-                foreignKey: "fk_id_delivery",
+                foreignKey: "fk_id_product",
             });
 
             Products.belongsToMany(models.Menus, {      
                 through: "menus_products",
-                foreignKey: "fk_id_menu",
+                foreignKey: "fk_id_product",
             });
 
             Products.belongsToMany(models.Orders, {
                 through: "products_orders",
-                foreignKey: "fk_id_order",
+                foreignKey: "fk_id_product",
             });
 
             Products.belongsToMany(models.FridgePresets,{
                 through:"fridgePresets_products",
-                foreignKey:"fk_id_fridgePresets"
+                foreignKey:"fk_id_product"
             })
 
             
             Products.belongsToMany(models.Fridges,{
                 through:"fridges_products",
-                foreignKey:"fk_id_fridge",
+                foreignKey:"fk_id_product",
                 
             })
         }

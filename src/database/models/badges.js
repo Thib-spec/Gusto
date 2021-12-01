@@ -17,7 +17,7 @@ class Badges extends Model{
         
         Badges.belongsToMany(models.Fridges,{       
             through:"fridges_badges",
-            foreignKey:"fk_id_fridge"
+            foreignKey:"fk_id_badge"
         })
     }
 }

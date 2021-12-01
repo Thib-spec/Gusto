@@ -10,12 +10,12 @@ module.exports = (sequelize) => {
             
             Sales.belongsToMany(models.Tags, {
                 through: "tags_sales",
-                foreignKey: "fk_id_tag",
+                foreignKey: "fk_id_sale",
             });
             
             Sales.belongsToMany(models.Products, {
                 through: "products_sales",
-                foreignKey: "fk_id_product",
+                foreignKey: "fk_id_sale",
             });
         }
     }

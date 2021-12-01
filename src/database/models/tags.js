@@ -10,12 +10,12 @@ module.exports = (sequelize) => {
 
             Tags.belongsToMany(models.Deliveries,{
                 through:"tags_deliveries",
-                foreignKey:"fk_id_delivery"
+                foreignKey:"fk_id_tag"
             })
 
             Tags.belongsToMany(models.Sales,{       // liaison belongstomany avec sales
                 through:"tags_sales",
-                foreignKey:"fk_id_sale"
+                foreignKey:"fk_id_tag"
             })
 
             Tags.belongsTo(models.Client,{
