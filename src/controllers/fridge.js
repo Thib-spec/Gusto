@@ -245,8 +245,8 @@ exports.addFrontProduct = (req,res) =>{
                     Model.fridgePresets_products.create({
                         quantity_max:quantity_max,
                         quantity_min:quantity_min,
-                        fk_id_fridgePresets:fk_id_product,
-                        fk_id_product:preset[0].id_fridgePresets
+                        fk_id_fridgePreset:preset[0].id_fridgePresets,
+                        fk_id_product:fk_id_product
         
                     })
                     .then(products=> res.json(products))
