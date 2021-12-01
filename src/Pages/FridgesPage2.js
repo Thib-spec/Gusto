@@ -2,7 +2,7 @@
 import React, { Component, useState, useEffect } from "react";
 import Page from "Components/Page";
 import { Accordion, Row, Table, Card } from "react-bootstrap";
-import FridgeProduitCard from "Components/FridgePage/FridgeProduitsCard";
+import FridgeProduitCard from "Components/FridgePage/FridgeProductsCard";
 import FridgeAccordion from "Components/FridgePage/FridgeAccordion";
 import FridgeDropDownComponent from "Components/FridgePage/FridgeDropDownComponent";
 import DropDownComponent from "Components/DropDownComponent";
@@ -14,6 +14,8 @@ export default function RefrigerateursPage() {
 
   useEffect(() => {
     getFridges();
+    getAllProducts();
+    getAllMenus();
   }, []);
 
   async function getFridges() {
@@ -21,21 +23,45 @@ export default function RefrigerateursPage() {
       const res = await api.getFridges();
       if (res.ok) {
         const resJSON = await res.json();
-        setFridges(resJSON)
+        setFridges(resJSON);
       } else {
-        
       }
     } catch (error) {
-      console.log(error)
-      
+      console.log(error);
     }
   }
-  
+
+  async function getAllProducts() {
+    try {
+      const res = await api.getAllProducts();
+      if (res.ok) {
+        const resJSON = await res.json();
+        setAllProducts(resJSON);
+      } else {
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  async function getAllMenus() {
+    try {
+      const res = await api.getAllMenus();
+      if (res.ok) {
+        const resJSON = await res.json();
+        setAllMenus(resJSON);
+      } else {
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
   const status = [
-    {id:1, message:"En production", inProduction:true},
-    {id:2, message:"Hors service", horsService:true},
-    {id:3, message:"Livraison en cours", livraison:true},
-  ]
+    { id: 1, message: "En production", inProduction: true },
+    { id: 2, message: "Hors service", horsService: true },
+    { id: 3, message: "Livraison en cours", livraison: true },
+  ];
 
   // const [fridges, setFridges] = useState([
   //   { id: 0, name: "fridge1", status:status[2] },
@@ -43,12 +69,12 @@ export default function RefrigerateursPage() {
   //   { id: 2, name: "fridge3", status:status[0] },
   // ]);
   const [fridges, setFridges] = useState([]);
-
+  const [allProducts, setAllProducts] = useState([]);
+  const [allMenus, setAllMenus] = useState([]);
 
   return (
     <>
       <Page>
-
         {/* test avec Accordion de Boostrap : ne marche pas */}
         <Accordion defaultActiveKey="1">
           <Accordion.Item eventKey="0">
@@ -69,17 +95,19 @@ export default function RefrigerateursPage() {
             fridgeName="FRIDGE #2"
             fridgeStatus="En production"
           /> */}
-
         </Accordion>
         {/* fin test avec Accordion de Boostrap */}
 
-        {fridges.map(fridge=>{    
-          return (<FridgeDropDownComponent
-            fridge={fridge}
-            key={fridge.id}
-          />)
+        {fridges.map((fridge) => {
+          return (
+            <FridgeDropDownComponent
+              fridge={fridge}
+              key={fridge.id}
+              allProducts={allProducts}
+              allMenus={allMenus}
+            />
+          );
         })}
-
       </Page>
     </>
   );
