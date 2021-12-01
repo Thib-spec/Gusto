@@ -75,7 +75,7 @@ export default function ProductsPage(){
     return(
         <div className="products-container">
             <div className="products-list">
-                {allCategories.map((catégorie) => (
+                {DATACatégories.map((catégorie) => (
                     <CategorieinProductDropDown categorie={catégorie} key={catégorie.id_category}/>
                 ))}
                 
