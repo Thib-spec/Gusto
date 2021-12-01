@@ -11,6 +11,7 @@ const clientRouter = require('./client');
 const levelRouter = require('./level');
 const saleRouter = require("./sale")
 const stateRouter = require('./state');
+const tagRouter = require('./tag')
 
 
 /* ----------------------- */
@@ -39,6 +40,7 @@ router.use('/client', clientRouter);
 router.use('/level', levelRouter);
 router.use('/sale',saleRouter)
 router.use('/state', stateRouter);
+router.use('/tag',tagRouter)
 
 
 // Handle other API routes, send Not found

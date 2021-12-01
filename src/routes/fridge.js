@@ -7,10 +7,13 @@ fridges.get('/:id',fridgeController.getFridgeById)
 fridges.post('/',fridgeController.addFridge)
 fridges.put('/:id',fridgeController.editFridge)
 fridges.delete('/:id',fridgeController.deleteFridge)
+fridges.get('/:id/sales/products',fridgeController.listProductsBySaleByFridge)
 
 fridges.get('/:id/products',fridgeController.listProductByFridge)
 
-fridges.post('/:id/addProducts',fridgeController.addProduct) // [2,3]
+fridges.post('/:id/addProducts',fridgeController.addFrontProduct) // [2,3]
+
+fridges.put("/:id/editProduct/:productId",fridgeController.editFrontProduct)
 
 fridges.get('/:id/clients',fridgeController.listClientByFridge)
 fridges.get('/:id/badges',fridgeController.listBadgeByFridge)
@@ -18,8 +21,5 @@ fridges.get('/:id/menus',fridgeController.listMenuByFridge)
 fridges.get('/:id/orders/products',fridgeController.listProductByOrderByFridge)
 
 fridges.post("/:id/removeProducts",fridgeController.removeProduct)
-
-fridges.get("/:id/qmin",fridgeController.listQminQmaxByProduct)
-
 
 module.exports = fridges
