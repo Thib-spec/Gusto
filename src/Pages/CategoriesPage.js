@@ -21,8 +21,7 @@ export default function CategoriesPage(){
             .catch((err) => console.log(err));
     }, [])
 
-    console.log(allCategories)
-    console.log(DATACatégories)
+  
 
 
 
@@ -70,7 +69,7 @@ export default function CategoriesPage(){
     return(
         <div className="categories-container">
             <div className="categories-list">
-                {DATACatégories.map((categorie) => (
+                {allCategories.map((categorie) => (
                     
                     <CategorieDropDownComponent categorie={categorie} key={categorie.id_category}/>
                 ))}
