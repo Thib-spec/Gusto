@@ -1,3 +1,4 @@
+import DATASales from "Data/dataSales";
 import React, { useState } from "react";
 import "../../CSS/logsFridge.scss"
 import ButtonFridge from "../FridgePage/ButtonFridge"
@@ -43,6 +44,31 @@ export default function FridgeLogsCard({name}){
                                         <div className="logs-sales-date">Date</div>
                                         <div className="logs-sales-prix">Prix</div>
                                         <div className="logs-sales-produits">Produits</div>
+                                    </div>
+                                    <div className="logs-sales-content">
+                                        {DATASales.map((sale)=>
+                                            <div>
+                                                {
+                                                    sale.fk_id_fridge==1?
+                                                        <div className="logs-sales-content-element">
+                                                            <div className="logs-sales-date">{sale.sales_timestamp}</div>
+                                                            <div className="logs-sales-prix">{5}</div>
+                                                            <div className="logs-sales-content-element-products">
+                                                                <div className="logs-sales-content-element-products-element">
+                                                                    <div>pâtes</div>
+                                                                    <div>x1</div>
+                                                                </div>
+                                                                <div className="logs-sales-content-element-products-element">
+                                                                    <div>coca</div>
+                                                                    <div>x2</div>
+                                                                </div>                                                                  
+                                                            </div>
+                                                        </div>
+                                                    :false
+                                                }
+                                                
+                                            </div>
+                                        )}
                                     </div>
                                 </div>
                             :false

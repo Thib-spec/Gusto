@@ -83,3 +83,19 @@
     }
 }
 
+
+.logs-sales-content-element{
+    display: flex;
+    flex-direction: row;
+}   
+
+.logs-sales-content-element-products{
+    display: flex;
+    flex-direction: column;
+    
+}
+
+.logs-sales-content-element-products-element{
+    display: flex;
+    flex-direction: row;
+}
