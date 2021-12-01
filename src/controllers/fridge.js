@@ -312,13 +312,15 @@ exports.getFridgeById = (req,res) => {
 /*********************** Ajouter le fait que la foreign key ne peut avoir comme valeur que les id présent dans la table source (level : 1:2:3 => user ne peut avoir en fk que 1, 2 et 3) */
 
 exports.addFridge = (req,res) =>{
-    const { label, fk_id_technologies} = req.body
+    const { label, fk_id_technologies, fk_id_fridgePreset} = req.body
 
     const fk_tech_list = new Array()
+    const fk_fridgePresetList = new Array()
 
     const postFridgeSchema = Joi.object().keys({ 
         label : Joi.string().required(),
         fk_id_technologies:Joi.number().required(),
+        fk_id_fridgePreset: Joi.number().required()
     })
 
     const result = postFridgeSchema.validate(req.body)
@@ -330,7 +332,7 @@ exports.addFridge = (req,res) =>{
     if (!valid) {
       res.status(400).json({ 
         message: 'Missing required parameters',
-        info: 'Requires: label, fk_id_technologies' 
+        info: 'Requires: label, fk_id_technologies, fk_id_fridgePreset' 
       })
     }
     else {
@@ -344,21 +346,43 @@ exports.addFridge = (req,res) =>{
                 for(let i=0;i<numberofTech;i++){
                     fk_tech_list.push(allTechs[i].id_technologies)
                 }
-                
-                if(!fk_tech_list.includes(fk_id_technologies)){
-                    return res.status(400).json({
-                        message:"fk_id_technologies does not match any id_technologies"
-                    })
-                }
 
-                else {
-                    Model.Fridges.create({
-                    label : label,
-                    fk_id_technologies:fk_id_technologies,
+                Model.FridgePresets.findAll({
+                    attributes: ["id_fridgePresets"]
                 })
+                .then(allPreset =>{
+                    Model.FridgePresets.count()
+                    .then(numberofPreset =>{
+                        for(let i=0;i<numberofPreset;i++){
+                            fk_fridgePresetList.push(allPreset[i].id_fridgePresets)
+                        }
 
-                .then(fridge => res.status(200).json(fridge))
-            }             
+                        console.log(fk_fridgePresetList.includes(fk_id_fridgePreset))
+                    })
+
+                    if(!fk_tech_list.includes(fk_id_technologies)){
+                        return res.status(400).json({
+                            message:"fk_id_technologies does not match any id_technologies"
+                        })
+                    }
+
+                //    else if(!fk_fridgePresetList.includes(fk_id_fridgePreset)){
+                //         return res.status(400).json({
+                //             message:"fk_id_fridgePreset does not match any id_fridgePresets"
+                //         })
+                //     }
+
+                    else {
+                        Model.Fridges.create({
+                        label : label,
+                        fk_id_technologies:fk_id_technologies,
+                        fk_id_fridgePreset:fk_id_fridgePreset
+                    })
+
+                    .then(fridge => res.status(200).json(fridge))
+            
+            }
+        })             
         })
     })
         .catch(error => res.status(400).json(error))
