@@ -63,3 +63,39 @@
 .logs-sales-produits{
     margin-right: 10%;
 }
+
+
+.logs-onglets{
+    display: flex;
+    flex-direction: row;
+    
+}
+
+.logs-onglets-element{
+    border-top-left-radius: 8px;
+    border-top-right-radius: 8px;
+    padding:1%;
+    padding-left: 3%;
+    padding-right: 3%;
+    &#selected{
+        background-color: rgb(220, 220, 220);
+        border-bottom: none;
+    }
+}
+
+
+.logs-sales-content-element{
+    display: flex;
+    flex-direction: row;
+}   
+
+.logs-sales-content-element-products{
+    display: flex;
+    flex-direction: column;
+    
+}
+
+.logs-sales-content-element-products-element{
+    display: flex;
+    flex-direction: row;
+}

@@ -70,7 +70,7 @@ export default function CategoriesPage(){
     return(
         <div className="categories-container">
             <div className="categories-list">
-                {allCategories.map((categorie) => (
+                {DATACatégories.map((categorie) => (
                     
                     <CategorieDropDownComponent categorie={categorie} key={categorie.id_category}/>
                 ))}
