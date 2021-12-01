@@ -13,13 +13,13 @@ module.exports = (sequelize) => {
             
             Deliveries.belongsToMany(models.Tags, {     
                 through: "tags_deliveries",
-                foreignKey: "fk_id_tag",
+                foreignKey: "fk_id_delivery",
             });
             
        
             Deliveries.belongsToMany(models.Products, {
                 through: "products_deliveries",
-                foreignKey: "fk_id_product",
+                foreignKey: "fk_id_delivery",
             });
 
             Deliveries.belongsTo(models.Orders,{

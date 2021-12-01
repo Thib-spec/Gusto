@@ -11,4 +11,6 @@ clients.delete('/:id',clientController.deleteClient)
 
 clients.get('/:id/categories',clientController.listCategoryByClient)
 
+clients.get('/:id/tags',clientController.listTagsbyClients)
+
 module.exports = clients
