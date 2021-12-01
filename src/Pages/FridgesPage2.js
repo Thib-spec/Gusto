@@ -15,6 +15,7 @@ export default function RefrigerateursPage() {
   useEffect(() => {
     getFridges();
     getAllProducts();
+    getAllMenus();
   }, []);
 
   async function getFridges() {
@@ -43,6 +44,19 @@ export default function RefrigerateursPage() {
     }
   }
 
+  async function getAllMenus() {
+    try {
+      const res = await api.getAllMenus();
+      if (res.ok) {
+        const resJSON = await res.json();
+        setAllMenus(resJSON);
+      } else {
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
   const status = [
     { id: 1, message: "En production", inProduction: true },
     { id: 2, message: "Hors service", horsService: true },
@@ -56,6 +70,7 @@ export default function RefrigerateursPage() {
   // ]);
   const [fridges, setFridges] = useState([]);
   const [allProducts, setAllProducts] = useState([]);
+  const [allMenus, setAllMenus] = useState([]);
 
   return (
     <>
@@ -84,7 +99,14 @@ export default function RefrigerateursPage() {
         {/* fin test avec Accordion de Boostrap */}
 
         {fridges.map((fridge) => {
-          return <FridgeDropDownComponent fridge={fridge} key={fridge.id} allProducts={allProducts} />;
+          return (
+            <FridgeDropDownComponent
+              fridge={fridge}
+              key={fridge.id}
+              allProducts={allProducts}
+              allMenus={allMenus}
+            />
+          );
         })}
       </Page>
     </>

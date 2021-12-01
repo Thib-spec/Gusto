@@ -1,6 +1,10 @@
-// component utilisé dans le déroulant d'un fridge pour gérer les menus
+// component utilisé dans le déroulant d'un fridge pour gérer les produits
 
 import React, { Component, useState, useEffect } from "react";
+import { useSelector, useDispatch } from "react-redux";
+import api from "helpers/api";
+import ArrayController from "helpers/ArrayController";
+
 import Page from "Components/Page";
 import {
   Accordion,
@@ -11,32 +15,29 @@ import {
   Button,
   Modal,
 } from "react-bootstrap";
-import api from "helpers/api";
-import ArrayController from "helpers/ArrayController";
 
-// const menus = [
-//   { id: 0, name: "Midi Lunch"},
-//   { id: 1, name: "Soir Lunch"},
-// ];
+import FridgeProductCard from "Components/FridgePage/FridgeProductCard";
+import FridgeProductTableLine from "Components/FridgePage/FridgeProductTableLine";
 
-import FridgeMenuCard from "Components/FridgePage/FridgeMenuCard";
-import FridgeMenuTableLine from "Components/FridgePage/FridgeMenuTableLine";
-
-export default function FridgeMenusCard(props) {
-  // menus ajoutés dans le frigo
-  const menus = new ArrayController(useState([]), useState([]));
+export default function FridgeProductsCard(props) {
+  // produits ajoutés dans le frigo
+  const products = new ArrayController(useState([]), useState([]));
 
   useEffect(() => {
-    getMenusInFridge();
+    getProductsInFridge();
   }, []);
 
+  // useEffect(() => {
+  //   console.log("products : ", products);
+  // }, [products.value]);
+
   // appels api
-  async function getMenusInFridge() {
+  async function getProductsInFridge() {
     try {
-      const res = await api.getMenusInFridge({ id: props.fridge.id });
+      const res = await api.getProductsInFridge({ id: props.fridge.id });
       if (res.ok) {
         const resJSON = await res.json();
-        menus.set([...resJSON], { init: true });
+        products.set([...resJSON], { init: true });
       } else {
       }
     } catch (error) {
@@ -44,15 +45,15 @@ export default function FridgeMenusCard(props) {
     }
   }
 
-  async function addMenusInFridge() {
+  async function addProductsInFridge() {
     try {
-      const res = await api.addMenusInFridge({
+      const res = await api.addProductsInFridge({
         id: props.fridge.id,
-        body: menus.value,
+        body: products.value,
       });
       if (res.ok) {
         const resJSON = await res.json();
-        menus.addOrUpdateMany([], { init: true });
+        products.addOrUpdateMany([], { init: true });
       } else {
       }
     } catch (error) {
@@ -64,20 +65,20 @@ export default function FridgeMenusCard(props) {
   const [show, setShow] = useState(false);
   const handleShow = () => setShow(true);
   const handleClose = () => setShow(false);
-  const handleAddMenus = handleShow;
+  const handleAddProducts = handleShow;
 
   // Save & Cancel
   const handleSaveButton = () => {
-    addMenusInFridge();
+    addProductsInFridge();
   };
   const handleCancelButton = () => {
-    menus.reset();
+    products.reset();
   };
 
   // ParentsProps
   const parentProps = {
     states: {
-      menus,
+      products,
     },
   };
 
@@ -91,16 +92,20 @@ export default function FridgeMenusCard(props) {
               <table class="table table-striped">
                 <thead>
                   <tr>
-                    <th>Menu</th>
+                    {/* <th>#</th> */}
+                    <th>Product</th>
+                    <th>Quantity</th>
+                    <th>Min</th>
+                    <th>Max</th>
                     <th></th>
                   </tr>
                 </thead>
                 <tbody>
-                  {menus.value.map((menu) => {
+                  {products.value.map((product) => {
                     return (
-                      <FridgeMenuTableLine
-                        key={menu.id}
-                        menu={menus.get(menu.id)}
+                      <FridgeProductTableLine
+                        key={product.id}
+                        product={products.get(product.id)}
                       />
                     );
                   })}
@@ -110,14 +115,22 @@ export default function FridgeMenusCard(props) {
             <div className="row justify-content-center mb-2">
               <div class="col m-1" align="center">
                 <button
-                  onClick={handleAddMenus}
+                  onClick={handleAddProducts}
                   type="submit"
                   className="btn btn-dark blue m-1"
                 >
-                  Add menus
+                  Add products
+                </button>
+                <button
+                  onClick={() => {}}
+                  type="submit"
+                  className="btn btn-dark blue m-1"
+                >
+                  passer une commande
                 </button>
               </div>
             </div>
+
             <div className="row justify-content-center">
               <div class="col-6 m-1" align="center">
                 <button
@@ -137,7 +150,6 @@ export default function FridgeMenusCard(props) {
               </div>
             </div>
           </div>
-          {/* <div class="card-footer text-muted">Produits</div> */}
         </div>
       </div>
 
@@ -150,18 +162,18 @@ export default function FridgeMenusCard(props) {
       >
         <Modal.Header closeButton>
           <Modal.Title id="contained-modal-title-vcenter">
-            Add menus
+            Add products
           </Modal.Title>
         </Modal.Header>
         <Modal.Body className="show-grid">
           {/* <div className=""></div> */}
           <Page>
             <div className="row">
-              {props.allMenus.map((menu) => {
+              {props.allProducts.map((product) => {
                 return (
-                  <FridgeMenuCard
-                    key={menu.id}
-                    menu={menu}
+                  <FridgeProductCard
+                    key={product.id}
+                    product={product}
                     parentProps={parentProps}
                   />
                 );

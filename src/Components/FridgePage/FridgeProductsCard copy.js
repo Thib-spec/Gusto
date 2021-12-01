@@ -31,30 +31,29 @@ export default function FridgeProductsCard(props) {
   }, []);
 
   useEffect(() => {
-    productsToAdd.setValue(
-      props.allProducts.filter(
-        (product) => !products.value.map((el) => el.id).includes(product.id)
-      )
-    );
+    console.log("productsAdded : ", productsAdded)
+  }, [productsAdded.value]);
+
+  useEffect(() => {
+    console.log("products : ", products)
   }, [products.value]);
 
   useEffect(() => {
-    console.log("productsAdded : ", productsAdded);
-    console.log("products : ", products);
-  }, [productsAdded.value, products.value]);
-
-  // useEffect(() => {
-  //   console.log("productsToAdd : ", productsToAdd.value);
-  // }, [productsToAdd.value]);
+    productsToAdd.set(
+      // props.allProducts.filter(
+      //   (product) => !products.value.map((el) => el.id).includes(product.id)
+      // )
+      props.allProducts
+    );
+  }, [products.value]);
 
   // appels api
   async function getProductsInFridge() {
-    console.log("wsh")
     try {
       const res = await api.getProductsInFridge({ id: props.fridge.id });
       if (res.ok) {
         const resJSON = await res.json();
-        products.init(resJSON);
+        products.set([...resJSON], {init:true});
       } else {
       }
     } catch (error) {
@@ -64,10 +63,10 @@ export default function FridgeProductsCard(props) {
 
   async function addProductsInFridge() {
     try {
-      const res = await api.addProductsInFridge({id: props.fridge.id, body:productsAdded.value});
+      const res = await api.addProductsInFridge({id: props.fridge.id, body:products.value});
       if (res.ok) {
         const resJSON = await res.json();
-        products.addOrUpdateMany(productsAdded.value);
+        products.addOrUpdateMany(productsAdded.value, {init:true});
         productsAdded.removeMany(productsAdded.value)
       } else {
       }
@@ -100,7 +99,6 @@ export default function FridgeProductsCard(props) {
   }
   const handleCancelButton = ()=>{
     productsAdded.clear()
-    console.log("products.init : ",products.initValue)
     products.reset()
   }
 
@@ -146,7 +144,7 @@ export default function FridgeProductsCard(props) {
                               product,
                               "min"
                             )}
-                            defaultValue={product.min}
+                            value={product.min}
                           />
                         </td>
                         {/* <td>{product.max}</td> */}
@@ -158,7 +156,7 @@ export default function FridgeProductsCard(props) {
                               product,
                               "max"
                             )}
-                            defaultValue={product.max}
+                            value={product.max}
                           />
                         </td>
                       </tr>
@@ -169,18 +167,7 @@ export default function FridgeProductsCard(props) {
                       <tr key={product.id}>
                         {/* <td>{product.id}</td> */}
                         <td>{product.name}</td>
-                        {/* <td>{product.quantity}</td> */}
-                        <td>
-                          <input
-                            className="w-100"
-                            type="number"
-                            onChange={handleProductAddedChangeValue(
-                              product,
-                              "quantity"
-                            )}
-                            defaultValue={product.quantity}
-                          />
-                        </td>
+                        <td>{product.quantity}</td>
                         {/* <td className="red">{product.min}</td> */}
                         <td>
                           <input
@@ -190,7 +177,7 @@ export default function FridgeProductsCard(props) {
                               product,
                               "min"
                             )}
-                            defaultValue={product.min}
+                            value={product.min}
                           />
                         </td>
                         {/* <td>{product.max}</td> */}
@@ -202,7 +189,7 @@ export default function FridgeProductsCard(props) {
                               product,
                               "max"
                             )}
-                            defaultValue={product.max}
+                            value={product.max}
                           />
                         </td>
                       </tr>

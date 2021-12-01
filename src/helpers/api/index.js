@@ -6,8 +6,11 @@ import logoutData from "./fakeData/logout";
 import getInfoData from "./fakeData/getInfo";
 import getFridgesData from "./fakeData/getFridgesData";
 import getProductsInFridgeData from "./fakeData/getProductsInFridgeData";
+import getMenusInFridgeData from "./fakeData/getMenusInFridgeData";
 import addProductsInFridgeData from "./fakeData/addProductsInFridgeData";
+import addMenusInFridgeData from "./fakeData/addMenusInFridgeData";
 import getAllProductsData from "./fakeData/getAllProductsData";
+import getAllMenusData from "./fakeData/getAllMenusData";
 
 const API = function ({ url, authToken, fake }) {
   this.fake = fake == undefined ? true : fake;
@@ -61,6 +64,14 @@ API.prototype.getProductsInFridge = function ({ id } = {}) {
   });
 };
 
+API.prototype.getMenusInFridge = function ({ id } = {}) {
+  if (this.fake) return getMenusInFridgeData;
+  return this.requester({
+    method: "GET",
+    path: `/fridges/${id}/menus`,
+  });
+};
+
 API.prototype.addProductsInFridge = function ({ id, body } = {}) {
   if (this.fake) return addProductsInFridgeData;
   return this.requester({
@@ -70,11 +81,28 @@ API.prototype.addProductsInFridge = function ({ id, body } = {}) {
   });
 };
 
+API.prototype.addMenusInFridge = function ({ id, body } = {}) {
+  if (this.fake) return addMenusInFridgeData;
+  return this.requester({
+    method: "POST",
+    path: `/fridges/${id}/menus`,
+    body
+  });
+};
+
 API.prototype.getAllProducts = function ({ } = {}) {
   if (this.fake) return getAllProductsData;
   return this.requester({
     method: "GET",
     path: `/products`,
+  });
+};
+
+API.prototype.getAllMenus = function ({ } = {}) {
+  if (this.fake) return getAllMenusData;
+  return this.requester({
+    method: "GET",
+    path: `/menus`,
   });
 };
 
