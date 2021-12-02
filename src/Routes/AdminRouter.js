@@ -26,6 +26,7 @@ import { useSelector, useDispatch } from "react-redux";
 import api from "helpers/api";
 import userActions from "store/actions/userActions";
 import Footer from "Components/Footer";
+import PresetPage from "Pages/PresetPage";
 
 function AdminRouter({ history }) {
   const user = useSelector((state) => state.user.value);
@@ -67,7 +68,7 @@ function AdminRouter({ history }) {
           <Route path="/testHistory1" component={Test1} />
           <Route path="/testHistory2" component={Test2} />
           <Route path="/testData" component={TestData} />
-          <Route path="/" component={NotFoundPage} />
+          <Route path="/preset" component={PresetPage} />
         </Switch>
         {/* <Footer/> */}
       </>

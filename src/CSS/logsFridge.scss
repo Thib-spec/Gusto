@@ -87,11 +87,13 @@
 .logs-sales-content-element{
     display: flex;
     flex-direction: row;
+    justify-content: space-between;
 }   
 
 .logs-sales-content-element-products{
     display: flex;
     flex-direction: column;
+    margin-right: 10%;
     
 }
 
