@@ -1,0 +1,19 @@
+.container-presetComponent{
+    background-color: rgb(7, 7, 24);
+    color: white;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    font-size: 170%;
+    padding: 1%;
+}
+
+.container-presetComponent-dropDownContent{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+}
+
+.container-presetComponent-dropDownContent-element{
+    width: 45%;
+}
