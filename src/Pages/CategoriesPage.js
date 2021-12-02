@@ -42,8 +42,8 @@ export default function CategoriesPage(){
             axios.post("http://api.gustosolutions.fr/api/category", {
                 "label":a,
                 "image": "imageurl",
-                "description" : "description"
-            
+                "description" : "description",
+                "fk_id_client":1
             })
             .then((res) => {
                 console.log(res);
