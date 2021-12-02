@@ -12,6 +12,7 @@ const levelRouter = require('./level');
 const saleRouter = require("./sale")
 const stateRouter = require('./state');
 const tagRouter = require('./tag')
+const fridgePresetRouter = require("./fridgePreset")
 
 
 /* ----------------------- */
@@ -41,6 +42,7 @@ router.use('/level', levelRouter);
 router.use('/sale',saleRouter)
 router.use('/state', stateRouter);
 router.use('/tag',tagRouter)
+router.use('/fridgePreset',fridgePresetRouter)
 
 
 // Handle other API routes, send Not found
