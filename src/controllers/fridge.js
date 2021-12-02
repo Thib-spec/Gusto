@@ -225,7 +225,7 @@ exports.listProductsBySaleByFridge = (req,res) => {
                     },
                     include:{model:Model.Products},
                     order:[
-                        []
+                        ["updatedAt",'DESC']
                     ]
                 })
     
@@ -237,7 +237,7 @@ exports.listProductsBySaleByFridge = (req,res) => {
                     }
     
                     else {
-                        res.status(200).json(sales)
+                        res.status(200).json(sales.slice(0,5))
                     }
                 })
                 })
