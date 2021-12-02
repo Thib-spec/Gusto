@@ -14,14 +14,13 @@ export default function LoginPage({ location, history }) {
 
   // appel api
   async function handleLogin() {
-    console.log("salut")
     try {
       const res = await api.login({ body: { email:username, password } });
       console.log(res)
       if (res.ok) {
         const resJSON = await res.json();
         dispatch(userActions.login({ ...resJSON, isLogged: true }));
-        localStorage.setItem("authToken", resJSON.authToken);
+        localStorage.setItem("authToken", resJSON.token);
         history.push("/");
       } else {
         setAlert(

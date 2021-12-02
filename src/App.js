@@ -5,7 +5,7 @@ import AdminRouter from './Routes/AdminRouter';
 
 function App() {
   
-
+  console.log(process.env)
 
   return (
     <div>
