@@ -15,7 +15,7 @@ export default function CategoriesPage(){
 
     const [allCategories, setallCategories] = useState([]);
     useEffect(() => {
-        axios.get("http://localhost:3001/api/category")
+        axios.get("http://api.gustosolutions.fr/api/category")
             .then((res) =>{setallCategories(res.data)
             })
             .catch((err) => console.log(err));
@@ -73,9 +73,7 @@ export default function CategoriesPage(){
                     
                     <CategorieDropDownComponent categorie={categorie} key={categorie.id_category}/>
                 ))}
-                <div>add categorie nom : {catégorieAdd} </div>
-                <div>delete categorie id : {}</div>
-                <div>update categorie id :{} description :{}</div>
+                
                 <button type="button" class="btn btn-warning categories-list-element-sub-buttons-element-addButton" onClick={handleShow}>Ajouter une catégorie</button>
             </div>
 

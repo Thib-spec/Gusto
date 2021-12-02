@@ -7,8 +7,6 @@ const DATAfridgeproduct =[
         "lv_amount": "2.00",
         "lv_quantity": 2,
         "cash_amount": "2.00",
-        "createdAt": "2021-12-01T16:29:52.000Z",
-        "updatedAt": "2021-12-01T16:29:53.000Z",
         "fk_id_fridge": 1,
         "Products": [
             {
@@ -18,14 +16,10 @@ const DATAfridgeproduct =[
                 "price": 1,
                 "ubd": "s",
                 "description": "s",
-                "createdAt": "2021-11-26T13:38:54.000Z",
-                "updatedAt": "2021-11-26T13:38:54.000Z",
                 "fk_id_category": null,
                 "products_sales": {
                     "id_products_sales": 1,
                     "quantity_product": 2,
-                    "createdAt": "2021-12-01T16:30:10.000Z",
-                    "updatedAt": "2021-12-01T16:30:10.000Z",
                     "fk_id_product": 1,
                     "fk_id_sale": 1
                 }

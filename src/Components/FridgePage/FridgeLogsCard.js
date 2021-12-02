@@ -3,23 +3,20 @@ import React, { useState,useEffect } from "react";
 import "../../CSS/logsFridge.scss"
 import ButtonFridge from "../FridgePage/ButtonFridge"
 import axios from "axios"
+import LogSaleComponent from "./LogSaleComponent";
+import DATAfridgeproduct from "Data/datafridgeproduct";
 
 export default function FridgeLogsCard(props){
 
-    const [allSales, setallSales] = useState([]);
-    useEffect(() => {
-        axios.get("http://localhost:3001/api/sale")
-            .then((res) =>{setallSales(res.data)
+     const [sliceSales, setsliceSales] = useState([]);
+     useEffect(() => {
+        axios.get("http://api.gustosolutions.fr/api/fridge/"+props.idFridge+"/sales/products")
+            .then((res) =>{setsliceSales(res.data)
                 
             })
             .catch((err) => console.log(err));
     }, [])
 
-
-    
-    
-
-    
 
     const[logFridge,setLogFridge] = useState(false)
     const[logSales,setLogSales]= useState(true)
@@ -63,25 +60,13 @@ export default function FridgeLogsCard(props){
                                         <div className="logs-sales-produits">Produits</div>
                                     </div>
                                     <div className="logs-sales-content">
-                                        {allSales.slice(0,3).map((sale)=>
+                                        {sliceSales.map((sale)=>
                                             
-                                            <div>
+                                            <div>{console.log(sale)}
                                                 {   
-                                                    sale.fk_id_fridge==props.idFridge?
-                                                        <div className="logs-sales-content-element">
-                                                            <div className="logs-sales-date">{sale.sales_timestamp}</div>
-                                                            <div className="logs-sales-prix">{sale.cbemv_amount}+{sale.cbcless_amount}</div>
-                                                            <div className="logs-sales-content-element-products">
-                                                                <div className="logs-sales-content-element-products-element">
-                                                                    <div></div>
-                                                                    <div>x1</div>
-                                                                </div>
-                                                                <div className="logs-sales-content-element-products-element">
-                                                                    <div>coca</div>
-                                                                    <div>x2</div>
-                                                                </div>                                                                  
-                                                            </div>
-                                                        </div>
+                                                    sale.fk_id_fridge==props.idFridge?//peut être enlever??
+                                                        
+                                                        <LogSaleComponent sale={sale}/>
                                                     :false
                                                 }
                                                 
