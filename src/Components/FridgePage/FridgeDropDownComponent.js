@@ -55,8 +55,8 @@ export default function FridgeDropDownComponent(props) {
                     <FridgeProduitsCard3 name="Produits" {...props} />
                     <FridgeMenusCard name="Menus" {...props} />
                     <div class="w-100"></div>
-                    <FridgeLogsCard name="Logs" />
-                    <FridgeGestionCard name="Gestion VMC" />
+                    <FridgeLogsCard name="Logs" idFridge={props.idFridge}/>
+                    <FridgeGestionCard name="Gestion VMC"  />
                     <div class="w-100"></div>
                   </div>
                 </div>

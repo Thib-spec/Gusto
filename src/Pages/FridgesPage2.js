@@ -102,7 +102,7 @@ export default function RefrigerateursPage() {
           return (
             <FridgeDropDownComponent
               fridge={fridge}
-              key={fridge.id}
+              idFridge={fridge.id}
               allProducts={allProducts}
               allMenus={allMenus}
             />

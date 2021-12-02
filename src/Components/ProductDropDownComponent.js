@@ -17,7 +17,7 @@ export default function ProductDropDownComponent(props){
     //when the client delete a product and confirm it, 
     function handleDelete(){
         try{
-            axios.delete("http://localhost:3001/api/product/"+props.product.id_product)
+            axios.delete("http://api.gustosolutions.fr/api/product/"+props.product.id_product)
             .then((res) => {
                 console.log(res);
                 window.location.reload(false);

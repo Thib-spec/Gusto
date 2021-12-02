@@ -13,7 +13,7 @@ export default function CategorieinProductDropDown(props){
 
     const [allProducts, setallProducts] = useState([]);
     useEffect(() => {
-        axios.get("http://localhost:3001/api/product")
+        axios.get("http://api.gustosolutions.fr/api/product")
             .then((res) =>{setallProducts(res.data)
             })
             .catch((err) => console.log(err));
@@ -35,7 +35,7 @@ export default function CategorieinProductDropDown(props){
             </div>
             {open?
                 <div>
-                {DATAProducts.map((product) => (
+                {allProducts.map((product) => (
                     product.fk_id_category==props.categorie.id_category?
                         <ProductDropDownComponent product={product} key={product.id_product}/>
                     :false
