@@ -12,15 +12,17 @@ import addMenusInFridgeData from "./fakeData/addMenusInFridgeData";
 import getAllProductsData from "./fakeData/getAllProductsData";
 import getAllMenusData from "./fakeData/getAllMenusData";
 
-const API = function ({ url, authToken, fake }) {
-  this.fake = fake == undefined ? true : fake;
-  this.url = this.url
-    ? url
-    : this.fake
-    ? "https://jsonplaceholder.typicode.com"
-    : ip;
-  this.authToken = authToken ? authToken : null;
+const API = function ({ url, host, fake, ssl, port, authToken }) {
+  this.ssl = ssl==true ? true : ssl==false ? false : false;
+  this.protocol = this.ssh ? "https" : "http"
+  this.host = host ? host : "localhost"
+  this.port = port ? `:${port}` : ""
+  this.url = url ? url : `${this.protocol}://${this.host}${this.port}`
+  this.fake = fake==true ? true : fake==false ? false : true;
+  this.authToken = authToken ? authToken : localStorage.getItem("authToken")
   this.requester = requester(this);
+  console.log(this.url)
+  console.log(url)
 };
 
 // ---------- auth ---------- //
@@ -40,9 +42,9 @@ API.prototype.logout = async function ({} = {}) {
   return res;
 };
 
-API.prototype.getInfo = async function ({} = {}) {
+API.prototype.getInfo = async function ({id} = {}) {
   if (this.fake) return getInfoData;
-  const res = await this.requester({ method: "GET", path: "/me/info" });
+  const res = await this.requester({ method: "GET", path: `/api/user/${id}` });
   return res;
 };
 
@@ -52,7 +54,7 @@ API.prototype.getFridges = function ({} = {}) {
   if (this.fake) return getFridgesData;
   return this.requester({
     method: "GET",
-    path: "/fridges",
+    path: "/api/fridge",
   });
 };
 
@@ -60,7 +62,7 @@ API.prototype.getProductsInFridge = function ({ id } = {}) {
   if (this.fake) return getProductsInFridgeData;
   return this.requester({
     method: "GET",
-    path: `/fridges/${id}/products`,
+    path: `/api/fridges/${id}/products`,
   });
 };
 
@@ -68,7 +70,7 @@ API.prototype.getMenusInFridge = function ({ id } = {}) {
   if (this.fake) return getMenusInFridgeData;
   return this.requester({
     method: "GET",
-    path: `/fridges/${id}/menus`,
+    path: `/api/fridges/${id}/menus`,
   });
 };
 
@@ -76,7 +78,7 @@ API.prototype.addProductsInFridge = function ({ id, body } = {}) {
   if (this.fake) return addProductsInFridgeData;
   return this.requester({
     method: "POST",
-    path: `/fridges/${id}/products`,
+    path: `/api/fridges/${id}/products`,
     body
   });
 };
@@ -137,4 +139,5 @@ API.prototype.deleteOneUser = async function ({ id }) {
   return res;
 };
 
-export default new API({ fake: true });
+export default new API({ url: process.env.API_HOST, fake: true });
+// export default new API({ url: "api.gustosolutions.fr", ssl:true, fake: false });

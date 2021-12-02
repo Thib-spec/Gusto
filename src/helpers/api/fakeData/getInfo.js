@@ -6,7 +6,7 @@ const res = {
       firstName: "fred",
       lastName: "dumont",
       email: "fred.dumont@hotmail.fr",
-      pp_url: "http://yes.gustosolutions/api/me/pp",
+      image: "http://yes.gustosolutions/api/me/pp",
       language: "fr",
       authToken: "fbdhbfrz",
       client: "Olivia",

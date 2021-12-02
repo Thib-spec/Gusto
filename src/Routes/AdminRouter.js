@@ -31,7 +31,7 @@ function AdminRouter({ history }) {
   const user = useSelector((state) => state.user.value);
   const dispatch = useDispatch();
 
-  const authToken = localStorage.getItem("authToken")
+  const authToken = localStorage.getItem("authToken");
 
   useEffect(() => {
     if (authToken) {
@@ -40,8 +40,13 @@ function AdminRouter({ history }) {
   }, []);
 
   async function getUserInfoAndDispatch() {
-    const res = await api.getInfo();
-    dispatch(userActions.update({ ...(await res.json()), isLogged: true }));
+    try {
+      const res = await api.getInfo({ id: user.id });
+      if (res.ok) {
+        dispatch(userActions.update({ ...(await res.json()), isLogged: true }));
+      } else {
+      }
+    } catch (error) {}
   }
 
   // console.log("user : ", user);
@@ -49,7 +54,7 @@ function AdminRouter({ history }) {
   const location = useLocation();
   // const searchParams = new URLSearchParams(location.search);
 
-  if (authToken){
+  if (authToken) {
     return (
       <>
         <Header />
@@ -67,8 +72,7 @@ function AdminRouter({ history }) {
         {/* <Footer/> */}
       </>
     );
-  }
-  else{
+  } else {
     return (
       <>
         <Switch>
