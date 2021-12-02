@@ -3,7 +3,7 @@ const {Model, DataTypes} = require('sequelize');
 
 module.exports = (sequelize) => {
 
-class Badges extends Model{
+class Badges extends Model{         // passer badge en binary
 
     static associate(models){
         

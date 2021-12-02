@@ -16,4 +16,8 @@ fridges.get('/:id/badges',fridgeController.listBadgeByFridge)
 fridges.get('/:id/menus',fridgeController.listMenuByFridge)
 fridges.get('/:id/orders/products',fridgeController.listProductByOrderByFridge)
 
+fridges.post("/:id/addQuantity",fridgeController.AddProductQuantity)
+fridges.put("/:id/editQuantity/:productId",fridgeController.EditProductQuantity)
+fridges.delete("/:id/removeQuantity/:productId",fridgeController.RemoveProductQuantity)
+
 module.exports = fridges
