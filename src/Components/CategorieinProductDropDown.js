@@ -22,7 +22,7 @@ export default function CategorieinProductDropDown(props){
     
 
      //open and close the dropdown on click
-     const [open, setOpen] = useState(false);
+     const [open, setOpen] = useState(true);
      function handleOpen() {
          setOpen(!open);
      }

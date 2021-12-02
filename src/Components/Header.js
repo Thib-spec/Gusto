@@ -59,7 +59,7 @@ export default function Header(){
     }
     function handlePreset(){
       history.push("/preset");
-      setpath("preset")
+      setpath("Preset")
   }
     function handleMenus(){
         history.push("/");
