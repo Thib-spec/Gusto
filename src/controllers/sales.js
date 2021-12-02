@@ -30,51 +30,6 @@ exports.getSaleById = (req,res) => {
 }
 
 
-exports.listProductsBySales = (req,res) => {
-    let id_list = new Array()
-
-    Model.Sales.findAll()
-    .then(allSales => {
-        Model.Sales.count()
-        .then(numberOfSale =>{
-            for(let i=0;i<numberOfSale;i++){
-                id_list.push(allSales[i].id_sale)
-            }
-
-            if(allSales.includes(Number(req.params.id))){
-                return res.status(400).json({
-                    message:"Sale does not exists"
-                })
-            }
-
-            else{
-                Model.Sales.findOne({
-                    where:{
-                        id_sale:req.params.id
-                    },
-                    include:{model:Model.Products}
-                })
-    
-                .then(sales =>{
-                    if (!sales) {
-                        return res.status(400).json({
-                            message: 'Sale does not exist or does not have any product related',
-                        });
-                    }
-    
-                    else {
-                        res.status(200).json(sales)
-                    }
-                })
-
-            }
-        })
-    })
-
-    .catch(error => res.json(error))       
-}
-
-
 exports.addSale = (req,res) =>{
     const { sales_timestamp, cbemv_amount, cbcless_amount,lv_amount,lv_quantity,cash_amount,fk_id_fridge} = req.body
 
