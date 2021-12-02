@@ -11,15 +11,9 @@ fridges.get('/:id/sales/products',fridgeController.listProductsBySaleByFridge)
 
 fridges.get('/:id/products',fridgeController.listProductByFridge)
 
-fridges.post('/:id/addProducts',fridgeController.addFrontProduct) // [2,3]
-
-fridges.put("/:id/editProduct/:productId",fridgeController.editFrontProduct)
-
 fridges.get('/:id/clients',fridgeController.listClientByFridge)
 fridges.get('/:id/badges',fridgeController.listBadgeByFridge)
 fridges.get('/:id/menus',fridgeController.listMenuByFridge)
 fridges.get('/:id/orders/products',fridgeController.listProductByOrderByFridge)
-
-fridges.post("/:id/removeProducts",fridgeController.removeProduct)
 
 module.exports = fridges

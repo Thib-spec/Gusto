@@ -221,9 +221,12 @@ exports.listProductsBySaleByFridge = (req,res) => {
 
                     Model.Sales.findAll({
                     where:{
-                        fk_id_fridge:fridge.id_fridge
+                        fk_id_fridge:fridge.id_fridge       // faire un orderBy -> comparer string + slice pour prendre les 5 premiers
                     },
-                    include:{model:Model.Products}
+                    include:{model:Model.Products},
+                    order:[
+                        ["updatedAt",'DESC']
+                    ]
                 })
     
                 .then(sales =>{
@@ -234,7 +237,7 @@ exports.listProductsBySaleByFridge = (req,res) => {
                     }
     
                     else {
-                        res.status(200).json(sales)
+                        res.status(200).json(sales.slice(0,5))
                     }
                 })
                 })
@@ -248,206 +251,6 @@ exports.listProductsBySaleByFridge = (req,res) => {
 }
 
 
-// besoin d'ajouter une route editproduct
-// id product est ajouté en front
-// fridgePreset à contraindre
-
-exports.addFrontProduct = (req,res) =>{
-    const {quantity_max, quantity_min, fk_id_product} = req.body
-
-    const postProductSchema = Joi.object().keys({ 
-        quantity_min:Joi.number().required(),
-        quantity_max: Joi.number().required(),
-        fk_id_product: Joi.number().required(),
-    })
-
-    const result = postProductSchema.validate(req.body)
-
-    const {error } = result;
-
-    const valid = error == null;
-
-    
-
-    Model.Fridges.findOne({
-        where:{
-            id_fridge:req.params.id
-        },
-    })
-    .then(fridge=> {
-        if (!fridge) {
-            return res.status(400).json({
-                message: 'Fridge does not exist',
-            });
-        }
-
-        else {
-            if (!valid) {
-                res.status(400).json({ 
-                  message: 'Missing required parameters',
-                  info: 'Requires: quantity_min, quantity_max, fk_id_product, fk_id_fridgePreset' 
-                })
-            }
-
-            else if (fridge.fk_id_fridgePreset == null)
-            {
-                Model.fridgePresets_products.create({
-                    quantity_max:quantity_max,
-                    quantity_min:quantity_min,
-                    fk_id_fridgePreset:null,
-                    fk_id_product:fk_id_product
-    
-                })
-                .then(products=> res.json(products))
-            }
-            else {
-
-                Model.FridgePresets.findAll({
-                    where:{
-                        id_fridgePresets: fridge.fk_id_fridgePreset
-
-                    }
-                })
-
-                .then(preset => {
-                    Model.fridgePresets_products.create({
-                        quantity_max:quantity_max,
-                        quantity_min:quantity_min,
-                        fk_id_fridgePreset:preset[0].id_fridgePresets,
-                        fk_id_product:fk_id_product
-        
-                    })
-                    .then(products=> res.json(products))
-                    
-                })
-           
-            }
-        }
-      
-    })
-    
-    .catch(error => console.log(error))
-
-}
-
-
-
-
-
-exports.editFrontProduct = (req,res) =>{
-    const {quantity_max, quantity_min, fk_id_fridgePreset} = req.body
-
-    const editProductSchema = Joi.object().keys({ 
-        quantity_min:Joi.number(),
-        quantity_max: Joi.number(),
-        fk_id_fridgePreset: Joi.number()
-    })
-
-    const result = editProductSchema.validate(req.body)
-
-    const {error } = result;
-
-    const valid = error == null;
-
-    
-
-    Model.Fridges.findOne({
-        where:{
-            id_fridge:req.params.id
-        },
-    })
-    .then(fridge=> {
-        if (!fridge) {
-            return res.status(400).json({
-                message: 'Fridge does not exist',
-            });
-        }
-
-        else {
-            if (!valid) {
-                res.status(400).json({ 
-                  message: 'One or more parameters are not correctly written',
-                })
-              }
-
-            else if (fridge.fk_id_fridgePreset == null)
-            {
-                Model.fridgePresets_products.update({
-                    quantity_max:quantity_max,
-                    quantity_min:quantity_min,
-                    fk_id_fridgePreset:fk_id_fridgePreset,
-    
-                },
-                {
-                    where:{
-                        fk_id_product:req.params.productId
-                    }
-                })
-                .then(res.status(200).json({
-                    message: "Modification apply"
-                }))
-            }
-
-        
-            else{
-
-            Model.FridgePresets.findAll({
-                where:{
-                    id_fridgePresets: fridge.fk_id_fridgePreset
-
-                }
-            })
-
-            .then(
-                Model.fridgePresets_products.update({
-                    quantity_max:quantity_max,
-                    quantity_min:quantity_min,
-                },
-                {
-                    where:{
-                        fk_id_product:req.params.productId
-                    }
-                })
-                .then(res.status(200).json({
-                    message: "Modification apply"
-                }))
-                
-            )
-           
-        }
-    }
-      
-    })
-    
-    .catch(error => console.log(error))
-
-}
-
-exports.removeProduct = (req,res) =>{
-    Model.FridgePresets.findOne({
-        where:{
-            id_fridgePresets:req.params.id
-        },
-    })
-    .then(fridgePreset=> {
-        console.log(fridgePreset)
-        if (!fridgePreset) {
-            return res.status(400).json({
-                message: 'Fridge does not exist',
-            });
-        }
-
-
-
-        else{
-            return fridgePreset.removeProducts(req.body) // [1,3]
-        }
-      
-    })
-    .then(res.status(200).json("Deletion completed"))
-    .catch(error => console.log(error))
-
-}
 
 
 
