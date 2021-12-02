@@ -1,7 +1,7 @@
 const Model = require("../database/models");
 const Joi = require('joi');
 
-
+const { Op } = require("sequelize");
 
 
 
@@ -251,6 +251,157 @@ exports.listProductsBySaleByFridge = (req,res) => {
 }
 
 
+// add quantity/ edit quantity/ delete quantity(removeproduct)
+
+
+
+exports.AddProductQuantity = (req,res) => {
+
+    const {fk_id_product, quantity} = req.body
+
+    const postQuantitySchema = Joi.object().keys({ 
+        quantity : Joi.number().required(),
+        fk_id_product: Joi.number().required()
+    })
+
+    const result = postQuantitySchema.validate(req.body)
+
+    const {error } = result;
+
+    const valid = error == null;
+
+    if (!valid) {
+        res.status(400).json({ 
+          message: 'Missing required parameters',
+          info: 'Requires: quantity, fk_id_product, fk_id_fridge' 
+        })
+      }
+
+    else {
+        Model.Fridges.findOne({
+        where:{
+            id_fridge:req.params.id
+        }
+    })
+
+    .then((fridge) => {
+        if (!fridge) {
+            return res.status(400).json({
+                message: 'Fridge does not exist',
+            });
+        }
+
+        else {
+            Model.fridges_products.create({
+                fk_id_product:fk_id_product,
+                fk_id_fridge:req.params.id,
+                quantity:quantity
+            })
+
+            .then(fridge_product => res.status(200).json(fridge_product))
+            
+        }
+    })
+    }
+
+   
+
+
+}
+
+
+exports.EditProductQuantity = (req,res) => {
+
+    const {quantity} = req.body
+
+    const editQuantitySchema = Joi.object().keys({ 
+        quantity : Joi.number(),
+    })
+
+    const result = editQuantitySchema.validate(req.body)
+
+    const {error } = result;
+
+    const valid = error == null;
+
+    if (!valid) {
+        res.status(400).json({ 
+          message: 'One or other parameters are not well written',
+        })
+      }
+
+    else {
+        Model.Fridges.findOne({
+        where:{
+            id_fridge:req.params.id
+        }
+    })
+
+    .then((fridge) => {
+        if (!fridge) {
+            return res.status(400).json({
+                message: 'Fridge does not exist',
+            });
+        }
+
+        else {
+            Model.fridges_products.update({
+                quantity:quantity
+            },
+            {
+                where:{
+                    [Op.and]: [
+                        { fk_id_fridge:req.params.id },
+                        { fk_id_product: req.params.productId }
+                    ]
+                }
+            })
+
+            .then(res.status(200).json("Modification apply"))
+            
+        }
+    })
+    }
+
+   
+
+
+}
+
+
+
+
+exports.RemoveProductQuantity = (req,res) => {
+
+    Model.Fridges.findOne({
+        where:{
+            id_fridge:req.params.id
+        }
+    })
+
+    .then((fridge) => {
+        if (!fridge) {
+            return res.status(400).json({
+                message: 'Fridge does not exist',
+            });
+        }
+
+        else {
+            Model.fridges_products.destroy({
+                where:{
+                    [Op.and]: [
+                        { fk_id_fridge:req.params.id },
+                        { fk_id_product: req.params.productId }
+                    ]
+                }
+            })
+
+            .then(res.status(200).json("Deletion completed"))
+            
+        }
+    })
+    
+}
 
 
 
