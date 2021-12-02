@@ -29,11 +29,11 @@ tags: [
     },
 
     {
-      "name": "Produit",
+      "name": "Product",
       "description": ""
     },
     {
-      "name": "Utilisateur",
+      "name": "User",
       "description": ""
     },
   
@@ -42,11 +42,21 @@ tags: [
       "description": ""
     },
     {
-      "name": "Frigo",
+      "name": "Fridge",
       "description": ""
     },
-
-  
+    {
+      "name": "Sale",
+      "description": ""
+    },
+    {
+      "name": "State",
+      "description": ""
+    },
+    {
+      "name": "Tag",
+      "description": ""
+    },  
   ]
 paths:
   
@@ -215,7 +225,7 @@ paths:
                     label: pomme
                     image : https://www.google.com/imgres?imgurl=https%3A%2F%2Fmedia.istockphoto.com
                     price: 2
-                    ubd: 11-01-2021
+                    ubd: 11/01/2021
                     description: description
                     createdAt: 2021-11-26T13:38:27.000Z
                     updatedAt : 2021-11-26T13:38:27.000Z
@@ -370,12 +380,40 @@ paths:
             content:
               application/json:
                   example:
-                    id_category: 2,
-                    label: plats,
+                    id_category: 2
+                    label: plats
                     image: https://www.google.com/imgres?imgurl=https%3A%2F%2Fmedia.istockphoto.com,
                     description: description,
                     createdAt: 2021-11-26T13:38:35.000Z
                     updatedAt: 2021-11-26T13:38:36.000Z
+                    fk_id_client: 1
+          '400':
+            description: An error message
+            content:
+              application/json:
+                  example:
+                    message: "Client does not exists or does not have any tags"
+
+  /client/{id}/tags:
+      get:
+        tags: [Client]
+        summary: Returns all the tags that belongs to a client.
+        parameters:
+        - name: id
+          in: path
+          type: integer
+          required: true
+          description: Numeric ID of the client to get.
+        responses:
+          '200':    # status code
+            description: A JSON array of tags
+            content:
+              application/json:
+                  example:
+                    id_tag: 2
+                    createdAt: 2021-11-26T13:38:35.000Z
+                    updatedAt: 2021-11-26T13:38:36.000Z
+                    fk_id_product: 2
                     fk_id_client: 1
           '400':
             description: An error message
@@ -665,7 +703,7 @@ paths:
                   example:
                     message: "Fridge does not exists or does not have any orders"
 
-  /fridge/{id}/addProducts:
+  /fridge/{id}/addFrontProducts:
       post:
         tags: [Fridge]
         summary: Add products in the specified fridge by their id
@@ -697,8 +735,971 @@ paths:
               application/json:
                   example:
                     message: "Fridge does not exists or products with such ids doest not exists"
-                    
-                    
+  /product:
+    get:
+      tags: [Product]
+      summary: Returns the list of all the products.
+      responses:
+        '200':    # status code
+          description: A JSON array of products
+          content:
+            application/json:
+                example:
+                  id_product: 1
+                  label: fruits
+                  image : https://www.google.com/imgres?imgurl=https%3A%2F%2Fmedia.istockphoto.com
+                  ubd : 01/07/2021
+                  description: some description
+                  createdAt: 2021-11-26T13:38:27.000Z
+                  updatedAt : 2021-11-26T13:38:27.000Z
+                  fk_id_category: 2
+
+    post:
+      tags: [Product]
+      summary: Add a product
+      requestBody:  
+        required: true
+        content:
+          application/json:
+            schema: 
+              properties:
+                label:
+                  type: string
+                image:
+                  type: string
+                price:
+                  type: integer
+                ubd:
+                  type: string
+                description:
+                  type: string
+                fk_id_category:
+                  type: integer
+      responses:
+        '200':    # status code
+          description: The product added
+          content:
+            application/json:
+                example:
+                  id_product: 1
+                  label: fruits
+                  image : https://www.google.com/imgres?imgurl=https%3A%2F%2Fmedia.istockphoto.com
+                  ubd : 01/07/2021
+                  description: some description
+                  createdAt: 2021-11-26T13:38:27.000Z
+                  updatedAt : 2021-11-26T13:38:27.000Z
+                  fk_id_category: 2
+        '400':
+          description: An error message
+          content:
+            application/json:
+                example:
+                  message: "Missing required parameters"
+
+
+
+  /product/{id}:
+      get:
+        tags: [Product]
+        summary: Returns the specified product.
+        parameters:
+        - name: id
+          in: path
+          type: integer
+          required: true
+          description: Numeric ID of the product to get.
+        responses:
+          '200':    # status code
+            description: The product to get
+            content:
+              application/json:
+                  example:
+                    id_product: 1
+                    label: fruits
+                    image : https://www.google.com/imgres?imgurl=https%3A%2F%2Fmedia.istockphoto.com
+                    ubd : 01/07/2021
+                    description: some description
+                    createdAt: 2021-11-26T13:38:27.000Z
+                    updatedAt : 2021-11-26T13:38:27.000Z
+                    fk_id_category: 2
+          '400':
+            description: An error message
+            content:
+              application/json:
+                  example:
+                    message: "Product does not exist"
+
+      put:
+        tags: [Product]
+        summary: Update product
+        parameters:
+        - name: id
+          in: path
+          type: integer
+          required: true
+          description: Numeric ID of the product to update.
+        requestBody:
+          required: true
+          content:
+            application/json:
+              schema: 
+                properties:
+                  label:
+                    type: string
+                  image:
+                    type: string
+                  price:
+                    type: integer
+                  ubd:
+                    type: string
+                  description:
+                    type: string
+                  fk_id_category:
+                    type: integer
+        responses:
+          '200':    # status code
+            description: A successful message
+            content:
+              application/json:
+                  example:
+                    message: "Modification apply"
+          '400':
+            description: An error message
+            content:
+              application/json:
+                  example:
+                    message: "Specified product does not exist"
+              
+      delete:
+        tags: [Product]
+        summary: Allow to delete a product
+        parameters:
+        - name: id
+          in: path
+          type: integer
+          required: true
+          description: Numeric ID of the product to delete.
+        responses:
+          '200':   
+            description: A successful message
+            content: 
+              application/json:
+                  example:
+                    message: "Product with id : x has been deleted"
+          '400':
+            description: An error message
+            content:
+              application/json:
+                  example:
+                    message: "Product does not exists"
+  /user:
+      get:
+        tags: [User]
+        summary: Returns the list of all the users.
+        responses:
+          '200':    # status code
+            description: A JSON array of users
+            content:
+              application/json:
+                  example:
+                    id_user: 1
+                    email: jean@gusto.fr
+                    password: azerty321 
+                    firstname: jean
+                    lastname: gusto
+                    image : https://www.google.com/imgres?imgurl=https%3A%2F%2Fmedia.istockphoto.com
+                    user_language: fr
+                    createdAt: 2021-11-26T13:38:27.000Z
+                    updatedAt : 2021-11-26T13:38:27.000Z
+                    fk_id_client: 2
+                    fk_id_level: 1
+
+      post:
+        tags: [User]
+        summary: Add a product
+        requestBody:  
+          required: true
+          content:
+            application/json:
+              schema: 
+                properties:
+                  email:
+                    type: string
+                  password:
+                    type: string
+                  firstname:
+                    type: string
+                  lastname:
+                    type: string
+                  image:
+                    type: string
+                  user_language:
+                    type: string
+                  fk_id_client:
+                    type: integer
+                  fk_id_level:
+                    type: integer
+        responses:
+          '200':    # status code
+            description: The user added
+            content:
+              application/json:
+                  example:
+                    id_user: 1
+                    email: jean@gusto.fr
+                    password: azerty321 
+                    firstname: jean
+                    lastname: gusto
+                    image : https://www.google.com/imgres?imgurl=https%3A%2F%2Fmedia.istockphoto.com
+                    user_language: fr
+                    createdAt: 2021-11-26T13:38:27.000Z
+                    updatedAt : 2021-11-26T13:38:27.000Z
+                    fk_id_client: 2
+                    fk_id_level: 1
+          '400':
+            description: An error message
+            content:
+              application/json:
+                  example:
+                    message: "Missing required parameters"
+
+
+
+  /user/{id}:
+      get:
+        tags: [User]
+        summary: Returns the specified user.
+        parameters:
+        - name: id
+          in: path
+          type: integer
+          required: true
+          description: Numeric ID of the user to get.
+        responses:
+          '200':    # status code
+            description: The user to get
+            content:
+              application/json:
+                  example:
+                    id_user: 1
+                    email: jean@gusto.fr
+                    password: azerty321 
+                    firstname: jean
+                    lastname: gusto
+                    image : https://www.google.com/imgres?imgurl=https%3A%2F%2Fmedia.istockphoto.com
+                    user_language: fr
+                    createdAt: 2021-11-26T13:38:27.000Z
+                    updatedAt : 2021-11-26T13:38:27.000Z
+                    fk_id_client: 2
+                    fk_id_level: 1
+          '400':
+            description: An error message
+            content:
+              application/json:
+                  example:
+                    message: "User does not exist"
+
+      put:
+        tags: [User]
+        summary: Update user
+        parameters:
+        - name: id
+          in: path
+          type: integer
+          required: true
+          description: Numeric ID of the user to update.
+        requestBody:
+          required: true
+          content:
+            application/json:
+              schema: 
+                properties:
+                  properties:
+                  email:
+                    type: string
+                  password:
+                    type: string
+                  firstname:
+                    type: string
+                  lastname:
+                    type: string
+                  image:
+                    type: string
+                  user_language:
+                    type: string
+                  fk_id_client:
+                    type: integer
+                  fk_id_level:
+                    type: integer
+        responses:
+          '200':    # status code
+            description: A successful message
+            content:
+              application/json:
+                  example:
+                    message: "Modification apply"
+          '400':
+            description: An error message
+            content:
+              application/json:
+                  example:
+                    message: "Specified user does not exist"
+              
+      delete:
+        tags: [User]
+        summary: Allow to delete a user
+        parameters:
+        - name: id
+          in: path
+          type: integer
+          required: true
+          description: Numeric ID of the user to delete.
+        responses:
+          '200':   
+            description: A successful message
+            content: 
+              application/json:
+                  example:
+                    message: "User with id : x has been deleted"
+          '400':
+            description: An error message
+            content:
+              application/json:
+                  example:
+                    message: "User does not exists"
+  /user/level/{label}:
+      get:
+        tags: [User]
+        summary: Returns all the user that belongs to this level.
+        parameters:
+        - name: label
+          in: path
+          type: string
+          required: true
+          description: Label of the level to get.
+        responses:
+          '200':    # status code
+            description: A JSON array of menus
+            content:
+              application/json:
+                  example:
+                    id_user: 1
+                    email: jean@gusto.fr
+                    password: azerty321 
+                    firstname: jean
+                    lastname: gusto
+                    image : https://www.google.com/imgres?imgurl=https%3A%2F%2Fmedia.istockphoto.com
+                    user_language: fr
+                    createdAt: 2021-11-26T13:38:27.000Z
+                    updatedAt : 2021-11-26T13:38:27.000Z
+                    fk_id_client: 2
+                    fk_id_level: 1
+          '400':
+            description: An error message
+            content:
+              application/json:
+                  example:
+                    message: "User does not exist or does not have any level"                  
+  /menu:
+    get:
+      tags: [Menu]
+      summary: Returns the list of all the menus.
+      responses:
+        '200':    # status code
+          description: A JSON array of menus
+          content:
+            application/json:
+                example:
+                  id_menu: 1
+                  web_label: salade
+                  fridge_label: salade 
+                  image : https://www.google.com/imgres?imgurl=https%3A%2F%2Fmedia.istockphoto.com
+                  price: 5.30
+                  createdAt: 2021-11-26T13:38:27.000Z
+                  updatedAt : 2021-11-26T13:38:27.000Z
+                  fk_id_client: 2
+    post:
+      tags: [Menu]
+      summary: Add a menu
+      requestBody:  
+        required: true
+        content:
+          application/json:
+            schema: 
+              properties:
+                web_label:
+                  type: string
+                fridge_label:
+                  type: string
+                image:
+                  type: string
+                price:
+                  type: string
+                fk_id_client:
+                  type: integer
+      responses:
+        '200':    # status code
+          description: The menu added
+          content:
+            application/json:
+                example:
+                  id_menu: 1
+                  web_label: salade
+                  fridge_label: salade 
+                  image : https://www.google.com/imgres?imgurl=https%3A%2F%2Fmedia.istockphoto.com
+                  price: 5.30
+                  createdAt: 2021-11-26T13:38:27.000Z
+                  updatedAt : 2021-11-26T13:38:27.000Z
+                  fk_id_client: 2
+        '400':
+          description: An error message
+          content:
+            application/json:
+                example:
+                  message: "Missing required parameters"
+  /menu/{id}:
+      get:
+        tags: [Menu]
+        summary: Returns the specified menu.
+        parameters:
+        - name: id
+          in: path
+          type: integer
+          required: true
+          description: Numeric ID of the menu to get.
+        responses:
+          '200':    # status code
+            description: The menu to get
+            content:
+              application/json:
+                  example:
+                    id_menu: 1
+                    web_label: salade
+                    fridge_label: salade 
+                    image : https://www.google.com/imgres?imgurl=https%3A%2F%2Fmedia.istockphoto.com
+                    price: 5.30
+                    createdAt: 2021-11-26T13:38:27.000Z
+                    updatedAt : 2021-11-26T13:38:27.000Z
+                    fk_id_client: 2
+          '400':
+            description: An error message
+            content:
+              application/json:
+                  example:
+                    message: "Menu does not exist"
+
+      put:
+        tags: [Menu]
+        summary: Update menu
+        parameters:
+        - name: id
+          in: path
+          type: integer
+          required: true
+          description: Numeric ID of the menu to update.
+        requestBody:
+          required: true
+          content:
+            application/json:
+              schema: 
+                properties:
+                  properties:
+                  web_label:
+                    type: string
+                  fridge_label:
+                    type: string
+                  image:
+                    type: string
+                  price:
+                    type: string
+                  fk_id_client:
+                    type: integer
+        responses:
+          '200':    # status code
+            description: A successful message
+            content:
+              application/json:
+                  example:
+                    message: "Modification apply"
+          '400':
+            description: An error message
+            content:
+              application/json:
+                  example:
+                    message: "Specified menu does not exist"
+              
+      delete:
+        tags: [Menu]
+        summary: Allow to delete a menu
+        parameters:
+        - name: id
+          in: path
+          type: integer
+          required: true
+          description: Numeric ID of the menu to delete.
+        responses:
+          '200':   
+            description: A successful message
+            content: 
+              application/json:
+                  example:
+                    message: "Menu with id : x has been deleted"
+          '400':
+            description: An error message
+            content:
+              application/json:
+                  example:
+                    message: "Menu does not exists"
+  /menu/{id}/products:
+      get:
+        tags: [Menu]
+        summary: Returns all the products that belongs to this menu.
+        parameters:
+        - name: id
+          in: path
+          type: integer
+          required: true
+          description: Products of the menu to get.
+        responses:
+          '200':    # status code
+            description: A JSON array of products
+            content:
+              application/json:
+                  example:
+                    id_menu: 1
+                    web_label: salade
+                    fridge_label: salade 
+                    image : https://www.google.com/imgres?imgurl=https%3A%2F%2Fmedia.istockphoto.com
+                    price: 5.30
+                    createdAt: 2021-11-26T13:38:27.000Z
+                    updatedAt : 2021-11-26T13:38:27.000Z
+                    fk_id_client: 2
+          '400':
+            description: An error message
+            content:
+              application/json:
+                  example:
+                    message: "Menu does not exist or does not have any products"
+  /sale:
+    get:
+      tags: [Sale]
+      summary: Returns the list of all the sales.
+      responses:
+        '200':    # status code
+          description: A JSON array of sales
+          content:
+            application/json:
+                example:
+                  id_sale: 1
+                  sales_timestamp: 10:38
+                  cbemv_amount: 5.50
+                  cbcless_amount : 3.50
+                  lv_amount: 5.30
+                  lv_quantity: 3
+                  cash_amount: 5.50
+                  createdAt: 2021-11-26T13:38:27.000Z
+                  updatedAt : 2021-11-26T13:38:27.000Z
+                  fk_id_fridge: 2
+    post:
+      tags: [Sale]
+      summary: Add a sale
+      requestBody:  
+        required: true
+        content:
+          application/json:
+            schema: 
+              properties:
+                sales_timestamp:
+                  type: string
+                cbemv_amount:
+                  type: integer
+                cbcless_amount :
+                  type: integer
+                lv_amount:
+                  type: integer
+                lv_quantity:
+                  type: integer
+                cash_amount:
+                  type: integer
+                fk_id_fridge:
+                  type: integer
+      responses:
+        '200':    # status code
+          description: The sale added
+          content:
+            application/json:
+                example:
+                  id_sale: 1
+                  sales_timestamp: 10:38
+                  cbemv_amount: 5.50
+                  cbcless_amount : 3.50
+                  lv_amount: 5.30
+                  lv_quantity: 3
+                  cash_amount: 5.50
+                  createdAt: 2021-11-26T13:38:27.000Z
+                  updatedAt : 2021-11-26T13:38:27.000Z
+                  fk_id_fridge: 2
+        '400':
+          description: An error message
+          content:
+            application/json:
+                example:
+                  message: "Missing required parameters"
+  /sale/{id}:
+      get:
+        tags: [Sale]
+        summary: Returns the specified sale.
+        parameters:
+        - name: id
+          in: path
+          type: integer
+          required: true
+          description: Numeric ID of the sale to get.
+        responses:
+          '200':    # status code
+            description: The sale to get
+            content:
+              application/json:
+                  example:
+                    id_sale: 1
+                    sales_timestamp: 10:38
+                    cbemv_amount: 5.50
+                    cbcless_amount : 3.50
+                    lv_amount: 5.30
+                    lv_quantity: 3
+                    cash_amount: 5.50
+                    createdAt: 2021-11-26T13:38:27.000Z
+                    updatedAt : 2021-11-26T13:38:27.000Z
+                    fk_id_fridge: 2
+          '400':
+            description: An error message
+            content:
+              application/json:
+                  example:
+                    message: "Sale does not exist"
+      put:
+        tags: [Sale]
+        summary: Update sale
+        parameters:
+        - name: id
+          in: path
+          type: integer
+          required: true
+          description: Numeric ID of the sale to update.
+        requestBody:
+          required: true
+          content:
+            application/json:
+              schema: 
+                properties:
+                  sales_timestamp:
+                    type: string
+                  cbemv_amount:
+                    type: number
+                  cbcless_amount :
+                    type: number
+                  lv_amount:
+                    type: number
+                  lv_quantity:
+                    type: number
+                  cash_amount:
+                    type: number
+        responses:
+          '200':    # status code
+            description: A successful message
+            content:
+              application/json:
+                  example:
+                    message: "Modification apply"
+          '400':
+            description: An error message
+            content:
+              application/json:
+                  example:
+                    message: "Specified sale does not exist"
+              
+      delete:
+        tags: [Sale]
+        summary: Allow to delete a sale
+        parameters:
+        - name: id
+          in: path
+          type: integer
+          required: true
+          description: Numeric ID of the sale to delete.
+        responses:
+          '200':   
+            description: A successful message
+            content: 
+              application/json:
+                  example:
+                    message: "Sale with id : x has been deleted"
+          '400':
+            description: An error message
+            content:
+              application/json:
+                  example:
+                    message: "Sale does not exist"
+  /sale/{id}/products:
+      get:
+        tags: [Sale]
+        summary: Returns all the products that belongs to this sale.
+        parameters:
+        - name: id
+          in: path
+          type: integer
+          required: true
+          description: Products of the sale to get.
+        responses:
+          '200':    # status code
+            description: A JSON array of products
+            content:
+              application/json:
+                  example:
+                    id_menu: 1
+                    web_label: salade
+                    fridge_label: salade 
+                    image : https://www.google.com/imgres?imgurl=https%3A%2F%2Fmedia.istockphoto.com
+                    price: 5.30
+                    createdAt: 2021-11-26T13:38:27.000Z
+                    updatedAt : 2021-11-26T13:38:27.000Z
+                    fk_id_client: 2
+          '400':
+            description: An error message
+            content:
+              application/json:
+                  example:
+                    message: "Sale does not exist or does not have any products"
+  /state:
+    get:
+      tags: [State]
+      summary: Returns the list of all the states.
+      responses:
+        '200':    # status code
+          description: A JSON array of states
+          content:
+            application/json:
+                example:
+                  id_sale: 1
+                  label: admin
+                  createdAt: 2021-11-26T13:38:27.000Z
+                  updatedAt : 2021-11-26T13:38:27.000Z
+    post:
+      tags: [State]
+      summary: Add a state
+      requestBody:  
+        required: true
+        content:
+          application/json:
+            schema: 
+              properties:
+                label:
+                  type: string
+      responses:
+        '200':    # status code
+          description: The state added
+          content:
+            application/json:
+                example:
+                  id_sale: 1
+                  label: admin
+                  createdAt: 2021-11-26T13:38:27.000Z
+                  updatedAt : 2021-11-26T13:38:27.000Z
+        '400':
+          description: An error message
+          content:
+            application/json:
+                example:
+                  message: "Missing required parameters"
+  /state/{id}:
+      get:
+        tags: [State]
+        summary: Returns the specified state.
+        parameters:
+        - name: id
+          in: path
+          type: integer
+          required: true
+          description: Numeric ID of the state to get.
+        responses:
+          '200':    # status code
+            description: The state to get
+            content:
+              application/json:
+                  example:
+                    id_sale: 1
+                    label: admin
+                    createdAt: 2021-11-26T13:38:27.000Z
+                    updatedAt : 2021-11-26T13:38:27.000Z
+          '400':
+            description: An error message
+            content:
+              application/json:
+                  example:
+                    message: "State does not exist"
+
+      put:
+        tags: [State]
+        summary: Update state
+        parameters:
+        - name: id
+          in: path
+          type: integer
+          required: true
+          description: Numeric ID of the state to update.
+        requestBody:
+          required: true
+          content:
+            application/json:
+              schema: 
+                properties:
+                  label:
+                    type: string
+        responses:
+          '200':    # status code
+            description: A successful message
+            content:
+              application/json:
+                  example:
+                    message: "Modification apply"
+          '400':
+            description: An error message
+            content:
+              application/json:
+                  example:
+                    message: "Specified state does not exist"
+              
+      delete:
+        tags: [State]
+        summary: Allow to delete a state
+        parameters:
+        - name: id
+          in: path
+          type: integer
+          required: true
+          description: Numeric ID of the state to delete.
+        responses:
+          '200':   
+            description: A successful message
+            content: 
+              application/json:
+                  example:
+                    message: "State with id : x has been deleted"
+          '400':
+            description: An error message
+            content:
+              application/json:
+                  example:
+                    message: "State does not exist"
+  /tag:
+      get:
+        tags: [Tag]
+        summary: Returns the list of all the tags.
+        responses:
+          '200':    # status code
+            description: A JSON array of tags
+            content:
+              application/json:
+                  example:
+                    id_category: 1
+                    createdAt: 2021-11-26T13:38:27.000Z
+                    updatedAt : 2021-11-26T13:38:27.000Z
+                    fk_id_product: 1
+                    fk_id_client: 5
+
+      post:
+        tags: [Tag]
+        summary: Add a tag
+        requestBody:
+          required: true
+          content:
+            application/json:
+              schema: 
+                properties:
+                  fk_id_product:
+                    type: integer
+                  fk_id_client:
+                    type: integer
+        responses:
+          '200':    # status code
+            description: The tag added
+            content:
+              application/json:
+                  example:
+                    id_category: 1
+                    createdAt: 2021-11-26T13:38:27.000Z
+                    updatedAt : 2021-11-26T13:38:27.000Z
+                    fk_id_product: 1
+                    fk_id_client: 5
+          '400':
+            description: An error message
+            content:
+              application/json:
+                  example:
+                    message: "Missing required parameters"
+
+
+
+  /tag/{id}:
+      get:
+        tags: [Tag]
+        summary: Returns the specified tag.
+        parameters:
+        - name: id
+          in: path
+          type: integer
+          required: true
+          description: Numeric ID of the tag to get.
+        responses:
+          '200':    # status code
+            description: The tag to get
+            content:
+              application/json:
+                  example:
+                    id_category: 1
+                    createdAt: 2021-11-26T13:38:27.000Z
+                    updatedAt : 2021-11-26T13:38:27.000Z
+                    fk_id_product: 1
+                    fk_id_client: 5
+          '400':
+            description: An error message
+            content:
+              application/json:
+                  example:
+                    message: "Tag does not exist"
+
+      put:
+        tags: [Tag]
+        summary: Update tag
+        parameters:
+        - name: id
+          in: path
+          type: integer
+          required: true
+          description: Numeric ID of the tag to update.
+        requestBody:
+          required: true
+          content:
+            application/json:
+              schema: 
+                properties:
+                  fk_id_product:
+                    type: integer
+                  fk_id_client:
+                    type: integer
+        responses:
+          '200':    # status code
+            description: A successful message
+            content:
+              application/json:
+                  example:
+                    message: "Modification apply"
+          '400':
+            description: An error message
+            content:
+              application/json:
+                  example:
+                    message: "Specified tag does not exist"
   
    
              
