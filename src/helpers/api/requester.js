@@ -1,4 +1,4 @@
-const Path = require("path")
+const Path = require("path");
 
 const requester = (thiss) => {
   return (
@@ -8,16 +8,24 @@ const requester = (thiss) => {
       body: null,
     }
   ) => {
-    return fetch(Path.join(thiss.url, path), {
+    // console.log("requete : ", thiss.url + path);
+    const options = {
       method: method,
       headers: {
         Accept: "application/json",
         "Content-Type": "application/json",
-        'Authorization' : thiss.authToken instanceof String ? thiss.authToken : null,
-        // Authorization: localStorage.getItem("authToken"),
       },
-      body: body instanceof Object ? JSON.stringify(body) : null,
-    });
+    };
+    if (thiss.authToken instanceof String)
+      options.headers["Authorization"] = thiss.authToken;
+    // options.headers["Authorization"] = localStorage.getItem("authToken");
+
+    if (body instanceof Object) options["body"] = JSON.stringify(body);
+
+    fetch(thiss.url + path, options).then(res=>res.json()).then((resJSON)=>{
+      console.log("requete : ", thiss.url + path, resJSON);
+    })
+    return fetch(thiss.url + path, options)
   };
 };
 

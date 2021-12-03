@@ -7,44 +7,104 @@ import { useSelector, useDispatch } from "react-redux";
 import api from "helpers/api";
 import userActions from "store/actions/userActions";
 import Page from "Components/Page";
+import useIsMounted from "helpers/useInMount";
+import Value from "helpers/Value";
+import _LanguageSelector from "Components/_LanguageSelector";
 
-export default function LoginPage({ location, history }) {
+export default function LoginPage({ location, history, t }) {
   const user = useSelector((state) => state.user.value);
   const dispatch = useDispatch();
+  const isMounted = useIsMounted();
 
   // appel api
+  // async function handleLogin() {
+  //   try {
+  //     const res = await api.login({ body: { email: username, password } });
+  //     console.log(res);
+  //     if (isMounted.current){
+  //       if (res.ok) {
+  //         const resJSON = await res.json();
+  //         dispatch(userActions.login({ ...resJSON, isLogged: true }));
+  //         localStorage.setItem("authToken", resJSON.token);
+  //       } else {
+  //         dispatch(
+  //           userActions.update({ isLogged: true })
+  //         );
+  //         setAlert(
+  //           <div className="alert alert-danger" role="alert">
+  //             response status : {res.status}
+  //           </div>
+  //         );
+  //       }
+  //     }
+  //   } catch (error) {
+  //     console.log("login error : ", error);
+  //     setAlert(
+  //       <div className="alert alert-danger" role="alert">
+  //         error :
+  //       </div>
+  //     );
+  //   }
+  // }
+
+  function getUserInfoAndDispatch() {
+    return api
+      .getInfo()
+      .then((res) => {
+        if (res.ok) {
+          return res.json();
+        } else throw res;
+      })
+      .then((resJSON) => {
+        dispatch(userActions.update({ ...resJSON[0], isLogged: true }));
+      })
+      .catch((error) => {
+        if (error.res) {
+        } else {
+          console.log(error);
+        }
+      });
+  }
+
   async function handleLogin() {
-    try {
-      const res = await api.login({ body: { email:username, password } });
-      console.log(res)
-      if (res.ok) {
-        const resJSON = await res.json();
-        dispatch(userActions.login({ ...resJSON, isLogged: true }));
+    api
+      .login({ body: { email: username, password } })
+      .then((res) => {
+        console.log(res);
+        if (res.ok) {
+          return res.json();
+        } else throw { res };
+      })
+      .then((resJSON) => {
+        dispatch(userActions.login({ ...resJSON }));
         localStorage.setItem("authToken", resJSON.token);
-        history.push("/");
-      } else {
-        setAlert(
-          <div class="alert alert-danger" role="alert">
-            response status : {res.status}
-          </div>
-        );
-      }
-    } catch (error) {
-      console.log(error)
-      setAlert(
-        <div class="alert alert-danger" role="alert">
-          error : 
-        </div>
-      );
-    }
+      })
+      .catch((error) => {
+        if (error.res) {
+          getUserInfoAndDispatch();
+          alert.set(
+            <div className="alert alert-danger" role="alert">
+              response status : {error.res.status}
+            </div>
+          );
+        } else {
+          console.log("login error : ", error);
+          alert.set(
+            <div className="alert alert-danger" role="alert">
+              error
+            </div>
+          );
+        }
+      });
   }
 
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
-  const [alert, setAlert] = useState(<div></div>);
+  const alert = new Value(useState(<div></div>), isMounted);
 
   return (
     <>
+      <_LanguageSelector />
       <Page>
         <div
           className={`row justify-content-center ${
@@ -56,15 +116,13 @@ export default function LoginPage({ location, history }) {
               global.colorFull ? "red" : ""
             }`}
           >
-            <div
-              className={`card mycard ${global.colorFull ? "bg-dark" : ""}`}
-            >
+            <div className={`card mycard ${global.colorFull ? "bg-dark" : ""}`}>
               <div className="card-body p-5 text-center">
                 <div className="">
                   <img
                     className="card-img-top"
                     src={logoGustoColors}
-                    alt="Card image cap"
+                    alt="Logo"
                   />
                   <div className="input-group mb-3">
                     <span className="input-group-text" id="basic-addon1">
@@ -86,7 +144,7 @@ export default function LoginPage({ location, history }) {
                     <input
                       type="text"
                       className="form-control"
-                      placeholder="Username"
+                      placeholder={t("LoginPage.placeholder.email")}
                       aria-label="Username"
                       aria-describedby="basic-addon1"
                       onChange={(event) => setUsername(event.target.value)}
@@ -108,7 +166,7 @@ export default function LoginPage({ location, history }) {
                     <input
                       type="password"
                       className="form-control"
-                      placeholder="Password"
+                      placeholder={t("LoginPage.placeholder.password")}
                       aria-label="Password"
                       aria-describedby="basic-addon2"
                       onChange={(event) => setPassword(event.target.value)}
@@ -126,7 +184,7 @@ export default function LoginPage({ location, history }) {
                       className="form-check-label "
                       htmlFor="flexCheckChecked"
                     >
-                      &nbsp; Restez connecté ?
+                      &nbsp; {t("LoginPage.Text.stayConnected")}
                     </label>
                   </div>
                   <button
@@ -134,20 +192,20 @@ export default function LoginPage({ location, history }) {
                     type="submit"
                     className="btn btn-dark blue mb-2 col-12"
                   >
-                    Connexion
+                    {t("Button.connexion")}
                   </button>
                 </div>
                 <hr className="my-2" />
                 <div className="">
                   <label className="form-check-label">
-                    Mot de passe oublié ?
+                    {t("LoginPage.Text.forgottenPassword")}
                   </label>
                 </div>
               </div>
             </div>
           </div>
         </div>
-        {alert}
+        {alert.value}
       </Page>
     </>
   );

@@ -21,8 +21,6 @@ const API = function ({ url, host, fake, ssl, port, authToken }) {
   this.fake = fake==true ? true : fake==false ? false : true;
   this.authToken = authToken ? authToken : localStorage.getItem("authToken")
   this.requester = requester(this);
-  console.log(this.url)
-  console.log(url)
 };
 
 // ---------- auth ---------- //
@@ -36,15 +34,16 @@ API.prototype.login = function ({ body } = {}) {
   });
 };
 
-API.prototype.logout = async function ({} = {}) {
+API.prototype.logout = function ({} = {}) {
   if (this.fake) return logoutData;
-  const res = await this.requester({ method: "GET", path: "/api/user/logout" });
+  const res = this.requester({ method: "GET", path: "/api/user/logout" });
   return res;
 };
 
-API.prototype.getInfo = async function ({id} = {}) {
+API.prototype.getInfo = function ({} = {}) {
   if (this.fake) return getInfoData;
-  const res = await this.requester({ method: "GET", path: `/api/user/${id}` });
+  // const res = await this.requester({ method: "GET", path: `/api/user/me` });
+  const res = this.requester({ method: "GET", path: `/api/user` });
   return res;
 };
 
@@ -62,7 +61,7 @@ API.prototype.getProductsInFridge = function ({ id } = {}) {
   if (this.fake) return getProductsInFridgeData;
   return this.requester({
     method: "GET",
-    path: `/api/fridges/${id}/products`,
+    path: `/api/fridge/${id}/products`,
   });
 };
 
@@ -70,7 +69,7 @@ API.prototype.getMenusInFridge = function ({ id } = {}) {
   if (this.fake) return getMenusInFridgeData;
   return this.requester({
     method: "GET",
-    path: `/api/fridges/${id}/menus`,
+    path: `/api/fridge/${id}/menus`,
   });
 };
 
@@ -78,7 +77,7 @@ API.prototype.addProductsInFridge = function ({ id, body } = {}) {
   if (this.fake) return addProductsInFridgeData;
   return this.requester({
     method: "POST",
-    path: `/api/fridges/${id}/products`,
+    path: `/api/fridge/${id}/products`,
     body
   });
 };
@@ -87,7 +86,7 @@ API.prototype.addMenusInFridge = function ({ id, body } = {}) {
   if (this.fake) return addMenusInFridgeData;
   return this.requester({
     method: "POST",
-    path: `/fridges/${id}/menus`,
+    path: `/api/fridge/${id}/menus`,
     body
   });
 };
@@ -96,7 +95,7 @@ API.prototype.getAllProducts = function ({ } = {}) {
   if (this.fake) return getAllProductsData;
   return this.requester({
     method: "GET",
-    path: `/products`,
+    path: `/api/product`,
   });
 };
 
@@ -104,40 +103,40 @@ API.prototype.getAllMenus = function ({ } = {}) {
   if (this.fake) return getAllMenusData;
   return this.requester({
     method: "GET",
-    path: `/menus`,
+    path: `/api/menu`,
   });
 };
 
 // ---------- users ---------- //
 
-API.prototype.getUsers = async function ({}) {
-  const res = await this.requester({ method: "GET", path: "/users" });
-  return res;
-};
+// API.prototype.getUsers = async function ({}) {
+//   const res = await this.requester({ method: "GET", path: "/users" });
+//   return res;
+// };
 
-API.prototype.createUser = async function ({ body }) {
-  const res = await this.requester({ method: "POST", path: "/users", body });
-  return res;
-};
+// API.prototype.createUser = async function ({ body }) {
+//   const res = await this.requester({ method: "POST", path: "/users", body });
+//   return res;
+// };
 
-API.prototype.getOneUser = async function ({ id }) {
-  const res = await this.requester({ method: "GET", path: `/users/${id}` });
-  return res;
-};
+// API.prototype.getOneUser = async function ({ id }) {
+//   const res = await this.requester({ method: "GET", path: `/users/${id}` });
+//   return res;
+// };
 
-API.prototype.updateOneUser = async function ({ id, body }) {
-  const res = await this.requester({
-    method: "POST",
-    path: `/users/${id}`,
-    body,
-  });
-  return res;
-};
+// API.prototype.updateOneUser = async function ({ id, body }) {
+//   const res = await this.requester({
+//     method: "POST",
+//     path: `/users/${id}`,
+//     body,
+//   });
+//   return res;
+// };
 
-API.prototype.deleteOneUser = async function ({ id }) {
-  const res = await this.requester({ method: "DELETE", path: `/users/${id}` });
-  return res;
-};
+// API.prototype.deleteOneUser = async function ({ id }) {
+//   const res = await this.requester({ method: "DELETE", path: `/users/${id}` });
+//   return res;
+// };
 
-export default new API({ url: process.env.API_HOST, fake: true });
-// export default new API({ url: "api.gustosolutions.fr", ssl:true, fake: false });
+// export default new API({ url: process.env.API_HOST, fake: true });
+export default new API({ host: "api.gustosolutions.fr", ssl:true, fake: false });
