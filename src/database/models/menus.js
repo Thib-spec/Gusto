@@ -50,7 +50,7 @@ Menus.init({
         allowNull: false
     },
     price: {
-        type: DataTypes.DECIMAL(5,2),
+        type: DataTypes.INTEGER,
         allowNull: false
     },
     
