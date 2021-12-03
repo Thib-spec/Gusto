@@ -9,7 +9,9 @@ import DropDownComponent from "Components/DropDownComponent";
 import { useSelector, useDispatch } from "react-redux";
 import api from "helpers/api";
 
-export default function RefrigerateursPage() {
+import mappers from "helpers/mappers"
+
+export default function FridgesPage() {
   function handleNothing() {}
 
   useEffect(() => {
@@ -23,7 +25,9 @@ export default function RefrigerateursPage() {
       const res = await api.getFridges();
       if (res.ok) {
         const resJSON = await res.json();
-        setFridges(resJSON);
+        setFridges(
+          resJSON.map(mappers.fridgesMapper)
+        );
       } else {
       }
     } catch (error) {
@@ -36,7 +40,7 @@ export default function RefrigerateursPage() {
       const res = await api.getAllProducts();
       if (res.ok) {
         const resJSON = await res.json();
-        setAllProducts(resJSON);
+        setAllProducts(resJSON.map(mappers.productsMapper));
       } else {
       }
     } catch (error) {
@@ -49,7 +53,7 @@ export default function RefrigerateursPage() {
       const res = await api.getAllMenus();
       if (res.ok) {
         const resJSON = await res.json();
-        setAllMenus(resJSON);
+        setAllMenus(resJSON.map(mappers.menusMapper));
       } else {
       }
     } catch (error) {
@@ -63,11 +67,6 @@ export default function RefrigerateursPage() {
     { id: 3, message: "Livraison en cours", livraison: true },
   ];
 
-  // const [fridges, setFridges] = useState([
-  //   { id: 0, name: "fridge1", status:status[2] },
-  //   { id: 1, name: "fridge2", status:status[1] },
-  //   { id: 2, name: "fridge3", status:status[0] },
-  // ]);
   const [fridges, setFridges] = useState([]);
   const [allProducts, setAllProducts] = useState([]);
   const [allMenus, setAllMenus] = useState([]);

@@ -4,6 +4,8 @@ import React, { Component, useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import api from "helpers/api";
 import ArrayController from "helpers/ArrayController";
+import mappers from "helpers/mappers"
+
 
 import Page from "Components/Page";
 import {
@@ -37,7 +39,7 @@ export default function FridgeProductsCard(props) {
       const res = await api.getProductsInFridge({ id: props.fridge.id });
       if (res.ok) {
         const resJSON = await res.json();
-        products.set([...resJSON], { init: true });
+        products.set([...(resJSON.map(mappers.productsInFridge))], { init: true });
       } else {
       }
     } catch (error) {

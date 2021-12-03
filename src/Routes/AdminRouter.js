@@ -27,27 +27,64 @@ import api from "helpers/api";
 import userActions from "store/actions/userActions";
 import Footer from "Components/Footer";
 import PresetPage from "Pages/PresetPage";
+import useIsMounted from "helpers/useInMount";
+import { withTranslation } from "react-i18next";
+
 
 function AdminRouter({ history }) {
   const user = useSelector((state) => state.user.value);
+  const [isLoaded, setIsLoaded] = useState(true);
   const dispatch = useDispatch();
+  const isMounted = useIsMounted();
 
+  // localStorage.removeItem("authToken");
   const authToken = localStorage.getItem("authToken");
+  const desac_login = true;
 
   useEffect(() => {
-    if (authToken) {
-      getUserInfoAndDispatch();
+    console.log("AdminRouter is mount");
+    if (authToken || desac_login) {
+      getUserInfoAndDispatch().then(() => {
+        setIsLoaded(false);
+      });
     }
+    return () => {
+      console.log("AdminRouter is unmount");
+    };
   }, []);
 
-  async function getUserInfoAndDispatch() {
-    try {
-      const res = await api.getInfo({ id: user.id });
-      if (res.ok) {
-        dispatch(userActions.update({ ...(await res.json()), isLogged: true }));
-      } else {
-      }
-    } catch (error) {}
+  // async function getUserInfoAndDispatch() {
+  //   try {
+  //     const res = await api.getInfo();
+  //     if (res.ok) {
+  //       // console.log((await res.json())[0])
+  //       if (isMounted.current)
+  //         dispatch(
+  //           userActions.update({ ...(await res.json())[0], isLogged: true })
+  //         );
+  //       // dispatch(userActions.update({ ...(await res.json()), isLogged: true }));
+  //     } else {
+  //     }
+  //   } catch (error) {}
+  // }
+
+  function getUserInfoAndDispatch() {
+    return api
+      .getInfo()
+      .then((res) => {
+        if (res.ok) {
+          return res.json();
+        } else throw res;
+      })
+      .then((resJSON) => {
+        dispatch(userActions.update({ ...resJSON[0], isLogged: true }));
+      })
+      .catch((error) => {
+        if (error.res) {
+        } else {
+          console.log(error);
+        }
+      });
   }
 
   // console.log("user : ", user);
@@ -55,43 +92,60 @@ function AdminRouter({ history }) {
   const location = useLocation();
   // const searchParams = new URLSearchParams(location.search);
 
-  if (authToken) {
-    return (
-      <>
-        <Header />
-        {/* <HeaderL /> */}
-        <Switch>
-          <Route exact path="/" component={HomePage} />
-          <Route path="/categories" component={CategoriesPage} />
-          <Route path="/products" component={ProductsPage} />
-          <Route path="/fridges" component={FridgesPage2} />
-          <Route path="/testHistory1" component={Test1} />
-          <Route path="/testHistory2" component={Test2} />
-          <Route path="/testData" component={TestData} />
-          <Route path="/preset" component={PresetPage} />
-        </Switch>
-        {/* <Footer/> */}
-      </>
-    );
+  // if ((authToken && user.isLogged) || desac_login) {
+  if (isLoaded) {
+    return <></>;
   } else {
-    return (
-      <>
-        <Switch>
-          <Route path="/login" component={LoginPage} />
-          <Route path="/">
-            <Redirect
-              from={`${location.pathname}`}
-              to={{
-                pathname: "/login",
-                state: {
-                  from: `${location.pathname}`,
-                },
-              }}
-            ></Redirect>
-          </Route>
-        </Switch>
-      </>
-    );
+    if (user.isLogged) {
+      return (
+        <>
+          <Header />
+          {/* <HeaderL /> */}
+          <Switch>
+            <Route exact path="/" component={withTranslation()(HomePage)} />
+            <Route path="/categories" component={withTranslation()(CategoriesPage)} />
+            <Route path="/products" component={withTranslation()(ProductsPage)} />
+            <Route path="/fridges" component={withTranslation()(FridgesPage2)} />
+            <Route path="/testHistory1" component={Test1} />
+            <Route path="/testHistory2" component={Test2} />
+            <Route path="/testData" component={TestData} />
+            <Route path="/preset" component={withTranslation()(PresetPage)} />
+            <Route path="/login">
+              <Redirect
+                from={`${location.pathname}`}
+                to={{
+                  pathname: "/",
+                  state: {
+                    from: `${location.pathname}`,
+                  },
+                }}
+              ></Redirect>
+            </Route>
+            <Route path="/" component={withTranslation()(NotFoundPage)} />
+          </Switch>
+          {/* <Footer/> */}
+        </>
+      );
+    } else {
+      return (
+        <>
+          <Switch>
+            <Route path="/login" component={withTranslation()(LoginPage)} />
+            <Route path="/">
+              <Redirect
+                from={`${location.pathname}`}
+                to={{
+                  pathname: "/login",
+                  state: {
+                    from: `${location.pathname}`,
+                  },
+                }}
+              ></Redirect>
+            </Route>
+          </Switch>
+        </>
+      );
+    }
   }
 }
 
