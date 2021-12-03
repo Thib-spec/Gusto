@@ -7,16 +7,7 @@ import mappers from "helpers/mappers";
 import FridgeProductCard from "Components/FridgePage/FridgeProductCard";
 
 import Page from "Components/Page";
-import {
-  Accordion,
-  Row,
-  Col,
-  Table,
-  Card,
-  Button,
-  Modal,
-} from "react-bootstrap";
-
+import {Accordion, Row, Col, Table, Card, Button, Modal,} from "react-bootstrap";
 
 export default function PresetProducts(props){
 // produits ajoutés dans le frigo

@@ -30,7 +30,7 @@ export default function PresetPage(props){
                     </div>
                     <div className="container-presetComponent-dropDownContent">
                         <div className="container-presetComponent-dropDownContent-element"><PresetProducts allProducts={props.allProducts}/></div>
-                        <div className="container-presetComponent-dropDownContent-element"><PresetMenus /></div>
+                        <div className="container-presetComponent-dropDownContent-element"><PresetMenus/></div>
                     </div>
                 </div> 
             :
