@@ -13,7 +13,7 @@ export default function CategorieinProductDropDown(props){
 
     const [allProducts, setallProducts] = useState([]);
     useEffect(() => {
-        axios.get("http://api.gustosolutions.fr/api/product")
+        axios.get("http://localhost:3001/api/product")
             .then((res) =>{setallProducts(res.data)
             })
             .catch((err) => console.log(err));
