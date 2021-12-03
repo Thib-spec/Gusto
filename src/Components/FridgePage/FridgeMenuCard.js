@@ -28,7 +28,7 @@ export default function FridgeMenuCard({ menu, parentProps }) {
     <div className={`card productCard m-2`} key={menu.id}>
       <div className="card-body p-5 text-center">
         <div className="">
-          <img className="card-img-top" alt="Card image cap" src={menu.image} />
+          <img className="card-img-top" alt="Image" src={menu.image} />
         </div>
         <h5 class="card-title">{menu.name}</h5>
         <hr className="my-2" />

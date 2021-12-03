@@ -1,0 +1,9 @@
+{
+  "language.french":"Francais",
+  "language.english":"Anglais",
+  "LoginPage.placeholder.email": "Email",
+  "LoginPage.placeholder.password": "Mot de passe",
+  "LoginPage.Text.stayConnected": "Rester connecté ?",
+  "LoginPage.Text.forgottenPassword": "Mot de passe oublié ?",
+  "Button.connexion": "Connexion"
+}

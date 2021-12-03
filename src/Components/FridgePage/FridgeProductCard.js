@@ -59,7 +59,7 @@ export default function FridgeProductCard({ product, parentProps }) {
         <div className="">
           <img
             className="card-img-top"
-            alt="Card image cap"
+            alt="Image"
             src={product.image}
           />
         </div>
