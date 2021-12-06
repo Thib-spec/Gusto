@@ -49,10 +49,6 @@ Users.init({
         type: DataTypes.STRING(150),
         allowNull: false
     },
-    user_language: {
-        type: DataTypes.STRING,
-        allowNull: false
-    }
 },
     {
         sequelize,

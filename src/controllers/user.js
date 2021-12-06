@@ -63,8 +63,38 @@ const Joi = require('joi');
         
     }
 
+
+    exports.getUserNationality = (req,res) =>{
+        Model.Users.findOne({
+            where:{
+                id_user:req.params.id
+            }
+        })
+
+        .then((user) => {
+            if (!user) {
+                return res.status(400).json({
+                    message: 'User not found',
+                });
+            }
+
+            else {
+                Model.Nationalities.findOne({
+                    where:{
+                        id_nationality:user.fk_id_nationality
+                    }
+                })
+
+                .then(nationality => res.status(200).json(nationality))
+            }
+        })
+        .catch(error => res.status(400).json(error))
+    }
+
+
+
     exports.addUser = (req,res) =>{
-        const { firstname, lastname, email, image,password, user_language,fk_id_level,fk_id_client } = req.body;
+        const { firstname, lastname, email, image,password,fk_id_level,fk_id_client } = req.body;
 
         const fk_level_list = new Array()
         const fk_client_list = new Array()
@@ -83,7 +113,6 @@ const Joi = require('joi');
         password: Joi.string().required(),
         email:Joi.string().required(), 
         image:Joi.string().required(),
-        user_language:Joi.string().required(),
         fk_id_client:Joi.number().required(),
         fk_id_level:Joi.number().required()
     })
@@ -97,7 +126,7 @@ const Joi = require('joi');
     if (!valid) {
       res.status(400).json({ 
         message: 'Missing required parameters',
-        info: 'Requires: firstname, lastname, password, image, email, user_language, fk_id_level, fk_id_client' 
+        info: 'Requires: firstname, lastname, password, image, email, fk_id_level, fk_id_client' 
       })
     }
 
@@ -140,7 +169,6 @@ const Joi = require('joi');
                             email:email,
                             image:image,
                             password:password,
-                            user_language:user_language,
                             fk_id_client:fk_id_client,
                             fk_id_level:fk_id_level
                         })
@@ -252,9 +280,6 @@ exports.deleteUser = (req,res) => {
             }).then((user) => {
                 console.log
                 if (!user) {
-                    console.log("azerty")
-                    const test = security.bcryptCompareSync(password, "fsdgfs")
-                    console.log(test)
                     return res.status(400).json({
                         message: 'User not found',
                     })
