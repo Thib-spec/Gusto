@@ -15,6 +15,28 @@ exports.listFridges = (req, res) => {
     .catch(error => res.status(400).json(error))
 }
 
+exports.getFridgeNationality = (req,res) =>{
+    Model.Fridges.findOne({
+        where:{
+            id_fridge:req.params.id
+        },
+        include:{model:Model.Nationalities}
+    })
+
+    .then((fridge) => {
+        if (!fridge) {
+            return res.status(400).json({
+                message: 'Fridge not found',
+            });
+        }
+
+        else {
+            res.status(200).json(fridge)
+        }
+    })
+    .catch(error => res.status(400).json(error))
+}
+
 
 
 exports.listProductByFridge = (req,res) =>{

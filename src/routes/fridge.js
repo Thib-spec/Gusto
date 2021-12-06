@@ -9,6 +9,7 @@ fridges.put('/:id',fridgeController.editFridge)
 fridges.delete('/:id',fridgeController.deleteFridge)
 fridges.get('/:id/sales/products',fridgeController.listProductsBySaleByFridge)
 
+fridges.get("/:id/nationality",fridgeController.getFridgeNationality)
 fridges.get('/:id/products',fridgeController.listProductByFridge)
 
 fridges.get('/:id/clients',fridgeController.listClientByFridge)

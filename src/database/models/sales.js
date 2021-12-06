@@ -33,15 +33,15 @@ module.exports = (sequelize) => {
         allowNull: false
     },
     cbemv_amount: {
-        type: DataTypes.DECIMAL(5,2),
+        type: DataTypes.INTEGER,
         allowNull: false
     },
     cbcless_amount: {
-        type: DataTypes.STRING,
+        type: DataTypes.INTEGER,
         allowNull: false
     },
     lv_amount: {
-        type: DataTypes.DECIMAL(5,2),
+        type: DataTypes.INTEGER,
         allowNull: false
     },
     lv_quantity: {
@@ -49,7 +49,7 @@ module.exports = (sequelize) => {
         allowNull: false
     },
     cash_amount: {
-        type: DataTypes.DECIMAL(5,2),   
+        type: DataTypes.INTEGER,   
         allowNull: false
     },
 }, {

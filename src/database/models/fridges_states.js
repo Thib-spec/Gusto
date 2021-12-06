@@ -14,13 +14,13 @@ id_fridges_state:{
     autoIncrement:true
 },
 
-    timestamp: {
+    states_timestamp: {
         type: DataTypes.INTEGER,
         allowNull: false
     },
 }, {
     sequelize,
-    modelName: 'fridges_state',
+    modelName: 'fridges_states',
     timestamps: true,
 
 })
