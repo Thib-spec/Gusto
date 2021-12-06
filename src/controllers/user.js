@@ -94,7 +94,7 @@ const Joi = require('joi');
 
 
     exports.addUser = (req,res) =>{
-        const { firstname, lastname, email, image,password, user_language,fk_id_level,fk_id_client } = req.body;
+        const { firstname, lastname, email, image,password,fk_id_level,fk_id_client } = req.body;
 
         const fk_level_list = new Array()
         const fk_client_list = new Array()
@@ -113,7 +113,6 @@ const Joi = require('joi');
         password: Joi.string().required(),
         email:Joi.string().required(), 
         image:Joi.string().required(),
-        user_language:Joi.string().required(),
         fk_id_client:Joi.number().required(),
         fk_id_level:Joi.number().required()
     })
@@ -127,7 +126,7 @@ const Joi = require('joi');
     if (!valid) {
       res.status(400).json({ 
         message: 'Missing required parameters',
-        info: 'Requires: firstname, lastname, password, image, email, user_language, fk_id_level, fk_id_client' 
+        info: 'Requires: firstname, lastname, password, image, email, fk_id_level, fk_id_client' 
       })
     }
 
@@ -170,7 +169,6 @@ const Joi = require('joi');
                             email:email,
                             image:image,
                             password:password,
-                            user_language:user_language,
                             fk_id_client:fk_id_client,
                             fk_id_level:fk_id_level
                         })

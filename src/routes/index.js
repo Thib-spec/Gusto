@@ -14,6 +14,7 @@ const stateRouter = require('./state');
 const tagRouter = require('./tag')
 const fridgePresetRouter = require("./fridgePreset")
 const pytonRouter = require("./python")
+const nationalityRouter = require("./nationality")
 
 
 /* ----------------------- */
@@ -45,6 +46,7 @@ router.use('/state', stateRouter);
 router.use('/tag',tagRouter)
 router.use('/fridgePreset',fridgePresetRouter)
 router.use("/python",pytonRouter)
+router.use("/nationality",nationalityRouter)
 
 
 // Handle other API routes, send Not found
