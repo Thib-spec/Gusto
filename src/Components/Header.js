@@ -66,7 +66,7 @@ export default function Header() {
     setpath("preset");
   }
   function handleMenus() {
-    history.push("/");
+    history.push("/menus");
     setpath("Menus");
   }
   function handlePromo() {
