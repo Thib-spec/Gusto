@@ -1,5 +1,7 @@
-export default (el)=>{return{
+export default (el) => {
+  return {
     id: el.id_product,
     name: el.label,
-    ...el
-}}
+    ...el,
+  };
+};

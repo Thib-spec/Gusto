@@ -1,0 +1,5 @@
+[
+  { "id_menu": 0, "web_label": "Midi Lunch", "image": "/url" },
+  { "id_menu": 1, "web_label": "Soir Lunch", "image": "/url" },
+  { "id_menu": 2, "web_label": "Matin Lunch", "image": "/url" }
+]

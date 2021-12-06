@@ -1,0 +1,39 @@
+{
+  "user": [
+    {
+      "id": "1",
+      "firstName": "fred",
+      "lastName": "dumont",
+      "email": "fred.dumont@hotmail.fr",
+      "image": "http://yes.gustosolutions/api/me/pp",
+      "language": "fr",
+      "client": "Olivia",
+      "level": "1"
+    },
+    {
+      "id": "2",
+      "firstName": "Augustin",
+      "lastName": "Peugnet",
+      "email": "augustin.Peugnet@gustosolutions.fr",
+      "image": "http://yes.gustosolutions/api/me/pp",
+      "language": "fr",
+      "authToken": "fbdhbfrz",
+      "level": "1"
+    },
+    {
+      "id": "3",
+      "firstName": "",
+      "lastName": "Peugnet",
+      "email": "augustin.Peugnet@gustosolutions.fr",
+      "image": "http://yes.gustosolutions/api/me/pp",
+      "language": "fr",
+      "authToken": "fbdhbfrz",
+      "level": "1"
+    },
+    {
+      "email": "test    ",
+      "password": "test",
+      "id": "8Fd2qqL"
+    }
+  ]
+}
