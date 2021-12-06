@@ -56,6 +56,14 @@ tags: [
     {
       "name": "Tag",
       "description": ""
+    }, 
+    {
+      "name": "Level",
+      "description": ""
+    }, 
+    {
+      "name": "FridgePreset",
+      "description": ""
     },  
   ]
 paths:
@@ -114,8 +122,6 @@ paths:
               application/json:
                   example:
                     message: "Missing required parameters"
-
-
 
   /category/{id}:
       get:
@@ -237,7 +243,6 @@ paths:
                   example:
                     message: "Category does not exists or doest not have any product"
 
-
   /client:
       get:
         tags: [Client]
@@ -280,8 +285,6 @@ paths:
               application/json:
                   example:
                     message: "Missing required parameters"
-
-
 
   /client/{id}:
       get:
@@ -468,8 +471,6 @@ paths:
                   example:
                     message: "Missing required parameters"
 
-
-
   /fridge/{id}:
       get:
         tags: [Fridge]
@@ -583,7 +584,6 @@ paths:
                   example:
                     message: "Fridge does not exists or does not have any categories"
 
-
   /fridge/{id}/clients:
       get:
         tags: [Fridge]
@@ -610,7 +610,6 @@ paths:
               application/json:
                   example:
                     message: "Fridge does not exists or does not have any clients"
-
   
   /fridge/{id}/badges:
       get:
@@ -639,7 +638,6 @@ paths:
               application/json:
                   example:
                     message: "Fridge does not exists or does not have any badge"
-
 
   /fridge/{id}/menus:
       get:
@@ -671,7 +669,6 @@ paths:
               application/json:
                   example:
                     message: "Fridge does not exists or does not have any menus"
-
 
   /fridge/{id}/orders/products:
       get:
@@ -735,6 +732,7 @@ paths:
               application/json:
                   example:
                     message: "Fridge does not exists or products with such ids doest not exists"
+
   /product:
     get:
       tags: [Product]
@@ -795,8 +793,6 @@ paths:
             application/json:
                 example:
                   message: "Missing required parameters"
-
-
 
   /product/{id}:
       get:
@@ -892,6 +888,7 @@ paths:
               application/json:
                   example:
                     message: "Product does not exists"
+
   /user:
       get:
         tags: [User]
@@ -962,8 +959,6 @@ paths:
               application/json:
                   example:
                     message: "Missing required parameters"
-
-
 
   /user/{id}:
       get:
@@ -1067,6 +1062,7 @@ paths:
               application/json:
                   example:
                     message: "User does not exists"
+
   /user/level/{label}:
       get:
         tags: [User]
@@ -1099,7 +1095,63 @@ paths:
             content:
               application/json:
                   example:
-                    message: "User does not exist or does not have any level"                  
+                    message: "User does not exist or does not have any level"
+
+  /user/logout:
+      get:
+        tags: [User]
+        summary: Returns the user that belongs to this logout.
+        parameters:
+        - name: login
+          in: path
+          type: string
+          required: true
+          description: logout of the user to get.
+        responses:
+          '200':    # status code
+            description: token
+            content:
+              application/json:
+                  example:
+                    email: jean@gusto.fr
+                    password: azerty123
+          '400':
+            description: An error message
+            content:
+              application/json:
+                  example:
+                    message: "User does not exist or does not have any logout"
+
+  /user/login: 
+      post:
+        tags: [User]
+        summary: Add a login
+        requestBody:  
+          required: true
+          content:
+            application/json:
+              schema: 
+                properties:
+                  email:
+                    type: string
+                  password:
+                    type: string
+        responses:
+          '200':    # status code
+            description: The login added
+            content:
+              application/json:
+                  example:
+                    id_user: 1
+                    email: jean@gusto.fr
+                    password: azerty321 
+          '400':
+            description: An error message
+            content:
+              application/json:
+                  example:
+                    message: "Missing required parameters"
+
   /menu:
     get:
       tags: [Menu]
@@ -1157,6 +1209,7 @@ paths:
             application/json:
                 example:
                   message: "Missing required parameters"
+
   /menu/{id}:
       get:
         tags: [Menu]
@@ -1250,6 +1303,7 @@ paths:
               application/json:
                   example:
                     message: "Menu does not exists"
+
   /menu/{id}/products:
       get:
         tags: [Menu]
@@ -1280,6 +1334,7 @@ paths:
               application/json:
                   example:
                     message: "Menu does not exist or does not have any products"
+
   /sale:
     get:
       tags: [Sale]
@@ -1345,6 +1400,7 @@ paths:
             application/json:
                 example:
                   message: "Missing required parameters"
+
   /sale/{id}:
       get:
         tags: [Sale]
@@ -1440,36 +1496,7 @@ paths:
               application/json:
                   example:
                     message: "Sale does not exist"
-  /sale/{id}/products:
-      get:
-        tags: [Sale]
-        summary: Returns all the products that belongs to this sale.
-        parameters:
-        - name: id
-          in: path
-          type: integer
-          required: true
-          description: Products of the sale to get.
-        responses:
-          '200':    # status code
-            description: A JSON array of products
-            content:
-              application/json:
-                  example:
-                    id_menu: 1
-                    web_label: salade
-                    fridge_label: salade 
-                    image : https://www.google.com/imgres?imgurl=https%3A%2F%2Fmedia.istockphoto.com
-                    price: 5.30
-                    createdAt: 2021-11-26T13:38:27.000Z
-                    updatedAt : 2021-11-26T13:38:27.000Z
-                    fk_id_client: 2
-          '400':
-            description: An error message
-            content:
-              application/json:
-                  example:
-                    message: "Sale does not exist or does not have any products"
+
   /state:
     get:
       tags: [State]
@@ -1511,6 +1538,7 @@ paths:
             application/json:
                 example:
                   message: "Missing required parameters"
+
   /state/{id}:
       get:
         tags: [State]
@@ -1591,6 +1619,7 @@ paths:
               application/json:
                   example:
                     message: "State does not exist"
+
   /tag:
       get:
         tags: [Tag]
@@ -1637,8 +1666,6 @@ paths:
               application/json:
                   example:
                     message: "Missing required parameters"
-
-
 
   /tag/{id}:
       get:
@@ -1700,6 +1727,337 @@ paths:
               application/json:
                   example:
                     message: "Specified tag does not exist"
-  
-   
-             
+
+  /level:
+      get:
+        tags: [Level]
+        summary: Returns the list of all the levels.
+        responses:
+          '200':    # status code
+            description: A JSON array of levels
+            content:
+              application/json:
+                  example:
+                    id_level: 1
+                    label: admin
+                    createdAt: 2021-11-26T13:38:27.000Z
+                    updatedAt : 2021-11-26T13:38:27.000Z
+      post:
+        tags: [Level]
+        summary: Add a level
+        requestBody:  
+          required: true
+          content:
+            application/json:
+              schema: 
+                properties:
+                  label:
+                    type: string
+        responses:
+          '200':    # status code
+            description: The level added
+            content:
+              application/json:
+                  example:
+                    id_level: 1
+                    label: admin
+                    createdAt: 2021-11-26T13:38:27.000Z
+                    updatedAt : 2021-11-26T13:38:27.000Z
+          '400':
+            description: An error message
+            content:
+              application/json:
+                  example:
+                    message: "Missing required parameters"
+
+  /level/{id}:
+      put:
+        tags: [Level]
+        summary: Update level
+        parameters:
+        - name: id
+          in: path
+          type: integer
+          required: true
+          description: Numeric ID of the level to update.
+        requestBody:
+          required: true
+          content:
+            application/json:
+              schema: 
+                properties:
+                  label:
+                    type: string
+        responses:
+          '200':    # status code
+            description: A successful message
+            content:
+              application/json:
+                  example:
+                    message: "Modification apply"
+          '400':
+            description: An error message
+            content:
+              application/json:
+                  example:
+                    message: "Specified level does not exist"
+              
+      delete:
+        tags: [Level]
+        summary: Allow to delete a level
+        parameters:
+        - name: id
+          in: path
+          type: integer
+          required: true
+          description: Numeric ID of the level to delete.
+        responses:
+          '200':   
+            description: A successful message
+            content: 
+              application/json:
+                  example:
+                    message: "Level with id : x has been deleted"
+          '400':
+            description: An error message
+            content:
+              application/json:
+                  example:
+                    message: "Level does not exist"
+
+  /fridgePreset:
+      get:
+        tags: [FridgePreset]
+        summary: Returns the list of all the fridgePreset.
+        responses:
+          '200':    # status code
+            description: A JSON array of fridgePreset
+            content:
+              application/json:
+                  example:
+                    id_product: 1
+                    label: config1
+                    createdAt: 2021-11-26T13:38:27.000Z
+                    updatedAt : 2021-11-26T13:38:27.000Z
+                    fk_id_client: 2
+
+      post:
+        tags: [FridgePreset]
+        summary: Add a fridgePreset
+        requestBody:  
+          required: true
+          content:
+            application/json:
+              schema: 
+                properties:
+                  label:
+                    type: string
+                  fk_id_client:
+                    type: integer
+        responses:
+          '200':    # status code
+            description: The fridgePreset added
+            content:
+              application/json:
+                  example:
+                    id_product: 1
+                    label: config1
+                    createdAt: 2021-11-26T13:38:27.000Z
+                    updatedAt : 2021-11-26T13:38:27.000Z
+                    fk_id_client: 2
+          '400':
+            description: An error message
+            content:
+              application/json:
+                  example:
+                    message: "Missing required parameters"
+
+  /fridgePreset/{id}:
+      get:
+        tags: [FridgePreset]
+        summary: Returns the specified fridgePreset.
+        parameters:
+        - name: id
+          in: path
+          type: integer
+          required: true
+          description: Numeric ID of the fridgePreset to get.
+        responses:
+          '200':    # status code
+            description: The fridgePreset to get
+            content:
+              application/json:
+                  example:
+                    id_product: 1
+                    label: config1
+                    createdAt: 2021-11-26T13:38:27.000Z
+                    updatedAt : 2021-11-26T13:38:27.000Z
+                    fk_id_client: 2
+          '400':
+            description: An error message
+            content:
+              application/json:
+                  example:
+                    message: "fridgePreset does not exist"
+
+      put:
+        tags: [FridgePreset]
+        summary: Update fridgePreset
+        parameters:
+        - name: id
+          in: path
+          type: integer
+          required: true
+          description: Numeric ID of the fridgePreset to update.
+        requestBody:
+          required: true
+          content:
+            application/json:
+              schema: 
+                properties:
+                  label:
+                    type: string
+                  fk_id_client:
+                    type: integer
+        responses:
+          '200':    # status code
+            description: A successful message
+            content:
+              application/json:
+                  example:
+                    message: "Modification apply"
+          '400':
+            description: An error message
+            content:
+              application/json:
+                  example:
+                    message: "Specified fridgePreset does not exist"
+              
+      delete:
+        tags: [FridgePreset]
+        summary: Allow to delete a fridgePreset
+        parameters:
+        - name: id
+          in: path
+          type: integer
+          required: true
+          description: Numeric ID of the fridgePreset to delete.
+        responses:
+          '200':   
+            description: A successful message
+            content: 
+              application/json:
+                  example:
+                    message: "fridgePreset with id : x has been deleted"
+          '400':
+            description: An error message
+            content:
+              application/json:
+                  example:
+                    message: "fridgePreset does not exist"
+
+  /fridgePreset/{id}/addProduct:
+      post:
+        tags: [FridgePreset]
+        summary: Add a product to a fridgePreset
+        parameters:
+        - name: id
+          in: path
+          type: integer
+          required: true
+          description: Numeric ID of the fridgePreset to get.
+        requestBody:  
+          required: true
+          content:
+            application/json:
+              schema:
+                properties:
+                  quantity_min:
+                    type: integer
+                  quantity_max:
+                    type: integer
+                  fk_id_product:
+                    type: integer
+        responses:
+          '200':    # status code
+            description: The product added to the fridgePreset
+            content:
+              application/json:
+                  example:
+                    quanity_min: 5
+                    quantity_max : 15
+                    createdAt: 2021-11-26T13:38:27.000Z
+                    updatedAt : 2021-11-26T13:38:27.000Z
+                    fk_id_product: 1
+          '400':
+            description: An error message
+            content:
+              application/json:
+                  example:
+                    message: "Missing required parameters"
+
+  /fridgePreset/{id}/editProduct/{productId}:
+      put:
+        tags: [FridgePreset]
+        summary: Update products in fridgePreset
+        parameters:
+        - name: id
+          in: path
+          type: integer
+          required: true
+          description: Numeric ID of the products to update in fridgePreset.
+        requestBody:
+          required: true
+          content:
+            application/json:
+              schema: 
+                properties:
+                  label:
+                    type: string
+                  image:
+                    type: string
+                  price:
+                    type: integer
+                  ubd:
+                    type: string
+                  description:
+                    type: string
+                  fk_id_category:
+                    type: integer
+        responses:
+          '200':    # status code
+            description: A successful message
+            content:
+              application/json:
+                  example:
+                    message: "Modification apply"
+          '400':
+            description: An error message
+            content:
+              application/json:
+                  example:
+                    message: "Specified fridgePreset does not exist"
+
+  /fridgePreset/{id}/removeProduct/{productId}:           
+      delete:
+        tags: [FridgePreset]
+        summary: Allow to delete a product from a fridgePreset
+        parameters:
+        - name: id
+          in: path
+          type: integer
+          required: true
+          description: Numeric ID of the product to delete from a fridgePreset.
+        responses:
+          '200':   
+            description: A successful message
+            content: 
+              application/json:
+                  example:
+                    message: "Product with id : x has been deleted from the fridgePreset."
+          '400':
+            description: An error message
+            content:
+              application/json:
+                  example:
+                    message: "fridgePreset does not exist"
