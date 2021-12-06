@@ -22,10 +22,10 @@ const requester = (thiss) => {
 
     if (body instanceof Object) options["body"] = JSON.stringify(body);
 
-    fetch(thiss.url + path, options).then(res=>res.json()).then((resJSON)=>{
-      console.log("requete : ", thiss.url + path, resJSON);
-    })
-    return fetch(thiss.url + path, options)
+    // fetch(thiss.url + path, options).then(res=>res.json()).then((resJSON)=>{
+    //   console.log("requete : ", thiss.url + path, resJSON);
+    // })
+    return fetch(thiss.url + path, options);
   };
 };
 

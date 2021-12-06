@@ -1,0 +1,12 @@
+{
+  "id": "1",
+  "firstName": "Augustin",
+  "lastName": "Peugnet",
+  "email": "augustin.Peugnet@gustosolutions.fr",
+  "image": "http://yes.gustosolutions/api/me/pp",
+  "language": "fr",
+  "id_level": "1",
+  "id_client": "1",
+  "client": { "name": "Olivia" },
+  "level": { "label": "admin" }
+}

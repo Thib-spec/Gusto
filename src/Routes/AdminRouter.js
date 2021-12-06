@@ -30,7 +30,6 @@ import PresetPage from "Pages/PresetPage";
 import useIsMounted from "helpers/useInMount";
 import { withTranslation } from "react-i18next";
 
-
 function AdminRouter({ history }) {
   const user = useSelector((state) => state.user.value);
   const [isLoaded, setIsLoaded] = useState(true);
@@ -77,7 +76,8 @@ function AdminRouter({ history }) {
         } else throw res;
       })
       .then((resJSON) => {
-        dispatch(userActions.update({ ...resJSON[0], isLogged: true }));
+        console.log("api.getInfo() : ", resJSON);
+        dispatch(userActions.login({ ...resJSON }));
       })
       .catch((error) => {
         if (error.res) {
@@ -103,9 +103,18 @@ function AdminRouter({ history }) {
           {/* <HeaderL /> */}
           <Switch>
             <Route exact path="/" component={withTranslation()(HomePage)} />
-            <Route path="/categories" component={withTranslation()(CategoriesPage)} />
-            <Route path="/products" component={withTranslation()(ProductsPage)} />
-            <Route path="/fridges" component={withTranslation()(FridgesPage2)} />
+            <Route
+              path="/categories"
+              component={withTranslation()(CategoriesPage)}
+            />
+            <Route
+              path="/products"
+              component={withTranslation()(ProductsPage)}
+            />
+            <Route
+              path="/fridges"
+              component={withTranslation()(FridgesPage2)}
+            />
             <Route path="/testHistory1" component={Test1} />
             <Route path="/testHistory2" component={Test2} />
             <Route path="/testData" component={TestData} />

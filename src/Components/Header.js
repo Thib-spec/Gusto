@@ -38,12 +38,10 @@ export default function Header() {
     try {
       const res = await api.logout();
       if (res.ok) {
-        localStorage.removeItem("authToken");
-        history.push("/");
-      } else {
         dispatch(userActions.logout());
         localStorage.removeItem("authToken");
         history.push("/");
+      } else {
       }
     } catch (error) {}
   }
@@ -93,7 +91,7 @@ export default function Header() {
           <HeaderProfil
             lastName={user.lastName}
             firstName={user.firstName}
-            level={user.level}
+            level={user.level.label}
           />
         </div>
       </div>
