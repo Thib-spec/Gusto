@@ -2,12 +2,20 @@ import React, { Component, useState, useEffect } from "react";
 import "../../CSS/presetPage.scss" 
 import fold from "../../Images/fold.svg"
 import unfold from "../../Images/unfold.svg"
+import PresetMenus from "./PresetMenus";
 import PresetProducts from "./PresetProducts";
 
-export default function PresetPage(){
+export default function PresetPage(props){
+
+
+
+
+
+
+
 
     //open and close the dropdown on click
-    const [open, setOpen] = useState(false);
+    const [open, setOpen] = useState(true);
     function handleOpen() {
         setOpen(!open);
     }
@@ -21,8 +29,8 @@ export default function PresetPage(){
                         <div className="categories-dot" ><img width="100%" src={fold} alt=""/></div>
                     </div>
                     <div className="container-presetComponent-dropDownContent">
-                       <PresetProducts className="container-presetComponent-dropDownContent-element"/>
-                        
+                        <div className="container-presetComponent-dropDownContent-element"><PresetProducts allProducts={props.allProducts}/></div>
+                        <div className="container-presetComponent-dropDownContent-element"><PresetMenus/></div>
                     </div>
                 </div> 
             :
