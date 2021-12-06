@@ -63,6 +63,36 @@ const Joi = require('joi');
         
     }
 
+
+    exports.getUserNationality = (req,res) =>{
+        Model.Users.findOne({
+            where:{
+                id_user:req.params.id
+            }
+        })
+
+        .then((user) => {
+            if (!user) {
+                return res.status(400).json({
+                    message: 'User not found',
+                });
+            }
+
+            else {
+                Model.Nationalities.findOne({
+                    where:{
+                        id_nationality:user.fk_id_nationality
+                    }
+                })
+
+                .then(nationality => res.status(200).json(nationality))
+            }
+        })
+        .catch(error => res.status(400).json(error))
+    }
+
+
+
     exports.addUser = (req,res) =>{
         const { firstname, lastname, email, image,password, user_language,fk_id_level,fk_id_client } = req.body;
 
