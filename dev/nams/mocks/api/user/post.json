@@ -1,0 +1,12 @@
+{
+  "id_user": "1",
+  "firstname": "Augustin",
+  "lastname": "Peugnet",
+  "email": "augustin.Peugnet@gustosolutions.fr",
+  "image": "http://yes.gustosolutions/api/me/pp",
+  "language": "fr",
+  "fk_id_level": "1",
+  "fk_id_client": "1",
+  "client": { "name": "Olivia" },
+  "level": { "label": "admin" }
+}
