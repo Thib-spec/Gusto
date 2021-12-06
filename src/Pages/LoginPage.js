@@ -47,41 +47,22 @@ export default function LoginPage({ location, history, t }) {
   //   }
   // }
 
-  function getUserInfoAndDispatch() {
-    return api
-      .getInfo()
-      .then((res) => {
-        if (res.ok) {
-          return res.json();
-        } else throw res;
-      })
-      .then((resJSON) => {
-        dispatch(userActions.update({ ...resJSON[0], isLogged: true }));
-      })
-      .catch((error) => {
-        if (error.res) {
-        } else {
-          console.log(error);
-        }
-      });
-  }
-
   async function handleLogin() {
     api
       .login({ body: { email: username, password } })
       .then((res) => {
-        console.log(res);
+        // console.log(res);
         if (res.ok) {
           return res.json();
         } else throw { res };
       })
       .then((resJSON) => {
+        console.log("api.login() : ", resJSON);
         dispatch(userActions.login({ ...resJSON }));
         localStorage.setItem("authToken", resJSON.token);
       })
       .catch((error) => {
         if (error.res) {
-          getUserInfoAndDispatch();
           alert.set(
             <div className="alert alert-danger" role="alert">
               response status : {error.res.status}

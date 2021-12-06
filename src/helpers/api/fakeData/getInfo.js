@@ -1,6 +1,6 @@
 const res = {
   status: 200,
-  ok:true,
+  ok: true,
   json: () => {
     return {
       firstName: "fred",

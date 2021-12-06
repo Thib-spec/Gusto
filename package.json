@@ -24,15 +24,25 @@
     "web-vitals": "^1.0.1"
   },
   "devDependencies": {
+    "concurrently": "^6.4.0",
+    "env-cmd": "^10.1.0",
+    "json-server": "^0.17.0",
+    "nams": "^1.0.1",
+    "nodemon": "^2.0.15",
     "react-scripts": "^3.4.4"
   },
   "scripts": {
-    "start": "react-scripts start",
-    "start_wenv": "node -r dotenv/config ./node_modules/.bin/react-scripts start dotenv_config_path=.env",
+    "start": "npm run dev:nams",
+    "react-start": "react-scripts start",
     "build": "react-scripts build",
-    "build_wenv": "node -r dotenv/config ./node_modules/.bin/react-scripts build dotenv_config_path=.env",
     "test": "jest",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "start_wenv": "node -r dotenv/config ./node_modules/.bin/react-scripts start dotenv_config_path=.env",
+    "build_wenv": "node -r dotenv/config ./node_modules/.bin/react-scripts build dotenv_config_path=.env",
+    "json-server-start:development": "env-cmd -f .env.development.local nodemon --watch ./dev/json-server -e json,js ./dev/json-server/server.js",
+    "nams-start:development": "env-cmd -f .env.development.local nodemon --watch ./dev/nams -e json,js ./dev/nams/server.js",
+    "dev:js": "concurrently 'npm:json-server-start:development' 'npm:react-start'",
+    "dev:nams": "concurrently 'npm:nams-start:development' 'npm:react-start'"
   },
   "eslintConfig": {
     "extends": [

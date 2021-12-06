@@ -1,0 +1,5 @@
+[
+  { "id_fridge": 0, "label": "fridge1", "fk_id_status": 3 },
+  { "id_fridge": 1, "label": "fridge2", "fk_id_status": 2 },
+  { "id_fridge": 2, "label": "fridge3", "fk_id_status": 1 }
+]
