@@ -21,7 +21,7 @@ export default function CategorieDropDownComponent(props){
     function handleUpdateCategorie(){
         try{
             let a=document.getElementById("descriptionCategorie"+props.categorie.id).value
-            axios.put("http://localhost:3001/api/category/"+props.categorie.id_category,{
+            axios.put("http://api.gustosolutions.fr/api/category/"+props.categorie.id_category,{
                 "label":props.categorie.label,
                 "image": "imageurl",
                 "description" : a
@@ -47,7 +47,7 @@ export default function CategorieDropDownComponent(props){
     //when the client delete a categorie and confirm it, 
     function handleDeleteCatégorie(){
         try{
-            axios.delete("http://localhost:3001/api/category/"+props.categorie.id_category)
+            axios.delete("http://api.gustosolutions.fr:3001/api/category/"+props.categorie.id_category)
             .then((res) => {
                 console.log(res);
                 window.location.reload(false);

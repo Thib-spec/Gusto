@@ -15,7 +15,7 @@ export default function CategoriesPage(){
 
     const [allCategories, setallCategories] = useState([]);
     useEffect(() => {
-        axios.get("http://localhost:3001/api/category")
+        axios.get("http://api.gustosolutions.fr/api/category")
             .then((res) =>{setallCategories(res.data)
             })
             .catch((err) => console.log(err));
@@ -39,7 +39,7 @@ export default function CategoriesPage(){
         try{
             let a=document.getElementById('labelCatégorie').value
             setCategorieAdd(a)
-            axios.post("http://localhost:3001/api/category", {
+            axios.post("http://api.gustosolutions.fr/api/category", {
                 "label":a,
                 "image": "imageurl",
                 "description" : "description",

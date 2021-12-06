@@ -7,7 +7,7 @@ import DATACatégories from "../Data/categories"
 export default function Test(){
     const [allCategories, setallCategories] = useState([]);
     useEffect(() => {
-        axios.get("http://localhost:3001/api/category")
+        axios.get("http://api.gustosolutions.fr/api/category")
             .then((res) =>{setallCategories(res.data)
             })
             .catch((err) => console.log(err));
