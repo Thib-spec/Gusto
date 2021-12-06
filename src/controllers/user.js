@@ -2,13 +2,21 @@ const { session } = require("passport");
 const Model = require("../database/models");
 const security = require("../helpers/security")
 const Joi = require('joi');
+
 // const Model = {
 //     Users: require("../database/models/users")(),           // config pour que l'ide propose les fonctions possibles
 // }
 
     exports.listUsers = (req, res) => {
-        Model.Users.findAll()
-        .then(user => res.status(200).json(user))
+        Model.Users.findAll({
+            include:{all: true}
+                
+        })
+
+        .then(user =>res.json(user))
+        
+           
+        
         .catch(error => res.status(400).json(error))
     }
 
@@ -296,7 +304,7 @@ exports.deleteUser = (req,res) => {
                         expiresIn: 3600, // en seconde
                         })
 
-                        res.status(200).json({user,token})
+                        res.status(200).json({...JSON.parse(JSON.stringify(user)),token})
                         res.send("complete")
                     })
                     .catch(error => console.log(error))
@@ -320,6 +328,8 @@ exports.deleteUser = (req,res) => {
             .then(vgh => res.send("OK"))
             .catch(error => console.log(error))
         }
+
+        // route /me renvoyer req.user
 
 
 

@@ -13,7 +13,15 @@ static associate(models){
   Users.hasMany(models.Sessions, {
     foreignKey: 'fk_id_user',
     sourceKey:"id_user"
-  }) 
+  })
+  
+  Users.belongsTo(models.Levels,{
+    foreignKey:"fk_id_level"
+  })
+
+  Users.belongsTo(models.Nationalities,{
+    foreignKey:"fk_id_nationality"
+  })
 
 }
 
