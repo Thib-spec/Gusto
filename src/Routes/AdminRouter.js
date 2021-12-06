@@ -3,6 +3,7 @@ import Test2 from "Components/TestHistory2";
 import React, { Component, useState, useEffect } from "react";
 import "CSS/colors.css";
 import "CSS/loginPage.css";
+import MenusPage from "Pages/MenusPage";
 
 import {
   BrowserRouter as Router,
@@ -114,6 +115,10 @@ function AdminRouter({ history }) {
             <Route
               path="/fridges"
               component={withTranslation()(FridgesPage2)}
+            />
+            <Route
+              path="/menus"
+              component={withTranslation()(MenusPage)}
             />
             <Route path="/testHistory1" component={Test1} />
             <Route path="/testHistory2" component={Test2} />

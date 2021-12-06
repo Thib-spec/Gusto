@@ -47,9 +47,7 @@ export default function ProductsPage(){
                 "image": "imageurl",
                 "description" : "default description",
                 "price":a,
-                "quantity":1, 
-                "quantity_min":0,
-                "quantity_max":2, 
+                
                 "ubd":"5 jours",
                 "fk_id_category":c
             })
