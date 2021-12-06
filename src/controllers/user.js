@@ -280,9 +280,6 @@ exports.deleteUser = (req,res) => {
             }).then((user) => {
                 console.log
                 if (!user) {
-                    console.log("azerty")
-                    const test = security.bcryptCompareSync(password, "fsdgfs")
-                    console.log(test)
                     return res.status(400).json({
                         message: 'User not found',
                     })
