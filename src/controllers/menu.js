@@ -66,6 +66,98 @@ const Joi = require('joi');
         .catch(error => res.json(error))
     }
 
+
+    exports.addProductInMenu = (req,res) => {
+        const {fk_id_product} = req.body
+
+
+        const postProductInMenuSchema = Joi.object().keys({ 
+            fk_id_product: Joi.number().required()
+        })
+
+        const result = postProductInMenuSchema.validate(req.body)
+
+        const {error } = result;
+
+        const valid = error == null;
+
+        if (!valid) {
+            res.status(400).json({ 
+            message: 'Missing required parameters',
+            info: 'Requires: fk_id_product' 
+            })
+        }
+
+        else {
+            Model.Menus.findOne({
+            where:{
+                id_menu:req.params.id
+            }
+        })
+
+            .then((menu) => {
+                if (!menu) {
+                    return res.status(400).json({
+                        message: 'Menu does not exist',
+                    });
+                }
+
+                else {
+                    menu.addProducts(fk_id_product)
+
+                    .then(addedProduct => res.status(200).json(addedProduct))
+                    
+                }
+            })
+        }
+    }
+
+
+    exports.deleteProductInMenu = (req,res) => {
+        const {fk_id_product} = req.body
+
+
+        const postProductInMenuSchema = Joi.object().keys({ 
+            fk_id_product: Joi.number().required()
+        })
+
+        const result = postProductInMenuSchema.validate(req.body)
+
+        const {error } = result;
+
+        const valid = error == null;
+
+        if (!valid) {
+            res.status(400).json({ 
+            message: 'Missing required parameters',
+            info: 'Requires: fk_id_product' 
+            })
+        }
+
+        else {
+            Model.Menus.findOne({
+            where:{
+                id_menu:req.params.id
+            }
+        })
+
+            .then((menu) => {
+                if (!menu) {
+                    return res.status(400).json({
+                        message: 'Menu does not exist',
+                    });
+                }
+
+                else {
+                    menu.removeProducts(fk_id_product)
+
+                    .then(res.status(200).json("Deletion completed"))
+                    
+                }
+            })
+        }
+    }
+
     exports.addMenu = (req,res) =>{
         const { image, price, web_label, fridge_label, fk_id_client } = req.body;
         const fk_client_list = new Array()

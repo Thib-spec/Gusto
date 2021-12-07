@@ -327,6 +327,10 @@ exports.deleteUser = (req,res) => {
             .catch(error => res.json(error))
         }
 
+        exports.userInfo = (req,res) => {
+            res.status(200).json(req.user)
+        }
+
         // route /me renvoyer req.user
 
 
