@@ -1,7 +1,7 @@
 const Model = require("../database/models");
 const Joi = require('joi');
 
-const { Op } = require("sequelize");
+const { Op, json } = require("sequelize");
 
 exports.listFridges = (req, res) => {
     Model.Fridges.findAll({
@@ -83,23 +83,25 @@ exports.listClientByFridge = (req,res) => {
         }
 
         else {
-            return fridge.getClients()
-        }
+            fridge.getClients()
+            .then(clients =>{
+                if(clients.length == 0){
+                    return res.status(400).json({
+                        message:`Fridge with id ${req.params.id} does not have any client`
+                    })
+                }
 
-    })
-    .then(clients =>{
-        if(clients.length == 0){
-            return res.status(400).json({
-                message:`Fridge with id ${req.params.id} does not have any client`
+                else {
+                    res.status(200).json(clients)
+                }
             })
-        }
-
-        else {
-            return res.status(200).json(clients)
+            .catch(error => res.status(400).json(error))
         }
     })
     .catch(error => res.status(400).json(error))
 }
+    
+    
 
 
 exports.listBadgeByFridge = (req,res) => {
@@ -117,7 +119,7 @@ exports.listBadgeByFridge = (req,res) => {
         }
 
         else {
-            return fridge.getBadges()
+            fridge.getBadges()
     
             .then(badges =>{
                 if(badges.length == 0){
@@ -127,9 +129,10 @@ exports.listBadgeByFridge = (req,res) => {
                 }
 
                 else {
-                    return res.status(200).json(badges)
+                    res.status(200).json(badges)
                 }
             })
+            .catch(error => res.status(400).json(error))
         }
     })
     .catch(error => res.status(400).json(error))
@@ -146,13 +149,13 @@ exports.listMenuByFridge = (req,res) => {
 
     .then(fridge =>{
         if (!fridge) {
-            return res.status(400).json({
+            res.status(400).json({
                 message: 'Fridge does not exist',
             });
         }
 
         else {
-            return fridge.getMenus()  
+            fridge.getMenus()  
             .then(menus =>{
                 if(menus.length == 0){
                     return res.status(400).json({
@@ -161,9 +164,10 @@ exports.listMenuByFridge = (req,res) => {
                 }
 
                 else {
-                    return res.status(200).json(menus)
+                    res.status(200).json(menus)
                 }
             })
+            .catch(error => res.status(400).json(error))
         }
     })
     .catch(error => res.status(400).json(error))
@@ -188,8 +192,7 @@ exports.listProductByOrderByFridge = (req,res) => {
                 include:{ model: Model.Products}
             })
         
-            .then(orders => {  
-
+            .then(orders => {
                 if(!fk_list.includes(Number(req.params.id))){
                  
                     return res.status(400).json({
@@ -202,66 +205,65 @@ exports.listProductByOrderByFridge = (req,res) => {
                     return res.json(orders)
                 }
             })
+            .catch(error => res.json(error))
 
 
-        }) 
+        })
+        .catch(error => res.json(error))
     })
     .catch(error => res.json(error))
 }
 
 
 exports.listProductsBySaleByFridge = (req,res) => {
-    let id_list = new Array()
+    let sale_id_list = new Array()
 
     Model.Sales.findAll()
     .then(allSales => {
         Model.Sales.count()
         .then(numberOfSale =>{
             for(let i=0;i<numberOfSale;i++){
-                id_list.push(allSales[i].id_sale)
+                sale_id_list.push(allSales[i].id_sale)
             }
 
-            if(allSales.includes(Number(req.params.id))){
-                return res.status(400).json({
-                    message:"Sale does not exists"
-                })
-            }
+            Model.Fridges.findOne({
+                where:{
+                    id_fridge: req.params.id
+                }
+            })
 
-            else{
-
-                Model.Fridges.findOne({
-                    where:{
-                        id_fridge: req.params.id
-                    }
-                })
-
-                .then(fridge => {
+            .then(fridge => {
+                if (!fridge) {
+                    return res.status(400).json({
+                        message: 'Fridge does not exist',
+                    });
+                }
+                else {
 
                     Model.Sales.findAll({
                     where:{
-                        fk_id_fridge:fridge.id_fridge       // faire un orderBy -> comparer string + slice pour prendre les 5 premiers
+                        fk_id_fridge:fridge.id_fridge      
                     },
                     include:{model:Model.Products},
                     order:[
                         ["updatedAt",'DESC']
                     ]
-                })
+                    })
     
-                .then(sales =>{
-                    if (!sales) {
-                        return res.status(400).json({
-                            message: 'Sale does not exist or does not have any product related',
-                        });
-                    }
-    
-                    else {
-                        res.status(200).json(sales.slice(0,5))
-                    }
-                })
-                })
-                
-
-            }
+                    .then(sales =>{
+                        if(!sale_id_list.includes(Number(req.params.id))){
+                            return res.status(400).json({
+                                message:"Fridge does not have any sale"
+                            })
+                        }
+        
+                        else {
+                            res.status(200).json(sales.slice(0,5))
+                        }
+                    })
+                }
+            })
+            
         })
     })
 
@@ -269,13 +271,14 @@ exports.listProductsBySaleByFridge = (req,res) => {
 }
 
 
-// add quantity/ edit quantity/ delete quantity(removeproduct)
-
+// A FAIRE
 
 
 exports.AddProductQuantity = (req,res) => {
 
     const {fk_id_product, quantity} = req.body
+
+    const list_fk_product = new Array()
 
     const postQuantitySchema = Joi.object().keys({ 
         quantity : Joi.number().required(),
@@ -291,42 +294,56 @@ exports.AddProductQuantity = (req,res) => {
     if (!valid) {
         res.status(400).json({ 
           message: 'Missing required parameters',
-          info: 'Requires: quantity, fk_id_product, fk_id_fridge' 
+          info: 'Requires: quantity, fk_id_product' 
         })
       }
 
     else {
-        Model.Fridges.findOne({
-        where:{
-            id_fridge:req.params.id
-        }
-    })
 
-    .then((fridge) => {
-        if (!fridge) {
-            return res.status(400).json({
-                message: 'Fridge does not exist',
-            });
-        }
+        Model.Products.findAll()
+        .then(allProduct => {
+            Model.Products.count()
+            .then(numberOfProduct => {
+                for(let i = 0; i<numberOfProduct;i++){
+                    list_fk_product.push(allProduct[i].id_product)
+                }
 
-        else {
-            Model.fridges_products.create({
-                fk_id_product:fk_id_product,
-                fk_id_fridge:req.params.id,
-                quantity:quantity
-            })
-
-            .then(fridge_product => res.status(200).json(fridge_product))
+                Model.Fridges.findOne({
+                    where:{
+                        id_fridge:req.params.id
+                    }
+                })
             
-        }
-    })
+                .then((fridge) => {
+                    if (!fridge) {
+                        return res.status(400).json({
+                            message: 'Fridge does not exist',
+                        });
+                    }
+
+                    else if (!list_fk_product.includes(fk_id_product)){
+                        res.status(400).json({
+                            message: "fk_id_product does not match any id_product"
+                        })
+                    }
+            
+                    else {
+                        Model.fridges_products.create({
+                            fk_id_product:fk_id_product,
+                            fk_id_fridge:req.params.id,
+                            quantity:quantity
+                        })
+            
+                        .then(fridge_product => res.status(200).json(fridge_product))
+                        
+                    }
+                })
+            })
+        })
     }
-
-   
-
-
 }
 
+// Need to check productId
 
 exports.EditProductQuantity = (req,res) => {
 
@@ -344,45 +361,50 @@ exports.EditProductQuantity = (req,res) => {
 
     if (!valid) {
         res.status(400).json({ 
-          message: 'One or other parameters are not well written',
+          message: 'Field is not well written',
         })
       }
 
     else {
         Model.Fridges.findOne({
-        where:{
-            id_fridge:req.params.id
-        }
-    })
+            where:{
+                id_fridge:req.params.id
+            }
+        })
 
-    .then((fridge) => {
-        if (!fridge) {
-            return res.status(400).json({
-                message: 'Fridge does not exist',
-            });
-        }
+        .then((fridge) => {
+            if (!fridge) {
+                return res.status(400).json({
+                    message: 'Fridge does not exist',
+                });
+            }
 
-        else {
-            Model.fridges_products.update({
-                quantity:quantity
-            },
-            {
-                where:{
-                    [Op.and]: [
-                        { fk_id_fridge:req.params.id },
-                        { fk_id_product: req.params.productId }
-                    ]
-                }
-            })
+            else if(Object.keys(req.body).length == 0){
+                res.status(400).json({
+                    message:"No parameters were passed"
+                })
+            }
 
-            .then(res.status(200).json("Modification apply"))
-            
-        }
-    })
+            else {
+                Model.fridges_products.update({
+                    quantity:quantity
+                },
+                {
+                    where:{
+                        [Op.and]: [
+                            { fk_id_fridge:req.params.id },
+                            { fk_id_product: req.params.productId }
+                        ]
+                    }
+                })
+
+                .then(res.status(200).json("Item has been updated"))
+                .catch(error => res.status(400).json(error))
+                
+            }
+        })
+        .catch(error => res.status(400).json(error))
     }
-
-   
-
 
 }
 
