@@ -338,8 +338,6 @@ exports.deleteUser = (req,res) => {
            
         }
 
-        // route /me renvoyer req.user
-
 
 
 
