@@ -71,6 +71,9 @@ const Joi = require('joi');
                             message: `Client with id ${req.params.id} does not have any tag`
                         })
                     }
+                    else{
+                        res.status(200).json(tags)
+                    }
                 })
             }
         }
@@ -165,7 +168,13 @@ exports.editClient = (req,res) => {
           res.status(400).json({ 
             message: 'One or more fields are not well written', 
           }) 
-        } 
+        }
+        
+        // if(req.body.length == 0){
+        //     res.status(400).json({
+        //         message:"NO change were applied"
+        //     })
+        // }
         
         else { 
             Model.Client.update({
