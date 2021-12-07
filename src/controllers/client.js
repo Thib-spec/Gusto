@@ -53,19 +53,31 @@ const Joi = require('joi');
             }
         })
     
-        .then(
-            Model.Tags.findAll({
-                where:{
-                    fk_id_client: req.params.id
-                }
-            })
-            .then(tags => {
-                if(tags.length == 0){
-                    return res.status(400).json({
-                        message: `Client with id ${req.params.id} does not have any tag`
-                    })
-                }
-            })
+        .then(client =>{
+            if (!client) {
+                return res.status(400).json({
+                    message: 'Client not found',
+                });
+            }
+            else {
+                Model.Tags.findAll({
+                    where:{
+                        fk_id_client: req.params.id
+                    }
+                })
+                .then(tags => {
+                    if(tags.length == 0){
+                        return res.status(400).json({
+                            message: `Client with id ${req.params.id} does not have any tag`
+                        })
+                    }
+                    else{
+                        res.status(200).json(tags)
+                    }
+                })
+            }
+        }
+            
         )
         .catch(error => res.status(400).json(error))
     }
@@ -150,13 +162,21 @@ exports.editClient = (req,res) => {
 
         const result = editClientSchema.validate(req.body)
 
+        
         const {error } = result; 
         const valid = error == null; 
+      
         if (!valid) { 
           res.status(400).json({ 
             message: 'One or more fields are not well written', 
           }) 
-        } 
+        }
+        
+        if(Object.keys(req.body).length == 0){
+            res.status(400).json({
+                message:"No parameters were passed"
+            })
+        }
         
         else { 
             Model.Client.update({

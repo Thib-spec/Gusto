@@ -3,12 +3,6 @@ const Joi = require('joi');
 
 const { Op } = require("sequelize");
 
-
-
-// const Model = {
-//     Categories: require("../database/models/categories")(),           // config pour que l'ide propose les fonctions possibles
-// }
-
 exports.listFridges = (req, res) => {
     Model.Fridges.findAll({
         include:{all:true}
