@@ -4,7 +4,7 @@ const passport = require("passport")
 
 users.post('/login',userController.login)
 users.get('/logout',passport.authenticate("jwt",{session:false}),userController.logout)
-users.get('/userInfo',userController.userInfo)
+users.get('/userInfo',passport.authenticate("jwt",{session:false}),userController.userInfo)
 
 users.get('/:id',userController.getUserById)
 users.get('/', userController.listUsers)

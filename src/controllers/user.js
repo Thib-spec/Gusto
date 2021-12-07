@@ -328,7 +328,14 @@ exports.deleteUser = (req,res) => {
         }
 
         exports.userInfo = (req,res) => {
-            res.status(200).json(req.user)
+            Model.Users.findOne({
+                include:{all:true},
+                where:{
+                    id_user:req.user.id_user
+                }
+            })
+            .then(user =>  res.status(200).json(user))
+           
         }
 
         // route /me renvoyer req.user
