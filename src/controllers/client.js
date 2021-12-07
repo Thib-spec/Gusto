@@ -162,19 +162,21 @@ exports.editClient = (req,res) => {
 
         const result = editClientSchema.validate(req.body)
 
+        
         const {error } = result; 
         const valid = error == null; 
+      
         if (!valid) { 
           res.status(400).json({ 
             message: 'One or more fields are not well written', 
           }) 
         }
         
-        // if(req.body.length == 0){
-        //     res.status(400).json({
-        //         message:"NO change were applied"
-        //     })
-        // }
+        if(Object.keys(req.body).length == 0){
+            res.status(400).json({
+                message:"No parameters were passed"
+            })
+        }
         
         else { 
             Model.Client.update({
