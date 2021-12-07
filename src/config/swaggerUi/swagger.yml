@@ -64,6 +64,10 @@ tags: [
     {
       "name": "FridgePreset",
       "description": ""
+    },
+    {
+      "name": "Nationality",
+      "description": ""
     },  
   ]
 paths:
@@ -700,7 +704,7 @@ paths:
                   example:
                     message: "Fridge does not exists or does not have any orders"
 
-  /fridge/{id}/addFrontProducts:
+  /fridge/{id}/addQuantity:
       post:
         tags: [Fridge]
         summary: Add products in the specified fridge by their id
@@ -732,6 +736,127 @@ paths:
               application/json:
                   example:
                     message: "Fridge does not exists or products with such ids doest not exists"
+
+  /fridge/{id}/sales/products:
+      get:
+        tags: [Fridge]
+        summary: Returns all the products that belongs to the sale which belongs to this fridge.
+        parameters:
+        - name: id
+          in: path
+          type: integer
+          required: true
+          description: Numeric ID of the fridge to get.
+        responses:
+          '200':    # status code
+            description: A JSON array of sales and their products.
+            content:
+              application/json:
+                  example:
+                    id_sale: 1
+                    sales_timestamp: 10:38
+                    cbemv_amount: 5.50
+                    cbcless_amount : 3.50
+                    lv_amount: 5.30
+                    lv_quantity: 3
+                    cash_amount: 5.50
+                    createdAt: 2021-11-26T13:38:27.000Z
+                    updatedAt : 2021-11-26T13:38:27.000Z
+                    fk_id_fridge: 2
+    
+          '400':
+            description: An error message
+            content:
+              application/json:
+                  example:
+                    message: "Fridge does not exists or does not have any sale"     
+
+  /fridge/{id}/editQuantity/{productId}:
+      put:
+          tags: [Fridge]
+          summary: Update the quantity of a product that belongs to this fridge.
+          parameters:
+          - name: id
+            in: path
+            type: integer
+            required: true
+            description: Numeric ID of the fridge to update.
+          - name: productId
+            in: path
+            type: integer
+            required: true
+            description: Numeric ID of the product to update.
+          requestBody:
+            required: true
+            content:
+              application/json:
+                schema: 
+                  properties:
+                    quantity:
+                      type: integer
+          responses:
+            '200':    # status code
+              description: A successful message
+              content:
+                application/json:
+                    example:
+                      message: "Modification apply"
+            '400':
+              description: An error message
+              content:
+                application/json:
+                    example:
+                      message: "Specified fridge does not exist."
+
+  /fridge/{id}/removeQuantity/{productId}:
+      delete:
+          tags: [Fridge]
+          summary: Delete a product from a fridge
+          parameters:
+          - name: id
+            in: path
+            type: integer
+            required: true
+            description: Numeric ID of the fridge to delete from.
+          - name: productId
+            in: path
+            type: integer
+            required: true
+            description: Numeric ID of the product to delete.
+          responses:
+            '200':   
+              description: A successful message
+              content: 
+                application/json:
+                    example:
+                      message: "Product with id : x has been deleted from the fridge with id x"
+            '400':
+              description: An error message
+              content:
+                application/json:
+                    example:
+                      message: "Fridge does not exist"
+
+  /fridge/{id}/nationality:
+      get:
+        tags: [Fridge]
+        summary: Returns the language of the fridge.
+        parameters:
+        - name: id
+          in: path
+          type: integer
+          required: true
+          description: Numeric ID of the fridge to get.
+        responses:
+          '200':    # status code
+            description: Language of the fridge.
+            content:
+              application/json:
+                  example:
+                    id_nationality: 1
+                    label: français
+                    createdAt: 2021-11-26T13:38:27.000Z
+                    updatedAt : 2021-11-26T13:38:27.000Z
 
   /product:
     get:
@@ -910,6 +1035,7 @@ paths:
                     updatedAt : 2021-11-26T13:38:27.000Z
                     fk_id_client: 2
                     fk_id_level: 1
+                    fk_id_nationality: 2
 
       post:
         tags: [User]
@@ -1151,6 +1277,49 @@ paths:
               application/json:
                   example:
                     message: "Missing required parameters"
+          
+  /user/{id}/nationality:
+      get:
+        tags: [User]
+        summary: Returns the nationality of the user.
+        parameters:
+        - name: id
+          in: path
+          type: integer
+          required: true
+          description: Numeric ID of the user to get.
+        responses:
+          '200':    # status code
+            description: Nationality of the user.
+            content:
+              application/json:
+                  example:
+                    id_nationality: 1
+                    label: français
+                    createdAt: 2021-11-26T13:38:27.000Z
+                    updatedAt : 2021-11-26T13:38:27.000Z
+
+  /user/userInfo:
+      get:
+        tags: [User]
+        summary: Returns the informations of the user.
+        responses:
+          '200':    # status code
+            description: Informations of the user.
+            content:
+              application/json:
+                  example:
+                    id_user: 1
+                    email: jean@gusto.fr
+                    password: azerty123
+                    firstname: string
+                    lastname: string
+                    image: rsgrg
+                    createdAt: 2021-11-26T13:38:27.000Z
+                    updatedAt : 2021-11-26T13:38:27.000Z
+                    fk_id_client : 1
+                    fk_id_level: 2
+                    fk_id_nationality: 3
 
   /menu:
     get:
@@ -1334,6 +1503,39 @@ paths:
               application/json:
                   example:
                     message: "Menu does not exist or does not have any products"
+
+  /menu/{id}/removeProduct:
+      post:
+        tags: [Menu]
+        summary: Remove a product 
+        parameters:
+        - name: id
+          in: path
+          type: integer
+          required: true
+          description: Product of the menu.
+        requestBody:  
+          required: true
+          content:
+            application/json:
+              schema: 
+                properties:
+                  fk_id_product:
+                    type: integer
+        responses:
+          '200':    # status code
+            description: The menu added
+            content:
+              application/json:
+                  example:
+                    id_product: 1
+                    label: fruits
+                    image : https://www.google.com/imgres?imgurl=https%3A%2F%2Fmedia.istockphoto.com
+                    ubd : 01/07/2021
+                    description: some description
+                    createdAt: 2021-11-26T13:38:27.000Z
+                    updatedAt : 2021-11-26T13:38:27.000Z
+                    fk_id_category: 2
 
   /sale:
     get:
@@ -2005,6 +2207,11 @@ paths:
           in: path
           type: integer
           required: true
+          description: Numeric ID of the fridgePreset.
+        - name: productId
+          in: path
+          type: integer
+          required: true
           description: Numeric ID of the products to update in fridgePreset.
         requestBody:
           required: true
@@ -2012,17 +2219,9 @@ paths:
             application/json:
               schema: 
                 properties:
-                  label:
-                    type: string
-                  image:
-                    type: string
-                  price:
+                  quantity_min:
                     type: integer
-                  ubd:
-                    type: string
-                  description:
-                    type: string
-                  fk_id_category:
+                  quantity_max:
                     type: integer
         responses:
           '200':    # status code
@@ -2047,6 +2246,11 @@ paths:
           in: path
           type: integer
           required: true
+          description: Numeric ID of the fridgePreset.
+        - name: productId
+          in: path
+          type: integer
+          required: true
           description: Numeric ID of the product to delete from a fridgePreset.
         responses:
           '200':   
@@ -2061,3 +2265,127 @@ paths:
               application/json:
                   example:
                     message: "fridgePreset does not exist"
+
+  /nationality:
+      get:
+        tags: [Nationality]
+        summary: Returns the list of all the nationalities.
+        responses:
+          '200':    # status code
+            description: A JSON array of nationalities
+            content:
+              application/json:
+                  example:
+                    id_nationality: 1
+                    label: français
+                    createdAt: 2021-11-26T13:38:27.000Z
+                    updatedAt : 2021-11-26T13:38:27.000Z
+
+      post:
+        tags: [Nationality]
+        summary: Add a nationality
+        requestBody:  
+          required: true
+          content:
+            application/json:
+              schema: 
+                properties:
+                  label:
+                    type: string
+        responses:
+          '200':    # status code
+            description: The nationality added
+            content:
+              application/json:
+                  example:
+                    id_nationality: 1
+                    label: français
+                    createdAt: 2021-11-26T13:38:27.000Z
+                    updatedAt : 2021-11-26T13:38:27.000Z
+          '400':
+            description: An error message
+            content:
+              application/json:
+                  example:
+                    message: "Missing required parameters"
+
+  /nationality/{id}:
+      get:
+        tags: [Nationality]
+        summary: Returns the specified nationality.
+        parameters:
+        - name: id
+          in: path
+          type: integer
+          required: true
+          description: Numeric ID of the nationality to get.
+        responses:
+          '200':    # status code
+            description: The nationality to get
+            content:
+              application/json:
+                  example:
+                    id_nationality: 1
+                    label: français
+                    createdAt: 2021-11-26T13:38:27.000Z
+                    updatedAt : 2021-11-26T13:38:27.000Z
+          '400':
+            description: An error message
+            content:
+              application/json:
+                  example:
+                    message: "Nationality does not exist"
+
+      put:
+        tags: [Nationality]
+        summary: Update product
+        parameters:
+        - name: id
+          in: path
+          type: integer
+          required: true
+          description: Numeric ID of the nationality to update.
+        requestBody:
+          required: true
+          content:
+            application/json:
+              schema: 
+                properties:
+                  label:
+                    type: string
+        responses:
+          '200':    # status code
+            description: A successful message
+            content:
+              application/json:
+                  example:
+                    message: "Modification apply"
+          '400':
+            description: An error message
+            content:
+              application/json:
+                  example:
+                    message: "Specified nationality does not exist"
+              
+      delete:
+        tags: [Nationality]
+        summary: Allow to delete a nationality
+        parameters:
+        - name: id
+          in: path
+          type: integer
+          required: true
+          description: Numeric ID of the nationality to delete.
+        responses:
+          '200':   
+            description: A successful message
+            content: 
+              application/json:
+                  example:
+                    message: "Nationality with id : x has been deleted"
+          '400':
+            description: An error message
+            content:
+              application/json:
+                  example:
+                    message: "Id does not exist"
