@@ -10,7 +10,7 @@ export default function FridgeLogsCard(props){
 
      const [sliceSales, setsliceSales] = useState([]);
      useEffect(() => {
-        axios.get("http://api.gustosolutions.fr/api/fridge/"+props.idFridge+"/sales/products")
+        axios.get("http://api.gustosolutionsions.fr/api/fridge/"+props.idFridge+"/sales/products")
             .then((res) =>{setsliceSales(res.data)
                 
             })

@@ -14,6 +14,7 @@ import HeaderProfil from 'Components/HeaderProfil';
 import PieChart from 'Components/ChartJSComponent/PieChart';
 import LineChart from 'Components/ChartJSComponent/LineChart';
 import BarChart from 'Components/ChartJSComponent/BarChart';
+import Header from 'Components/Header';
 
 
 
@@ -22,42 +23,45 @@ import BarChart from 'Components/ChartJSComponent/BarChart';
 export default function HomePage(){
     
     return(
-        <div className="container-home">
-            <div className="home-logs">
-                <div className="home-log-left">
-                    <div className="home-logs-header">
-                        header1
-                    </div>
-                    <div className="home-logs-content">
-                        <div className="home-logs-content-labels">
-                            <div className="home-logs-content-labels-left">element1</div>
-                            <div className="">element2</div>
-                            <div className="home-logs-content-labels-right">element3</div>
-                        </div>
-                        <div className="home-logs-content-data">
-    
-                        </div>
-                    </div>
-                </div>
-                <div className="home-log-right">
-                    <div className="home-logs-header">
-                        header2
-                    </div>
-                    <div className="home-logs-content">
-                        <div className="home-logs-content-labels">
-                            <div className="home-logs-content-labels-left">element1</div>
-                            <div className="home-logs-content-labels-right">element2</div>
-                        </div>
-                        <div className="home-logs-content-data">
 
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div className="home-graphs">
-                graphs
-            </div>
-        </div>
+
+        <Header/>
+        // <div className="container-home">
+        //     <div className="home-logs">
+        //         <div className="home-log-left">
+        //             <div className="home-logs-header">
+        //                 header1
+        //             </div>
+        //             <div className="home-logs-content">
+        //                 <div className="home-logs-content-labels">
+        //                     <div className="home-logs-content-labels-left">element1</div>
+        //                     <div className="">element2</div>
+        //                     <div className="home-logs-content-labels-right">element3</div>
+        //                 </div>
+        //                 <div className="home-logs-content-data">
+    
+        //                 </div>
+        //             </div>
+        //         </div>
+        //         <div className="home-log-right">
+        //             <div className="home-logs-header">
+        //                 header2
+        //             </div>
+        //             <div className="home-logs-content">
+        //                 <div className="home-logs-content-labels">
+        //                     <div className="home-logs-content-labels-left">element1</div>
+        //                     <div className="home-logs-content-labels-right">element2</div>
+        //                 </div>
+        //                 <div className="home-logs-content-data">
+
+        //                 </div>
+        //             </div>
+        //         </div>
+        //     </div>
+        //     <div className="home-graphs">
+        //         graphs
+        //     </div>
+        // </div>
  
         
     )
