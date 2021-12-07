@@ -53,7 +53,9 @@ const Joi = require('joi');
         Model.Users.findOne({
             where:{
                 id_user : req.params.id
-            }
+            },
+            include:{all: true}
+            
         })
         .then((user) => {
             if (!user) {
@@ -102,7 +104,7 @@ const Joi = require('joi');
 
 
     exports.addUser = (req,res) =>{
-        const { firstname, lastname, email, image,password,fk_id_level,fk_id_client } = req.body;
+        const { firstname, lastname, email, image,password,fk_id_level,fk_id_client,fk_id_nationality } = req.body;
 
         const fk_level_list = new Array()
         const fk_client_list = new Array()
@@ -122,7 +124,8 @@ const Joi = require('joi');
         email:Joi.string().required(), 
         image:Joi.string().required(),
         fk_id_client:Joi.number().required(),
-        fk_id_level:Joi.number().required()
+        fk_id_level:Joi.number().required(),
+        fk_id_nationality: Joi.number().required()
     })
 
     const result = postUserSchema.validate(req.body)
@@ -134,7 +137,7 @@ const Joi = require('joi');
     if (!valid) {
       res.status(400).json({ 
         message: 'Missing required parameters',
-        info: 'Requires: firstname, lastname, password, image, email, fk_id_level, fk_id_client' 
+        info: 'Requires: firstname, lastname, password, image, email, fk_id_level, fk_id_client, fk_id_nationality' 
       })
     }
 
@@ -178,7 +181,8 @@ const Joi = require('joi');
                             image:image,
                             password:password,
                             fk_id_client:fk_id_client,
-                            fk_id_level:fk_id_level
+                            fk_id_level:fk_id_level,
+                            fk_id_nationality:fk_id_nationality
                         })
                         
                         .then(user => res.status(200).json(user))
@@ -196,7 +200,7 @@ const Joi = require('joi');
 
 
 exports.editUser = (req,res) => {
-    const { firstname, lastname, email, image,user_language} = req.body;
+    const { firstname, lastname, email, image} = req.body;
 
     Model.Users.findOne({
         where: {
@@ -216,7 +220,6 @@ exports.editUser = (req,res) => {
             lastname: Joi.string(),
             email: Joi.string().email(), 
             image:Joi.string(),
-            user_language:Joi.string()
         })
 
         const result = editUserSchema.validate(req.body)
@@ -235,7 +238,6 @@ exports.editUser = (req,res) => {
                 lastname: lastname,
                 email: email,
                 image:image,
-                user_language:user_language
             },
             {
                 where : {
@@ -281,12 +283,12 @@ exports.deleteUser = (req,res) => {
             const { email,password} = req.body
 
             Model.Users.findOne({
-
                 where:{
                     email:email,
-                }
-            }).then((user) => {
-                console.log
+                },
+                include:{all: true}
+            })
+            .then((user) => {
                 if (!user) {
                     return res.status(400).json({
                         message: 'User not found',
@@ -294,10 +296,9 @@ exports.deleteUser = (req,res) => {
                 }
                 
                 else if (security.bcryptCompareSync(password, user.password)){
-                    console.log("ok")
                     user.createSession()
                     .then(session=> {
-                        console.log(session)
+    
                         const token = security.jwtGenTokenSync({
                         sub: user.id_user,
                         sessionId:session.id_session,
@@ -305,14 +306,12 @@ exports.deleteUser = (req,res) => {
                         })
 
                         res.status(200).json({...JSON.parse(JSON.stringify(user)),token})
-                        res.send("complete")
                     })
                     .catch(error => console.log(error))
                 }
 
                 else{
-                    console.log("ok1")
-                    console.log(error)
+                    res.status(400).json("password or email is incorrect")
                 }
             })
             .catch(error => console.log(error))
@@ -321,12 +320,11 @@ exports.deleteUser = (req,res) => {
 
 
         exports.logout = (req,res) =>{
-            console.log("os")
             const user = req.user
             const sessions = user.session
             sessions.destroy()
-            .then(vgh => res.send("OK"))
-            .catch(error => console.log(error))
+            .then(res.status(200).json("User has been deconnected"))
+            .catch(error => res.json(error))
         }
 
         // route /me renvoyer req.user
