@@ -13,7 +13,8 @@ exports.getFridegPresetById = (req,res) => {
     Model.FridgePresets.findOne({
         where:{
             id_fridgePresets : req.params.id
-        }
+        },
+        include:{all:true}
     })
     .then((fridgePreset) => {
         if (!fridgePreset) {
@@ -182,26 +183,39 @@ exports.addFrontProduct = (req,res) =>{
         }
 
         else {
-            if (!valid) {
-                res.status(400).json({ 
-                  message: 'Missing required parameters',
-                  info: 'Requires: quantity_min, quantity_max, fk_id_product' 
-                })
-            }
-            else {
 
+            if(req.body instanceof Array){
+
+                var result = [];
+                
+                var promises = req.body.map(function(product) {
+                    return Model.fridgePresets_products.create({
+                    quantity_max:product.quantity_max,
+                    quantity_min:product.quantity_min,
+                    fk_id_fridgePreset:req.params.id,
+                    fk_id_product:product.fk_id_product
+                    })
+                    .then(function() {
+                        result.push(product);
+                    })
+                        
+                    });
+                
+                Promise.all(promises)
+                    .then(function() {
+                    return res.json(result);
+                });
+            }
+            else{
                 Model.fridgePresets_products.create({
                     quantity_max:quantity_max,
                     quantity_min:quantity_min,
                     fk_id_fridgePreset:req.params.id,
                     fk_id_product:fk_id_product
-    
                 })
-           
                 .then(products=> res.json(products))
-            }
+            }     
         }
-      
     })
     
     .catch(error => console.log(error))

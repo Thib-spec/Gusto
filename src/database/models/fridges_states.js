@@ -15,7 +15,7 @@ id_fridges_state:{
 },
 
     states_timestamp: {
-        type: DataTypes.INTEGER,
+        type: DataTypes.STRING,
         allowNull: false
     },
 }, {

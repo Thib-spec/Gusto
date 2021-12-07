@@ -53,19 +53,28 @@ const Joi = require('joi');
             }
         })
     
-        .then(
-            Model.Tags.findAll({
-                where:{
-                    fk_id_client: req.params.id
-                }
-            })
-            .then(tags => {
-                if(tags.length == 0){
-                    return res.status(400).json({
-                        message: `Client with id ${req.params.id} does not have any tag`
-                    })
-                }
-            })
+        .then(client =>{
+            if (!client) {
+                return res.status(400).json({
+                    message: 'Client not found',
+                });
+            }
+            else {
+                Model.Tags.findAll({
+                    where:{
+                        fk_id_client: req.params.id
+                    }
+                })
+                .then(tags => {
+                    if(tags.length == 0){
+                        return res.status(400).json({
+                            message: `Client with id ${req.params.id} does not have any tag`
+                        })
+                    }
+                })
+            }
+        }
+            
         )
         .catch(error => res.status(400).json(error))
     }
