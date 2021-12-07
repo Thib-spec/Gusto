@@ -174,7 +174,7 @@ exports.editClient = (req,res) => {
         
         if(Object.keys(req.body).length == 0){
             res.status(400).json({
-                message:"No change were applied"
+                message:"No parameters were passed"
             })
         }
         
