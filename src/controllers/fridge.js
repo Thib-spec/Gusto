@@ -10,7 +10,9 @@ const { Op } = require("sequelize");
 // }
 
 exports.listFridges = (req, res) => {
-    Model.Fridges.findAll()
+    Model.Fridges.findAll({
+        include:{all:true}
+    })
     .then(fridge => res.status(200).json(fridge))
     .catch(error => res.status(400).json(error))
 }
@@ -431,7 +433,8 @@ exports.getFridgeById = (req,res) => {
     Model.Fridges.findOne({
         where:{
             id_fridge : req.params.id
-        }
+        },
+        include:{all:true}
     })
     .then((fridge) => {
         if (!fridge) {
