@@ -9,7 +9,7 @@ import DropDownComponent from "Components/DropDownComponent";
 import { useSelector, useDispatch } from "react-redux";
 import api from "helpers/api";
 
-import mappers from "helpers/mappers"
+import mappers from "helpers/mappers";
 
 export default function FridgesPage() {
   function handleNothing() {}
@@ -25,9 +25,8 @@ export default function FridgesPage() {
       const res = await api.getFridges();
       if (res.ok) {
         const resJSON = await res.json();
-        setFridges(
-          resJSON.map(mappers.fridgesMapper)
-        );
+        console.log("api.getFridges() : ", resJSON);
+        setFridges(resJSON.map(mappers.fridgesMapper));
       } else {
       }
     } catch (error) {
@@ -40,6 +39,7 @@ export default function FridgesPage() {
       const res = await api.getAllProducts();
       if (res.ok) {
         const resJSON = await res.json();
+        console.log("api.getAllProducts() : ", resJSON);
         setAllProducts(resJSON.map(mappers.productsMapper));
       } else {
       }
@@ -53,6 +53,7 @@ export default function FridgesPage() {
       const res = await api.getAllMenus();
       if (res.ok) {
         const resJSON = await res.json();
+        console.log("api.getAllMenus() : ", resJSON);
         setAllMenus(resJSON.map(mappers.menusMapper));
       } else {
       }

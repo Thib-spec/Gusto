@@ -1,8 +1,7 @@
 export default (el) => {
   return {
-    id: el.id_product,
+    id: el.id_client,
     name: el.label,
-    image: el.image,
     ...el,
   };
 };

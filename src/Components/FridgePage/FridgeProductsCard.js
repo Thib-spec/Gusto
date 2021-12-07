@@ -3,6 +3,8 @@
 import React, { Component, useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import api from "helpers/api";
+import ArrayController from "helpers/ArrayController";
+import mappers from "helpers/mappers";
 
 import Page from "Components/Page";
 import {
@@ -16,34 +18,30 @@ import {
 } from "react-bootstrap";
 
 import FridgeProductCard from "Components/FridgePage/FridgeProductCard";
+import FridgeProductTableLine from "Components/FridgePage/FridgeProductTableLine";
 
 export default function FridgeProductsCard(props) {
-  // produits déjà ajoutés dans le frigo
-  const [products, setProducts] = useState([]);
-  // produits pouvant être ajoutés dans le frigo
-  const [productsToAdd, setProductsToAdd] = useState([]);
-  // produits ajoutés dans le frigo mais pas encore save
-  const [productsAdded, setProductsAdded] = useState(new Set([]));
+  // produits ajoutés dans le frigo
+  const products = new ArrayController(useState([]), useState([]));
 
   useEffect(() => {
     getProductsInFridge();
   }, []);
 
-  useEffect(() => {
-    getAllProducts();
-  }, [products]);
+  // useEffect(() => {
+  //   console.log("products : ", products);
+  // }, [products.value]);
 
-  useEffect(() => {
-    console.log([...productsAdded]);
-    console.log([...products]);
-  }, [productsAdded, products]);
-
+  // appels api
   async function getProductsInFridge() {
     try {
       const res = await api.getProductsInFridge({ id: props.fridge.id });
       if (res.ok) {
         const resJSON = await res.json();
-        setProducts(resJSON);
+        console.log("api.getProductsInFridge() : ", resJSON);
+        products.set(resJSON.Products.map(mappers.productsInFridge), {
+          init: true,
+        });
       } else {
       }
     } catch (error) {
@@ -51,16 +49,16 @@ export default function FridgeProductsCard(props) {
     }
   }
 
-  async function getAllProducts() {
+  async function addProductsInFridge() {
     try {
-      const res = await api.getAllProducts();
+      const res = await api.addProductsInFridge({
+        id: props.fridge.id,
+        body: products.value,
+      });
       if (res.ok) {
         const resJSON = await res.json();
-        setProductsToAdd(
-          resJSON.filter(
-            (product) => !products.map((el) => el.id).includes(product.id)
-          )
-        );
+        console.log("api.addProductsInFridge() : ", resJSON);
+        products.addOrUpdateMany([], { init: true });
       } else {
       }
     } catch (error) {
@@ -74,22 +72,18 @@ export default function FridgeProductsCard(props) {
   const handleClose = () => setShow(false);
   const handleAddProducts = handleShow;
 
-  // handlers
-  const handleAddOneProduct = (product, added) => {
-    const newSet = new Set(productsAdded);
-    if (added) newSet.delete(product);
-    else newSet.add(product);
-    setProductsAdded(newSet);
+  // Save & Cancel
+  const handleSaveButton = () => {
+    addProductsInFridge();
+  };
+  const handleCancelButton = () => {
+    products.reset();
   };
 
   // ParentsProps
   const parentProps = {
-    handlers: {
-      handleAddOneProduct,
-    },
     states: {
       products,
-      productsAdded,
     },
   };
 
@@ -108,37 +102,16 @@ export default function FridgeProductsCard(props) {
                     <th>Quantity</th>
                     <th>Min</th>
                     <th>Max</th>
+                    <th></th>
                   </tr>
                 </thead>
                 <tbody>
-                  {products.map((product) => {
+                  {products.value.map((product) => {
                     return (
-                      <tr key={product.id}>
-                        {/* <td>{product.id}</td> */}
-                        <td>{product.name}</td>
-                        <td>{product.quantity}</td>
-                        <td>{product.min}</td>
-                        <td>{product.max}</td>
-                      </tr>
-                    );
-                  })}
-                  {[...productsAdded].map((product) => {
-                    return (
-                      <tr key={product.id}>
-                        {/* <td>{product.id}</td> */}
-                        <td>{product.name}</td>
-                        <input
-                          type="number"
-                          id="quantity"
-                          name="quantity"
-                          min="1"
-                          max="5"
-                          defaultValue={product.quantity}
-                        />
-                        {/* <td>{product.quantity}</td> */}
-                        <td>{product.min}</td>
-                        <td>{product.max}</td>
-                      </tr>
+                      <FridgeProductTableLine
+                        key={product.id}
+                        product={products.get(product.id)}
+                      />
                     );
                   })}
                 </tbody>
@@ -158,13 +131,6 @@ export default function FridgeProductsCard(props) {
                   type="submit"
                   className="btn btn-dark blue m-1"
                 >
-                  Remove a product
-                </button>
-                <button
-                  onClick={() => {}}
-                  type="submit"
-                  className="btn btn-dark blue m-1"
-                >
                   passer une commande
                 </button>
               </div>
@@ -173,14 +139,14 @@ export default function FridgeProductsCard(props) {
             <div className="row justify-content-center">
               <div class="col-6 m-1" align="center">
                 <button
-                  onClick={() => {}}
+                  onClick={handleSaveButton}
                   type="submit"
                   className="btn btn-dark blue m-1"
                 >
                   Save
                 </button>
                 <button
-                  onClick={() => {}}
+                  onClick={handleCancelButton}
                   type="submit"
                   className="btn btn-dark blue m-1"
                 >
@@ -208,7 +174,7 @@ export default function FridgeProductsCard(props) {
           {/* <div className=""></div> */}
           <Page>
             <div className="row">
-              {productsToAdd.map((product) => {
+              {props.allProducts.map((product) => {
                 return (
                   <FridgeProductCard
                     key={product.id}

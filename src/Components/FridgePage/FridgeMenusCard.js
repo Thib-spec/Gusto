@@ -13,8 +13,7 @@ import {
 } from "react-bootstrap";
 import api from "helpers/api";
 import ArrayController from "helpers/ArrayController";
-import mappers from "helpers/mappers"
-
+import mappers from "helpers/mappers";
 
 // const menus = [
 //   { id: 0, name: "Midi Lunch"},
@@ -38,7 +37,8 @@ export default function FridgeMenusCard(props) {
       const res = await api.getMenusInFridge({ id: props.fridge.id });
       if (res.ok) {
         const resJSON = await res.json();
-        menus.set([...(resJSON.map(mappers.menusMapper))], { init: true });
+        console.log("api.getMenusInFridge() : ", resJSON);
+        menus.set([...resJSON.map(mappers.menusMapper)], { init: true });
       } else {
       }
     } catch (error) {
@@ -54,6 +54,7 @@ export default function FridgeMenusCard(props) {
       });
       if (res.ok) {
         const resJSON = await res.json();
+        console.log("api.addMenusInFridge() : ", resJSON);
         menus.addOrUpdateMany([], { init: true });
       } else {
       }

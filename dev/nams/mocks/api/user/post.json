@@ -7,6 +7,6 @@
   "language": "fr",
   "fk_id_level": "1",
   "fk_id_client": "1",
-  "client": { "name": "Olivia" },
+  "client": { "label": "Olivia" },
   "level": { "label": "admin" }
 }

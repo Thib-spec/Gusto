@@ -52,21 +52,6 @@ function AdminRouter({ history }) {
     };
   }, []);
 
-  // async function getUserInfoAndDispatch() {
-  //   try {
-  //     const res = await api.getInfo();
-  //     if (res.ok) {
-  //       // console.log((await res.json())[0])
-  //       if (isMounted.current)
-  //         dispatch(
-  //           userActions.update({ ...(await res.json())[0], isLogged: true })
-  //         );
-  //       // dispatch(userActions.update({ ...(await res.json()), isLogged: true }));
-  //     } else {
-  //     }
-  //   } catch (error) {}
-  // }
-
   function getUserInfoAndDispatch() {
     return api
       .getInfo()
