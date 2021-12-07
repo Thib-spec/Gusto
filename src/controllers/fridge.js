@@ -343,11 +343,11 @@ exports.AddProductQuantity = (req,res) => {
     }
 }
 
-// Need to check productId
 
 exports.EditProductQuantity = (req,res) => {
 
     const {quantity} = req.body
+    const fk_list_product = new Array()
 
     const editQuantitySchema = Joi.object().keys({ 
         quantity : Joi.number(),
@@ -366,50 +366,85 @@ exports.EditProductQuantity = (req,res) => {
       }
 
     else {
-        Model.Fridges.findOne({
-            where:{
-                id_fridge:req.params.id
-            }
-        })
-
-        .then((fridge) => {
-            if (!fridge) {
-                return res.status(400).json({
-                    message: 'Fridge does not exist',
-                });
-            }
-
-            else if(Object.keys(req.body).length == 0){
-                res.status(400).json({
-                    message:"No parameters were passed"
-                })
-            }
-
-            else {
-                Model.fridges_products.update({
-                    quantity:quantity
-                },
-                {
+        Model.Products.findAll()
+        .then(allProducts => {
+            Model.Products.count()
+            .then(numberOfProduct => {
+                for(let i=0;i<numberOfProduct;i++){
+                    fk_list_product.push(allProducts[i].id_product)
+                }
+                Model.Fridges.findOne({
                     where:{
-                        [Op.and]: [
-                            { fk_id_fridge:req.params.id },
-                            { fk_id_product: req.params.productId }
-                        ]
+                        id_fridge:req.params.id
                     }
                 })
 
-                .then(res.status(200).json("Item has been updated"))
-                .catch(error => res.status(400).json(error))
-                
-            }
-        })
+                .then((fridge) => {
+                    if (!fridge) {
+                        return res.status(400).json({
+                            message: 'Fridge does not exist',
+                        });
+                    }
+
+                    else if (!fk_list_product.includes(Number(req.params.productId))){
+                        res.status(400).json({
+                            message:"fk_id_product does not match any id_product"
+                        })
+
+                    }
+
+                    else if(Object.keys(req.body).length == 0){
+                        res.status(400).json({
+                            message:"No parameters were passed"
+                        })
+                    }
+
+                    else {
+
+                        Model.fridges_products.findOne({
+                            where:{
+                                [Op.and]: [
+                                    { fk_id_fridge:req.params.id },
+                                    { fk_id_product: req.params.productId }
+                                ]
+                            }
+                        })
+                        .then(result =>{
+                            if(!result){
+                                res.status(400).json({
+                                    message:`Fridge ${req.params.id} does not contain product ${req.params.productId}`
+                                })
+                            }
+
+                            else {
+                                Model.fridges_products.update({
+                                    quantity:quantity
+                                },
+                                {
+                                    where:{
+                                        [Op.and]: [
+                                            { fk_id_fridge:req.params.id },
+                                            { fk_id_product: req.params.productId }
+                                        ]
+                                    }
+                                })
+        
+                                .then(res.status(200).json("Item has been updated"))
+                                .catch(error => res.status(400).json(error))
+                            }
+                        })
+                   }
+                })
+            })
+        }) 
+        
         .catch(error => res.status(400).json(error))
     }
 
 }
 
 
-
+// A FAire
 
 exports.RemoveProductQuantity = (req,res) => {
 
