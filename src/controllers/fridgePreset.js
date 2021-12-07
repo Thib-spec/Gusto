@@ -14,7 +14,6 @@ exports.getFridegPresetById = (req,res) => {
         where:{
             id_fridgePresets : req.params.id
         },
-        include:{all:true}
     })
     .then((fridgePreset) => {
         if (!fridgePreset) {
