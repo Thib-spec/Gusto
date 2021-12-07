@@ -120,22 +120,22 @@ const Joi = require('joi');
         const valid = error == null;
 
         if (!valid) {
-        res.status(400).json({ 
-            message: 'Missing required parameters',
-            info: 'Requires: label' 
-        })
+            res.status(400).json({ 
+                message: 'Missing required parameters',
+                info: 'Requires: label' 
+            })
         }
 
     
 
         else {
 
-        Model.Client.create({
-            label: label
-        })
-        
-        .then(client => res.status(200).json(client))
-        .catch(error => res.status(400).json(error))
+            Model.Client.create({
+                label: label
+            })
+            
+            .then(client => res.status(200).json(client))
+            .catch(error => res.status(400).json(error))
         }
 }
 
@@ -172,7 +172,7 @@ exports.editClient = (req,res) => {
           }) 
         }
         
-        if(Object.keys(req.body).length == 0){
+       else if(Object.keys(req.body).length == 0){
             res.status(400).json({
                 message:"No parameters were passed"
             })
@@ -187,7 +187,9 @@ exports.editClient = (req,res) => {
                     id_client: req.params.id
                 }
             })
-            return res.send("Modification apply")
+            return res.status(200).json({
+                message:"Item has been updated"
+            })
         }
     })
     
@@ -208,14 +210,15 @@ exports.deleteClient = (req,res) => {
                         message: 'Client not found',
                     });
                 }
-            Model.Client
-                    .destroy({
-                        where: {
-                            id_client: req.params.id
-                        }
-                    }).then(() => res.send(`Client with id : ${req.params.id} has been deleted`))
-                }
-
-            )
-            .catch(error => res.status(400).json(error))
+                Model.Client.destroy({
+                            where: {
+                                id_client: req.params.id
+                            }
+                        })
+                        .then(res.status(200).json({
+                            message:`Client with id : ${req.params.id} has been deleted`
+                        }))
+                        .catch(error => res.status(400).json(error))
+            })
+            
         }

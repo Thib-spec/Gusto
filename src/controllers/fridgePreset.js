@@ -287,7 +287,7 @@ exports.editFrontProduct = (req,res) =>{
 
 }
 
-
+// remove preset
 exports.removeProduct = (req,res) =>{
 
     Model.FridgePresets.findOne({
