@@ -4,10 +4,6 @@ module.exports = (sequelize) => {
     class Nationalities extends Model{
 
         static associate(models){
-
-            Nationalities.hasOne(models.Users, {
-                foreignKey: 'fk_id_nationality'
-            })
             
             Nationalities.belongsToMany(models.Fridges, {
                 through: "fridges_nationalities",
