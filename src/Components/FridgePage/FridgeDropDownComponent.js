@@ -65,7 +65,7 @@ export default function FridgeDropDownComponent(props) {
             className={`${bgColor} list-element-title-unfold`}
             onClick={() => handleClick()}
           >
-            <div className="title-name">{props.fridge.title}</div>
+            <div className="title-name">{props.fridge.name}</div>
             <div>{props.fridge.status.message}</div>
             <div className="el-fold">
               <img width="100%" src={unfold} alt="" />

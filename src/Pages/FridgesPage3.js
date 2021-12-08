@@ -2,12 +2,14 @@
 import React, { Component, useState, useEffect, createContext } from "react";
 import Page from "Components/Page";
 import FridgeDropDownComponent from "Components/PresetFridgePage/FridgeDropDownComponent";
+import FridgeLogsCard from "Components/FridgePage/FridgeLogsCard";
+import FridgeGestionCard from "Components/FridgePage/FridgeGestionCard";
 import { useSelector, useDispatch } from "react-redux";
 import api from "helpers/api";
 import FridgeDropDownContext from "Context/FridgeDropDownContext";
 import mappers from "helpers/mappers";
-import FridgeProduitsCard from "Components/PresetFridgePage/FridgeProductsCard";
-import FridgeMenusCard from "Components/PresetFridgePage/FridgeMenusCard";
+import FridgeProductsCardOnlyReadable from "Components/PresetFridgePage/FridgeProductsCardOnlyReadable";
+import FridgeMenusCardOnlyReadable from "Components/PresetFridgePage/FridgeMenusCardOnlyReadable";
 
 export default function FridgesPage() {
   function handleNothing() {}
@@ -76,8 +78,12 @@ export default function FridgesPage() {
           {fridges.map((fridge) => {
             return (
               <FridgeDropDownComponent fridge={fridge}>
-                <FridgeProduitsCard name="Produits" />
-                <FridgeMenusCard name="Menus" />
+                <FridgeProductsCardOnlyReadable name="Produits" />
+                <FridgeMenusCardOnlyReadable name="Menus" />
+                <div class="w-100"></div>
+                <FridgeLogsCard name="Logs" idFridge={fridge.id} />
+                <FridgeGestionCard name="Gestion VMC" />
+                <div class="w-100"></div>
               </FridgeDropDownComponent>
             );
           })}

@@ -1,6 +1,6 @@
 // component utilisé dans le déroulant d'un fridge pour gérer les menus
 
-import React, { Component, useState, useEffect } from "react";
+import React, { Component, useState, useEffect, useContext } from "react";
 import Page from "Components/Page";
 import {
   Accordion,
@@ -14,18 +14,23 @@ import {
 import api from "helpers/api";
 import ArrayController from "helpers/ArrayController";
 import mappers from "helpers/mappers";
+import FridgeAddModal from "./FridgeAddModal";
+import FridgeDropDownContext from "Context/FridgeDropDownContext";
+import FridgeInfoContext from "Context/FridgeInfoContext";
 
 // const menus = [
 //   { id: 0, name: "Midi Lunch"},
 //   { id: 1, name: "Soir Lunch"},
 // ];
 
-import FridgeMenuCard from "Components/FridgePage/FridgeMenuCard";
-import FridgeMenuTableLine from "Components/FridgePage/FridgeMenuTableLine";
+import FridgeMenuCard from "Components/PresetFridgePage/FridgeMenuCard";
+import FridgeMenuTableLine from "Components/PresetFridgePage/FridgeMenuTableLine";
 
-export default function FridgeMenusCard(props) {
+export default function FridgeMenusCard({ name }) {
   // menus ajoutés dans le frigo
   const menus = new ArrayController(useState([]), useState([]));
+  const { getAllMenus } = useContext(FridgeDropDownContext);
+  const fridge = useContext(FridgeInfoContext);
 
   useEffect(() => {
     getMenusInFridge();
@@ -34,7 +39,7 @@ export default function FridgeMenusCard(props) {
   // appels api
   async function getMenusInFridge() {
     try {
-      const res = await api.getMenusInFridge({ id: props.fridge.id });
+      const res = await api.getMenusInFridge({ id: fridge.id });
       if (res.ok) {
         const resJSON = await res.json();
         console.log("api.getMenusInFridge() : ", resJSON);
@@ -49,7 +54,7 @@ export default function FridgeMenusCard(props) {
   async function addMenusInFridge() {
     try {
       const res = await api.addMenusInFridge({
-        id: props.fridge.id,
+        id: fridge.id,
         body: menus.value,
       });
       if (res.ok) {
@@ -88,7 +93,7 @@ export default function FridgeMenusCard(props) {
     <>
       <div className="col m-1" style={{ "min-width": "400px" }}>
         <div class="card text-center h-100">
-          <div class="card-header">{props.name}</div>
+          <div class="card-header">{name}</div>
           <div class="card-body">
             <p class="card-text">
               <table class="table table-striped">
@@ -145,39 +150,21 @@ export default function FridgeMenusCard(props) {
       </div>
 
       {/* Modal pour checker les produits a ajouter */}
-      <Modal
-        show={show}
-        onHide={handleClose}
-        dialogClassName="mymodal"
-        aria-labelledby="contained-modal-title-vcenter"
-      >
-        <Modal.Header closeButton>
-          <Modal.Title id="contained-modal-title-vcenter">
-            Add menus
-          </Modal.Title>
-        </Modal.Header>
-        <Modal.Body className="show-grid">
-          {/* <div className=""></div> */}
-          <Page>
-            <div className="row">
-              {props.allMenus.map((menu) => {
-                return (
-                  <FridgeMenuCard
-                    key={menu.id}
-                    menu={menu}
-                    parentProps={parentProps}
-                  />
-                );
-              })}
-            </div>
-          </Page>
-        </Modal.Body>
-        <Modal.Footer>
-          <Button variant="primary" onClick={handleClose}>
-            OK
-          </Button>
-        </Modal.Footer>
-      </Modal>
+      <FridgeAddModal show={show} onHide={handleClose} title="Add menus">
+        <Page>
+          <div className="row">
+            {getAllMenus.map((menu) => {
+              return (
+                <FridgeMenuCard
+                  key={menu.id}
+                  menu={menu}
+                  parentProps={parentProps}
+                />
+              );
+            })}
+          </div>
+        </Page>
+      </FridgeAddModal>
     </>
   );
 }

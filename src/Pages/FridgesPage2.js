@@ -1,5 +1,5 @@
 // import "CSS/colors.css";
-import React, { Component, useState, useEffect } from "react";
+import React, { Component, useState, useEffect, createContext } from "react";
 import Page from "Components/Page";
 import { Accordion, Row, Table, Card } from "react-bootstrap";
 import FridgeProduitCard from "Components/FridgePage/FridgeProductsCard";
@@ -10,6 +10,8 @@ import { useSelector, useDispatch } from "react-redux";
 import api from "helpers/api";
 
 import mappers from "helpers/mappers";
+import FridgeProduitsCard from "Components/FridgePage/FridgeProductsCard";
+import FridgeMenusCard from "Components/FridgePage/FridgeMenusCard";
 
 export default function FridgesPage() {
   function handleNothing() {}
@@ -61,12 +63,6 @@ export default function FridgesPage() {
       console.log(error);
     }
   }
-
-  const status = [
-    { id: 1, message: "En production", inProduction: true },
-    { id: 2, message: "Hors service", horsService: true },
-    { id: 3, message: "Livraison en cours", livraison: true },
-  ];
 
   const [fridges, setFridges] = useState([]);
   const [allProducts, setAllProducts] = useState([]);

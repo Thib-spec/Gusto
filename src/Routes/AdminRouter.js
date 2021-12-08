@@ -18,6 +18,7 @@ import HomePage from "Pages/HomePage";
 import LoginPage from "Pages/LoginPage";
 import ProductsPage from "Pages/ProductPage";
 import FridgesPage2 from "Pages/FridgesPage2";
+import FridgesPage3 from "Pages/FridgesPage3";
 import NotFoundPage from "Pages/NotFoundPage";
 import TestData from "Components/TestData";
 import Header from "Components/Header";
@@ -98,7 +99,7 @@ function AdminRouter({ history }) {
             />
             <Route
               path="/fridges"
-              component={withTranslation()(FridgesPage2)}
+              component={withTranslation()(FridgesPage3)}
             />
             <Route path="/testHistory1" component={Test1} />
             <Route path="/testHistory2" component={Test2} />

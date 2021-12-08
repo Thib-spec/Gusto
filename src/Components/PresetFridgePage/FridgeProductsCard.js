@@ -1,10 +1,13 @@
 // component utilisé dans le déroulant d'un fridge pour gérer les produits
 
-import React, { Component, useState, useEffect } from "react";
+import React, { Component, useState, useEffect, useContext } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import api from "helpers/api";
 import ArrayController from "helpers/ArrayController";
 import mappers from "helpers/mappers";
+import FridgeAddModal from "./FridgeAddModal";
+import FridgeInfoContext from "Context/FridgeInfoContext";
+import FridgeDropDownContext from "Context/FridgeDropDownContext";
 
 import Page from "Components/Page";
 import {
@@ -17,25 +20,23 @@ import {
   Modal,
 } from "react-bootstrap";
 
-import FridgeProductCard from "Components/FridgePage/FridgeProductCard";
-import FridgeProductTableLine from "Components/FridgePage/FridgeProductTableLine";
+import FridgeProductCard from "Components/PresetFridgePage/FridgeProductCard";
+import FridgeProductTableLine from "Components/PresetFridgePage/FridgeProductTableLine";
 
-export default function FridgeProductsCard(props) {
+export default function FridgeProductsCard({ name }) {
   // produits ajoutés dans le frigo
   const products = new ArrayController(useState([]), useState([]));
+  const { getAllProducts } = useContext(FridgeDropDownContext);
+  const fridge = useContext(FridgeInfoContext);
 
   useEffect(() => {
     getProductsInFridge();
   }, []);
 
-  // useEffect(() => {
-  //   console.log("products : ", products);
-  // }, [products.value]);
-
   // appels api
   async function getProductsInFridge() {
     try {
-      const res = await api.getProductsInFridge({ id: props.fridge.id });
+      const res = await api.getProductsInFridge({ id: fridge.id });
       if (res.ok) {
         const resJSON = await res.json();
         console.log("api.getProductsInFridge() : ", resJSON);
@@ -52,7 +53,7 @@ export default function FridgeProductsCard(props) {
   async function addProductsInFridge() {
     try {
       const res = await api.addProductsInFridge({
-        id: props.fridge.id,
+        id: fridge.id,
         body: products.value,
       });
       if (res.ok) {
@@ -68,9 +69,8 @@ export default function FridgeProductsCard(props) {
 
   // modal addProducts Button
   const [show, setShow] = useState(false);
-  const handleShow = () => setShow(true);
+  const handleAddProducts = () => setShow(true);
   const handleClose = () => setShow(false);
-  const handleAddProducts = handleShow;
 
   // Save & Cancel
   const handleSaveButton = () => {
@@ -91,7 +91,7 @@ export default function FridgeProductsCard(props) {
     <>
       <div className="col m-1" style={{ "min-width": "400px" }}>
         <div class="card text-center h-100">
-          <div class="card-header">{props.name}</div>
+          <div class="card-header">{name}</div>
           <div class="card-body">
             <p class="card-text">
               <table class="table table-striped">
@@ -159,39 +159,21 @@ export default function FridgeProductsCard(props) {
       </div>
 
       {/* Modal pour checker les produits a ajouter */}
-      <Modal
-        show={show}
-        onHide={handleClose}
-        dialogClassName="mymodal"
-        aria-labelledby="contained-modal-title-vcenter"
-      >
-        <Modal.Header closeButton>
-          <Modal.Title id="contained-modal-title-vcenter">
-            Add products
-          </Modal.Title>
-        </Modal.Header>
-        <Modal.Body className="show-grid">
-          {/* <div className=""></div> */}
-          <Page>
-            <div className="row">
-              {props.allProducts.map((product) => {
-                return (
-                  <FridgeProductCard
-                    key={product.id}
-                    product={product}
-                    parentProps={parentProps}
-                  />
-                );
-              })}
-            </div>
-          </Page>
-        </Modal.Body>
-        <Modal.Footer>
-          <Button variant="primary" onClick={handleClose}>
-            OK
-          </Button>
-        </Modal.Footer>
-      </Modal>
+      <FridgeAddModal show={show} onHide={handleClose} title="Add products">
+        <Page>
+          <div className="row">
+            {getAllProducts.map((product) => {
+              return (
+                <FridgeProductCard
+                  key={product.id}
+                  product={product}
+                  parentProps={parentProps}
+                />
+              );
+            })}
+          </div>
+        </Page>
+      </FridgeAddModal>
     </>
   );
 }

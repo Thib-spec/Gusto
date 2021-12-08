@@ -1,43 +1,42 @@
+import Value from "helpers/Value";
+
 const copyy = (obj) => {
   return JSON.parse(JSON.stringify(obj));
 };
 
-function Element(id, ArrayController){
-  this.value = ArrayController.findElById(id)
-  this.ArrayController = ArrayController
+function Element(el, ArrayController) {
+  this._value = el;
+  this.value = ArrayController.findElById(el.id);
+  this.isInArray = this.value ? true : false;
+  this.ArrayController = ArrayController;
 }
 
-Element.prototype.update = function(body){
-  this.ArrayController.addOrUpdateMany([{...this.value, ...body}])
+Element.prototype.update = function (body) {
+  this.ArrayController.addOrUpdateMany([{ ...this.value, ...body }]);
+};
+
+Element.prototype.set = function (body) {
+  this.value = body;
+};
+
+Element.prototype.remove = function () {
+  this.ArrayController.removeMany([this.value]);
+};
+
+export default function ArrayController(valueUseState, initValueUseState) {
+  this._value = new Value(valueUseState);
+  this.initValue = new Value(initValueUseState);
+  this.value = this._value.value;
 }
-
-Element.prototype.remove = function(){
-  this.ArrayController.removeMany([this.value])
-}
-
-export default function ArrayController([value, setValue],[initValue, setInitValue]) {
-  this.value = value;
-  this.setValue = setValue;
-
-  // this.initValue = copyy(value);
-  this.initValue = initValue;
-  this.setInitValue = setInitValue;
-}
-
-// ArrayController.prototype.set = function (JSONArray, options) {
-//   // const JSONArrayCopy = copyy(JSONArray);
-//   if (options && options.init === true) this.initValue = copyy(JSONArray);
-//   this.setValue(copyy(JSONArray));
-// };
 
 ArrayController.prototype.set = function (JSONArray, options) {
   // const JSONArrayCopy = copyy(JSONArray);
-  if (options && options.init === true) this.setInitValue(copyy(JSONArray))
-  this.setValue(copyy(JSONArray));
+  if (options && options.init === true) this.initValue.set(copyy(JSONArray));
+  this._value.set(copyy(JSONArray));
 };
 
-ArrayController.prototype.get = function (id) {
-  return new Element(id, this)
+ArrayController.prototype.get = function (el) {
+  return new Element(el, this);
 };
 
 ArrayController.prototype.clear = function () {
@@ -45,7 +44,7 @@ ArrayController.prototype.clear = function () {
 };
 
 ArrayController.prototype.reset = function () {
-  this.set(copyy(this.initValue));
+  this.set(copyy(this.initValue.value));
 };
 
 ArrayController.prototype.findIndexById = function (id) {
