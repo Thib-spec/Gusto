@@ -5,6 +5,8 @@ const passport = require("passport")
 
 fridgePreset.get('/',fridgePresetController.listFridgePreset)
 fridgePreset.get('/:id',fridgePresetController.getFridegPresetById)
+
+fridgePreset.get("/:id/product",fridgePresetController.getProductinPreset)
 fridgePreset.post('/',fridgePresetController.addFridgePreset)
 fridgePreset.put('/:id',fridgePresetController.editFridgePreset)
 fridgePreset.delete('/:id',fridgePresetController.deleteFridgePreset)
