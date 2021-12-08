@@ -28,6 +28,7 @@ import api from "helpers/api";
 import userActions from "store/actions/userActions";
 import Footer from "Components/Footer";
 import PresetPage from "Pages/PresetPage";
+import PresetPage2 from "Pages/PresetPage2";
 import useIsMounted from "helpers/useInMount";
 import { withTranslation } from "react-i18next";
 
@@ -40,6 +41,10 @@ function AdminRouter({ history }) {
   // localStorage.removeItem("authToken");
   const authToken = localStorage.getItem("authToken");
   const desac_login = true;
+
+  useEffect(() => {
+    console.log("user : ", user);
+  }, [user]);
 
   useEffect(() => {
     console.log("AdminRouter is mount");
@@ -104,7 +109,7 @@ function AdminRouter({ history }) {
             <Route path="/testHistory1" component={Test1} />
             <Route path="/testHistory2" component={Test2} />
             <Route path="/testData" component={TestData} />
-            <Route path="/preset" component={withTranslation()(PresetPage)} />
+            <Route path="/preset" component={withTranslation()(PresetPage2)} />
             <Route path="/login">
               <Redirect
                 from={`${location.pathname}`}

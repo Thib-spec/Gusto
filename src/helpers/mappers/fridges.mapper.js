@@ -15,6 +15,6 @@ export default (el) => {
       ? StatusMapper(el.Status)
       : status.find((s) => s.id == el.fk_id_status),
     id_technologie: el.fk_id_technologies,
-    ...el,
+    // ...el,
   };
 };

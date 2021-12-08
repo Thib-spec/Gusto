@@ -11,7 +11,7 @@ const API = function ({ url, host, fake, ssl, port, authToken }) {
   this.requester = requester(this);
 };
 
-// ---------- auth ---------- //
+// ---------- user ---------- //
 
 API.prototype.login = function ({ body } = {}) {
   return this.requester({
@@ -27,7 +27,7 @@ API.prototype.logout = function ({} = {}) {
 };
 
 API.prototype.getInfo = function ({} = {}) {
-  const res = this.requester({ method: "GET", path: `/api/me` });
+  const res = this.requester({ method: "GET", path: `/api/user/userInfo` });
   return res;
 };
 
@@ -70,6 +70,8 @@ API.prototype.addMenusInFridge = function ({ id, body } = {}) {
   });
 };
 
+// ---------- product ---------- //
+
 API.prototype.getAllProducts = function ({} = {}) {
   return this.requester({
     method: "GET",
@@ -77,10 +79,104 @@ API.prototype.getAllProducts = function ({} = {}) {
   });
 };
 
+// ---------- menu ---------- //
+
 API.prototype.getAllMenus = function ({} = {}) {
   return this.requester({
     method: "GET",
     path: `/api/menu`,
+  });
+};
+
+// ---------- preset ---------- //
+
+API.prototype.getPresets = function ({} = {}) {
+  return this.requester({
+    method: "GET",
+    path: "/api/fridgePreset",
+  });
+};
+
+API.prototype.createPresets = function ({ body } = {}) {
+  return this.requester({
+    method: "POST",
+    path: `/api/fridgePreset`,
+    body,
+  });
+};
+
+API.prototype.deletePresets = function ({ id, body } = {}) {
+  return this.requester({
+    method: "DELETE",
+    path: `/api/fridgePreset/${id}`,
+    body,
+  });
+};
+
+API.prototype.updatePresets = function ({ id, body } = {}) {
+  return this.requester({
+    method: "PUT",
+    path: `/api/fridgePreset/${id}`,
+    body,
+  });
+};
+
+// ---------- product in preset ---------- //
+
+API.prototype.getProductsInPreset = function ({ id } = {}) {
+  return this.requester({
+    method: "GET",
+    path: `/api/fridgePreset/${id}/product`,
+  });
+};
+
+API.prototype.addProductsInPreset = function ({ id, body } = {}) {
+  return this.requester({
+    method: "POST",
+    path: `/api/fridgePreset/${id}/addProduct`,
+    body,
+  });
+};
+
+API.prototype.removeProductInPreset = function ({ id, idProduct, body } = {}) {
+  return this.requester({
+    method: "DELETE",
+    path: `/api/fridgePreset/${id}/removeProduct/${idProduct}`,
+    body,
+  });
+};
+
+API.prototype.updateProductInPreset = function ({ id, idProduct, body } = {}) {
+  return this.requester({
+    method: "PUT",
+    path: `/api/fridgePreset/${id}/editProduct/${idProduct}`,
+    body,
+  });
+};
+
+// ---------- menu in preset ---------- //
+
+API.prototype.addMenuInPreset = function ({ id, body } = {}) {
+  return this.requester({
+    method: "POST",
+    path: `/api/fridgePreset/${id}/addMenu`,
+    body,
+  });
+};
+
+API.prototype.removeMenuInPreset = function ({ id, idMenu, body } = {}) {
+  return this.requester({
+    method: "DELETE",
+    path: `/api/fridgePreset/${id}/removeMenu/${idMenu}`,
+    body,
+  });
+};
+
+API.prototype.updateMenuInPreset = function ({ id, idMenu, body } = {}) {
+  return this.requester({
+    method: "PUT",
+    path: `/api/fridgePreset/${id}/editMenu/${idMenu}`,
+    body,
   });
 };
 

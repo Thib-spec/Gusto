@@ -5,6 +5,6 @@ export default (el) => {
     quantity: el.fridges_products.quantity,
     max: el.FridgePresets[0].fridgePresets_products.quantity_max,
     min: el.FridgePresets[0].fridgePresets_products.quantity_min,
-    ...el,
+    // ...el,
   };
 };

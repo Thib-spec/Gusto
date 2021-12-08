@@ -3,6 +3,6 @@ export default (el) => {
     id: el.id_product,
     name: el.label,
     image: el.image,
-    ...el,
+    // ...el,
   };
 };
