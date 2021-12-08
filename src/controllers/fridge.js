@@ -444,38 +444,76 @@ exports.EditProductQuantity = (req,res) => {
 }
 
 
-// A FAire
+// A FAire vérif que la fk soit dans l'intervalle des id plus vérifierque le frigo contine tle porduit 
 
 exports.RemoveProductQuantity = (req,res) => {
+    const list_fk_product = new Array()
 
-    Model.Fridges.findOne({
-        where:{
-            id_fridge:req.params.id
-        }
-    })
-
-    .then((fridge) => {
-        if (!fridge) {
-            return res.status(400).json({
-                message: 'Fridge does not exist',
-            });
-        }
-
-        else {
-            Model.fridges_products.destroy({
+    Model.Products.findAll()
+    .then(allProducts =>{
+        Model.Products.count()
+        .then(numberOfProduct => {
+            for(let i = 0;i<numberOfProduct;i++){
+                list_fk_product.push(allProducts[i].id_product)
+            }
+            
+            Model.Fridges.findOne({
                 where:{
-                    [Op.and]: [
-                        { fk_id_fridge:req.params.id },
-                        { fk_id_product: req.params.productId }
-                    ]
+                    id_fridge:req.params.id
                 }
             })
 
-            .then(res.status(200).json("Deletion completed"))
-            
-        }
+            .then((fridge) => {
+                if (!fridge) {
+                    return res.status(400).json({
+                        message: 'Fridge does not exist',
+                    });
+                }
+
+                else if (!list_fk_product.includes(Number(req.params.productId))){
+                    res.status(400).json({
+                        message:"fk_id_product does not match any id_product"
+                    })
+
+                }
+
+                else {
+
+                    Model.fridges_products.findOne({
+                        where:{
+                            [Op.and]: [
+                                { fk_id_fridge:req.params.id },
+                                { fk_id_product: req.params.productId }
+                            ]
+                        }
+                    })
+                    .then(result =>{
+                        if(!result){
+                            res.status(400).json({
+                                message:`Fridge ${req.params.id} does not contain product ${req.params.productId}`
+                            })
+                        }
+                        else {
+                            Model.fridges_products.destroy({
+                                where:{
+                                    [Op.and]: [
+                                        { fk_id_fridge:req.params.id },
+                                        { fk_id_product: req.params.productId }
+                                    ]
+                                }
+                            })
+
+                            .then(res.status(200).json({
+                                message: "Deletion completed"})
+                            )
+                            .catch(error =>res.status(400).json(error))
+
+                        }
+                    })
+                }
+            })
+        })    
     })
-    
 }
 
 
@@ -502,7 +540,6 @@ exports.getFridgeById = (req,res) => {
   
 }
 
-/*********************** Ajouter le fait que la foreign key ne peut avoir comme valeur que les id présent dans la table source (level : 1:2:3 => user ne peut avoir en fk que 1, 2 et 3) */
 
 exports.addFridge = (req,res) =>{
     const { label, fk_id_technologies, fk_id_fridgePreset} = req.body
@@ -530,9 +567,7 @@ exports.addFridge = (req,res) =>{
     }
     else {
 
-        Model.Technologies.findAll({
-            attributes: ["id_technologies"]
-        })
+        Model.Technologies.findAll()
         .then(allTechs =>{
             Model.Technologies.count()
             .then(numberofTech =>{
@@ -540,9 +575,7 @@ exports.addFridge = (req,res) =>{
                     fk_tech_list.push(allTechs[i].id_technologies)
                 }
 
-                Model.FridgePresets.findAll({
-                    attributes: ["id_fridgePresets"]
-                })
+                Model.FridgePresets.findAll()
                 .then(allPreset =>{
                     Model.FridgePresets.count()
                     .then(numberofPreset =>{
@@ -550,35 +583,33 @@ exports.addFridge = (req,res) =>{
                             fk_fridgePresetList.push(allPreset[i].id_fridgePresets)
                         }
 
-                    })
+                        if(!fk_tech_list.includes(fk_id_technologies)){
+                            return res.status(400).json({
+                                message:"fk_id_technologies does not match any id_technologies"
+                            })
+                        }
 
-                    if(!fk_tech_list.includes(fk_id_technologies)){
-                        return res.status(400).json({
-                            message:"fk_id_technologies does not match any id_technologies"
-                        })
-                    }
+                        else if(!fk_fridgePresetList.includes(fk_id_fridgePreset)){
+                                res.status(400).json({
+                                    message:"fk_id_fridgePreset does not match any id_fridgePresets"
+                                })
+                        }
 
-                //    else if(!fk_fridgePresetList.includes(fk_id_fridgePreset)){
-                //         return res.status(400).json({
-                //             message:"fk_id_fridgePreset does not match any id_fridgePresets"
-                //         })
-                //     }
-
-                    else {
-                        Model.Fridges.create({
-                        label : label,
-                        fk_id_technologies:fk_id_technologies,
-                        fk_id_fridgePreset:fk_id_fridgePreset
-                    })
-
-                    .then(fridge => res.status(200).json(fridge))
+                        else {
+                            Model.Fridges.create({
+                            label : label,
+                            fk_id_technologies:fk_id_technologies,
+                            fk_id_fridgePreset:fk_id_fridgePreset
+                            })
+                            .then(fridge => res.status(200).json(fridge))
+                            .catch(error => res.status(400).json(error))
             
-            }
-        })             
+                        }
+                    })
+                })             
+            })
         })
-    })
         .catch(error => res.status(400).json(error))
-
     }
         
 }
@@ -615,7 +646,13 @@ exports.editFridge =(req,res) => {
           res.status(400).json({ 
             message: 'One or more fields are not well written', 
           }) 
-        } 
+        }
+        
+        else if(Object.keys(req.body).length == 0){
+            res.status(400).json({
+                message:"No parameters were passed"
+            })
+        }
         
         else { 
             Model.Fridges.update({
@@ -627,7 +664,11 @@ exports.editFridge =(req,res) => {
                     id_fridge: req.params.id
                 }
             })
-            .then(res.send("Modification apply"))
+            .then(res.status(200).json({
+                message:"Item has been updated"})
+            )
+            .catch(error => console.log(error))
+
         }
     })
     
@@ -654,7 +695,9 @@ exports.deleteFridge = (req,res) => {
                 where: {
                     id_fridge: req.params.id
                 }
-            }).then(res.send(`Fridge with id : ${req.params.id} has been deleted`))
+            }).then(res.status(200).json({
+                message:`Fridge with id : ${req.params.id} has been deleted`})
+            )
         }
 
     )
