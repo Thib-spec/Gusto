@@ -1,17 +1,12 @@
-import "../CSS/productPage.scss";
-import React, { useState } from "react";
-import fold from "../Images/fold.svg";
-import imgcategorie from "Images/imgcategorie.svg";
-import unfold from "../Images/unfold.svg";
+import "../CSS/productPage.scss"
+import React, {useState} from "react"
+import fold from "../Images/fold.svg"
+import imgcategorie from "Images/imgcategorie.svg"
+import unfold from "../Images/unfold.svg"
 import axios from "axios";
 import {Modal, Button} from 'react-bootstrap'
 import TextAreaComponent from "./FormComponent/TextAreaComponent"
 
-export default function ProductDropDownComponent(props) {
-  const [open, setOpen] = useState(false);
-  function handleOpen() {
-    setOpen(!open);
-  }
 
 
 export default function ProductDropDownComponent(props){
@@ -21,7 +16,6 @@ export default function ProductDropDownComponent(props){
     function handleOpen() {
         setOpen(!open);
     }
-  }
 
      //show the addProduct modal or not
      const [show, setShow] = useState(false);
@@ -163,23 +157,5 @@ export default function ProductDropDownComponent(props){
                 </Modal.Footer>
             </Modal>
         </div>
-      ) : (
-        <div
-          className="products-list-element-title-unfold"
-          onClick={() => handleOpen()}
-        >
-          <div className="product-title-name">{props.product.label}</div>
-          <div className="product-title-dlc">{props.product.ubd}</div>
-          <div className="product-title-prix">
-            <div className="product-title-prix-align">
-              {props.product.price}
-            </div>
-          </div>
-          <div className="products-fold">
-            <img width="100%" src={unfold} alt="" />
-          </div>
-        </div>
-      )}
-    </div>
-  );
+    )
 }

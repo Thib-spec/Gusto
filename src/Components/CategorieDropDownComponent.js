@@ -1,19 +1,16 @@
-import React, { useState } from "react";
-import "../CSS/categories.scss";
-import DATAProducts from "../Data/products";
-import dot from "Images/dots.png";
-import InputForm from "Components/FormComponent/InputForm";
-import imgcategorie from "Images/imgcategorie.svg";
-import fold from "../Images/fold.svg";
-import unfold from "../Images/unfold.svg";
+import React , {useState} from "react";
+import "../CSS/categories.scss"
+import DATAProducts from "../Data/products"
+import dot from "Images/dots.png"
+import InputForm from "Components/FormComponent/InputForm"
+import imgcategorie from "Images/imgcategorie.svg"
+import fold from "../Images/fold.svg"
+import unfold from "../Images/unfold.svg"
 import axios from "axios";
 import {Modal, Button} from 'react-bootstrap'
 import TextAreaComponent from "./FormComponent/TextAreaComponent";
 
-export default function CategorieDropDownComponent(props) {
-  //Update categorie
 
-  //hooks value of updated categories
 
 export default function CategorieDropDownComponent(props){
     const[edition,setEdition]=useState(false)
@@ -58,9 +55,7 @@ export default function CategorieDropDownComponent(props){
             console.log(e)
         }
     }
-  }
 
-  //Delete categorie
 
 
     //Delete categorie
@@ -81,13 +76,7 @@ export default function CategorieDropDownComponent(props){
             console.log(e)
         }
     }
-  }
 
-  //open and close the dropdown on click
-  const [open, setOpen] = useState(false);
-  function handleOpen() {
-    setOpen(!open);
-  }
 
 
     
@@ -163,17 +152,5 @@ export default function CategorieDropDownComponent(props){
                 </Modal.Footer>
             </Modal>
         </div>
-      ) : (
-        <div
-          className="categories-list-element-title-unfold"
-          onClick={() => handleOpen()}
-        >
-          <div>{props.categorie.label}</div>
-          <div className="categories-dot">
-            <img width="100%" src={unfold} alt="" />
-          </div>
-        </div>
-      )}
-    </div>
-  );
+    )
 }

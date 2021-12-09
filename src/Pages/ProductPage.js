@@ -1,72 +1,75 @@
-import "CSS/productPage.scss";
-import UploadForm from "Components/FormComponent/UploadForm";
-import React, { Component, useState, useEffect } from "react";
-import DATAProducts from "Data/products";
-import fold from "../Images/fold.svg";
-import foldBlack from "../Images/foldBlack.svg";
-import imgcategorie from "Images/imgcategorie.svg";
-import unfold from "../Images/unfold.svg";
-import { Modal, Button } from "react-bootstrap";
-import DATACatégories from "Data/categories";
-import ProductDropDownComponent from "Components/ProductDropDownComponent";
+import "CSS/productPage.scss"
+import UploadForm from "Components/FormComponent/UploadForm"
+import React, { Component, useState, useEffect }  from 'react'
+import DATAProducts from "Data/products"
+import fold from "../Images/fold.svg"
+import foldBlack from "../Images/foldBlack.svg"
+import imgcategorie from "Images/imgcategorie.svg"
+import unfold from "../Images/unfold.svg"
+import {Modal, Button} from 'react-bootstrap'
+import DATACatégories from "Data/categories"
+import ProductDropDownComponent from "Components/ProductDropDownComponent"
 import axios from "axios";
-import CategorieinProductDropDown from "Components/CategorieinProductDropDown";
+import CategorieinProductDropDown from "Components/CategorieinProductDropDown"
 
-export default function ProductsPage() {
-  const [allCategories, setallCategories] = useState([]);
-  useEffect(() => {
-    axios
-      .get("http://api.gustosolutions.fr/api/category")
-      .then((res) => {
-        setallCategories(res.data);
-      })
-      .catch((err) => console.log(err));
-  }, []);
+export default function ProductsPage(){
 
-  //show the addProduct modal or not
-  const [show, setShow] = useState(false);
-  const handleClose = () => setShow(false);
-  const handleShow = () => setShow(true);
+    const [allCategories, setallCategories] = useState([]);
+    useEffect(() => {
+        axios.get("http://api.gustosolutions.fr/api/category")
+            .then((res) =>{setallCategories(res.data)
+            })
+            .catch((err) => console.log(err));
+    }, [])
 
-  //hooks value of added products
-
-  //when the client add a product and save it, 
-  function handleSave(){
-    try{
-        let a=document.getElementById('prix').value
-        let b=document.getElementById('label').value
-        let c=document.getElementById("categorie").value
-        let d=document.getElementById("ubd").value
-        let e=document.getElementById("description").value
-        c=Number(c)
-        a=Number(a)
-        
-        axios.post("http://api.gustosolutions.fr/api/product",{
-            "label":b,
-            "image": "imageurl",
-            "description" : e,
-            "price":a*100,
-            "ubd":d,
-            "fk_id_category":c
-        })
-        .then((res) => {
-            console.log(res);
-            window.location.reload(false);
-        })
-        .catch((err) => {
-          console.log(err);
-        });
-    }
-    catch(e){
-        console.log(err);
-        }
-    }
     
-     
-     
 
-  
 
+
+     //show the addProduct modal or not
+     const [show, setShow] = useState(false);
+     const handleClose = () => setShow(false);
+     const handleShow = () => setShow(true);
+ 
+     //hooks value of added products
+     
+     //when the client add a product and save it, 
+     function handleSave(){
+        try{
+            let a=document.getElementById('prix').value
+            let b=document.getElementById('label').value
+            let c=document.getElementById("categorie").value
+            let d=document.getElementById("ubd").value
+            let e=document.getElementById("description").value
+            c=Number(c)
+            a=Number(a)
+            
+            axios.post("http://api.gustosolutions.fr/api/product",{
+                "label":b,
+                "image": "imageurl",
+                "description" : e,
+                "price":a*100,
+                "ubd":d,
+                "fk_id_category":c
+            })
+            .then((res) => {
+                console.log(res);
+                window.location.reload(false);
+
+            })
+            .catch((err) => {
+                console.log(err);
+            });
+
+            handleClose()
+        }
+        catch(e){
+            console.log(e)
+        }
+     }
+
+    
+    
 
     return(
         <div className="products-container">
