@@ -32,7 +32,7 @@ export default function ProductsPage() {
 
   //when the client add a product and save it,
   function handleSave() {
-    try {
+    
       let a = document.getElementById("prix").value;
       let b = document.getElementById("label").value;
       let c = document.getElementById("categorie").value;
@@ -58,40 +58,9 @@ export default function ProductsPage() {
         .catch((err) => {
           console.log(err);
         });
-
-     //show the addProduct modal or not
-     const [show, setShow] = useState(false);
-     const handleClose = () => setShow(false);
-     const handleShow = () => setShow(true);
- 
-     //hooks value of added products
+    
      
-     //when the client add a product and save it, 
-     function handleSave(){
-        try{
-            let a=document.getElementById('prix').value
-            let b=document.getElementById('label').value
-            let c=document.getElementById("categorie").value
-            c=Number(c)
-            a=Number(a)
-            
-            axios.post("http://api.gustosolutions.fr/api/product",{
-                "label":b,
-                "image": "imageurl",
-                "description" : "default description",
-                "price":a,
-                
-                "ubd":"5 jours",
-                "fk_id_category":c
-            })
-            .then((res) => {
-                console.log(res);
-                window.location.reload(false);
-      handleClose();
-    } catch (e) {
-      console.log(e);
     }
-  }
 
   return (
     <div className="products-container">
