@@ -31,7 +31,7 @@ import Footer from "Components/Footer";
 import PresetPage from "Pages/_PresetPage";
 import PresetPage2 from "Pages/PresetPage2";
 import useIsMounted from "helpers/useInMount";
-import { withTranslation } from "react-i18next";
+import { withTranslation, useTranslation } from "react-i18next";
 
 function AdminRouter({ history }) {
   const user = useSelector((state) => state.user.value);
@@ -41,11 +41,20 @@ function AdminRouter({ history }) {
 
   // localStorage.removeItem("authToken");
   const authToken = localStorage.getItem("authToken");
-  const desac_login = true;
+  const desac_login = false;
+  const { t, i18n } = useTranslation();
 
   useEffect(() => {
     console.log("user : ", user);
   }, [user]);
+
+  useEffect(() => {
+    i18n.changeLanguage(user.language ? user.language : "en");
+  }, [user.language]);
+
+  const changeLanguage = (event) => {
+    i18n.changeLanguage(event.target.value);
+  };
 
   useEffect(() => {
     console.log("AdminRouter is mount");
@@ -53,7 +62,7 @@ function AdminRouter({ history }) {
       getUserInfoAndDispatch().then(() => {
         setIsLoaded(false);
       });
-    }
+    } else setIsLoaded(false);
     return () => {
       console.log("AdminRouter is unmount");
     };

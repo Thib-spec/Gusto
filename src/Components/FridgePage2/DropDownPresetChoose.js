@@ -4,44 +4,32 @@ import mappers from "helpers/mappers";
 import api from "helpers/api";
 
 import InfoContext from "Context/FridgeInfoContext";
+import DropDownContext from "Context/FridgeDropDownComponentContext";
 import Value from "helpers/Value";
 
 export default function DropDownPresetChoose({ label }) {
-  const [allPresets, setAllPresets] = useState([]);
   const fridge = useContext(InfoContext);
-  console.log("fridge : ", fridge);
-  const presetChosen = new Value(useState({}));
+  const { allPresets, presetChosen } = useContext(DropDownContext);
+
   const dropdownTitleChange = new Value(useState(false));
+  const handleSave = () => {};
+  const handleCancel = () => {};
 
   useEffect(() => {
-    getAllPresets();
-  }, []);
+    const presetFound = allPresets.find(
+      (preset) => preset.id == fridge.id_preset
+    );
+    presetChosen.set(presetFound ? { ...presetFound } : presetChosen.value);
+  }, [allPresets]);
 
   useEffect(() => {
-    if (presetChosen.value.id == fridge.id_preset)
+    if (
+      presetChosen.value.id == fridge.id_preset ||
+      presetChosen.value.id == -1
+    )
       dropdownTitleChange.set(false);
     else dropdownTitleChange.set(true);
   }, [presetChosen.value]);
-
-  async function getAllPresets() {
-    try {
-      const res = await api.getAllPresets();
-      if (res.ok) {
-        const resJSON = await res.json();
-        const resJSONMapped = resJSON.map(mappers.presetsMapper);
-        console.log("api.getAllPresets() : ", resJSON);
-        setAllPresets(resJSONMapped);
-        presetChosen.set(
-          resJSONMapped.find((preset) => preset.id == fridge.id_preset)
-            ? resJSONMapped.find((preset) => preset.id == fridge.id_preset)
-            : "Choose a Preset"
-        );
-      } else {
-      }
-    } catch (error) {
-      console.log(error);
-    }
-  }
 
   return (
     <>
@@ -67,7 +55,27 @@ export default function DropDownPresetChoose({ label }) {
         <Dropdown.Item href="#/action-3">Something else</Dropdown.Item> */}
         </Dropdown.Menu>
       </Dropdown>
-      {dropdownTitleChange.value ? <div>wsh</div> : <></>}
+      {/* {console.log(loaded.value && dropdownTitleChange.value)} */}
+      {dropdownTitleChange.value ? (
+        <div>
+          <button
+            onClick={handleSave}
+            type="submit"
+            className={`btn btn-success m-1`}
+          >
+            Save
+          </button>
+          <button
+            onClick={handleCancel}
+            type="submit"
+            className={`btn btn-dark blue m-1`}
+          >
+            Cancel
+          </button>
+        </div>
+      ) : (
+        <></>
+      )}
     </>
   );
 }

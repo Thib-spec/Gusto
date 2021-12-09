@@ -26,7 +26,7 @@ import MenuTableLine from "./MenuTableLine";
 export default function FridgeMenusCard({ name }) {
   // menus ajoutés dans le frigo
   const menus = new ArrayController(useState([]), useState([]));
-  const { getAllMenus } = useContext(DropDownContext);
+  const { allMenus } = useContext(DropDownContext);
   const preset = useContext(InfoContext);
 
   useEffect(() => {
@@ -152,7 +152,7 @@ export default function FridgeMenusCard({ name }) {
       <AddModal show={show} onHide={handleClose} title="Add menus">
         <Page>
           <div className="row">
-            {getAllMenus.map((menu) => {
+            {allMenus.map((menu) => {
               return (
                 <MenuCard key={menu.id} menu={menu} parentProps={parentProps} />
               );

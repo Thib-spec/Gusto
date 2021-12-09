@@ -13,5 +13,9 @@ module.exports = (request, reply, next) => {
       ...path[2],
       fridgePresets_products: { quantity_min: 300, quantity_max: 900 },
     },
+    {
+      ...path[3],
+      fridgePresets_products: { quantity_min: 300, quantity_max: 900 },
+    },
   ];
 };

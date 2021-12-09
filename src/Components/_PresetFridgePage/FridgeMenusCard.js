@@ -29,7 +29,7 @@ import FridgeMenuTableLine from "Components/_PresetFridgePage/FridgeMenuTableLin
 export default function FridgeMenusCard({ name }) {
   // menus ajoutés dans le frigo
   const menus = new ArrayController(useState([]), useState([]));
-  const { getAllMenus } = useContext(FridgeDropDownContext);
+  const { allMenus } = useContext(FridgeDropDownContext);
   const fridge = useContext(FridgeInfoContext);
 
   useEffect(() => {
@@ -153,7 +153,7 @@ export default function FridgeMenusCard({ name }) {
       <FridgeAddModal show={show} onHide={handleClose} title="Add menus">
         <Page>
           <div className="row">
-            {getAllMenus.map((menu) => {
+            {allMenus.map((menu) => {
               return (
                 <FridgeMenuCard
                   key={menu.id}

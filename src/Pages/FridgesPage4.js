@@ -13,22 +13,39 @@ import LogsCard from "Components/FridgePage2/LogsCard";
 import GestionCard from "Components/FridgePage2/GestionCard";
 import DropDownPresetChoose from "Components/FridgePage2/DropDownPresetChoose";
 
+import Value from "helpers/Value";
+
 export default function FridgesPage() {
   function handleNothing() {}
 
   useEffect(() => {
-    getFridges();
+    getAllFridges();
+    getAllPresets();
     getAllProducts();
     getAllMenus();
   }, []);
 
-  async function getFridges() {
+  async function getAllFridges() {
     try {
-      const res = await api.getFridges();
+      const res = await api.getAllFridges();
       if (res.ok) {
         const resJSON = await res.json();
-        console.log("api.getFridges() : ", resJSON);
+        console.log("api.getAllFridges() : ", resJSON);
         setFridges(resJSON.map(mappers.fridgesMapper));
+      } else {
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  async function getAllPresets() {
+    try {
+      const res = await api.getAllPresets();
+      if (res.ok) {
+        const resJSON = await res.json();
+        console.log("api.getAllPresets() : ", resJSON);
+        setAllPresets(resJSON.map(mappers.presetsMapper));
       } else {
       }
     } catch (error) {
@@ -67,13 +84,17 @@ export default function FridgesPage() {
   const [fridge, setFridges] = useState([]);
   const [allProducts, setAllProducts] = useState([]);
   const [allMenus, setAllMenus] = useState([]);
+  const [allPresets, setAllPresets] = useState([]);
+  const presetChosen = new Value(useState({ id: -1, name: "Choose a Preset" }));
 
   return (
     <>
       <DropDownComponentContext.Provider
         value={{
-          getAllProducts: allProducts,
-          getAllMenus: allMenus,
+          allProducts: allProducts,
+          allMenus: allMenus,
+          allPresets: allPresets,
+          presetChosen,
         }}
       >
         <Page>

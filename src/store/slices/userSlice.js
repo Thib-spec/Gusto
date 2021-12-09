@@ -16,6 +16,9 @@ const initValue = {
   level: {
     label: undefined,
   },
+  // nationality: {
+  //   label: "en",
+  // },
   isLogged: false,
 };
 export const userSlice = createSlice({

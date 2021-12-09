@@ -28,7 +28,7 @@ import ProductTableLine from "./ProductTableLine";
 export default function ProductsCard({ name }) {
   // produits ajoutés dans le frigo
   const products = new ArrayController(useState([]), useState([]));
-  const { getAllProducts } = useContext(DropDownContext);
+  const { allProducts } = useContext(DropDownContext);
   const preset = useContext(InfoContext);
 
   useEffect(() => {
@@ -162,7 +162,7 @@ export default function ProductsCard({ name }) {
       <AddModal show={show} onHide={handleClose} title="Add products">
         <Page>
           <div className="row">
-            {getAllProducts.map((product) => {
+            {allProducts.map((product) => {
               return (
                 <ProductCard
                   key={product.id}

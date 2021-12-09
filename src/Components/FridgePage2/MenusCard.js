@@ -24,7 +24,6 @@ import MenuTableLine from "./MenuTableLine";
 export default function FridgeMenusCard({ name }) {
   // menus ajoutés dans le frigo
   const menus = new ArrayController(useState([]), useState([]));
-  const { getAllMenus } = useContext(DropDownContext);
   const fridge = useContext(InfoContext);
 
   useEffect(() => {

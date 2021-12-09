@@ -13,6 +13,7 @@ function Element(el, ArrayController) {
 
 Element.prototype.update = function (body) {
   this.ArrayController.addOrUpdateMany([{ ...this.value, ...body }]);
+  return this;
 };
 
 Element.prototype.set = function (body) {

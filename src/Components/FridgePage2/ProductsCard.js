@@ -26,12 +26,22 @@ import ProductTableLine from "./ProductTableLine";
 export default function ProductsCard({ name }) {
   // produits ajoutés dans le frigo
   const products = new ArrayController(useState([]), useState([]));
-  const { getAllProducts } = useContext(DropDownContext);
+  const productsInPreset = new ArrayController(useState([]), useState([]));
+  const { getAllProducts, presetChosen } = useContext(DropDownContext);
   const fridge = useContext(InfoContext);
 
   useEffect(() => {
     getProductsInFridge();
   }, []);
+
+  useEffect(() => {
+    console.log("presetChosen.value : ", presetChosen.value);
+    getProductsInPreset();
+  }, [presetChosen.value]);
+
+  useEffect(() => {
+    console.log("productsInPreset : ", productsInPreset.value);
+  }, [productsInPreset]);
 
   // useEffect(() => {
   //   console.log("value : ", products.value);
@@ -45,6 +55,22 @@ export default function ProductsCard({ name }) {
         const resJSON = await res.json();
         console.log("api.getProductsInFridge() : ", resJSON);
         products.set(resJSON.Products.map(mappers.productsInFridge), {
+          init: true,
+        });
+      } else {
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  async function getProductsInPreset() {
+    try {
+      const res = await api.getProductsInPreset({ id: presetChosen.value.id });
+      if (res.ok) {
+        const resJSON = await res.json();
+        console.log("api.getProductsInPreset() : ", resJSON);
+        productsInPreset.set(resJSON.map(mappers.productsInPreset), {
           init: true,
         });
       } else {
@@ -79,17 +105,40 @@ export default function ProductsCard({ name }) {
                     {/* <th>#</th> */}
                     <th>Product</th>
                     <th>Quantity</th>
+                    <th>Min</th>
+                    <th>Max</th>
                   </tr>
                 </thead>
                 <tbody>
                   {products.value.map((product) => {
+                    const p = productsInPreset.get(product);
                     return (
                       <ProductTableLine
                         key={product.id}
-                        product={products.get(product)}
+                        product={
+                          p.value
+                            ? {
+                                ...product,
+                                min: p.value.min,
+                                max: p.value.max,
+                              }
+                            : { ...product, min: 0, max: 0 }
+                        }
                       />
                     );
                   })}
+                  {productsInPreset.value
+                    .filter((product) => {
+                      const p = products.get(product);
+                      if (p.value) {
+                        return false;
+                      } else return true;
+                    })
+                    .map((product) => {
+                      return (
+                        <ProductTableLine key={product.id} product={product} />
+                      );
+                    })}
                 </tbody>
               </table>
             </div>

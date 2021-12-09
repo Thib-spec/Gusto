@@ -64,13 +64,15 @@ export default function PresetsPage() {
   const [presets, setPresets] = useState([]);
   const [allProducts, setAllProducts] = useState([]);
   const [allMenus, setAllMenus] = useState([]);
+  const [allPresets, setAllPresets] = useState([]);
 
   return (
     <>
       <DropDownComponentContext.Provider
         value={{
-          getAllProducts: allProducts,
-          getAllMenus: allMenus,
+          allProducts: allProducts,
+          allMenus: allMenus,
+          allPresets: allPresets,
         }}
       >
         <Page>

@@ -33,7 +33,7 @@ API.prototype.getInfo = function ({} = {}) {
 
 // ---------- fridge ---------- //
 
-API.prototype.getFridges = function ({} = {}) {
+API.prototype.getAllFridges = function ({} = {}) {
   return this.requester({
     method: "GET",
     path: "/api/fridge",
