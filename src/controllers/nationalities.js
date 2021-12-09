@@ -1,9 +1,6 @@
 const Model = require("../database/models");
 const Joi = require('joi');
 
-// const Model = {
-//     Categories: require("../database/models/categories")(),           // config pour que l'ide propose les fonctions possibles
-// }
 
 exports.listNationalities = (req, res) => {
     Model.Nationalities.findAll()
@@ -37,6 +34,7 @@ exports.getNationalityById = (req,res) => {
 
 exports.addNationality = (req,res) =>{
     const {label} = req.body
+    const list_nationality = new Array() 
 
     const postNationalitySchema = Joi.object().keys({ 
         label : Joi.string().required()
@@ -51,22 +49,39 @@ exports.addNationality = (req,res) =>{
     if (!valid) {
       res.status(400).json({ 
         message: 'Missing required parameters or parameters type are incorrect',
-        info: 'Requires: label /n' 
+        info: 'Requires: label' 
       })
     }
 
     else {
+
+        Model.Nationalities.findAll()
+        .then(allNationalities => {
+            Model.Nationalities.count()
+            .then(numberOfNationalities => {
+                for(let i =0;i<numberOfNationalities;i++){
+                    list_nationality.push(allNationalities[i].label)
+                }
+
+                if(list_nationality.includes(label)){
+                    res.status(400).json({
+                        message: "Nationality already exists"
+                    })
+                }
+
+                else {
+                    Model.Nationalities.create({
+                        label : label 
+                    })
+
+                    .then(nationality => res.status(200).json(nationality))
+                    .catch(error => res.status(400).json(error))
+                }
+           
+            })
         
-        Model.Nationalities.create({
-        label : label
-    })
-
-    .then(nationality => res.status(200).json(nationality))
-    .catch(error => res.status(400).json(error))
-
-    }
-
-        
+        })
+    }      
 }
 
 exports.editNationality =(req,res) => {
@@ -99,7 +114,13 @@ exports.editNationality =(req,res) => {
           res.status(400).json({ 
             message: 'One or more fields are not well written', 
           }) 
-        } 
+        }
+        
+        else if(Object.keys(req.body).length == 0){
+            res.status(400).json({
+                message:"No parameters were passed"
+            })
+        }
         
         else { 
             Model.Nationalities.update({
@@ -110,11 +131,12 @@ exports.editNationality =(req,res) => {
                     id_nationality: req.params.id
                 }
             })
-            .then(res.status(200).json("Modification apply"))
+            .then(res.status(200).json({
+                message : "Item has been updated"})
+            )
+            .catch(error => console.log(error))
         }
     })
-    
-    .catch(error => console.log(error))
 
 }
 
@@ -132,14 +154,19 @@ exports.deleteNationality = (req,res) => {
                 message: 'Nationality does not exist',
             });
         }
-    Model.Nationalities
+
+        else {
+            Model.Nationalities
             .destroy({
                 where: {
                     id_nationality: req.params.id
                 }
-            }).then(res.send(`Nationality with id : ${req.params.id} has been deleted`))
+            })
+            .then(res.status(200).json({
+                message: `Nationality with id : ${req.params.id} has been deleted`})
+            )
+            .catch(error => res.status(400).json(error))
         }
-
-    )
-    .catch(error => res.status(400).json(error))
+    })
+    
 }
