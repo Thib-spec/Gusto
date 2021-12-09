@@ -1,10 +1,6 @@
 const Model = require("../database/models");
 const Joi = require('joi');
 
-// const Model = {
-//     Categories: require("../database/models/categories")(),           // config pour que l'ide propose les fonctions possibles
-// }
-
 exports.listStates = (req, res) => {
     Model.State.findAll()
     .then(state => res.status(200).json(state))
@@ -37,6 +33,7 @@ exports.getStateById = (req,res) => {
 
 exports.addState = (req,res) =>{
     const {label} = req.body
+    const list_label = new Array()
 
     const postStateSchema = Joi.object().keys({ 
         label : Joi.string().required()
@@ -51,22 +48,38 @@ exports.addState = (req,res) =>{
     if (!valid) {
       res.status(400).json({ 
         message: 'Missing required parameters or parameters type are incorrect',
-        info: 'Requires: label /n' 
+        info: 'Requires: label' 
       })
     }
 
     else {
-        
-        Model.State.create({
-        label : label
-    })
 
-    .then(state => res.status(200).json(state))
-    .catch(error => res.status(400).json(error))
+        Model.State.findAll()
+        .then(allStates => {
+            Model.State.count()
+            .then(numberOfStates => {
+                for(let i =0;i<numberOfStates;i++){
+                    list_label.push(allStates[i].label)
+                }
 
+                if(list_label.includes(label)){
+                    res.status(400).json({
+                        message: "Label already exists"
+                    })
+                }
+
+                else {
+                    Model.State.create({
+                        label : label
+                    })
+
+                    .then(state => res.status(200).json(state))
+                    .catch(error => res.status(400).json(error))
+                }
+            })
+        })
+    
     }
-
-        
 }
 
 exports.editState =(req,res) => {
@@ -93,12 +106,19 @@ exports.editState =(req,res) => {
         const result = editStateSchema.validate(req.body)
 
         const {error } = result; 
-        const valid = error == null; 
+        const valid = error == null;
+
         if (!valid) { 
           res.status(400).json({ 
             message: 'One or more fields are not well written', 
           }) 
-        } 
+        }
+        
+        else if(Object.keys(req.body).length == 0){
+            res.status(400).json({
+                message:"No parameters were passed"
+            })
+        }
         
         else { 
             Model.State.update({
@@ -109,11 +129,12 @@ exports.editState =(req,res) => {
                     id_state: req.params.id
                 }
             })
-            .then(res.send("Modification apply"))
+            .then(res.status(200).json({
+                message: "Modification apply"})
+            )
+            .catch(error => console.log(error))
         }
     })
-    
-    .catch(error => console.log(error))
 
 }
 
@@ -131,14 +152,20 @@ exports.deleteState = (req,res) => {
                 message: 'State does not exist',
             });
         }
-    Model.State
-            .destroy({
+
+        else {
+            Model.State.destroy({
                 where: {
                     id_state: req.params.id
                 }
-            }).then(res.send(`State with id : ${req.params.id} has been deleted`))
-        }
+            })
+            .then(res.status(200).json({
 
-    )
-    .catch(error => res.status(400).json(error))
+                message: `State with id : ${req.params.id} has been deleted`})
+            )
+            .catch(error => res.status(400).json(error))
+        }
+    })
+    
+    
 }
