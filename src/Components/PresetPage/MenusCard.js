@@ -14,35 +14,36 @@ import {
 import api from "helpers/api";
 import ArrayController from "helpers/ArrayController";
 import mappers from "helpers/mappers";
-import FridgeAddModal from "./AddModal";
-import FridgeDropDownContext from "Context/FridgeDropDownContext";
-import FridgeInfoContext from "Context/FridgeInfoContext";
+import reverse_mappers from "helpers/reverse_mappers";
 
-// const menus = [
-//   { id: 0, name: "Midi Lunch"},
-//   { id: 1, name: "Soir Lunch"},
-// ];
+import AddModal from "./AddModal";
+import InfoContext from "Context/PresetInfoContext";
+import DropDownContext from "Context/PresetDropDownComponentContext";
 
-import FridgeMenuCard from "Components/PresetFridgePage/FridgeMenuCard";
-import FridgeMenuTableLine from "Components/PresetFridgePage/FridgeMenuTableLine";
+import MenuCard from "./MenuCard";
+import MenuTableLine from "./MenuTableLine";
 
 export default function FridgeMenusCard({ name }) {
   // menus ajoutés dans le frigo
   const menus = new ArrayController(useState([]), useState([]));
-  const { getAllMenus } = useContext(FridgeDropDownContext);
-  const fridge = useContext(FridgeInfoContext);
+  const { getAllMenus } = useContext(DropDownContext);
+  const preset = useContext(InfoContext);
 
   useEffect(() => {
-    getMenusInFridge();
+    getMenusInPreset();
   }, []);
 
+  // useEffect(() => {
+  //   console.log("menus : ", menus.value);
+  // }, [menus]);
+
   // appels api
-  async function getMenusInFridge() {
+  async function getMenusInPreset() {
     try {
-      const res = await api.getMenusInFridge({ id: fridge.id });
+      const res = await api.getMenusInPreset({ id: preset.id });
       if (res.ok) {
         const resJSON = await res.json();
-        console.log("api.getMenusInFridge() : ", resJSON);
+        console.log("api.getMenusInPreset() : ", resJSON);
         menus.set([...resJSON.map(mappers.menusMapper)], { init: true });
       } else {
       }
@@ -51,15 +52,17 @@ export default function FridgeMenusCard({ name }) {
     }
   }
 
-  async function addMenusInFridge() {
+  async function addMenusInPreset() {
     try {
-      const res = await api.addMenusInFridge({
-        id: fridge.id,
-        body: menus.value,
+      const body = menus.value.map(reverse_mappers.menusMapper);
+      console.log("BODY api.addProductsInPreset() : ", body);
+      const res = await api.addMenusInPreset({
+        id: preset.id,
+        body,
       });
       if (res.ok) {
         const resJSON = await res.json();
-        console.log("api.addMenusInFridge() : ", resJSON);
+        console.log("api.addMenusInPreset() : ", resJSON);
         menus.addOrUpdateMany([], { init: true });
       } else {
       }
@@ -76,7 +79,7 @@ export default function FridgeMenusCard({ name }) {
 
   // Save & Cancel
   const handleSaveButton = () => {
-    addMenusInFridge();
+    addMenusInPreset();
   };
   const handleCancelButton = () => {
     menus.reset();
@@ -91,12 +94,12 @@ export default function FridgeMenusCard({ name }) {
 
   return (
     <>
-      <div className="col m-1" style={{ "min-width": "400px" }}>
-        <div class="card text-center h-100">
-          <div class="card-header">{name}</div>
-          <div class="card-body">
-            <p class="card-text">
-              <table class="table table-striped">
+      <div className="col m-1" style={{ minWidth: "400px" }}>
+        <div className="card text-center h-100">
+          <div className="card-header">{name}</div>
+          <div className="card-body">
+            <div className="card-text">
+              <table className="table table-striped">
                 <thead>
                   <tr>
                     <th>Menu</th>
@@ -106,17 +109,14 @@ export default function FridgeMenusCard({ name }) {
                 <tbody>
                   {menus.value.map((menu) => {
                     return (
-                      <FridgeMenuTableLine
-                        key={menu.id}
-                        menu={menus.get(menu)}
-                      />
+                      <MenuTableLine key={menu.id} menu={menus.get(menu)} />
                     );
                   })}
                 </tbody>
               </table>
-            </p>
+            </div>
             <div className="row justify-content-center mb-2">
-              <div class="col m-1" align="center">
+              <div className="col m-1" align="center">
                 <button
                   onClick={handleAddMenus}
                   type="submit"
@@ -127,7 +127,7 @@ export default function FridgeMenusCard({ name }) {
               </div>
             </div>
             <div className="row justify-content-center">
-              <div class="col-6 m-1" align="center">
+              <div className="col-6 m-1" align="center">
                 <button
                   onClick={handleSaveButton}
                   type="submit"
@@ -145,26 +145,21 @@ export default function FridgeMenusCard({ name }) {
               </div>
             </div>
           </div>
-          {/* <div class="card-footer text-muted">Produits</div> */}
         </div>
       </div>
 
       {/* Modal pour checker les produits a ajouter */}
-      <FridgeAddModal show={show} onHide={handleClose} title="Add menus">
+      <AddModal show={show} onHide={handleClose} title="Add menus">
         <Page>
           <div className="row">
             {getAllMenus.map((menu) => {
               return (
-                <FridgeMenuCard
-                  key={menu.id}
-                  menu={menu}
-                  parentProps={parentProps}
-                />
+                <MenuCard key={menu.id} menu={menu} parentProps={parentProps} />
               );
             })}
           </div>
         </Page>
-      </FridgeAddModal>
+      </AddModal>
     </>
   );
 }

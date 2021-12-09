@@ -57,7 +57,7 @@ export default function NavBar({}) {
                     width="50"
                     height="50"
                     fill="white"
-                    class="bi bi-list"
+                    className="bi bi-list"
                     viewBox="0 0 16 16"
                   >
                     <path

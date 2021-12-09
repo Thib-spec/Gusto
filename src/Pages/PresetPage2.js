@@ -14,17 +14,17 @@ export default function PresetsPage() {
   function handleNothing() {}
 
   useEffect(() => {
-    getPresets();
+    getAllPresets();
     getAllProducts();
     getAllMenus();
   }, []);
 
-  async function getPresets() {
+  async function getAllPresets() {
     try {
-      const res = await api.getPresets();
+      const res = await api.getAllPresets();
       if (res.ok) {
         const resJSON = await res.json();
-        console.log("api.getPresets() : ", resJSON);
+        console.log("api.getAllPresets() : ", resJSON);
         setPresets(resJSON.map(mappers.presetsMapper));
       } else {
       }
@@ -78,7 +78,7 @@ export default function PresetsPage() {
             return (
               <DropDownComponent preset={preset}>
                 <ProductsCard name="Produits" />
-                {/* <MenusCard name="Menus" /> */}
+                <MenusCard name="Menus" />
               </DropDownComponent>
             );
           })}

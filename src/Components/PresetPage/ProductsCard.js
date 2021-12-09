@@ -35,9 +35,9 @@ export default function ProductsCard({ name }) {
     getProductsInPreset();
   }, []);
 
-  useEffect(() => {
-    console.log("value : ", products.value);
-  }, [products]);
+  // useEffect(() => {
+  //   console.log("value : ", products.value);
+  // }, [products]);
 
   // appels api
   async function getProductsInPreset() {
@@ -97,12 +97,12 @@ export default function ProductsCard({ name }) {
 
   return (
     <>
-      <div className="col m-1" style={{ "min-width": "400px" }}>
-        <div class="card text-center h-100">
-          <div class="card-header">{name}</div>
-          <div class="card-body">
-            <p class="card-text">
-              <table class="table table-striped">
+      <div className="col m-1" style={{ minWidth: "400px" }}>
+        <div className="card text-center h-100">
+          <div className="card-header">{name}</div>
+          <div className="card-body">
+            <div className="card-text">
+              <table className="table table-striped">
                 <thead>
                   <tr>
                     {/* <th>#</th> */}
@@ -123,9 +123,9 @@ export default function ProductsCard({ name }) {
                   })}
                 </tbody>
               </table>
-            </p>
+            </div>
             <div className="row justify-content-center mb-2">
-              <div class="col m-1" align="center">
+              <div className="col m-1" align="center">
                 <button
                   onClick={handleAddProducts}
                   type="submit"
@@ -137,7 +137,7 @@ export default function ProductsCard({ name }) {
             </div>
 
             <div className="row justify-content-center">
-              <div class="col-6 m-1" align="center">
+              <div className="col-6 m-1" align="center">
                 <button
                   onClick={handleSaveButton}
                   type="submit"

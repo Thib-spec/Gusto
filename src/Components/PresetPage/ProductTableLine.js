@@ -2,12 +2,6 @@ import React, { Component, useState, useEffect } from "react";
 import Value from "helpers/Value";
 
 export default function FridgeProductTableLine({ product, parentProps }) {
-  const removed = new Value(useState(false));
-
-  useEffect(() => {
-    removed.set(product.value.min == 0 && product.value.max == 0);
-  }, [product]);
-
   const handleProductChangeValue = (property) => (event) => {
     const body = {};
     body[property] = event.target.value;
