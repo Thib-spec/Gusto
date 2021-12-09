@@ -35,13 +35,8 @@ export default function ProductsCard({ name }) {
   }, []);
 
   useEffect(() => {
-    console.log("presetChosen.value : ", presetChosen.value);
     getProductsInPreset();
   }, [presetChosen.value]);
-
-  useEffect(() => {
-    console.log("productsInPreset : ", productsInPreset.value);
-  }, [productsInPreset]);
 
   // useEffect(() => {
   //   console.log("value : ", products.value);
