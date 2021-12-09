@@ -141,7 +141,7 @@ exports.editCategory =(req,res) => {
         const editCategorySchema = Joi.object().keys({ 
             label: Joi.string(),
             image: Joi.string(),
-            description: Joi.string(), 
+            description: Joi.string().allow(""), 
         })
 
         const result = editCategorySchema.validate(req.body)
