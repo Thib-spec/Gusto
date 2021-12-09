@@ -7,7 +7,7 @@ fridgePreset.get('/',fridgePresetController.listFridgePreset)
 fridgePreset.get('/:id',fridgePresetController.getFridegPresetById)
 
 fridgePreset.get("/:id/product",fridgePresetController.getProductinPreset)
-fridgePreset.post('/',fridgePresetController.addFridgePreset)
+fridgePreset.post('/',passport.authenticate("jwt",{session:false}),fridgePresetController.addFridgePreset)
 fridgePreset.put('/:id',fridgePresetController.editFridgePreset)
 fridgePreset.delete('/:id',fridgePresetController.deleteFridgePreset)
 

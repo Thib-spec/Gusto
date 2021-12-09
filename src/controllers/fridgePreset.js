@@ -45,14 +45,13 @@ exports.getProductinPreset = (req,res) => {
 
 
 exports.addFridgePreset = (req,res) =>{
-    const {label,fk_id_client} = req.body;
+    const {label} = req.body;
 
-    const list_fk_client = new Array()
+    const list_label= new Array()
 
 
     const postFridgePresetSchema = Joi.object().keys({ 
         label: Joi.string().required(),
-        fk_id_client: Joi.number().required()
     })
 
     const result = postFridgePresetSchema.validate(req.body)
@@ -64,7 +63,7 @@ exports.addFridgePreset = (req,res) =>{
     if (!valid) {
         res.status(400).json({ 
             message: 'Missing required parameters',
-            info: 'Requires: label, fk_id_client' 
+            info: 'Requires: label' 
         })
     }
 
@@ -72,28 +71,37 @@ exports.addFridgePreset = (req,res) =>{
 
     else {
 
-        Model.Client.findAll()
-        .then(allClient => {
-            Model.Client.count()
-            .then(numberOfClient => {
-                for(let i =0;i<numberOfClient;i++){
-                    list_fk_client.push(allClient[i].id_client)
+        Model.FridgePresets.findAll()
+        .then(allpreset => {
+            Model.FridgePresets.count()
+            .then(numberOfPreset => {
+                for(let i =0;i<numberOfPreset;i++){
+                    list_label.push(allpreset[i].label)
                 }
 
-                if(!list_fk_client.includes(fk_id_client)){
+                if(list_label.includes(label)){
                     res.status(400).json({
-                        message:"fk_id_client does not match any id_client"
+                        message:"This label already exists"
                     })
                 }
 
                 else {
-                    Model.FridgePresets.create({
-                        label: label,
-                        fk_id_client:fk_id_client
+
+                    Model.Client.findOne({
+                        where:{
+                            id_client:req.user.fk_id_client
+                        }
                     })
-            
-                    .then(fridgePreset => res.status(200).json(fridgePreset))
-                    .catch(error => res.status(400).json(error))
+                    .then(client => {
+                        Model.FridgePresets.create({
+                            label: label,
+                            fk_id_client:client.id_client
+                        })
+        
+                        .then(fridgePreset => res.status(200).json(fridgePreset))
+                        .catch(error => res.status(400).json(error))
+                    })
+                    
                 }
             })
         })       
