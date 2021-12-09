@@ -98,13 +98,17 @@ export default function FridgesPage() {
         {/* fin test avec Accordion de Boostrap */}
 
         {fridges.map((fridge) => {
-          return (
+          return (<div>
+            {console.log(fridge.id)}
+
             <FridgeDropDownComponent
               fridge={fridge}
               idFridge={fridge.id}
               allProducts={allProducts}
               allMenus={allMenus}
             />
+          </div>
+            
           );
         })}
       </Page>

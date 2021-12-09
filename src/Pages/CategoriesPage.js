@@ -12,7 +12,6 @@ export default function CategoriesPage(){
 
 
 
-
     const [allCategories, setallCategories] = useState([]);
     useEffect(() => {
         axios.get("http://api.gustosolutions.fr/api/category")
@@ -36,15 +35,22 @@ export default function CategoriesPage(){
     const[catégorieAdd,setCategorieAdd]=useState("")
     //when the client add a categorie and save it,
     function handleAddCatégorie(){
+
+        let config = {
+            headers: {
+              token: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjE2LCJzZXNzaW9uSWQiOjIsImV4cGlyZXNJbiI6MzYwMCwiaWF0IjoxNjM5MDYyNzU4fQ.WGlcp6yGfdeO_kgf_T8ARNC2whJi0V7O2mFteOARt7M",
+            }
+          }
         try{
             let a=document.getElementById('labelCatégorie').value
-            setCategorieAdd(a)
-            axios.post("http://api.gustosolutions.fr/api/category", {
+            let b=document.getElementById('descriptionCategorie').value
+
+            axios.post("http://api.gustosolutions.fr/api/category",  {
                 "label":a,
                 "image": "imageurl",
-                "description" : "description",
-                "fk_id_client":1
-            })
+                "description" : b,
+                
+            },config)
             .then((res) => {
                 console.log(res);
                 window.location.reload(false);
@@ -85,6 +91,7 @@ export default function CategoriesPage(){
                     <div className="addProduct-container">
                         <div className="addProduct-container-form">
                             <input type="text" class="form-control" id="labelCatégorie" placeholder="Nom de la catégorie"/>
+                            <textarea type="text" className="form-control textAreaResize" id="descriptionCategorie" placeholder="Description"></textarea>
                             <UploadForm/>
                         </div>
                     </div> 

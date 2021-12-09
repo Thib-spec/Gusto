@@ -39,16 +39,17 @@ export default function ProductsPage(){
             let a=document.getElementById('prix').value
             let b=document.getElementById('label').value
             let c=document.getElementById("categorie").value
+            let d=document.getElementById("ubd").value
+            let e=document.getElementById("description").value
             c=Number(c)
             a=Number(a)
             
             axios.post("http://api.gustosolutions.fr/api/product",{
                 "label":b,
                 "image": "imageurl",
-                "description" : "default description",
-                "price":a,
-                
-                "ubd":"5 jours",
+                "description" : e,
+                "price":a*100,
+                "ubd":d,
                 "fk_id_category":c
             })
             .then((res) => {
@@ -92,8 +93,11 @@ export default function ProductsPage(){
                             
                         </select>
                     </div> 
-                    <input type="number" class="form-control" id="prix" placeholder="Prix" />
                     <input type="text" class="form-control" id="label" placeholder="Nom du produit"/>
+                    <input type="number" class="form-control" id="prix" placeholder="Prix" />
+                    <input type="text" class="form-control" id="ubd" placeholder="Date de péremption" />
+                    <textarea type="text" className="form-control textAreaResize" id="description" placeholder="Description"></textarea>
+
                     <UploadForm/>
                 </Modal.Body>
                 <Modal.Footer>

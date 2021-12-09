@@ -15,17 +15,39 @@ import PieChart from 'Components/ChartJSComponent/PieChart';
 import LineChart from 'Components/ChartJSComponent/LineChart';
 import BarChart from 'Components/ChartJSComponent/BarChart';
 import Header from 'Components/Header';
+import { useSelector, useDispatch } from "react-redux";
+import userActions from "store/actions/userActions";
+import api from "helpers/api";
+import TextAreaComponent from 'Components/FormComponent/TextAreaComponent';
 
 
 
 
 
 export default function HomePage(){
-    
+    let history = useHistory();
+
+    const user = useSelector((state) => state.user.value);
+    const dispatch = useDispatch();
+    async function handleLogout() {
+        try {
+          const res = await api.logout();
+          if (res.ok) {
+            dispatch(userActions.logout());
+            localStorage.removeItem("authToken");
+            history.push("/");
+          } else {
+          }
+        } catch (error) {}
+      }
+
     return(
 
+      
 
-        <Header/>
+        <div className="m-5 h1">Welcome {user.firstName} {user.lastName}
+        </div>
+        
         // <div className="container-home">
         //     <div className="home-logs">
         //         <div className="home-log-left">

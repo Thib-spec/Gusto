@@ -25,13 +25,13 @@ export default function MenusPage(){
             "web_label": "TestwebLabel",
             "fridge_label": "TestfridgeLabel",
             "image": "",
-            "price": "789",
+            "price": 789,
             "fk_id_client": 1
           })
+
             .then((res) => {
                 console.log(res);
                 window.location.reload(false);
-
             })
             .catch((err) => {
                 console.log(err);

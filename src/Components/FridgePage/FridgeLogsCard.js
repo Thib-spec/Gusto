@@ -10,7 +10,7 @@ export default function FridgeLogsCard(props){
 
      const [sliceSales, setsliceSales] = useState([]);
      useEffect(() => {
-        axios.get("http://api.gustosolutionsions.fr/api/fridge/"+props.idFridge+"/sales/products")
+        axios.get("http://api.gustosolutions.fr/api/fridge/"+props.idFridge+"/sales/products")
             .then((res) =>{setsliceSales(res.data)
                 
             })
@@ -18,6 +18,7 @@ export default function FridgeLogsCard(props){
     }, [])
 
 
+    
     const[logFridge,setLogFridge] = useState(false)
     const[logSales,setLogSales]= useState(true)
     
@@ -60,9 +61,10 @@ export default function FridgeLogsCard(props){
                                         <div className="logs-sales-produits">Produits</div>
                                     </div>
                                     <div className="logs-sales-content">
+                                    
                                         {sliceSales.map((sale)=>
                                             
-                                            <div>{console.log(sale)}
+                                            <div>
                                                 {   
                                                     sale.fk_id_fridge==props.idFridge?//peut être enlever??
                                                         
