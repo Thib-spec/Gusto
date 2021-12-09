@@ -107,6 +107,7 @@ const Joi = require('joi');
 
     exports.addClient = (req,res) =>{
         const {label} = req.body;
+        const list_label = new Array()
 
 
        const postClientSchema = Joi.object().keys({ 
@@ -130,14 +131,32 @@ const Joi = require('joi');
 
         else {
 
-            Model.Client.create({
-                label: label
-            })
+            Model.Client.findAll()
+            .then(allClient => {
+                Model.Client.count()
+                .then(numberOfClient => {
+                    for(let i =0;i<numberOfClient;i++){
+                        list_label.push(allClient[i].label)
+                    }
+
+                    if(list_label.includes(label)){
+                        res.status(400).json({
+                            message:"Client with this label already exists"
+                        })
+                    }
+
+                    else {
+                        Model.Client.create({
+                            label: label
+                        })
             
-            .then(client => res.status(200).json(client))
-            .catch(error => res.status(400).json(error))
+                        .then(client => res.status(200).json(client))
+                        .catch(error => res.status(400).json(error))
+                    }
+                })
+            })   
         }
-}
+    }
 
 
 exports.editClient = (req,res) => {

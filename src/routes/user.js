@@ -6,7 +6,9 @@ users.post('/login',userController.login)
 users.get('/logout',passport.authenticate("jwt",{session:false}),userController.logout)
 users.get('/userInfo',passport.authenticate("jwt",{session:false}),userController.userInfo)
 
-users.get('/:id',userController.getUserById)
+users.get('/:id'/*,[(req,res,next)=>{
+
+}]*/,userController.getUserById)
 users.get('/', userController.listUsers)
 users.get('/level/:label', userController.listUserByLevel)
 

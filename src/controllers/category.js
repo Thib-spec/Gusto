@@ -1,6 +1,5 @@
 const Model = require("../database/models");
 const Joi = require('joi');
-const { array } = require("joi");
 
 
 exports.listCategories = (req, res) => {
@@ -56,15 +55,15 @@ exports.listProductByCategory = (req,res) => {
 
 
 exports.addCategory = (req,res) =>{
-    const { label, image, description, fk_id_client} = req.body
+    const { label, image, description} = req.body
 
-    const list_fk_client = new Array()
+
+    const list_label = new Array()
 
     const postCategorySchema = Joi.object().keys({ 
         label : Joi.string().required(),
         image:Joi.string().required(),
         description:Joi.string().required(),
-        fk_id_client:Joi.number().required()
     })
 
     const result = postCategorySchema.validate(req.body)
@@ -77,44 +76,48 @@ exports.addCategory = (req,res) =>{
     if (!valid) {
       res.status(400).json({ 
         message: 'Missing required parameters',
-        info: 'Requires: label, image, description, fk_id_client' 
+        info: 'Requires: label, image, description' 
       })
     }
 
     else {
 
-        Model.Client.findAll()
-        .then(allClient => {
-            Model.Client.count()
-            .then(numberOfClient => {
-                for(let i =0;i<numberOfClient;i++){
-                    list_fk_client.push(allClient[i].id_client)
+        Model.Categories.findAll()
+        .then(allCategories => {
+            Model.Categories.count()
+            .then(numberOfCategories => {
+                for (let i=0;i<numberOfCategories;i++){
+                    list_label.push(allCategories[i].label)
                 }
 
-                if(!list_fk_client.includes(fk_id_client)){
+                if(list_label.includes(label)){
                     res.status(400).json({
-                        message:"fk_id_client does not match any id_client"
+                        message:"Category with this label already exists"
                     })
                 }
 
                 else {
-                    Model.Categories.create({
-                    label : label,
-                    image:image,
-                    description:description,
-                    fk_id_client:fk_id_client
+
+                    Model.Client.findOne({
+                        where:{
+                            id_client:req.user.fk_id_client
+                        }
+                    })
+                    .then(client => {
+                        Model.Categories.create({
+                        label : label,
+                        image:image,
+                        description:description,
+                        fk_id_client:client.id_client
                     })
 
                     .then(category => res.status(200).json(category)) 
                     .catch(error => res.status(400).json(error))
+                    })
                 }
             })
         })
-        
     }
-       
-   
-  
 }
 
 
