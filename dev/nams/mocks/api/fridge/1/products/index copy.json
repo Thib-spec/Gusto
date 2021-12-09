@@ -1,0 +1,84 @@
+{
+  "id_fridge": 0,
+  "label": "frigo1",
+  "createdAt": "2021-12-07T11:28:14.000Z",
+  "updatedAt": "2021-12-07T11:28:14.000Z",
+  "fk_id_technologies": 1,
+  "fk_id_fridgePreset": 1,
+  "Products": [
+    {
+      "id_product": 0,
+      "label": "Banane",
+      "image": "/",
+      "price": 2,
+      "ubd": "a",
+      "description": "a",
+      "createdAt": "2021-12-06T12:33:16.000Z",
+      "updatedAt": "2021-12-06T12:33:17.000Z",
+      "fk_id_category": 1,
+      "fridges_products": {
+        "id_fridges_products": 1,
+        "quantity": 23,
+        "createdAt": "2021-12-06T13:31:45.000Z",
+        "updatedAt": "2021-12-06T13:31:45.000Z",
+        "fk_id_fridge": 1,
+        "fk_id_product": 1
+      },
+      "FridgePresets": [
+        {
+          "id_fridgePresets": 1,
+          "label": "preset1",
+          "createdAt": "2021-12-06T11:25:56.000Z",
+          "updatedAt": "2021-12-06T11:25:57.000Z",
+          "fk_id_client": 1,
+          "fridgePresets_products": {
+            "id_fridgePresets_products": 11,
+            "quantity_min": 300,
+            "quantity_max": 900,
+            "createdAt": "2021-12-07T10:24:26.000Z",
+            "updatedAt": "2021-12-07T10:24:26.000Z",
+            "fk_id_fridgePreset": 1,
+            "fk_id_product": 1
+          }
+        }
+      ]
+    },
+    {
+      "id_product": 1,
+      "label": "Kiwi",
+      "image": "/",
+      "price": 2,
+      "ubd": "a",
+      "description": "a",
+      "createdAt": "2021-12-06T12:33:16.000Z",
+      "updatedAt": "2021-12-06T12:33:17.000Z",
+      "fk_id_category": 1,
+      "fridges_products": {
+        "id_fridges_products": 1,
+        "quantity": 23,
+        "createdAt": "2021-12-06T13:31:45.000Z",
+        "updatedAt": "2021-12-06T13:31:45.000Z",
+        "fk_id_fridge": 1,
+        "fk_id_product": 1
+      },
+      "FridgePresets": [
+        {
+          "id_fridgePresets": 2,
+          "label": "preset1",
+          "createdAt": "2021-12-06T11:25:56.000Z",
+          "updatedAt": "2021-12-06T11:25:57.000Z",
+          "fk_id_client": 1,
+          "fridgePresets_products": {
+            "id_fridgePresets_products": 11,
+            "quantity_min": 300,
+            "quantity_max": 900,
+            "createdAt": "2021-12-07T10:24:26.000Z",
+            "updatedAt": "2021-12-07T10:24:26.000Z",
+            "fk_id_fridgePreset": 1,
+            "fk_id_product": 1
+          }
+        }
+      ]
+    }
+  ]
+}

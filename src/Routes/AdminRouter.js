@@ -18,7 +18,9 @@ import CategoriesPage from "Pages/CategoriesPage";
 import HomePage from "Pages/HomePage";
 import LoginPage from "Pages/LoginPage";
 import ProductsPage from "Pages/ProductPage";
-import FridgesPage2 from "Pages/FridgesPage2";
+import FridgesPage2 from "Pages/_FridgesPage2";
+import FridgesPage3 from "Pages/_FridgesPage3";
+import FridgesPage4 from "Pages/FridgesPage4";
 import NotFoundPage from "Pages/NotFoundPage";
 import TestData from "Components/TestData";
 import Header from "Components/Header";
@@ -27,9 +29,10 @@ import { useSelector, useDispatch } from "react-redux";
 import api from "helpers/api";
 import userActions from "store/actions/userActions";
 import Footer from "Components/Footer";
-import PresetPage from "Pages/PresetPage";
+import PresetPage from "Pages/_PresetPage";
+import PresetPage2 from "Pages/PresetPage2";
 import useIsMounted from "helpers/useInMount";
-import { withTranslation } from "react-i18next";
+import { withTranslation, useTranslation } from "react-i18next";
 
 function AdminRouter({ history }) {
   const user = useSelector((state) => state.user.value);
@@ -39,7 +42,20 @@ function AdminRouter({ history }) {
 
   // localStorage.removeItem("authToken");
   const authToken = localStorage.getItem("authToken");
-  const desac_login = true;
+  const desac_login = false;
+  const { t, i18n } = useTranslation();
+
+  useEffect(() => {
+    console.log("user : ", user);
+  }, [user]);
+
+  useEffect(() => {
+    i18n.changeLanguage(user.language ? user.language : "en");
+  }, [user.language]);
+
+  const changeLanguage = (event) => {
+    i18n.changeLanguage(event.target.value);
+  };
 
   useEffect(() => {
     console.log("AdminRouter is mount");
@@ -47,26 +63,11 @@ function AdminRouter({ history }) {
       getUserInfoAndDispatch().then(() => {
         setIsLoaded(false);
       });
-    }
+    } else setIsLoaded(false);
     return () => {
       console.log("AdminRouter is unmount");
     };
   }, []);
-
-  // async function getUserInfoAndDispatch() {
-  //   try {
-  //     const res = await api.getInfo();
-  //     if (res.ok) {
-  //       // console.log((await res.json())[0])
-  //       if (isMounted.current)
-  //         dispatch(
-  //           userActions.update({ ...(await res.json())[0], isLogged: true })
-  //         );
-  //       // dispatch(userActions.update({ ...(await res.json()), isLogged: true }));
-  //     } else {
-  //     }
-  //   } catch (error) {}
-  // }
 
   function getUserInfoAndDispatch() {
     return api
@@ -114,7 +115,7 @@ function AdminRouter({ history }) {
             />
             <Route
               path="/fridges"
-              component={withTranslation()(FridgesPage2)}
+              component={withTranslation()(FridgesPage4)}
             />
             <Route
               path="/menus"
@@ -123,7 +124,7 @@ function AdminRouter({ history }) {
             <Route path="/testHistory1" component={Test1} />
             <Route path="/testHistory2" component={Test2} />
             <Route path="/testData" component={TestData} />
-            <Route path="/preset" component={withTranslation()(PresetPage)} />
+            <Route path="/preset" component={withTranslation()(PresetPage2)} />
             <Route path="/login">
               <Redirect
                 from={`${location.pathname}`}

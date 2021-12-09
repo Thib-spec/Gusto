@@ -4,16 +4,17 @@ import React, { Component, useState, useEffect } from "react";
 import { Nav, NavDropdown, Navbar, Container, Dropdown } from "react-bootstrap";
 import { Link, useLocation } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
-import { useHistory } from 'react-router';
+import { useHistory } from "react-router";
 import api from "helpers/api";
 import userActions from "store/actions/userActions";
 
-export default function NavBar({ }) {
+export default function NavBar({}) {
   const location = useLocation();
-  const dispatch = useDispatch()
-  const history = useHistory()
+  const dispatch = useDispatch();
+  const history = useHistory();
 
   async function handleLogout() {
+    console.log("api.logout() : ");
     const res = await api.logout();
     dispatch(userActions.logout());
     localStorage.removeItem("authToken");
@@ -56,7 +57,7 @@ export default function NavBar({ }) {
                     width="50"
                     height="50"
                     fill="white"
-                    class="bi bi-list"
+                    className="bi bi-list"
                     viewBox="0 0 16 16"
                   >
                     <path
@@ -68,9 +69,7 @@ export default function NavBar({ }) {
                 id="nav-dropdown"
               >
                 {paths.map((path) => (
-                  <NavDropdown.Item
-                    key={path.name}
-                  >
+                  <NavDropdown.Item key={path.name}>
                     <Nav.Link
                       as={Link}
                       to={`${path.path}`}

@@ -36,6 +36,7 @@ export default function Header() {
   }
   async function handleLogout() {
     try {
+      console.log("api.logout() : ");
       const res = await api.logout();
       if (res.ok) {
         dispatch(userActions.logout());

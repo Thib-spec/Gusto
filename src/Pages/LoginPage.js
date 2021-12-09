@@ -16,37 +16,6 @@ export default function LoginPage({ location, history, t }) {
   const dispatch = useDispatch();
   const isMounted = useIsMounted();
 
-  // appel api
-  // async function handleLogin() {
-  //   try {
-  //     const res = await api.login({ body: { email: username, password } });
-  //     console.log(res);
-  //     if (isMounted.current){
-  //       if (res.ok) {
-  //         const resJSON = await res.json();
-  //         dispatch(userActions.login({ ...resJSON, isLogged: true }));
-  //         localStorage.setItem("authToken", resJSON.token);
-  //       } else {
-  //         dispatch(
-  //           userActions.update({ isLogged: true })
-  //         );
-  //         setAlert(
-  //           <div className="alert alert-danger" role="alert">
-  //             response status : {res.status}
-  //           </div>
-  //         );
-  //       }
-  //     }
-  //   } catch (error) {
-  //     console.log("login error : ", error);
-  //     setAlert(
-  //       <div className="alert alert-danger" role="alert">
-  //         error :
-  //       </div>
-  //     );
-  //   }
-  // }
-
   async function handleLogin() {
     api
       .login({ body: { email: username, password } })
