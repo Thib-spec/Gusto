@@ -4,7 +4,7 @@ const passport = require("passport")
 
 fridges.get('/',fridgeController.listFridges)
 fridges.get('/:id',fridgeController.getFridgeById)
-fridges.post('/',fridgeController.addFridge)
+fridges.post('/',passport.authenticate("jwt",{session:false}),fridgeController.addFridge)
 fridges.put('/:id',fridgeController.editFridge)
 fridges.delete('/:id',fridgeController.deleteFridge)
 fridges.get('/:id/sales/products',fridgeController.listProductsBySaleByFridge)
