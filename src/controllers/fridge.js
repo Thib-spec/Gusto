@@ -542,14 +542,15 @@ exports.getFridgeById = (req,res) => {
 
 
 exports.addFridge = (req,res) =>{
-    const { label, fk_id_technologies} = req.body
+    const { label, fk_id_technologies, fk_id_fridgePreset} = req.body
 
     const fk_tech_list = new Array()
-    const list_label = new Array()
+    const fk_fridgePresetList = new Array()
 
     const postFridgeSchema = Joi.object().keys({ 
         label : Joi.string().required(),
         fk_id_technologies:Joi.number().required(),
+        fk_id_fridgePreset: Joi.number().required()
     })
 
     const result = postFridgeSchema.validate(req.body)
@@ -561,7 +562,7 @@ exports.addFridge = (req,res) =>{
     if (!valid) {
       res.status(400).json({ 
         message: 'Missing required parameters',
-        info: 'Requires: label, fk_id_technologies' 
+        info: 'Requires: label, fk_id_technologies, fk_id_fridgePreset' 
       })
     }
     else {
@@ -574,62 +575,39 @@ exports.addFridge = (req,res) =>{
                     fk_tech_list.push(allTechs[i].id_technologies)
                 }
 
+                Model.FridgePresets.findAll()
+                .then(allPreset =>{
+                    Model.FridgePresets.count()
+                    .then(numberofPreset =>{
+                        for(let i=0;i<numberofPreset;i++){
+                            fk_fridgePresetList.push(allPreset[i].id_fridgePresets)
+                        }
 
-                if(!fk_tech_list.includes(fk_id_technologies)){
-                    return res.status(400).json({
-                        message:"fk_id_technologies does not match any id_technologies"
-                    })
-                }
+                        if(!fk_tech_list.includes(fk_id_technologies)){
+                            return res.status(400).json({
+                                message:"fk_id_technologies does not match any id_technologies"
+                            })
+                        }
 
+                        else if(!fk_fridgePresetList.includes(fk_id_fridgePreset)){
+                            res.status(400).json({
+                                message:"fk_id_fridgePreset does not match any id_fridgePresets"
+                            })
+                        }
 
-                else {
-
-                    Model.Client.findOne({
-                        where:{
-                            id_client:req.user.fk_id_client
+                        else {
+                            Model.Fridges.create({
+                                label : label,
+                                fk_id_technologies:fk_id_technologies,
+                                fk_id_fridgePreset:fk_id_fridgePreset
+                            })
+                            .then(fridge => res.status(200).json(fridge))
+                            .catch(error => res.status(400).json(error))
+            
                         }
                     })
-                    .then(client => {
-                        Model.FridgePresets.findOne({
-                            where:{
-                                fk_id_client:client.id_client
-                            }
-                        })
-                        .then(fridgePreset => {
-
-                            Model.Fridges.findAll()
-                            .then(allFridges => {
-                                Model.Fridges.count()
-                                .then(numberofFridges => {
-                                    for(let i =0;i< numberofFridges;i++){
-                                        list_label.push(allFridges[i].label)
-                                    }
-
-                                    if(list_label.includes(label)){
-                                        res.status(400).json({
-                                            message:"This label already exists"
-                                        })
-                                    }
-
-                                    else {
-                                        Model.Fridges.create({
-                                            label : label,
-                                            fk_id_technologies:fk_id_technologies,
-                                            fk_id_fridgePreset:fridgePreset.id_fridgePresets
-                                        })
-                                        .then(fridge => res.status(200).json(fridge))
-                                        .catch(error => res.status(400).json(error))
-                                    }
-                                })
-                            })
-                            
-                        })
-                    })
-                    
-    
-                }
-                    
-            })             
+                })             
+            })
         })
         .catch(error => res.status(400).json(error))
     }
@@ -640,7 +618,6 @@ exports.addFridge = (req,res) =>{
 exports.editFridge =(req,res) => {
 
     const { label, fk_id_technologies} = req.body
-    const list_fk_tech = new Array()
 
     Model.Fridges.findOne({
         where: {
@@ -677,40 +654,20 @@ exports.editFridge =(req,res) => {
             })
         }
         
-        else {
-            
-            Model.Technologies.findAll()
-            .then(allTechs => {
-                Model.Technologies.count()
-                .then(numberofTech => {
-                    for(let i =0;i<numberofTech;i++){
-                        list_fk_tech.push(allTechs[i].id_technologies)
-                    }
-
-                    if(!list_fk_tech.include(fk_id_technologies)){
-                        res.status(400).json({
-                            message:"fk_id_technologies does not match any id_technologies"
-                        })
-                    }
-
-                    else {
-                        Model.Fridges.update({
-                            label: label,
-                            fk_id_technologies: fk_id_technologies,
-                        },
-                        {
-                            where : {
-                                id_fridge: req.params.id
-                            }
-                        })
-                        .then(res.status(200).json({
-                            message:"Item has been updated"})
-                        )
-                        .catch(error => console.log(error))
-                    }
-                })
+        else { 
+            Model.Fridges.update({
+                label: label,
+                fk_id_technologies: fk_id_technologies,
+            },
+            {
+                where : {
+                    id_fridge: req.params.id
+                }
             })
-           
+            .then(res.status(200).json({
+                message:"Item has been updated"})
+            )
+            .catch(error => console.log(error))
 
         }
     })
