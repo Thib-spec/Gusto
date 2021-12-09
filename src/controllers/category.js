@@ -55,13 +55,15 @@ exports.listProductByCategory = (req,res) => {
 
 
 exports.addCategory = (req,res) =>{
-    const { label, image, description, fk_id_client} = req.body
+    const { label, image, description} = req.body
+
+
+    const list_label = new Array()
 
     const postCategorySchema = Joi.object().keys({ 
         label : Joi.string().required(),
         image:Joi.string().required(),
         description:Joi.string().required(),
-        fk_id_client:Joi.number().required()
     })
 
     const result = postCategorySchema.validate(req.body)
@@ -74,23 +76,48 @@ exports.addCategory = (req,res) =>{
     if (!valid) {
       res.status(400).json({ 
         message: 'Missing required parameters',
-        info: 'Requires: label, image, description, fk_id_client' 
+        info: 'Requires: label, image, description' 
       })
     }
 
     else {
-        
-        Model.Categories.create({
-        label : label,
-        image:image,
-        description:description,
-        fk_id_client:fk_id_client
-    })
 
-    .then(category => res.status(200).json(category))
-    .catch(error => res.status(400).json(error))
+        Model.Categories.findAll()
+        .then(allCategories => {
+            Model.Categories.count()
+            .then(numberOfCategories => {
+                for (let i=0;i<numberOfCategories;i++){
+                    list_label.push(allCategories[i].label)
+                }
 
-    }    
+                if(list_label.includes(label)){
+                    res.status(400).json({
+                        message:"Category with this label already exists"
+                    })
+                }
+
+                else {
+
+                    Model.Client.findOne({
+                        where:{
+                            id_client:req.user.fk_id_client
+                        }
+                    })
+                    .then(client => {
+                        Model.Categories.create({
+                        label : label,
+                        image:image,
+                        description:description,
+                        fk_id_client:client.id_client
+                    })
+
+                    .then(category => res.status(200).json(category)) 
+                    .catch(error => res.status(400).json(error))
+                    })
+                }
+            })
+        })
+    }
 }
 
 
@@ -114,18 +141,25 @@ exports.editCategory =(req,res) => {
         const editCategorySchema = Joi.object().keys({ 
             label: Joi.string(),
             image: Joi.string(),
-            description: Joi.string(), 
+            description: Joi.string().allow(""), 
         })
 
         const result = editCategorySchema.validate(req.body)
 
         const {error } = result; 
         const valid = error == null; 
+
         if (!valid) { 
           res.status(400).json({ 
             message: 'One or more fields are not well written', 
           }) 
-        } 
+        }
+        
+       else if(Object.keys(req.body).length == 0){
+            res.status(400).json({
+                message:"No parameters were passed"
+            })
+        }
         
         else { 
             Model.Categories.update({
@@ -136,14 +170,20 @@ exports.editCategory =(req,res) => {
             {
                 where : {
                     id_category: req.params.id
-                }
+                },
+                returning:true,
+              
             })
-            .then(res.send("Modification apply"))
+            .then(res.status(200).json({
+                message:"Item has been updated"
+            }))
+            .catch(error => console.log(error))
+
+            
         }
     })
     
-    .catch(error => console.log(error))
-
+    
 }
 
 
@@ -165,8 +205,11 @@ exports.deleteCategory = (req,res) => {
                 where: {
                     id_category: req.params.id
                 }
-            }).then(res.send(`Category with id : ${req.params.id} has been deleted`))
-        }
+            })
+            .then(res.status(400).json({
+                message:`Category with id : ${req.params.id} has been deleted`
+            })
+        )}
 
     )
     .catch(error => res.status(400).json(error))

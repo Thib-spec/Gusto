@@ -1,9 +1,6 @@
 const Model = require("../database/models");
 const Joi = require('joi');
 
-// const Model = {
-//     Categories: require("../database/models/categories")(),           // config pour que l'ide propose les fonctions possibles
-// }
 
 exports.listProducts = (req, res) => {
     Model.Products.findAll()
@@ -39,6 +36,7 @@ exports.addProduct = (req,res) =>{
     const {label, image, price, ubd, description, fk_id_category } = req.body
 
     const fk_category_list = new Array()
+    const prodLabel = new Array()
 
     const postProductSchema = Joi.object().keys({ 
         label : Joi.string().required(),
@@ -58,15 +56,13 @@ exports.addProduct = (req,res) =>{
     if (!valid) {
       res.status(400).json({ 
         message: 'Missing required parameters or parameters type are incorrect',
-        info: 'Requires: label, image, price, quantity, quantity_min, quantity_max, ubd, description, fk_id_category /n' 
+        info: 'Requires: label, image, price, ubd, description, fk_id_category' 
       })
     }
 
     else {
 
-        Model.Categories.findAll({
-            attributes:["id_category"]
-        })
+        Model.Categories.findAll()
 
         .then(allCategories => {
             Model.Categories.count()
@@ -82,23 +78,41 @@ exports.addProduct = (req,res) =>{
                 }
 
                 else {
-                    Model.Products.create({
-                        label : label,
-                        image:image,
-                        price:price,
-                        ubd:ubd,
-                        description:description,
-                        fk_id_category:fk_id_category
-                    })
-                
-                    .then(product => res.status(200).json(product))
 
+                    Model.Products.findAll()
+                    .then(allproducts => {
+                        Model.Products.count()
+                        .then(numberOfProduct => {
+                            for(let i =0;i<numberOfProduct;i++){
+                                prodLabel.push(allproducts[i].label)
+                            }
+
+                            if(prodLabel.includes(label)){
+                                res.status(400).json({
+                                    message: "This label alredy exists"
+                                })
+                            }
+
+                            else {
+                                Model.Products.create({
+                                    label : label,
+                                    image:image,
+                                    price:price,
+                                    ubd:ubd,
+                                    description:description,
+                                    fk_id_category:fk_id_category
+                                })
+                
+                                .then(product => res.status(200).json(product))
+                                .catch(error => res.status(400).json(error))
+
+                            }
+                        })
+                    })
+                   
                 }
             })
         })
-
-    .catch(error => res.status(400).json(error))
-
     }
 }
 
@@ -124,19 +138,25 @@ exports.editProduct =(req,res) => {
             image:Joi.string(),
             price:Joi.number(),
             ubd:Joi.string(),
-            description:Joi.string(),
+            description:Joi.string().allow("")
         })
 
         const result = editProductSchema.validate(req.body)
 
         const {error } = result; 
-        const valid = error == null; 
+        const valid = error == null;
+
         if (!valid) { 
           res.status(400).json({ 
             message: 'One or more fields are not well written', 
           }) 
-        } 
-        
+        }
+
+        else if(Object.keys(req.body).length == 0){
+            res.status(400).json({
+                message:"No parameters were passed"
+            })
+        }
         else { 
             Model.Products.update({
                 label : label,
@@ -150,11 +170,14 @@ exports.editProduct =(req,res) => {
                     id_product: req.params.id
                 }
             })
-            .then(res.send("Modification apply"))
+            .then(res.status(200).json({
+                message: "Item has been updated"})
+            )  
+            .catch(error => res.status(400).json(error))
         }
     })
     
-    .catch(error => console.log(error))
+  
 
 }
 
@@ -172,14 +195,18 @@ exports.deleteProduct = (req,res) => {
                 message: 'Product does not exist',
             });
         }
-    Model.Products
-            .destroy({
+
+        else {
+            Model.Products.destroy({
                 where: {
                     id_product: req.params.id
                 }
-            }).then(res.send(`Product with id : ${req.params.id} has been deleted`))
+            })
+            .then(res.status(200).json({
+                message:`Product with id : ${req.params.id} has been deleted`})
+            )
+            .catch(error => res.status(400).json(error))
         }
-
-    )
-    .catch(error => res.status(400).json(error))
+    })
+    
 }
