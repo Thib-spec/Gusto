@@ -37,7 +37,7 @@ export default function CategorieinProductDropDown(props){
                 <div>
                 {allProducts.map((product) => (
                     product.fk_id_category==props.categorie.id_category?
-                        <ProductDropDownComponent product={product} key={product.id_product}/>
+                        <ProductDropDownComponent product={product} key={product.id_product} id_category={props.categorie.id_category}/>
                     :false
                 ))}
                 </div>

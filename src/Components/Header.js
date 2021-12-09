@@ -15,17 +15,21 @@ import userActions from "store/actions/userActions";
 import HeaderProfil from "./HeaderProfil";
 
 export default function Header() {
-  const [over, setover] = useState(false);
+  const [open, setopen] = useState(false);
   const [path, setpath] = useState("Accueil");
 
   const user = useSelector((state) => state.user.value);
   const dispatch = useDispatch();
 
-  function onOver() {
-    setover(true);
+  function onOver(){
+    setopen(true);
   }
-  function onNotOver() {
-    setover(false);
+  function onNotOver(){
+    setopen(false);
+  }
+
+  function onClicked(){
+    setopen(!open)
   }
 
   let history = useHistory();
@@ -104,10 +108,11 @@ export default function Header() {
           className="header-bottom-menuIcone"
           onMouseEnter={onOver}
           onMouseLeave={onNotOver}
+          onClick={()=>onClicked()}
         />
         <div className="header-bottom-path">{path}</div>
       </div>
-      {over ? (
+      {open ? (
         <div
           className="header-bottom-menuList"
           onMouseEnter={onOver}
