@@ -20,7 +20,6 @@ module.exports = ({passport, models})=>{
     }
 
 	passport.use(new JwtStrategy(opts, async (jwtPayload, done) =>{
-		console.log("test")
 		/*
 		jwt de la forme :
 		{

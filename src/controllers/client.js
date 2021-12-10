@@ -107,6 +107,7 @@ const Joi = require('joi');
 
     exports.addClient = (req,res) =>{
         const {label} = req.body;
+        const list_label = new Array()
 
 
        const postClientSchema = Joi.object().keys({ 
@@ -120,24 +121,42 @@ const Joi = require('joi');
         const valid = error == null;
 
         if (!valid) {
-        res.status(400).json({ 
-            message: 'Missing required parameters',
-            info: 'Requires: label' 
-        })
+            res.status(400).json({ 
+                message: 'Missing required parameters',
+                info: 'Requires: label' 
+            })
         }
 
     
 
         else {
 
-        Model.Client.create({
-            label: label
-        })
-        
-        .then(client => res.status(200).json(client))
-        .catch(error => res.status(400).json(error))
+            Model.Client.findAll()
+            .then(allClient => {
+                Model.Client.count()
+                .then(numberOfClient => {
+                    for(let i =0;i<numberOfClient;i++){
+                        list_label.push(allClient[i].label)
+                    }
+
+                    if(list_label.includes(label)){
+                        res.status(400).json({
+                            message:"Client with this label already exists"
+                        })
+                    }
+
+                    else {
+                        Model.Client.create({
+                            label: label
+                        })
+            
+                        .then(client => res.status(200).json(client))
+                        .catch(error => res.status(400).json(error))
+                    }
+                })
+            })   
         }
-}
+    }
 
 
 exports.editClient = (req,res) => {
@@ -172,7 +191,7 @@ exports.editClient = (req,res) => {
           }) 
         }
         
-        if(Object.keys(req.body).length == 0){
+       else if(Object.keys(req.body).length == 0){
             res.status(400).json({
                 message:"No parameters were passed"
             })
@@ -187,7 +206,9 @@ exports.editClient = (req,res) => {
                     id_client: req.params.id
                 }
             })
-            return res.send("Modification apply")
+            return res.status(200).json({
+                message:"Item has been updated"
+            })
         }
     })
     
@@ -208,14 +229,15 @@ exports.deleteClient = (req,res) => {
                         message: 'Client not found',
                     });
                 }
-            Model.Client
-                    .destroy({
-                        where: {
-                            id_client: req.params.id
-                        }
-                    }).then(() => res.send(`Client with id : ${req.params.id} has been deleted`))
-                }
-
-            )
-            .catch(error => res.status(400).json(error))
+                Model.Client.destroy({
+                            where: {
+                                id_client: req.params.id
+                            }
+                        })
+                        .then(res.status(200).json({
+                            message:`Client with id : ${req.params.id} has been deleted`
+                        }))
+                        .catch(error => res.status(400).json(error))
+            })
+            
         }
