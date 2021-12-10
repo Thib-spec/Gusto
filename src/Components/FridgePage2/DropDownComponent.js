@@ -6,6 +6,8 @@ import unfold from "Images/unfold.svg";
 import React, { Component, useState, useContext, createContext } from "react";
 import "CSS/FridgeDropDownCoponent.scss";
 
+import Value from "helpers/Value";
+
 import InfoContext from "Context/FridgeInfoContext";
 import { useTranslation } from "react-i18next";
 
@@ -29,10 +31,11 @@ export default function DropDownComponent({ fridge, children }) {
   }
 
   const [bgColor, setBgColor] = useState(chooseColor());
+  const presetChosen = new Value(useState({ id: -1, name: "Choose a Preset" }));
 
   return (
     <>
-      <InfoContext.Provider value={fridge}>
+      <InfoContext.Provider value={{ fridge, presetChosen }}>
         <div className="list-element">
           {open === true ? (
             <div>
