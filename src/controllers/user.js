@@ -3,20 +3,13 @@ const Model = require("../database/models");
 const security = require("../helpers/security")
 const Joi = require('joi');
 
-// const Model = {
-//     Users: require("../database/models/users")(),           // config pour que l'ide propose les fonctions possibles
-// }
 
     exports.listUsers = (req, res) => {
         Model.Users.findAll({
             include:{all: true}
                 
         })
-
         .then(user =>res.json(user))
-        
-           
-        
         .catch(error => res.status(400).json(error))
     }
 
@@ -96,9 +89,10 @@ const Joi = require('joi');
                 })
 
                 .then(nationality => res.status(200).json(nationality))
+                .catch(error => res.status(400).json(error))
             }
         })
-        .catch(error => res.status(400).json(error))
+        
     }
 
 
@@ -108,6 +102,9 @@ const Joi = require('joi');
 
         const fk_level_list = new Array()
         const fk_client_list = new Array()
+        const fk_nationality_list = new Array()
+
+        const email_list = new Array()
 
        // Check email format 
        if(!email.match("^.{1,}@[^.]{1,}")){
@@ -116,6 +113,9 @@ const Joi = require('joi');
                info:"email must match following pattern : abc@gmail.com"
            })
        }
+
+   
+
 
        const postUserSchema = Joi.object().keys({ 
         firstname: Joi.string().required(),
@@ -141,9 +141,7 @@ const Joi = require('joi');
       })
     }
 
-    Model.Levels.findAll({
-        attributes:["id_level"]
-    })
+    Model.Levels.findAll()
     .then(allLevels => {
         Model.Levels.count()
         .then(numberOfLevel => {
@@ -151,9 +149,7 @@ const Joi = require('joi');
                 fk_level_list.push(allLevels[i].id_level)
             }
 
-            Model.Client.findAll({
-                attributes:["id_client"]
-            })
+            Model.Client.findAll()
             .then(allClients => {
                 Model.Client.count()
                 .then(numberOfClient => {
@@ -161,35 +157,67 @@ const Joi = require('joi');
                         fk_client_list.push(allClients[j].id_client)
                     }
 
-                    if(!fk_level_list.includes(fk_id_level)){
-                        return res.status(400).json({
-                            message:"fk_id_level does not match any id_level"
-                        })
-                    }
+                    Model.Nationalities.findAll()
+                    .then(allNationalities => {
+                        Model.Nationalities.count()
+                        .then(numberOfNationalities => {
+                            for(let i =0;i<numberOfNationalities;i++){
+                                fk_nationality_list.push(allNationalities[i].id_nationality)
+                            }
 
-                    else if(!fk_client_list.includes(fk_id_client)){
-                        return res.status(400).json({
-                            message:"fk_id_client does not match any id_client"
-                        })
-                    }
+                            Model.Users.findAll()
+                            .then(allUser => {
+                                Model.Users.count()
+                                .then(numberOfUser => {
+                                    for(let i =0;i<numberOfUser;i++){
+                                        email_list.push(allUser[i].email)
+                                    }
 
-                    else {
-                        Model.Users.create({
-                            firstname: firstname,
-                            lastname:lastname,
-                            email:email,
-                            image:image,
-                            password:password,
-                            fk_id_client:fk_id_client,
-                            fk_id_level:fk_id_level,
-                            fk_id_nationality:fk_id_nationality
-                        })
+                                    if(email_list.includes(email)){
+                                        res.status(400).json({
+                                            message:"Email is already taken"
+                                        })
+                                    }
+
+                                    else if(!fk_level_list.includes(fk_id_level)){
+                                        return res.status(400).json({
+                                            message:"fk_id_level does not match any id_level"
+                                        })
+                                    }
+                
+                                    else if(!fk_client_list.includes(fk_id_client)){
+                                        return res.status(400).json({
+                                            message:"fk_id_client does not match any id_client"
+                                        })
+                                    }
+        
+                                    else if (!fk_nationality_list.includes(fk_id_nationality)){
+                                        res.status(400).json({
+                                            message: "fk_id_nationality does not match any id_nationality"
+                                        })
+                                    }
+                
+                                    else {
+                                        Model.Users.create({
+                                            firstname: firstname,
+                                            lastname:lastname,
+                                            email:email,
+                                            image:image,
+                                            password:password,
+                                            fk_id_client:fk_id_client,
+                                            fk_id_level:fk_id_level,
+                                            fk_id_nationality:fk_id_nationality
+                                        })
+                                        
+                                        .then(user => res.status(200).json(user))
+                
+                                    }
+                                })
+                            })
+
                         
-                        .then(user => res.status(200).json(user))
-
-                    }
-
-                   
+                        })
+                    })
                 })
             })
         })
@@ -201,6 +229,8 @@ const Joi = require('joi');
 
 exports.editUser = (req,res) => {
     const { firstname, lastname, email, image} = req.body;
+    const email_list = new Array()
+
 
     Model.Users.findOne({
         where: {
@@ -218,125 +248,169 @@ exports.editUser = (req,res) => {
         const editUserSchema = Joi.object().keys({ 
             firstname: Joi.string(),
             lastname: Joi.string(),
-            email: Joi.string().email(), 
+            email: Joi.string(), 
             image:Joi.string(),
         })
 
         const result = editUserSchema.validate(req.body)
 
         const {error } = result; 
-        const valid = error == null; 
+        const valid = error == null;
+
         if (!valid) { 
           res.status(400).json({ 
             message: 'One or more fields are not well written', 
           }) 
-        } 
+        }
         
-        else { 
-            Model.Users.update({
-                firstname: firstname,
-                lastname: lastname,
-                email: email,
-                image:image,
-            },
-            {
-                where : {
-                    id_user: req.params.id
-                }
+
+        else {
+            Model.Users.findAll()
+            .then(alluser => {
+                Model.Users.count()
+                .then(numberOfUser => {
+                    for(let i =0;i<numberOfUser;i++){
+                        email_list.push(alluser[i].email)
+                    }
+
+                    if(email_list.includes(email)){
+                        res.status(400).json({
+                            message:"Email is already taken"
+                        })
+                    }
+
+                    else if(Object.keys(req.body).length == 0){
+                        res.status(400).json({
+                            message:"No parameters were passed"
+                        })
+                    }
+
+                    else if(!email.match("^.{1,}@[^.]{1,}")){
+                        return res.status(400).json({
+                            message: "Invalid format for email",
+                            info:"email must match following pattern : abc@gmail.com"
+                        })
+                    }
+
+                    else {
+                        Model.Users.update({
+                            firstname: firstname,
+                            lastname: lastname,
+                            email: email,
+                            image:image,
+                        },
+                        {
+                            where : {
+                                id_user: req.params.id
+                            }
+                        })
+                        res.status(200).json({
+                            message:"Item has been updated"
+                        })
+                        
+                    }
+                })
             })
-            return res.send("Modification apply")
+            .catch(error => console.log(error))
         }
     })
     
-    .catch(error => console.log(error))
+    
 }
         
 
 exports.deleteUser = (req,res) => {
     
-            Model.Users.findOne({
+    Model.Users.findOne({
+        where: {
+            id_user: req.params.id
+        }
+    })
+    .then((user) => {
+        if (!user) {
+            return res.status(400).json({
+                message: 'User not found',
+            });
+        }
+
+        else {
+            Model.Users.destroy({
                 where: {
                     id_user: req.params.id
                 }
             })
-            .then((user) => {
-                if (!user) {
-                    return res.status(400).json({
-                        message: 'User not found',
-                    });
-                }
-            Model.Users
-                    .destroy({
-                        where: {
-                            id_user: req.params.id
-                        }
-                    }).then(() => res.send(`User with id : ${req.params.id} has been deleted`))
-                }
-
+            .then(res.status(200).json({
+                message: `User with id : ${req.params.id} has been deleted`})
             )
-            .catch(error => res.status(400).json(error))
         }
 
+    })
+    .catch(error => res.status(400).json(error))
+
+}
+           
+        
 
 
-        exports.login = (req,res) => {
-            const { email,password} = req.body
 
-            Model.Users.findOne({
-                where:{
-                    email:email,
-                },
-                include:{all: true}
+exports.login = (req,res) => {
+    const { email,password} = req.body
+
+    Model.Users.findOne({
+        where:{
+            email:email,
+        },
+        include:{all: true}
+    })
+    .then((user) => {
+        if (!user) {
+            return res.status(400).json({
+                message: 'User not found',
             })
-            .then((user) => {
-                if (!user) {
-                    return res.status(400).json({
-                        message: 'User not found',
-                    })
-                }
-                
-                else if (security.bcryptCompareSync(password, user.password)){
-                    user.createSession()
-                    .then(session=> {
-    
-                        const token = security.jwtGenTokenSync({
-                        sub: user.id_user,
-                        sessionId:session.id_session,
-                        expiresIn: 3600, // en seconde
-                        })
+        }
+        
+        else if (security.bcryptCompareSync(password, user.password)){
+            user.createSession()
+            .then(session=> {
 
-                        res.status(200).json({...JSON.parse(JSON.stringify(user)),token})
-                    })
-                    .catch(error => console.log(error))
-                }
+                const token = security.jwtGenTokenSync({
+                sub: user.id_user,
+                sessionId:session.id_session,
+                expiresIn: 3600, // en seconde
+                })
 
-                else{
-                    res.status(400).json("password or email is incorrect")
-                }
+                res.status(200).json({...JSON.parse(JSON.stringify(user)),token})
             })
             .catch(error => console.log(error))
-               
         }
 
-
-        exports.logout = (req,res) =>{
-            const user = req.user
-            const sessions = user.session
-            sessions.destroy()
-            .then(res.status(200).json("User has been deconnected"))
-            .catch(error => res.json(error))
+        else{
+            res.status(400).json("password or email is incorrect")
         }
+    })
+    .catch(error => console.log(error))
+        
+}
 
-        exports.userInfo = (req,res) => {
-            Model.Users.findOne({
-                include:{all:true},
-                where:{
-                    id_user:req.user.id_user
-                }
-            })
-            .then(user =>  res.status(200).json(user))
-           
+
+exports.logout = (req,res) =>{
+    const user = req.user
+    const sessions = user.session
+    sessions.destroy()
+    .then(res.status(200).json("User has been deconnected"))
+    .catch(error => res.json(error))
+}
+
+exports.userInfo = (req,res) => {
+    Model.Users.findOne({
+        include:{all:true},
+        where:{
+            id_user:req.user.id_user
         }
+    })
+    .then(user =>  res.status(200).json(user))
+    
+}
 
 
 

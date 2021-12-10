@@ -6,6 +6,7 @@ module.exports = (sequelize) => {
         static associate(models){
             
             FridgePresets.belongsToMany(models.Menus, {
+                as:"menus",
                 through: "fridgePresets_menus",
                 foreignKey: "fk_id_fridgePreset",
             });
