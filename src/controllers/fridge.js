@@ -42,10 +42,7 @@ exports.listProductByFridge = (req,res) =>{
         },
         include:[{
             model:Model.Products,
-        include:[{
-            model:Model.FridgePresets
         }]
-    }]
 })
     
     .then(fridge =>{
@@ -667,12 +664,12 @@ exports.editFridge =(req,res) => {
             .then(res.status(200).json({
                 message:"Item has been updated"})
             )
-            .catch(error => console.log(error))
+            .catch(error => res.status(400).json(error))
 
         }
     })
     
-    .catch(error => console.log(error))
+    .catch(error => res.status(400).json(error))
 
 }
 

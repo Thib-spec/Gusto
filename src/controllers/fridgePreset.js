@@ -560,3 +560,161 @@ exports.removeProduct = (req,res) =>{
     .catch(error => console.log(error))
   
 }
+
+
+exports.getMenuByFridgePreset = (req,res) =>{
+    Model.FridgePresets.findOne({
+        where:{
+            id_fridgePresets:req.params.id
+        },
+    })
+    .then(preset =>{
+
+        if(!preset){
+            res.status(400).json({
+                message: "FridgePreset does not exists"
+            })
+        }
+
+        else {
+            preset.getMenus()
+            .then(menus => {
+                if(menus.length == 0){
+                    res.status(400).json({
+                        message: `FridgePreset ${req.params.id} does not have any menu`
+                    })
+                }
+
+                else {
+                    res.status(200).json(menus)
+                }
+            })   
+            .catch(error => res.status(400).json(error))
+        }
+    })
+    .catch(error => res.status(400).json(error))
+}
+
+exports.addMenuInPreset = (req,res) =>{
+    // verif fk dans intervalle
+
+    const {fk_id_menu} = req.body
+    const list_fk_menu = new Array()
+
+    const postMenuSchema = Joi.object().keys({ 
+        fk_id_menu: Joi.number().required()
+    })
+
+    const result = postMenuSchema.validate(req.body)
+
+    const {error } = result; 
+    const valid = error == null; 
+
+    Model.FridgePresets.findOne({
+        where:{
+            id_fridgePresets:req.params.id
+        },
+    })
+    .then(preset =>{
+
+        if(!preset){
+            res.status(400).json({
+                message: "FridgePreset does not exists"
+            })
+        }
+
+        else {
+            Model.Menus.findAll()
+            .then(allMenus => {
+                Model.Menus.count()
+                .then(numberOfMenu => {
+                    for(let i =0;i<numberOfMenu;i++){
+                        list_fk_menu.push(allMenus[i].id_menu)
+                    }
+                    
+                    if (req.body instanceof Array){
+                        for(let i=0;i<req.body.length;i++){
+                            preset.addMenus(req.body[i].fk_id_menu)
+                            
+                        }
+                        res.status(200).json({
+                            message:`Menus have been added to fridgePreset ${req.params.id}`
+                        })
+                         
+                    }
+              
+                    else {
+                        if(!list_fk_menu.includes(fk_id_menu)){
+                            res.status(400).json({
+                                message:"fk_id_menu does not match any id_menu"
+                            })
+                        }
+
+                        else if(!valid){
+                            res.status(400).json({
+                                message: 'Missing required parameters',
+                                info: 'Requires: fk_id_menu'
+                            })
+                        }
+
+                        else {
+                            preset.addMenus(fk_id_menu)
+                            .then(res.status(200).json(`Menu ${fk_id_menu} has been added to FridgePreset ${req.params.id}`))
+                            .catch(error => res.status(400).json(error))
+                        }
+
+                    }
+
+                    
+                })
+            })
+        }
+    })
+    
+}
+
+exports.removeMenuPreset = (req,res) => {
+    const list_fk_menu = new Array()
+
+    // vérif que le fridge Preset contienne bien le menu ciblé
+    Model.FridgePresets.findOne({
+        where:{
+            id_fridgePresets: req.params.id
+        }
+    })
+    .then(preset => {
+        if(!preset){
+            res.status(400).json({
+                message : "FridgePreset does not exists"
+            })
+        }
+
+        else {
+            Model.Menus.findAll()
+            .then(allMenus => {
+                Model.Menus.count()
+                .then(numberOfMenus => {
+                    for(let i =0; i< numberOfMenus;i++){
+                        list_fk_menu.push(allMenus[i].id_menu)
+                    }
+
+                    if(!list_fk_menu.includes(Number(req.params.menuId))){
+                        res.status(400).json({
+                            message:"fk_id_menu does not match any id_menu"
+                        })
+                    }
+
+                    else {
+                        preset.removeMenus(req.params.menuId)
+                        .then(res.status(200).json({
+                            message:"Deletion completed"
+                        }))
+
+                    }
+                })
+            })
+
+        }
+    })
+
+}
