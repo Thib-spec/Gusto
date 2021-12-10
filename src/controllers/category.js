@@ -206,7 +206,7 @@ exports.deleteCategory = (req,res) => {
                     id_category: req.params.id
                 }
             })
-            .then(res.status(400).json({
+            .then(res.status(200).json({
                 message:`Category with id : ${req.params.id} has been deleted`
             })
         )}

@@ -36,12 +36,13 @@ exports.getTagById = (req,res) => {
 }
 
 exports.addTag = (req,res) =>{
-    const {fk_id_product,fk_id_client} = req.body
+    const {id_tag,fk_id_product,fk_id_client} = req.body
 
     const list_fk_product = new Array()
     const list_fk_client = new Array()
 
-    const postTagSchema = Joi.object().keys({ 
+    const postTagSchema = Joi.object().keys({
+        id_tag:Joi.number().required(), 
         fk_id_product : Joi.number().required(),
         fk_id_client: Joi.number().required()
     })
@@ -55,7 +56,7 @@ exports.addTag = (req,res) =>{
     if (!valid) {
       res.status(400).json({ 
         message: 'Missing required parameters or parameters type are incorrect',
-        info: 'Requires: fk_id_product, fk_id_client' 
+        info: 'Requires: id_tag, fk_id_product, fk_id_client' 
       })
     }
 
@@ -91,6 +92,7 @@ exports.addTag = (req,res) =>{
 
                         else {
                             Model.Tags.create({
+                                id_tag:id_tag.toUpperCase(),
                                 fk_id_product : fk_id_product,
                                 fk_id_client: fk_id_client
                             })
