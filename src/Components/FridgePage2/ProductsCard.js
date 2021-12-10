@@ -27,8 +27,8 @@ export default function ProductsCard({ name }) {
   // produits ajoutés dans le frigo
   const products = new ArrayController(useState([]), useState([]));
   const productsInPreset = new ArrayController(useState([]), useState([]));
-  const { getAllProducts, presetChosen } = useContext(DropDownContext);
-  const fridge = useContext(InfoContext);
+  const { getAllProducts } = useContext(DropDownContext);
+  const { fridge, presetChosen } = useContext(InfoContext);
 
   useEffect(() => {
     getProductsInFridge();
