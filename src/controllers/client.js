@@ -1,8 +1,6 @@
 const Model = require("../database/models");
 const Joi = require('joi');
-// const Model = {
-//     Users: require("../database/models/users")(),           // config pour que l'ide propose les fonctions possibles
-// }
+
 
     exports.listClients = (req, res) => {
         Model.Client.findAll()

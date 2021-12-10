@@ -371,12 +371,6 @@ exports.addFrontProduct = (req,res) =>{
                                         }
                                     }
                                 }
-
-                                    
-        
-                                   
-                                
-
                                 
                             })
                         })   
