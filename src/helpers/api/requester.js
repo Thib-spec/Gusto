@@ -16,8 +16,14 @@ const requester = (thiss) => {
         "Content-Type": "application/json",
       },
     };
-    if (thiss.authToken instanceof String)
-      options.headers["Authorization"] = thiss.authToken;
+    const authToken = localStorage.getItem("authToken");
+    console.log("AAAAAAAAAAAAAA : ", authToken);
+    console.log("FFFFFFFFFFFFF : ", authToken instanceof String);
+    console.log("GGGGGGGGGGGG : ", typeof authToken);
+    if (typeof authToken == "string") {
+      console.log("BBBBBBBBBBB : ");
+      options.headers["Authorization"] = `Bearer ${authToken}`;
+    }
     // options.headers["Authorization"] = localStorage.getItem("authToken");
 
     if (body instanceof Object) options["body"] = JSON.stringify(body);
