@@ -27,7 +27,7 @@ export default function DropDownComponent({ fridge, children }) {
       ? "red"
       : fridge.status.livraison
       ? "yellow"
-      : "";
+      : "green";
   }
 
   const [bgColor, setBgColor] = useState(chooseColor());
