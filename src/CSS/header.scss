@@ -49,11 +49,13 @@
 }
 
 .header-top-profil-container{
-    height: 5em;
+    height: 4em;
     background-color: rgb(220, 220, 220);
     display: flex;
     flex-direction: row;
     justify-content:end;
+    margin-top: 0.5em;
+    margin-bottom: 0.5em;
 }
 
 .header-top-profil{

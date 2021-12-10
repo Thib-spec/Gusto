@@ -4,7 +4,6 @@ import axios from "axios"
 
 export default function LogSaleComponent({sale}){
 
-    console.log(sale)
 
 
     return(

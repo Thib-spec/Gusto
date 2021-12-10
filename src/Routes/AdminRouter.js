@@ -3,6 +3,7 @@ import Test2 from "Components/TestHistory2";
 import React, { Component, useState, useEffect } from "react";
 import "CSS/colors.css";
 import "CSS/loginPage.css";
+import MenusPage from "Pages/MenusPage";
 
 import {
   BrowserRouter as Router,
@@ -32,6 +33,7 @@ import PresetPage from "Pages/_PresetPage";
 import PresetPage2 from "Pages/PresetPage2";
 import useIsMounted from "helpers/useInMount";
 import { withTranslation, useTranslation } from "react-i18next";
+import MentionsLegales from "Pages/MentionsLegales";
 
 function AdminRouter({ history }) {
   const user = useSelector((state) => state.user.value);
@@ -99,15 +101,16 @@ function AdminRouter({ history }) {
   } else {
     if (user.isLogged) {
       return (
+        
         <>
-          <Header />
+          <Header/>
           {/* <HeaderL /> */}
           <Switch>
             <Route exact path="/" component={withTranslation()(HomePage)} />
             <Route
               path="/categories"
-              component={withTranslation()(CategoriesPage)}
-            />
+              
+            ><CategoriesPage user={user}/></Route>
             <Route
               path="/products"
               component={withTranslation()(ProductsPage)}
@@ -116,6 +119,12 @@ function AdminRouter({ history }) {
               path="/fridges"
               component={withTranslation()(FridgesPage4)}
             />
+            <Route
+              path="/menus"
+              component={withTranslation()(MenusPage)}
+            />
+            <Route path="/mentions" component={withTranslation()(MentionsLegales)}/>
+
             <Route path="/testHistory1" component={Test1} />
             <Route path="/testHistory2" component={Test2} />
             <Route path="/testData" component={TestData} />
@@ -133,7 +142,7 @@ function AdminRouter({ history }) {
             </Route>
             <Route path="/" component={withTranslation()(NotFoundPage)} />
           </Switch>
-          {/* <Footer/> */}
+        <Footer/> 
         </>
       );
     } else {

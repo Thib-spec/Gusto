@@ -19,7 +19,7 @@ export default function CategorieinProductDropDown(props){
             .catch((err) => console.log(err));
     }, [])
 
-    
+
 
      //open and close the dropdown on click
      const [open, setOpen] = useState(true);
@@ -37,7 +37,7 @@ export default function CategorieinProductDropDown(props){
                 <div>
                 {allProducts.map((product) => (
                     product.fk_id_category==props.categorie.id_category?
-                        <ProductDropDownComponent product={product} key={product.id_product}/>
+                        <ProductDropDownComponent product={product} key={product.id_product} id_category={props.categorie.id_category}/>
                     :false
                 ))}
                 </div>
