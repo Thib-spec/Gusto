@@ -1,9 +1,12 @@
 {
-  "language.french":"French",
-  "language.english":"English",
+  "language.french": "French",
+  "language.english": "English",
   "LoginPage.placeholder.email": "Email",
   "LoginPage.placeholder.password": "Password",
   "LoginPage.Text.stayConnected": "Stay connected ?",
   "LoginPage.Text.forgottenPassword": "Forgotten password ?",
-  "Button.connexion": "Connexion"
+  "Button.connexion": "Connexion",
+  "fridge.status.livraisonEnCours": "Delivery in progress",
+  "fridge.status.horsService": "Out of order",
+  "fridge.status.inProduction": "In production"
 }

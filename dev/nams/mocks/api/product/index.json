@@ -1,28 +1,25 @@
 [
   {
-    "id_product": 1,
+    "id_product": 11,
     "label": "Pomme",
     "fk_id_category": 1,
     "price": " 5,00€",
-    "quantity": 5,
     "ubd": "5 jours",
     "image": "/"
   },
   {
-    "id_product": 2,
+    "id_product": 12,
     "label": "Poire",
     "fk_id_category": 1,
     "price": "25,00€",
-    "quantity": 5,
     "ubd": "5 jours",
     "image": "/"
   },
   {
-    "id_product": 3,
+    "id_product": 0,
     "label": "Banane",
     "fk_id_category": 1,
     "price": " 3,00€",
-    "quantity": 5,
     "ubd": "5 jours",
     "image": "/"
   },
@@ -31,7 +28,6 @@
     "label": "Riz",
     "fk_id_category": 2,
     "price": " 5,00€",
-    "quantity": 5,
     "ubd": "5 jours",
     "image": "/"
   },
@@ -40,7 +36,6 @@
     "label": "Pate",
     "fk_id_category": 2,
     "price": " 5,00€",
-    "quantity": 5,
     "ubd": "5 jours",
     "image": "/"
   },
@@ -49,7 +44,6 @@
     "label": "Sandwich",
     "fk_id_category": 2,
     "price": " 5,00€",
-    "quantity": 5,
     "ubd": "5 jours",
     "image": "/"
   },
@@ -58,7 +52,6 @@
     "label": "Burger",
     "fk_id_category": 2,
     "price": " 5,99€",
-    "quantity": 5,
     "ubd": "5 jours",
     "image": "/"
   },
@@ -67,7 +60,6 @@
     "label": "Yahourt",
     "fk_id_category": 3,
     "price": " 5,56€",
-    "quantity": 5,
     "ubd": "5 jours",
     "image": "/"
   },
@@ -76,7 +68,6 @@
     "label": "Donuts",
     "fk_id_category": 3,
     "price": " 9,25€",
-    "quantity": 5,
     "ubd": "5 jours",
     "image": "/"
   },
@@ -85,7 +76,6 @@
     "label": "Eclair",
     "fk_id_category": 3,
     "price": "14,20€",
-    "quantity": 5,
     "ubd": "5 jours",
     "image": "/"
   }

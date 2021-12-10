@@ -19,7 +19,7 @@ export default function CategorieinProductDropDown(props){
             .catch((err) => console.log(err));
     }, [])
 
-    
+
 
      //open and close the dropdown on click
      const [open, setOpen] = useState(true);
