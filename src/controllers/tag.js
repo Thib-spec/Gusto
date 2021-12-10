@@ -35,8 +35,6 @@ exports.getTagById = (req,res) => {
     
 }
 
-// Verif avec les valeurs des fk
-
 exports.addTag = (req,res) =>{
     const {fk_id_product,fk_id_client} = req.body
 
@@ -117,6 +115,9 @@ exports.editTag =(req,res) => {
 
     const {fk_id_product,fk_id_client} = req.body
 
+    const list_fk_product = new Array()
+    const list_fk_client = new Array()
+
     Model.Tags.findOne({
         where: {
             id_tag: req.params.id
@@ -143,22 +144,68 @@ exports.editTag =(req,res) => {
           res.status(400).json({ 
             message: 'One or more fields are not well written', 
           }) 
-        } 
+        }
         
-        else { 
-            Model.Tags.update({
-                fk_id_product : fk_id_product,
-                fk_id_client:fk_id_client
-            },
-            {
-                where : {
-                    id_tag: req.params.id
-                }
+        else if(Object.keys(req.body).length == 0){
+            res.status(400).json({
+                message:"No parameters were passed"
             })
-            .then(res.send("Modification apply"))
+        }
+        
+        else {
+            
+            Model.Products.findAll()
+            .then(allProduct => {
+                Model.Products.count()
+                .then(numberOfProduct => {
+                    for(let i =0;i<numberOfProduct;i++){
+                        list_fk_product.push(allProduct[i].id_product)
+                    }
+
+                    Model.Client.findAll()
+                    .then(allClient => {
+                        Model.Client.count()
+                        .then(numberOfClient => {
+                            for(let j =0;j<numberOfClient;j++){
+                                list_fk_client.push(allClient[j].id_client)
+                            }
+
+                            if(!list_fk_client.includes(fk_id_client) && fk_id_client){
+                                res.status(400).json({
+                                    message: "fk_id_client does not match any id_client"
+                                })
+                            }
+
+                            else if (!list_fk_product.includes(fk_id_product)&& fk_id_product){
+                                res.status(400).json({
+                                    message: "fk_id_product does not match any id_product"
+                                })
+                            }
+
+                            else {
+                                Model.Tags.update({
+                                    fk_id_product : fk_id_product,
+                                    fk_id_client:fk_id_client
+                                },
+                                {
+                                    where : {
+                                        id_tag: req.params.id
+                                    }
+                                })
+                                .then(res.status(200).json({
+                                    message: "Item has been updated"})
+                                )
+                                .catch(error => res.status(400).json(error))
+                            }
+                        })
+                    })
+                })            
+            })
+
+          
         }
     })
     
-    .catch(error => console.log(error))
+    
 
 }
