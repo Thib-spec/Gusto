@@ -42,7 +42,7 @@ exports.addTag = (req,res) =>{
     const list_fk_client = new Array()
 
     const postTagSchema = Joi.object().keys({
-        id_tag:Joi.number().required(), 
+        id_tag:Joi.string().required(), 
         fk_id_product : Joi.number().required(),
         fk_id_client: Joi.number().required()
     })
