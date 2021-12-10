@@ -85,7 +85,6 @@ export default function FridgesPage() {
   const [allProducts, setAllProducts] = useState([]);
   const [allMenus, setAllMenus] = useState([]);
   const [allPresets, setAllPresets] = useState([]);
-  const presetChosen = new Value(useState({ id: -1, name: "Choose a Preset" }));
 
   return (
     <>
@@ -94,7 +93,6 @@ export default function FridgesPage() {
           allProducts: allProducts,
           allMenus: allMenus,
           allPresets: allPresets,
-          presetChosen,
         }}
       >
         <Page>

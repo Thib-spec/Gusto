@@ -7,8 +7,15 @@ const API = function ({ url, host, fake, ssl, port, authToken }) {
   this.port = port ? `:${port}` : "";
   this.url = url ? url : `${this.protocol}://${this.host}${this.port}`;
   this.fake = fake == true ? true : fake == false ? false : false;
-  this.authToken = authToken;
   this.requester = requester(this);
+};
+
+API.prototype.setAuthToken = function (authToken) {
+  this.authToken = authToken;
+};
+
+API.prototype.removeAuthToken = function () {
+  this.authToken = undefined;
 };
 
 // ---------- user ---------- //
@@ -221,5 +228,4 @@ API.prototype.updateMenuInPreset = function ({ id, idMenu, body } = {}) {
 // export default new API({ url: process.env.API_HOST, fake: true });
 export default new API({
   url: process.env.REACT_APP_API_URL,
-  authToken: localStorage.getItem("authToken"),
 });

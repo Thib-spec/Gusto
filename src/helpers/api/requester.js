@@ -16,8 +16,10 @@ const requester = (thiss) => {
         "Content-Type": "application/json",
       },
     };
-    if (thiss.authToken instanceof String)
-      options.headers["Authorization"] = thiss.authToken;
+    const authToken = localStorage.getItem("authToken");
+    if (typeof authToken == "string") {
+      options.headers["Authorization"] = `Bearer ${authToken}`;
+    }
     // options.headers["Authorization"] = localStorage.getItem("authToken");
 
     if (body instanceof Object) options["body"] = JSON.stringify(body);

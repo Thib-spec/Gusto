@@ -61,11 +61,15 @@ export default function CategorieDropDownComponent(props){
     //Delete categorie
 
     //when the client delete a categorie and confirm it, 
+    
+
     function handleDeleteCatégorie(){
         try{
+            console.log(props.categorie.id_category)
             axios.delete("http://api.gustosolutions.fr/api/category/"+props.categorie.id_category)
             .then((res) => {
-                console.log(res);
+                console.log("fg")
+                console.log("res : ",res);
                 window.location.reload(false);
             })
             .catch((err) => {

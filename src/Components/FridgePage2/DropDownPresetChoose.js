@@ -8,8 +8,8 @@ import DropDownContext from "Context/FridgeDropDownComponentContext";
 import Value from "helpers/Value";
 
 export default function DropDownPresetChoose({ label }) {
-  const fridge = useContext(InfoContext);
-  const { allPresets, presetChosen } = useContext(DropDownContext);
+  const { fridge, presetChosen } = useContext(InfoContext);
+  const { allPresets } = useContext(DropDownContext);
 
   const dropdownTitleChange = new Value(useState(false));
   const handleSave = () => {};
