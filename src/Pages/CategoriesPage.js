@@ -35,10 +35,11 @@ export default function CategoriesPage(){
     const[catégorieAdd,setCategorieAdd]=useState("")
     //when the client add a categorie and save it,
     function handleAddCatégorie(){
-
+        let token = localStorage.getItem("authToken")
+        console.log("TOKEN : ",token)
         let config = {
             headers: {
-              token: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjE2LCJzZXNzaW9uSWQiOjIsImV4cGlyZXNJbiI6MzYwMCwiaWF0IjoxNjM5MDYyNzU4fQ.WGlcp6yGfdeO_kgf_T8ARNC2whJi0V7O2mFteOARt7M",
+              "Authorization": "Bearer "+token,
             }
           }
         try{

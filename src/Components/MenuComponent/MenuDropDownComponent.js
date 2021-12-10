@@ -3,7 +3,9 @@ import axios from "axios"
 import fold from "../../Images/fold.svg"
 import unfold from "../../Images/unfold.svg"
 import "../../CSS/menuPage.scss"
-import ProductDropDownMenu from "./ProductDropDownMenu";
+import ProductMenu from "./ProductMenu";
+import ArrayController from "helpers/ArrayController/index";
+
 import ArrayControllerMenu from "helpers/ArrayController/ArrayControllerMenu";
 import {Modal, Button} from 'react-bootstrap'
 
@@ -17,9 +19,9 @@ export default function MenuDropDownComponent(props){
     const handleClose = () => setShow(false);
 
     const handleShow = () => {
+        
+        setnameMenuDel(props.menu.web_label)
         setShow(true);
-        setnameMenuDel(props.categorie.label)
-
    }
 
 
@@ -31,10 +33,11 @@ export default function MenuDropDownComponent(props){
     }
 
     const [allProductsInMenu, setallProductsInMenu] = useState([]);
-    // const allProductsInMenu2 = new ArrayController(useState([]),useState([]))
 
+
+    //const allProductsInMenu2 = new ArrayController(useState([]),useState([]))
     const allProductsInMenu2 = new ArrayControllerMenu(useState([]), useState([]));
-
+    console.log("all product in menu : ",allProductsInMenu2)
 
 
 
@@ -62,6 +65,7 @@ export default function MenuDropDownComponent(props){
 
     function handleDeleteMenu(){
         console.log("all products in menu : ",allProductsInMenu2)
+        console.log("all product in menu : ",allProductsInMenu2)
 
         allProductsInMenu2.reset()
 
@@ -77,7 +81,6 @@ export default function MenuDropDownComponent(props){
     }
 
     function handleSave(){
-        console.log("all products in menu : ",allProductsInMenu2)
         allProductsInMenu2.clear()
     }
 
@@ -85,7 +88,6 @@ export default function MenuDropDownComponent(props){
 
     return(
         <div className="menu-list-element">
-            {}
             {open===true?
                 <div>
                     <div className="menu-list-element-title-fold" onClick={() => handleOpen()}>
@@ -96,21 +98,21 @@ export default function MenuDropDownComponent(props){
                     </div>
                     <div className="menu-list-element-sub">
                         <div className="menu-list-element-sub-description">
-                           {allProductsInMenu2.value.map((product)=>
+                           {/* {allProductsInMenu2.value.map((product)=>
                            <div>
-                                <ProductDropDownMenu product={allProductsInMenu2.get(product.id_product)}/>
+                                <ProductMenu product={allProductsInMenu2.get()}/>
                             </div>
                             )
-                            }
-                            {/* {allProductsInMenu2.value.map((product)=>
+                            } */}
+                            {allProductsInMenu2.value.map((product)=>
                                 <div>
                                     {
-                                        console.log(product)
+                                        console.log("product : ",product.id_product)
                                     }
-                                <ProductDropDownMenu product2={allProductsInMenu2.get(product.id_product)}/>
+                                    <ProductMenu product2={allProductsInMenu2.get(product.id_product)}/>
                                 </div>
                             )
-                            } */}
+                            }
                         </div>
                         <div class="menu-list-element-sub-buttons ">
                             <button type="button" className="menu-list-element-sub-buttons-element btn btn-info" onClick={()=>handleSave()}>Enregistrer</button>
@@ -125,7 +127,7 @@ export default function MenuDropDownComponent(props){
                     <div className="menu-dot" ><img width="100%" src={unfold} alt=""/></div>
                 </div>
             }
-
+            
             <Modal show={show} onHide={handleClose}>
                 <Modal.Header closeButton>
                     <Modal.Title>Suppression</Modal.Title>
