@@ -94,6 +94,7 @@ export default function Header() {
           }`}</div>
         </div>
         <div className="header-top-profil-container">
+          {console.log("level : ",user.level.label)}
           <HeaderProfil
             lastName={user.lastName}
             firstName={user.firstName}
