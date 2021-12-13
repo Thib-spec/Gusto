@@ -34,6 +34,7 @@ import PresetPage2 from "Pages/PresetPage2";
 import useIsMounted from "helpers/useInMount";
 import { withTranslation, useTranslation } from "react-i18next";
 import MentionsLegales from "Pages/MentionsLegales";
+import "../CSS/main.scss"
 
 function AdminRouter({ history }) {
   const user = useSelector((state) => state.user.value);
@@ -102,15 +103,14 @@ function AdminRouter({ history }) {
     if (user.isLogged) {
       return (
         
-        <>
-          <Header/>
-          {/* <HeaderL /> */}
-          <Switch>
+        <div className="display-flex-column-space-between">
+          <div><Header/></div>
+          <div><Switch>
             <Route exact path="/" component={withTranslation()(HomePage)} />
             <Route
               path="/categories"
               
-            ><CategoriesPage user={user}/></Route>
+            ><CategoriesPage/></Route>
             <Route
               path="/products"
               component={withTranslation()(ProductsPage)}
@@ -137,13 +137,12 @@ function AdminRouter({ history }) {
                   state: {
                     from: `${location.pathname}`,
                   },
-                }}
-              ></Redirect>
+                }}></Redirect>
             </Route>
             <Route path="/" component={withTranslation()(NotFoundPage)} />
-          </Switch>
-        <Footer/> 
-        </>
+          </Switch></div>
+          <div><Footer/></div>
+        </div>
       );
     } else {
       return (

@@ -79,10 +79,11 @@ export default function FridgeLogsCard(props) {
               {logSales ? (
                 <div className="containerLogSales">
                   <div className="logs-title">
-                    <div className="logs-sales-date">Date</div>
-                    <div className="logs-sales-prix">Prix</div>
-                    <div className="logs-sales-produits">Produits</div>
+                    <div className="logs-sales-date">Horodatage</div>
+                    <div className="logs-sales-produits">Panier</div>
+                    <div className="logs-sales-prix">Montants</div>
                   </div>
+                  
                   <div className="logs-sales-content">
                     {sliceSales.map((sale) => (
                       <div key={sale.id_sale}>

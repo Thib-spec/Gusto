@@ -134,9 +134,9 @@ export default function Header() {
           <div className="header-bottom-menuList-button" onClick={handleMenus}>
             Menus
           </div>
-          <div className="header-bottom-menuList-button" onClick={handlePromo}>
+          {/* <div className="header-bottom-menuList-button" onClick={handlePromo}>
             Promotions
-          </div>
+          </div> */}
           <div
             className="header-bottom-menuList-button"
             onClick={handleProducts}

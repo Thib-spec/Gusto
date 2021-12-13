@@ -20,6 +20,7 @@
     display: flex;
     flex-direction: column;
     justify-content: center;
+   
 }
 
 .button-log{
@@ -41,6 +42,7 @@
     display: flex;
     flex-direction: row;
     justify-content: space-between;
+    
 }
 
 .logs-fridge-date{
@@ -57,18 +59,24 @@
 
 
 .logs-sales-date{
-    margin-left: 5%;
+    
     display: flex;
     align-items: center;
+    padding-left: 10%;
+    
+
 }
 
 .logs-sales-prix{
     display: flex;
-    align-items: center;
+    flex-direction: row;
+    justify-content: center;
+    width: 8em;
+    padding-right: 10%;
 }
 
 .logs-sales-produits{
-    margin-right: 10%;
+    width: 15em;
 }
 
 
@@ -95,12 +103,14 @@
     display: flex;
     flex-direction: row;
     justify-content: space-between;
+    align-items: center;
 }   
 
 .logs-sales-content-element-products{
     display: flex;
     flex-direction: column;
-    margin-right: 10%;
+    width: 15em;
+    align-items: center;
     
 }
 
