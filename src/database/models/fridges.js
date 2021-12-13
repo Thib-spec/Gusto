@@ -34,12 +34,6 @@ module.exports = (sequelize) => {
                 foreignKey:"fk_id_fridge",
             })
 
-            Fridges.belongsToMany(models.Menus,{
-                as:"menus",
-                through:"fridges_menus",
-                foreignKey:"fk_id_fridge"
-            })
-
             Fridges.belongsToMany(models.Nationalities,{
                 as: 'nationalities',
                 through:'fridges_nationalities',
