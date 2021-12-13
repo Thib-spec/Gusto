@@ -282,7 +282,19 @@ exports.addFrontProduct = (req,res) =>{
                                                     message:`Fridgepreset ${req.params.id} already contains product ${req.body[0].fk_id_product}`
                                                 })
                                             }
+
+                                            else {
+                                                Model.fridgePresets_products.create({
+                                                    quantity_max:req.body[0].quantity_max,
+                                                    quantity_min:req.body[0].quantity_min,
+                                                    fk_id_fridgePreset:req.params.id,
+                                                    fk_id_product:req.body[0].fk_id_product
+                                                })
+                                                .then(product => res.status(200).json(product))
+                                                .catch(error => res.status(400).json(error))
+                                            }
                                         }
+                                        
 
                                         else {
 
@@ -628,6 +640,7 @@ exports.addMenuInPreset = (req,res) =>{
                     
                     if (req.body instanceof Array){
                         for(let i=0;i<req.body.length;i++){
+                            console.log(req.body[i].fk_id_menu)
                             preset.addMenus(req.body[i].fk_id_menu)
                             
                         }
