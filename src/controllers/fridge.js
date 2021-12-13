@@ -138,38 +138,6 @@ exports.listBadgeByFridge = (req,res) => {
 
 
 
-exports.listMenuByFridge = (req,res) => {
-    Model.Fridges.findOne({
-        where:{
-            id_fridge : req.params.id
-        },
-    })
-
-    .then(fridge =>{
-        if (!fridge) {
-            res.status(400).json({
-                message: 'Fridge does not exist',
-            });
-        }
-
-        else {
-            fridge.getMenus()  
-            .then(menus =>{
-                if(menus.length == 0){
-                    return res.status(400).json({
-                        message:`Fridge with id ${req.params.id} does not have any menu`
-                    })
-                }
-
-                else {
-                    res.status(200).json(menus)
-                }
-            })
-            .catch(error => res.status(400).json(error))
-        }
-    })
-    .catch(error => res.status(400).json(error))
-}
 
 
 exports.listProductByOrderByFridge = (req,res) => {
@@ -539,12 +507,13 @@ exports.getFridgeById = (req,res) => {
 
 
 exports.addFridge = (req,res) =>{
-    const { label, fk_id_technologies, fk_id_fridgePreset} = req.body
+    const { id_fridge,label, fk_id_technologies, fk_id_fridgePreset} = req.body
 
     const fk_tech_list = new Array()
     const fk_fridgePresetList = new Array()
 
-    const postFridgeSchema = Joi.object().keys({ 
+    const postFridgeSchema = Joi.object().keys({
+        id_fridge: Joi.string().required(), 
         label : Joi.string().required(),
         fk_id_technologies:Joi.number().required(),
         fk_id_fridgePreset: Joi.number().required()
@@ -559,7 +528,7 @@ exports.addFridge = (req,res) =>{
     if (!valid) {
       res.status(400).json({ 
         message: 'Missing required parameters',
-        info: 'Requires: label, fk_id_technologies, fk_id_fridgePreset' 
+        info: 'Requires: id_fridge, label, fk_id_technologies, fk_id_fridgePreset' 
       })
     }
     else {
@@ -594,6 +563,7 @@ exports.addFridge = (req,res) =>{
 
                         else {
                             Model.Fridges.create({
+                                id_fridge: id_fridge.toUpperCase(),
                                 label : label,
                                 fk_id_technologies:fk_id_technologies,
                                 fk_id_fridgePreset:fk_id_fridgePreset

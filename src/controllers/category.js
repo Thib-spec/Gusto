@@ -39,7 +39,7 @@ exports.listProductByCategory = (req,res) => {
     .then(product => {
 
         if(product.length ==0){
-            res.status(200).json({
+            res.status(400).json({
                 message:`Category with id ${req.params.id} does not have any product or does not exists`
             })
         }
@@ -206,7 +206,7 @@ exports.deleteCategory = (req,res) => {
                     id_category: req.params.id
                 }
             })
-            .then(res.status(400).json({
+            .then(res.status(200).json({
                 message:`Category with id : ${req.params.id} has been deleted`
             })
         )}
