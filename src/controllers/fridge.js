@@ -75,7 +75,7 @@ exports.listClientByFridge = (req,res) => {
 
     .then(fridge =>{
         if (!fridge) {
-            return res.status(400).json({
+            return res.status(400).json(error)({
                 message: 'Fridge does not exist',
             });
         }
@@ -701,3 +701,130 @@ exports.deleteFridge = (req,res) => {
     .catch(error => res.status(400).json(error))
 }
 
+
+exports.addNationalitytoFridge = (req,res) =>{
+    const {fk_id_nationality} = req.body
+
+    const list_fk_nationalities = new Array()
+    const postLanguagetoFridgeSchema = Joi.object().keys({ 
+        fk_id_nationality : Joi.number().required()
+    })
+
+    const result = postLanguagetoFridgeSchema.validate(req.body)
+
+    const {error } = result;
+
+    const valid = error == null;
+
+    if (!valid) {
+      res.status(400).json({ 
+        message: 'Missing required parameters',
+        info: 'Requires: fk_id_nationality' 
+      })
+    }
+    else {
+
+            Model.Nationalities.findAll()
+            .then(allNationalities =>{
+                Model.Nationalities.count()
+                .then(numberofNationalities =>{
+                    for(let i=0;i<numberofNationalities;i++){
+                        list_fk_nationalities.push(allNationalities[i].id_nationality)
+                    }
+                    console.log(list_fk_nationalities)
+                    console.log(fk_id_nationality)
+
+                    if(!list_fk_nationalities.includes(fk_id_nationality)){
+                        return res.status(400).json({
+                            message:"fk_nationalities does not match any id_nationality"
+                        })
+                    }
+
+                    else {
+                        Model.Fridges.findOne({
+                            where:{
+                                id_fridge: req.params.id
+                            }
+                        })
+                        .then(fridge => {
+                            if(!fridge){
+                                return res.status(400).json({
+                                    message: 'Fridge does not exist'
+                                })
+                            }
+                            else{
+                                fridge.addNationalities(fk_id_nationality)
+                                .then(addedFridge => res.status(200).json(addedFridge))
+                            }
+                        })
+                        .catch(error => res.status(400).json(error))
+        
+                    }
+                })
+            })             
+            .catch(error => res.status(400).json(error))
+    }
+}
+
+
+exports.addBadgetoFridge = (req,res) =>{
+    const {fk_id_badge} = req.body
+
+    const list_fk_badges = new Array()
+    const postBadgetoFridgeSchema = Joi.object().keys({ 
+        fk_id_badge : Joi.number().required()
+    })
+
+    const result = postBadgetoFridgeSchema.validate(req.body)
+
+    const {error } = result;
+
+    const valid = error == null;
+
+    if (!valid) {
+      res.status(400).json({ 
+        message: 'Missing required parameters',
+        info: 'Requires: fk_id_badge' 
+      })
+    }
+    else {
+
+            Model.Badges.findAll()
+            .then(allBadges =>{
+                Model.Badges.count()
+                .then(numberofBadges =>{
+                    for(let i=0;i<numberofBadges;i++){
+                        list_fk_badges.push(allBadges[i].id_badge)
+                    }
+
+                    if(!list_fk_badges.includes(fk_id_badge)){
+                        return res.status(400).json({
+                            message:"fk_badges does not match any id_badge"
+                        })
+                    }
+
+                    else {
+                        Model.Badges.findOne({
+                            where:{
+                                id_badge: req.params.id
+                            }
+                        })
+                        .then(badge => {
+                            if(!badge){
+                                return res.status(400).json({
+                                    message: 'Fridge does not exist'
+                                })
+                            }
+                            else{
+                                fridge.addBadges(fk_id_badge)
+                                .then(addedBadge => res.status(200).json(addedBadge))
+                            }
+                        })
+                        .catch(error => res.status(400).json(error))
+        
+                    }
+                })
+            })             
+            .catch(error => res.status(400).json(error))
+    }
+}

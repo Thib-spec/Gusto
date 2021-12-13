@@ -16,6 +16,29 @@ servers:
   - url: 'http://localhost:3001/api'
   - url: 'https://api.gustosolutions'
 
+components:
+  securitySchemes:
+    bearerAuth:            # arbitrary name for the security scheme
+      type: http
+      scheme: bearer
+      bearerFormat: JWT 
+    bearerAuth2:            # arbitrary name for the security scheme
+      type: http
+      scheme: bearer
+      bearerFormat: JWT 
+    bearerAuth3:            # arbitrary name for the security scheme
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+    bearerAuth4:            # arbitrary name for the security scheme
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+    bearerAuth5:            # arbitrary name for the security scheme
+      type: http
+      scheme: bearer
+      bearerFormat: JWT 
+
 tags: [  
     
     {
@@ -91,6 +114,8 @@ paths:
                     fk_id_client: 8
 
       post:
+        security:
+          - bearerAuth3: []
         tags: [Category]
         summary: Add a category
         requestBody:
@@ -105,8 +130,6 @@ paths:
                     type: string
                   description:
                     type: string
-                  fk_id_client:
-                    type: integer
         responses:
           '200':    # status code
             description: The category added
@@ -184,7 +207,7 @@ paths:
             content:
               application/json:
                   example:
-                    message: "Modification apply"
+                    message: "item has been updated"
           '400':
             description: An error message
             content:
@@ -340,7 +363,7 @@ paths:
             content:
               application/json:
                   example:
-                    message: "Modification apply"
+                    message: "item has been updated"
           '400':
             description: An error message
             content:
@@ -458,6 +481,8 @@ paths:
                     type: string
                   fk_id_technologies:
                     type: integer
+                  fk_id_fridgePreset:
+                    type: integer
         responses:
           '200':    # status code
             description: The fridge added
@@ -519,13 +544,17 @@ paths:
                 properties:
                   label:
                     type: string
+                  fk_id_technologies:
+                    type: integer
+                  fk_id_fridgePreset:
+                    type: integer
         responses:
           '200':    # status code
             description: A successful message
             content:
               application/json:
                   example:
-                    message: "Modification apply"
+                    message: "item has been updated"
           '400':
             description: An error message
             content:
@@ -720,8 +749,10 @@ paths:
             application/json:
               schema: 
                 properties:
-                  ids:
-                    type: array
+                  quantity:
+                    type: integer
+                  fk_id_product:
+                    type: integer
         responses:
           '200':    # status code
             description: A successful message
@@ -800,7 +831,7 @@ paths:
               content:
                 application/json:
                     example:
-                      message: "Modification apply"
+                      message: "item has been updated"
             '400':
               description: An error message
               content:
@@ -983,7 +1014,7 @@ paths:
             content:
               application/json:
                   example:
-                    message: "Modification apply"
+                    message: "item has been updated"
           '400':
             description: An error message
             content:
@@ -1030,7 +1061,6 @@ paths:
                     firstname: jean
                     lastname: gusto
                     image : https://www.google.com/imgres?imgurl=https%3A%2F%2Fmedia.istockphoto.com
-                    user_language: fr
                     createdAt: 2021-11-26T13:38:27.000Z
                     updatedAt : 2021-11-26T13:38:27.000Z
                     fk_id_client: 2
@@ -1056,11 +1086,11 @@ paths:
                     type: string
                   image:
                     type: string
-                  user_language:
-                    type: string
                   fk_id_client:
                     type: integer
                   fk_id_level:
+                    type: integer
+                  fk_id_nationality:
                     type: integer
         responses:
           '200':    # status code
@@ -1074,7 +1104,6 @@ paths:
                     firstname: jean
                     lastname: gusto
                     image : https://www.google.com/imgres?imgurl=https%3A%2F%2Fmedia.istockphoto.com
-                    user_language: fr
                     createdAt: 2021-11-26T13:38:27.000Z
                     updatedAt : 2021-11-26T13:38:27.000Z
                     fk_id_client: 2
@@ -1108,7 +1137,6 @@ paths:
                     firstname: jean
                     lastname: gusto
                     image : https://www.google.com/imgres?imgurl=https%3A%2F%2Fmedia.istockphoto.com
-                    user_language: fr
                     createdAt: 2021-11-26T13:38:27.000Z
                     updatedAt : 2021-11-26T13:38:27.000Z
                     fk_id_client: 2
@@ -1146,11 +1174,11 @@ paths:
                     type: string
                   image:
                     type: string
-                  user_language:
-                    type: string
                   fk_id_client:
                     type: integer
                   fk_id_level:
+                    type: integer
+                  fk_id_nationality:
                     type: integer
         responses:
           '200':    # status code
@@ -1158,7 +1186,7 @@ paths:
             content:
               application/json:
                   example:
-                    message: "Modification apply"
+                    message: "item has been updated"
           '400':
             description: An error message
             content:
@@ -1211,7 +1239,6 @@ paths:
                     firstname: jean
                     lastname: gusto
                     image : https://www.google.com/imgres?imgurl=https%3A%2F%2Fmedia.istockphoto.com
-                    user_language: fr
                     createdAt: 2021-11-26T13:38:27.000Z
                     updatedAt : 2021-11-26T13:38:27.000Z
                     fk_id_client: 2
@@ -1225,6 +1252,8 @@ paths:
 
   /user/logout:
       get:
+        security:
+          - bearerAuth2: []
         tags: [User]
         summary: Returns the user that belongs to this logout.
         parameters:
@@ -1301,6 +1330,8 @@ paths:
 
   /user/userInfo:
       get:
+        security:
+          - bearerAuth: []
         tags: [User]
         summary: Returns the informations of the user.
         responses:
@@ -1340,6 +1371,8 @@ paths:
                   updatedAt : 2021-11-26T13:38:27.000Z
                   fk_id_client: 2
     post:
+      security:
+          - bearerAuth5: []
       tags: [Menu]
       summary: Add a menu
       requestBody:  
@@ -1355,8 +1388,6 @@ paths:
                 image:
                   type: string
                 price:
-                  type: string
-                fk_id_client:
                   type: integer
       responses:
         '200':    # status code
@@ -1434,15 +1465,13 @@ paths:
                     type: string
                   price:
                     type: string
-                  fk_id_client:
-                    type: integer
         responses:
           '200':    # status code
             description: A successful message
             content:
               application/json:
                   example:
-                    message: "Modification apply"
+                    message: "item has been updated"
           '400':
             description: An error message
             content:
@@ -1473,7 +1502,7 @@ paths:
                   example:
                     message: "Menu does not exists"
 
-  /menu/{id}/products:
+  /menu/{id}/product:
       get:
         tags: [Menu]
         summary: Returns all the products that belongs to this menu.
@@ -1529,7 +1558,40 @@ paths:
               application/json:
                   example:
                     id_product: 1
-                    label: fruits
+                    label: tomate
+                    image : https://www.google.com/imgres?imgurl=https%3A%2F%2Fmedia.istockphoto.com
+                    ubd : 01/07/2021
+                    description: some description
+                    createdAt: 2021-11-26T13:38:27.000Z
+                    updatedAt : 2021-11-26T13:38:27.000Z
+                    fk_id_category: 2
+
+  /menu/{id}/products:
+      post:
+        tags: [Menu]
+        summary: Add a product to a menu 
+        parameters:
+        - name: id
+          in: path
+          type: integer
+          required: true
+          description: Product of the menu.
+        requestBody:  
+          required: true
+          content:
+            application/json:
+              schema: 
+                properties:
+                  fk_id_product:
+                    type: integer
+        responses:
+          '200':    # status code
+            description: The menu added
+            content:
+              application/json:
+                  example:
+                    id_product: 1
+                    label: tomate
                     image : https://www.google.com/imgres?imgurl=https%3A%2F%2Fmedia.istockphoto.com
                     ubd : 01/07/2021
                     description: some description
@@ -1668,7 +1730,7 @@ paths:
             content:
               application/json:
                   example:
-                    message: "Modification apply"
+                    message: "item has been updated"
           '400':
             description: An error message
             content:
@@ -1791,7 +1853,7 @@ paths:
             content:
               application/json:
                   example:
-                    message: "Modification apply"
+                    message: "item has been updated"
           '400':
             description: An error message
             content:
@@ -1922,7 +1984,7 @@ paths:
             content:
               application/json:
                   example:
-                    message: "Modification apply"
+                    message: "item has been updated"
           '400':
             description: An error message
             content:
@@ -1996,7 +2058,7 @@ paths:
             content:
               application/json:
                   example:
-                    message: "Modification apply"
+                    message: "item has been updated"
           '400':
             description: An error message
             content:
@@ -2037,13 +2099,15 @@ paths:
             content:
               application/json:
                   example:
-                    id_product: 1
+                    id_fridgePresets: 1
                     label: config1
                     createdAt: 2021-11-26T13:38:27.000Z
                     updatedAt : 2021-11-26T13:38:27.000Z
                     fk_id_client: 2
 
       post:
+        security:
+          - bearerAuth4: []
         tags: [FridgePreset]
         summary: Add a fridgePreset
         requestBody:  
@@ -2054,15 +2118,13 @@ paths:
                 properties:
                   label:
                     type: string
-                  fk_id_client:
-                    type: integer
         responses:
           '200':    # status code
             description: The fridgePreset added
             content:
               application/json:
                   example:
-                    id_product: 1
+                    id_fridgePresets: 1
                     label: config1
                     createdAt: 2021-11-26T13:38:27.000Z
                     updatedAt : 2021-11-26T13:38:27.000Z
@@ -2090,7 +2152,7 @@ paths:
             content:
               application/json:
                   example:
-                    id_product: 1
+                    id_fridgePresets: 1
                     label: config1
                     createdAt: 2021-11-26T13:38:27.000Z
                     updatedAt : 2021-11-26T13:38:27.000Z
@@ -2127,7 +2189,7 @@ paths:
             content:
               application/json:
                   example:
-                    message: "Modification apply"
+                    message: "item has been updated"
           '400':
             description: An error message
             content:
@@ -2229,7 +2291,7 @@ paths:
             content:
               application/json:
                   example:
-                    message: "Modification apply"
+                    message: "item has been updated"
           '400':
             description: An error message
             content:
@@ -2259,6 +2321,99 @@ paths:
               application/json:
                   example:
                     message: "Product with id : x has been deleted from the fridgePreset."
+          '400':
+            description: An error message
+            content:
+              application/json:
+                  example:
+                    message: "fridgePreset does not exist"
+
+  /fridgePreset/{id}/menus:
+      get:
+        tags: [FridgePreset]
+        summary: Returns the list of all the menus of a fridge preset.
+        parameters:
+        - name: id
+          in: path
+          type: integer
+          required: true
+          description: Numeric ID of the fridgePreset.
+        responses:
+          '200':    # status code
+            description: A JSON array of menus
+            content:
+              application/json:
+                  example:
+                    id_menu: 1
+                    web_label: onlineFridge
+                    fridge_abel: actualFridge
+                    image: https://www.google.com/imgres?imgurl=https%3A%2F%2Fmedia.istockphoto.com
+                    price: 5.30
+                    createdAt: 2021-11-26T13:38:27.000Z
+                    updatedAt : 2021-11-26T13:38:27.000Z
+                    fk_id_client: 2
+
+  /fridgePreset/{id}/addMenu:
+      post:
+        tags: [FridgePreset]
+        summary: Add a menu to a fridge preset
+        parameters:
+        - name: id
+          in: path
+          type: integer
+          required: true
+          description: Numeric ID of the fridgePreset.
+        requestBody:  
+          required: true
+          content:
+            application/json:
+              schema: 
+                properties:
+                  fk_id_menu:
+                    type: integer
+        responses:
+          '200':    # status code
+            description: The menu added
+            content:
+              application/json:
+                  example:
+                    id_menu: 1
+                    web_label: salade
+                    fridge_label: salade 
+                    image : https://www.google.com/imgres?imgurl=https%3A%2F%2Fmedia.istockphoto.com
+                    price: 5.30
+                    createdAt: 2021-11-26T13:38:27.000Z
+                    updatedAt : 2021-11-26T13:38:27.000Z
+                    fk_id_client: 2
+          '400':
+            description: An error message
+            content:
+              application/json:
+                  example:
+                    message: "Missing required parameters"
+
+  /fridgePreset/{id}/removeMenu/{menuId}:           
+      delete:
+        tags: [FridgePreset]
+        summary: Allow to delete a menu from a fridgePreset
+        parameters:
+        - name: id
+          in: path
+          type: integer
+          required: true
+          description: Numeric ID of the fridgePreset.
+        - name: menuId
+          in: path
+          type: integer
+          required: true
+          description: Numeric ID of the menu to delete from a fridgePreset.
+        responses:
+          '200':   
+            description: A successful message
+            content: 
+              application/json:
+                  example:
+                    message: "Menu with id : x has been deleted from the fridgePreset."
           '400':
             description: An error message
             content:
@@ -2359,7 +2514,7 @@ paths:
             content:
               application/json:
                   example:
-                    message: "Modification apply"
+                    message: "item has been updated"
           '400':
             description: An error message
             content:
