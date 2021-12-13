@@ -3,13 +3,13 @@ import { Dropdown } from "react-bootstrap";
 import mappers from "helpers/mappers";
 import api from "helpers/api";
 
-import InfoContext from "Context/FridgeInfoContext";
-import DropDownContext from "Context/FridgeDropDownComponentContext";
+import PageContext from "Context/PageContext";
+import DropDownComponentContext from "Context/DropDownComponentContext";
 import Value from "helpers/Value";
 
 export default function DropDownPresetChoose({ label }) {
-  const { fridge, presetChosen } = useContext(InfoContext);
-  const { allPresets } = useContext(DropDownContext);
+  const { fridge, presetChosen } = useContext(DropDownComponentContext);
+  const { allPresets } = useContext(PageContext);
 
   const dropdownTitleChange = new Value(useState(false));
   const handleSave = () => {};

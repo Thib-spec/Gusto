@@ -7,8 +7,7 @@ import ArrayController from "helpers/ArrayController";
 import mappers from "helpers/mappers";
 import reverse_mappers from "helpers/reverse_mappers";
 
-import InfoContext from "Context/FridgeInfoContext";
-import DropDownContext from "Context/FridgeDropDownComponentContext";
+import DropDownComponentContext from "Context/DropDownComponentContext";
 
 import Page from "Components/Page";
 import {
@@ -27,15 +26,14 @@ export default function ProductsCard({ name }) {
   // produits ajoutés dans le frigo
   const products = new ArrayController(useState([]), useState([]));
   const productsInPreset = new ArrayController(useState([]), useState([]));
-  const { getAllProducts } = useContext(DropDownContext);
-  const { fridge, presetChosen } = useContext(InfoContext);
+  const { fridge, presetChosen } = useContext(DropDownComponentContext);
 
   useEffect(() => {
-    getProductsInFridge();
+    getProductsInOneFridge();
   }, []);
 
   useEffect(() => {
-    getProductsInPreset();
+    getProductsInOnePreset();
   }, [presetChosen.value]);
 
   // useEffect(() => {
@@ -43,12 +41,12 @@ export default function ProductsCard({ name }) {
   // }, [products]);
 
   // appels api
-  async function getProductsInFridge() {
+  async function getProductsInOneFridge() {
     try {
-      const res = await api.getProductsInFridge({ id: fridge.id });
+      const res = await api.getProductsInOneFridge({ id: fridge.id });
       if (res.ok) {
         const resJSON = await res.json();
-        console.log("api.getProductsInFridge() : ", resJSON);
+        console.log("api.getProductsInOneFridge() : ", resJSON);
         products.set(resJSON.Products.map(mappers.productsInFridge), {
           init: true,
         });
@@ -59,12 +57,14 @@ export default function ProductsCard({ name }) {
     }
   }
 
-  async function getProductsInPreset() {
+  async function getProductsInOnePreset() {
     try {
-      const res = await api.getProductsInPreset({ id: presetChosen.value.id });
+      const res = await api.getProductsInOnePreset({
+        id: presetChosen.value.id,
+      });
       if (res.ok) {
         const resJSON = await res.json();
-        console.log("api.getProductsInPreset() : ", resJSON);
+        console.log("api.getProductsInOnePreset() : ", resJSON);
         productsInPreset.set(resJSON.map(mappers.productsInPreset), {
           init: true,
         });

@@ -5,7 +5,6 @@ import { useSelector, useDispatch } from "react-redux";
 import api from "helpers/api";
 import mappers from "helpers/mappers";
 
-import DropDownComponentContext from "Context/FridgeDropDownComponentContext";
 import ProductsCard from "Components/FridgePage2/ProductsCard";
 import MenusCard from "Components/FridgePage2/MenusCard";
 import DropDownComponent from "Components/FridgePage2/DropDownComponent";
@@ -21,8 +20,8 @@ export default function FridgesPage() {
   useEffect(() => {
     getAllFridges();
     getAllPresets();
-    getAllProducts();
-    getAllMenus();
+    // getAllProducts();
+    // getAllMenus();
   }, []);
 
   async function getAllFridges() {
@@ -88,29 +87,35 @@ export default function FridgesPage() {
 
   return (
     <>
-      <DropDownComponentContext.Provider
+      {/* <DropDownComponentContext.Provider
         value={{
           allProducts: allProducts,
           allMenus: allMenus,
           allPresets: allPresets,
         }}
+      > */}
+      <Page
+        contextValue={{
+          allProducts: allProducts,
+          allMenus: allMenus,
+          allPresets: allPresets,
+        }}
       >
-        <Page>
-          {fridge.map((fridge) => {
-            return (
-              <DropDownComponent fridge={fridge} key={fridge.id}>
-                <DropDownPresetChoose />
-                <div className="w-100"></div>
-                <ProductsCard name="Produits" />
-                <MenusCard name="Menus" />
-                <div className="w-100"></div>
-                <LogsCard name="Logs" idFridge={fridge.id} />
-                <GestionCard name="Gestion VMC" />
-              </DropDownComponent>
-            );
-          })}
-        </Page>
-      </DropDownComponentContext.Provider>
+        {fridge.map((fridge) => {
+          return (
+            <DropDownComponent fridge={fridge} key={fridge.id}>
+              <DropDownPresetChoose />
+              <div className="w-100"></div>
+              <ProductsCard name="Produits" />
+              <MenusCard name="Menus" />
+              <div className="w-100"></div>
+              <LogsCard name="Logs" idFridge={fridge.id} />
+              <GestionCard name="Gestion VMC" />
+            </DropDownComponent>
+          );
+        })}
+      </Page>
+      {/* </DropDownComponentContext.Provider> */}
     </>
   );
 }

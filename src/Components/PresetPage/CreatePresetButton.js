@@ -1,5 +1,8 @@
 import React, { useState } from "react";
 import { Accordion, Row, Table, Card, Modal, Button } from "react-bootstrap";
+import api from "helpers/api";
+import mappers from "helpers/mappers";
+import reverse_mappers from "helpers/reverse_mappers";
 
 function CreatePresetButton({}) {
   const [show, setShow] = useState(false);
@@ -12,11 +15,28 @@ function CreatePresetButton({}) {
     setPresetName(event.target.value);
   };
 
-  const handleSavePreset = () => {};
+  const handleSavePreset = async () => {
+    try {
+      const body = reverse_mappers.presetsMapper({ name: presetName });
+      const res = await api.createOnePreset({ body });
+      if (res.ok) {
+        const resJSON = await res.json();
+        console.log("api.createOnePreset() : ", resJSON);
+        // setAllMenus(resJSON.map(mappers.menusMapper));
+      } else {
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   return (
     <>
-      <button type="button" class="col-6 btn btn-warning" onClick={handleShow}>
+      <button
+        type="button"
+        className="col-6 btn btn-warning"
+        onClick={handleShow}
+      >
         Ajouter un Preset
       </button>
       <Modal show={show} onHide={handleClose}>
@@ -30,7 +50,7 @@ function CreatePresetButton({}) {
                 <label>Nom du preset</label>
                 <input
                   type="text"
-                  class="form-control"
+                  className="form-control"
                   id="labelPreset"
                   placeholder="Nom du Preset"
                   onChange={handleChangePresetName}

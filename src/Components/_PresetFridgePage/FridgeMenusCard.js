@@ -33,16 +33,16 @@ export default function FridgeMenusCard({ name }) {
   const fridge = useContext(FridgeInfoContext);
 
   useEffect(() => {
-    getMenusInFridge();
+    getMenusInOneFridge();
   }, []);
 
   // appels api
-  async function getMenusInFridge() {
+  async function getMenusInOneFridge() {
     try {
-      const res = await api.getMenusInFridge({ id: fridge.id });
+      const res = await api.getMenusInOneFridge({ id: fridge.id });
       if (res.ok) {
         const resJSON = await res.json();
-        console.log("api.getMenusInFridge() : ", resJSON);
+        console.log("api.getMenusInOneFridge() : ", resJSON);
         menus.set([...resJSON.map(mappers.menusMapper)], { init: true });
       } else {
       }
@@ -51,15 +51,15 @@ export default function FridgeMenusCard({ name }) {
     }
   }
 
-  async function addMenusInFridge() {
+  async function addMenusInOneFridge() {
     try {
-      const res = await api.addMenusInFridge({
+      const res = await api.addMenusInOneFridge({
         id: fridge.id,
         body: menus.value,
       });
       if (res.ok) {
         const resJSON = await res.json();
-        console.log("api.addMenusInFridge() : ", resJSON);
+        console.log("api.addMenusInOneFridge() : ", resJSON);
         menus.addOrUpdateMany([], { init: true });
       } else {
       }
@@ -76,7 +76,7 @@ export default function FridgeMenusCard({ name }) {
 
   // Save & Cancel
   const handleSaveButton = () => {
-    addMenusInFridge();
+    addMenusInOneFridge();
   };
   const handleCancelButton = () => {
     menus.reset();

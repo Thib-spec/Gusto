@@ -18,8 +18,8 @@ import CategoriesPage from "Pages/CategoriesPage";
 import HomePage from "Pages/HomePage";
 import LoginPage from "Pages/LoginPage";
 import ProductsPage from "Pages/ProductPage";
-import FridgesPage2 from "Pages/_FridgesPage2";
-import FridgesPage3 from "Pages/_FridgesPage3";
+// import FridgesPage2 from "Pages/_FridgesPage2";
+// import FridgesPage3 from "Pages/_FridgesPage3";
 import FridgesPage4 from "Pages/FridgesPage4";
 import NotFoundPage from "Pages/NotFoundPage";
 import TestData from "Components/TestData";
@@ -29,7 +29,7 @@ import { useSelector, useDispatch } from "react-redux";
 import api from "helpers/api";
 import userActions from "store/actions/userActions";
 import Footer from "Components/Footer";
-import PresetPage from "Pages/_PresetPage";
+// import PresetPage from "Pages/_PresetPage";
 import PresetPage2 from "Pages/PresetPage2";
 import useIsMounted from "helpers/useInMount";
 import { withTranslation, useTranslation } from "react-i18next";
@@ -101,16 +101,14 @@ function AdminRouter({ history }) {
   } else {
     if (user.isLogged) {
       return (
-        
         <>
-          <Header/>
+          <Header />
           {/* <HeaderL /> */}
           <Switch>
             <Route exact path="/" component={withTranslation()(HomePage)} />
-            <Route
-              path="/categories"
-              
-            ><CategoriesPage user={user}/></Route>
+            <Route path="/categories">
+              <CategoriesPage user={user} />
+            </Route>
             <Route
               path="/products"
               component={withTranslation()(ProductsPage)}
@@ -119,11 +117,11 @@ function AdminRouter({ history }) {
               path="/fridges"
               component={withTranslation()(FridgesPage4)}
             />
+            <Route path="/menus" component={withTranslation()(MenusPage)} />
             <Route
-              path="/menus"
-              component={withTranslation()(MenusPage)}
+              path="/mentions"
+              component={withTranslation()(MentionsLegales)}
             />
-            <Route path="/mentions" component={withTranslation()(MentionsLegales)}/>
 
             <Route path="/testHistory1" component={Test1} />
             <Route path="/testHistory2" component={Test2} />
@@ -142,7 +140,7 @@ function AdminRouter({ history }) {
             </Route>
             <Route path="/" component={withTranslation()(NotFoundPage)} />
           </Switch>
-        <Footer/> 
+          <Footer />
         </>
       );
     } else {

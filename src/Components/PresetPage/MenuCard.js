@@ -1,23 +1,26 @@
-import React, { Component, useState, useEffect } from "react";
+import React, { Component, useState, useEffect, useContext } from "react";
+import MenusCardContext from "Context/MenusCardContext";
 
-export default function FridgeMenuCard({ menu, parentProps }) {
+export default function FridgeMenuCard({ menu }) {
   const [added, setAdded] = useState(false);
+  const { menus } = useContext(MenusCardContext);
+  const productToShow = menus.get(menu);
 
   useEffect(() => {
-    const menuConfig = parentProps.states.menus.get(menu);
-    if (menuConfig.value) setAdded(true);
+    const menuToShow = menus.get(menu);
+    if (menuToShow.value) setAdded(true);
   }, []);
 
   const handleAddMenu = () => {
-    const MenuConfig = parentProps.states.menus.get(menu);
-    if (MenuConfig.value) {
-      MenuConfig.remove();
+    const menuToShow = menus.get(menu);
+    if (menuToShow.value) {
+      menuToShow.remove();
     } else {
       const menuToAdd = {
         id: menu.id,
         name: menu.name,
       };
-      parentProps.states.menus.addOrUpdateMany([menuToAdd]);
+      menus.addOrUpdateMany([menuToAdd]);
     }
     setAdded(!added);
   };
