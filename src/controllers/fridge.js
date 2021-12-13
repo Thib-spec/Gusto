@@ -239,12 +239,13 @@ exports.listProductsBySaleByFridge = (req,res) => {
 
 
 
-
+// check that fk_product does not have quantity
 exports.AddProductQuantity = (req,res) => {
 
     const {fk_id_product, quantity} = req.body
 
     const list_fk_product = new Array()
+    const list_fk_fridge_product = new Array()
 
     const postQuantitySchema = Joi.object().keys({ 
         quantity : Joi.number().required(),
@@ -274,35 +275,55 @@ exports.AddProductQuantity = (req,res) => {
                     list_fk_product.push(allProduct[i].id_product)
                 }
 
-                Model.Fridges.findOne({
-                    where:{
-                        id_fridge:req.params.id
-                    }
-                })
-            
-                .then((fridge) => {
-                    if (!fridge) {
-                        return res.status(400).json({
-                            message: 'Fridge does not exist',
-                        });
-                    }
+                Model.fridges_products.findAll()
+                .then(result => {
+                    Model.fridges_products.count()
+                    .then(numberOfFridgePreset_product => {
+                        for(let i =0;i<numberOfFridgePreset_product;i++){
+                            list_fk_fridge_product.push(result[i].fk_id_product)
+                        }
 
-                    else if (!list_fk_product.includes(fk_id_product)){
-                        res.status(400).json({
-                            message: "fk_id_product does not match any id_product"
+                        Model.Fridges.findOne({
+                            where:{
+                                id_fridge:req.params.id
+                            }
                         })
-                    }
-            
-                    else {
-                        Model.fridges_products.create({
-                            fk_id_product:fk_id_product,
-                            fk_id_fridge:req.params.id,
-                            quantity:quantity
-                        })
-            
-                        .then(fridge_product => res.status(200).json(fridge_product))
-                        
-                    }
+                    
+                        .then((fridge) => {
+                            if (!fridge) {
+                                return res.status(400).json({
+                                    message: 'Fridge does not exist',
+                                });
+                            }
+        
+                            else if (!list_fk_product.includes(fk_id_product)){
+                                res.status(400).json({
+                                    message: "fk_id_product does not match any id_product"
+                                })
+                            }
+
+                            else if (list_fk_fridge_product.includes(fk_id_product)){
+                                res.status(400).json({
+                                    message: `fk_id_product ${fk_id_product} has already a quantity assigned`
+                                })
+                            }
+                    
+                            else {
+                                Model.fridges_products.create({
+                                    fk_id_product:fk_id_product,
+                                    fk_id_fridge:req.params.id,
+                                    quantity:quantity
+                                })
+                    
+                                .then(fridge_product => res.status(200).json(fridge_product))
+                                
+                            }
+
+
+                    })
+                })
+
+                
                 })
             })
         })
