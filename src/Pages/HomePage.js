@@ -19,6 +19,7 @@ import { useSelector, useDispatch } from "react-redux";
 import userActions from "store/actions/userActions";
 import api from "helpers/api";
 import TextAreaComponent from 'Components/FormComponent/TextAreaComponent';
+import UploadContainer from 'Components/GestionPhoto/UploadContainer';
 
 
 
@@ -46,7 +47,9 @@ export default function HomePage(){
       
 
         <div className="m-5 h1">Welcome {user.firstName} {user.lastName}
+        <UploadContainer/>
         </div>
+        
         
         // <div className="container-home">
         //     <div className="home-logs">
