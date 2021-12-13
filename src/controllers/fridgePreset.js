@@ -588,6 +588,8 @@ exports.editFrontProduct = (req,res) =>{
 
 // remove preset
 exports.removeProduct = (req,res) =>{
+    const list_fk_product = new Array()
+    const {fk_id_product} = req.body
 
     Model.FridgePresets.findOne({
         where:{
@@ -602,40 +604,116 @@ exports.removeProduct = (req,res) =>{
         }
 
         else {
+            Model.Products.findAll()
+            .then(allProduct => {
+                Model.Products.count()
+                .then(numberofproduct => {
+                    for (let i = 0;i< numberofproduct;i++){
+                        list_fk_product.push(allProduct[i].id_product)
+                    }
 
-            Model.fridgePresets_products.findOne({
-                where:{
-                    [Op.and]: [
-                        { fk_id_fridgePreset:req.params.id },
-                        { fk_id_product: req.params.productId }
-                    ]
-                }
-            })
-            .then(result =>{
-                if(!result){
-                    res.status(400).json({
-                        message:`FridgePreset ${req.params.id} does not contain product ${req.params.productId}`
-                    })
-                }
+                    if (req.body instanceof Array){
 
-                else {
+                        var result = [];
 
-                    Model.fridgePresets_products.destroy({
-                        where:{
-                            [Op.and]: [
-                                { fk_id_fridgePreset:req.params.id },
-                                { fk_id_product: req.params.productId }
-                            ]
+                        if(Object.keys(req.body).length == 1){
+                            if(!list_fk_product.includes(req.body[0].fk_id_product)){
+                                return res.status(400).json({
+                                    message:`Fridgepreset ${req.params.id} does not contain product ${req.body[0].fk_id_product}`
+                                })
+                            }
+
+                            else {
+                                Model.fridgePresets_products.destroy({
+                                
+                                    where:{
+                                        [Op.and]: [
+                                            { fk_id_fridgePreset:req.params.id },
+                                            { fk_id_product: req.body[0].fk_id_product }
+                                        ]
+                                    }
+                                })
+                                return res.status(200).json({
+                                    message:"Deletion completed"
+                                })
+                                
+                            }
                         }
-                    })
+                        
 
-                    .then(res.status(200).json({
-                        message: "Deletion completed"
-                    }))
-                }
-           
+                        else {
+
+                            for(i =0;i<(Object.keys(req.body).length) -1;i++){
+                                if (!list_fk_product.includes(req.body[i].fk_id_product)){
+                                    return res.status(400).json({
+                                        message:`Fridgepreset ${req.params.id} does not contains product ${req.body[i].fk_id_product}`
+                                    })
+                                }
+                            }
+                        }
+
+                        var promises = req.body.map(function(product) {
+                            return Model.fridgePresets_products.destroy(
+                            {
+                                where:{
+                                    [Op.and]: [
+                                        { fk_id_fridgePreset:req.params.id },
+                                        { fk_id_product: product.fk_id_product }
+                                    ]
+                                }
+                            })
+
+                            .then(function() {
+                                result.push(product);
+                            })
+                
+                        })
+                    
+                        Promise.all(promises)
+                            .then(function() {
+                            return res.json(result);
+                        });
+
+                    }
+
+                    else {
+                        Model.fridgePresets_products.findOne({
+                            where:{
+                                [Op.and]: [
+                                    { fk_id_fridgePreset:req.params.id },
+                                    { fk_id_product: fk_id_product }
+                                ]
+                            }
+                        })
+                        .then(result =>{
+                            if(!result){
+                                res.status(400).json({
+                                    message:`FridgePreset ${req.params.id} does not contain product ${fk_id_product}`
+                                })
+                            }
+
+                            else {
+
+                                Model.fridgePresets_products.destroy({
+                                    where:{
+                                        [Op.and]: [
+                                            { fk_id_fridgePreset:req.params.id },
+                                            { fk_id_product: fk_id_product }
+                                        ]
+                                    }
+                                })
+
+                                .then(res.status(200).json({
+                                    message: "Deletion completed"
+                                }))
+                            }
+                        })
+                
+                    }
+                })
             })
         }
+                   
     })
     
     .catch(error => console.log(error))
