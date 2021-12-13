@@ -10,7 +10,7 @@ module.exports = (sequelize) => {
                 sourceKey: "id_client"
             })
 
-            Client.belongsToMany(models.Fridges,{     
+            Client.belongsToMany(models.Fridges,{    
                 through:"clients_fridges",
                 foreignKey:"fk_id_client"
             })

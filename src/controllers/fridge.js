@@ -11,6 +11,35 @@ exports.listFridges = (req, res) => {
     .catch(error => res.status(400).json(error))
 }
 
+
+
+exports.getFridgeForUser = (req,res) => {
+
+    const result = new Array()
+
+
+    Model.Fridges.findAll({
+        include:{all:true}
+    })
+    .then(fridges => {
+        for(let i =0;i<fridges.length;i++){
+     
+            if((fridges[i].Clients).length > 0){
+
+                if(fridges[i].Clients[0].id_client == req.user.fk_id_client){
+                    result.push(fridges[i])
+
+                } 
+            }
+           
+        }
+        console.log(result)
+        res.json(result)
+    })
+   
+    
+}
+
 exports.getFridgeNationality = (req,res) =>{
     Model.Fridges.findOne({
         where:{
