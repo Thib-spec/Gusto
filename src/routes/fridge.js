@@ -14,7 +14,7 @@ fridges.get('/:id/products',fridgeController.listProductByFridge)
 
 fridges.get('/:id/clients',fridgeController.listClientByFridge)
 fridges.get('/:id/badges',fridgeController.listBadgeByFridge)
-fridges.get('/:id/menus',fridgeController.listMenuByFridge)
+
 fridges.get('/:id/orders/products',fridgeController.listProductByOrderByFridge)
 
 fridges.post("/:id/addQuantity",fridgeController.AddProductQuantity)

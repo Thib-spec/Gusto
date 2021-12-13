@@ -130,7 +130,8 @@ const Joi = require('joi');
 
             const editBadgeSchema = Joi.object().keys({ 
                 fk_id_client:Joi.number(),
-                fk_id_user:Joi.number()
+                fk_id_user:Joi.number(),
+                id_badges: Joi.string()
             })
 
             const result = editBadgeSchema.validate(req.body)

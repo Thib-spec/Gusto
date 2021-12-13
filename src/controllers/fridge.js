@@ -138,38 +138,6 @@ exports.listBadgeByFridge = (req,res) => {
 
 
 
-exports.listMenuByFridge = (req,res) => {
-    Model.Fridges.findOne({
-        where:{
-            id_fridge : req.params.id
-        },
-    })
-
-    .then(fridge =>{
-        if (!fridge) {
-            res.status(400).json({
-                message: 'Fridge does not exist',
-            });
-        }
-
-        else {
-            fridge.getMenus()  
-            .then(menus =>{
-                if(menus.length == 0){
-                    return res.status(400).json({
-                        message:`Fridge with id ${req.params.id} does not have any menu`
-                    })
-                }
-
-                else {
-                    res.status(200).json(menus)
-                }
-            })
-            .catch(error => res.status(400).json(error))
-        }
-    })
-    .catch(error => res.status(400).json(error))
-}
 
 
 exports.listProductByOrderByFridge = (req,res) => {
