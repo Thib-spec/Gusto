@@ -706,7 +706,7 @@ exports.addNationalitytoFridge = (req,res) =>{
 
                     if(!list_fk_nationalities.includes(fk_id_nationality)){
                         return res.status(400).json({
-                            message:"fk_nationalities does not match any id_nationality"
+                            message:"fk_id_nationalities does not match any id_nationality"
                         })
                     }
 
@@ -764,23 +764,23 @@ exports.addBadgetoFridge = (req,res) =>{
                 Model.Badges.count()
                 .then(numberofBadges =>{
                     for(let i=0;i<numberofBadges;i++){
-                        list_fk_badges.push(allBadges[i].id_badge)
+                        list_fk_badges.push(allBadges[i].id_badges)
                     }
 
                     if(!list_fk_badges.includes(fk_id_badge)){
                         return res.status(400).json({
-                            message:"fk_badges does not match any id_badge"
+                            message:"fk_id_badge does not match any id_badges"
                         })
                     }
 
                     else {
-                        Model.Badges.findOne({
+                        Model.Fridges.findOne({
                             where:{
-                                id_badge: req.params.id
+                                id_fridge: req.params.id
                             }
                         })
-                        .then(badge => {
-                            if(!badge){
+                        .then(fridge => {
+                            if(!fridge){
                                 return res.status(400).json({
                                     message: 'Fridge does not exist'
                                 })
@@ -798,3 +798,66 @@ exports.addBadgetoFridge = (req,res) =>{
             .catch(error => res.status(400).json(error))
     }
 }
+
+exports.addClienttoFridge = (req,res) =>{
+    const {fk_id_client} = req.body
+
+    const list_fk_clients = new Array()
+    const postClienttoFridgeSchema = Joi.object().keys({ 
+        fk_id_client : Joi.number().required()
+    })
+
+    const result = postClienttoFridgeSchema.validate(req.body)
+
+    const {error } = result;
+
+    const valid = error == null;
+
+    if (!valid) {
+      res.status(400).json({ 
+        message: 'Missing required parameters',
+        info: 'Requires: fk_id_client' 
+      })
+    }
+    else {
+
+            Model.Client.findAll()
+            .then(allClients =>{
+                Model.Clients.count()
+                .then(numberofClients =>{
+                    for(let i=0;i<numberofClients;i++){
+                        list_fk_clients.push(allClients[i].id_client)
+                    }
+
+                    if(!list_fk_clients.includes(fk_id_client)){
+                        return res.status(400).json({
+                            message:"fk_id_client does not match any id_client"
+                        })
+                    }
+
+                    else {
+                        Model.Fridges.findOne({
+                            where:{
+                                id_fridge: req.params.id
+                            }
+                        })
+                        .then(fridge => {
+                            if(!fridge){
+                                return res.status(400).json({
+                                    message: 'Fridge does not exist'
+                                })
+                            }
+                            else{
+                                fridge.addClients(fk_id_client)
+                                .then(addedClient => res.status(200).json(addedClient))
+                            }
+                        })
+                        .catch(error => res.status(400).json(error))
+        
+                    }
+                })
+            })             
+            .catch(error => res.status(400).json(error))
+    }
+}
+
