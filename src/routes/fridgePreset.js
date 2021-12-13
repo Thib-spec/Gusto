@@ -19,7 +19,7 @@ fridgePreset.delete('/:id/removeProduct',fridgePresetController.removeProduct)
 
 fridgePreset.get("/:id/menus",fridgePresetController.getMenuByFridgePreset)
 fridgePreset.post("/:id/addMenu",fridgePresetController.addMenuInPreset)
-fridgePreset.delete("/:id/removeMenu/:menuId",fridgePresetController.removeMenuPreset)
+fridgePreset.delete("/:id/removeMenu",fridgePresetController.removeMenuPreset)
 
 
 

@@ -867,6 +867,7 @@ exports.addMenuInPreset = (req,res) =>{
 
 exports.removeMenuPreset = (req,res) => {
     const list_fk_menu = new Array()
+    const {fk_id_menu} = req.body
 
     // vérif que le fridge Preset contienne bien le menu ciblé
     Model.FridgePresets.findOne({
@@ -890,18 +891,77 @@ exports.removeMenuPreset = (req,res) => {
                         list_fk_menu.push(allMenus[i].id_menu)
                     }
 
-                    if(!list_fk_menu.includes(Number(req.params.menuId))){
-                        res.status(400).json({
-                            message:"fk_id_menu does not match any id_menu"
-                        })
+                    if (req.body instanceof Array){
+
+                        if(Object.keys(req.body).length == 1){
+                            if(!list_fk_menu.includes(req.body[0].fk_id_menu)){
+                                return res.status(400).json({
+                                    message:"fk_id_menu does not match any id_menu"
+                                })
+                            }
+                            
+                            else {
+                                preset.removeMenus(req.body[0].fk_id_menu)
+                            }
+
+                            res.status(200).json({
+                                message:"Menu has been deleted"
+                            })
+                             
+
+                        }
+
+                        else {
+                            for(let i=0;i<req.body.length;i++){
+                            
+                                if(!list_fk_menu.includes(req.body[i].fk_id_menu)){
+                                    return res.status(400).json({
+                                        message:"fk_id_menu does not match any id_menu"
+                                    })
+                                }
+
+                                else {
+                                    preset.removeMenus(req.body[i].fk_id_menu)
+                                }
+                            }
+                        
+                            res.status(200).json({
+                                message:"Menus have been deleted"
+                            })
+                         
+                        }
                     }
 
                     else {
-                        preset.removeMenus(req.params.menuId)
-                        .then(res.status(200).json({
-                            message:"Deletion completed"
-                        }))
 
+                        const removeMenuSchema = Joi.object().keys({ 
+                            fk_id_menu: Joi.number().required()
+                        })
+                    
+                        const result = removeMenuSchema.validate(req.body)
+                    
+                        const {error } = result; 
+                        const valid = error == null; 
+
+                        if (!valid) {
+                            res.status(400).json({ 
+                              message: 'Missing required parameters',
+                              info: 'Requires: fk_id_menu' 
+                            })
+                        }
+
+                        else if(!list_fk_menu.includes(fk_id_menu)){
+                            return res.status(400).json({
+                                message:"fk_id_menu does not match any id_menu"
+                            })
+                        }
+
+                        else {
+                            preset.removeMenus(fk_id_menu)
+                            .then(res.status(200).json({
+                                message:"Deletion completed"
+                            }))
+                        }
                     }
                 })
             })
