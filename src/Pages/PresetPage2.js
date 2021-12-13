@@ -4,8 +4,8 @@ import Page from "Components/Page";
 import { useSelector, useDispatch } from "react-redux";
 import api from "helpers/api";
 import mappers from "helpers/mappers";
+import CreatePresetButton from "Components/PresetPage/CreatePresetButton";
 
-import DropDownComponentContext from "Context/PresetDropDownComponentContext";
 import ProductsCard from "Components/PresetPage/ProductsCard";
 import MenusCard from "Components/PresetPage/MenusCard";
 import DropDownComponent from "Components/PresetPage/DropDownComponent";
@@ -68,24 +68,23 @@ export default function PresetsPage() {
 
   return (
     <>
-      <DropDownComponentContext.Provider
-        value={{
+      <Page
+        contextValue={{
           allProducts: allProducts,
           allMenus: allMenus,
           allPresets: allPresets,
         }}
       >
-        <Page>
-          {presets.map((preset) => {
-            return (
-              <DropDownComponent preset={preset}>
-                <ProductsCard name="Produits" />
-                <MenusCard name="Menus" />
-              </DropDownComponent>
-            );
-          })}
-        </Page>
-      </DropDownComponentContext.Provider>
+        <CreatePresetButton />
+        {presets.map((preset) => {
+          return (
+            <DropDownComponent preset={preset} key={preset.id}>
+              <ProductsCard name="Produits" />
+              <MenusCard name="Menus" />
+            </DropDownComponent>
+          );
+        })}
+      </Page>
     </>
   );
 }

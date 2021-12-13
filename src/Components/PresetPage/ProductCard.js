@@ -1,17 +1,18 @@
-import React, { Component, useState, useEffect } from "react";
+import React, { Component, useState, useEffect, useContext } from "react";
+import ProductsCardContext from "Context/ProductsCardContext";
 
 export default function FridgeProductCard({ product, parentProps }) {
   const [added, setAdded] = useState(false);
+  const { products } = useContext(ProductsCardContext);
+  const productToShow = products.get(product);
 
   useEffect(() => {
-    const productConfig = parentProps.states.products.get(product);
-    if (productConfig.value) setAdded(true);
+    if (productToShow.value) setAdded(true);
   }, []);
 
   const handleAddProduct = () => {
-    const productConfig = parentProps.states.products.get(product);
-    if (productConfig.value) {
-      productConfig.remove();
+    if (productToShow.value) {
+      productToShow.remove();
     } else {
       const productToAdd = {
         id: product.id,
@@ -19,7 +20,7 @@ export default function FridgeProductCard({ product, parentProps }) {
         min: 1,
         max: 1,
       };
-      parentProps.states.products.addOrUpdateMany([productToAdd]);
+      products.addOrUpdateMany([productToAdd]);
     }
     setAdded(!added);
   };

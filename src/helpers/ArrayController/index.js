@@ -26,14 +26,35 @@ Element.prototype.remove = function () {
 
 export default function ArrayController(valueUseState, initValueUseState) {
   this._value = new Value(valueUseState);
-  this.initValue = new Value(initValueUseState);
+  this._initValue = new Value(initValueUseState);
   this.value = this._value.value;
+  this.initValue = this._initValue.value;
 }
 
 ArrayController.prototype.set = function (JSONArray, options) {
   // const JSONArrayCopy = copyy(JSONArray);
-  if (options && options.init === true) this.initValue.set(copyy(JSONArray));
+  if (options && options.init === true) this._initValue.set(copyy(JSONArray));
   this._value.set(copyy(JSONArray));
+};
+
+ArrayController.prototype.isElModified = function (el) {
+  const foundInValue = this.find(el);
+  const foundInInitValue = this.find(el, { inInitValue: true });
+  return (
+    foundInValue &&
+    foundInInitValue &&
+    JSON.stringify(foundInValue) != JSON.stringify(foundInInitValue)
+  );
+};
+ArrayController.prototype.isElRemoved = function (el) {
+  const foundInValue = this.find(el);
+  const foundInInitValue = this.find(el, { inInitValue: true });
+  return !foundInValue && foundInInitValue;
+};
+ArrayController.prototype.isElAdded = function (el) {
+  const foundInValue = this.find(el);
+  const foundInInitValue = this.find(el, { inInitValue: true });
+  return foundInValue && !foundInInitValue;
 };
 
 ArrayController.prototype.get = function (el) {
@@ -45,19 +66,35 @@ ArrayController.prototype.clear = function () {
 };
 
 ArrayController.prototype.reset = function () {
-  this.set(copyy(this.initValue.value));
+  this.set(copyy(this.initValue));
 };
 
 ArrayController.prototype.findIndexById = function (id) {
   return this.value.findIndex((JSONelement) => id == JSONelement.id);
 };
 
-ArrayController.prototype.findElById = function (id) {
-  return this.value.find((JSONelement) => id == JSONelement.id);
+ArrayController.prototype.findElById = function (
+  id,
+  { inInitValue } = { inInitValue: false }
+) {
+  const array = inInitValue ? this.initValue : this.value;
+  return array.find((JSONelement) => id == JSONelement.id);
+};
+
+ArrayController.prototype.find = function (
+  el,
+  { inInitValue } = { inInitValue: false }
+) {
+  const array = inInitValue ? this.initValue : this.value;
+  return array.find((JSONelement) => el.id == JSONelement.id);
 };
 
 ArrayController.prototype.hasElById = function (id) {
   return this.value.findIndex((JSONelement) => id == JSONelement.id) > -1;
+};
+
+ArrayController.prototype.has = function (el) {
+  return this.value.findIndex((JSONelement) => el.id == JSONelement.id) > -1;
 };
 
 ArrayController.prototype.addOrUpdateMany = function (JSONArray, options) {
