@@ -10,7 +10,7 @@ export default function HeaderProfil(props) {
           {props.firstName} {props.lastName}
         </div>
         <div className="headerProfil-profilInformation-level">
-          {props.level.label}
+          {props.level}
         </div>
       </div>
       <div className="headerProfil-whiteSpace"></div>

@@ -5,7 +5,7 @@ import axios from "axios"
 export default function LogSaleComponent({sale}){
 
 
-
+    
     return(
         <div className="logs-sales-content-element">
             <div className="logs-sales-date">{sale.sales_timestamp}</div>

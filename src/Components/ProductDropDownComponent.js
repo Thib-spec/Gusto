@@ -86,10 +86,12 @@ export default function ProductDropDownComponent(props){
                         edition?
                             <div>
                                 <div className="products-list-element-title-fold">
-                                   <div className="product-title-container"><div className="product-title-prix-align-edition"><TextAreaComponent type="text" value={props.product.label} size="small" id={"productEditLabel"+props.product.id_product}/></div></div>
-                                    <div className="product-title-container"><div className="product-title-prix-align-edition"><TextAreaComponent type="number" size="small" value={props.product.ubd} id={"productEditUbd"+props.product.id_product}/></div></div>
-                                    <div className="product-title-container"><div className="product-title-prix-align-edition"><TextAreaComponent type="text" id={"productEditPrice"+props.product.id_product} value={realPrice(props.product.price)} size="small"/></div></div>
+                                   <div className="product-title-container"><div className="product-title-prix-align-edition"><TextAreaComponent type="text" value={props.product.label} size="small" id={"productEditLabel"+props.product.id_product} placeholder="Nom du produit"/></div></div>
+                                    <div className="product-title-container"><div className="product-title-prix-align-edition"><TextAreaComponent type="number" size="small" value={props.product.ubd} id={"productEditUbd"+props.product.id_product} placeholder="Date de péremption"/></div></div>
+                                    <div className="product-title-container"><div className="product-title-prix-align-edition"><TextAreaComponent type="number" id={"productEditPrice"+props.product.id_product} value={realPrice(props.product.price)} placeholder="Prix" size="small" step="0.01" /></div></div>
+                                    
                                     <div className="products-fold"><img width="100%" src={fold} alt=""/></div>
+                                    
                                 </div>
                                 <div className="products-list-element-sub">
                                     <div className="products-list-element-sub-description">
@@ -111,7 +113,7 @@ export default function ProductDropDownComponent(props){
                                 <div className="products-list-element-title-fold" onClick={()=>handleOpen()}>
                                     <div className="product-title-name">{props.product.label}</div>
                                     {/* {ubdSelected?<div className="product-title-dlc" onMouseEnter={()=>setubdSelected(!ubdSelected)} onMouseLeave={()=>setubdSelected(!ubdSelected)}>{props.product.ubd}1</div>:<div className="product-title-dlc" onMouseOver={()=>setubdSelected(!ubdSelected)} onMouseLeave={()=>setubdSelected(!ubdSelected)}>{props.product.ubd}2</div>} */}
-                                    <div className="product-title-dlc">{props.product.ubd}</div>
+                                    <div className="product-title-dlc">{props.product.ubd} jours</div>
                                     <div className="product-title-prix"><div className="product-title-prix-align">{realPrice(props.product.price).toFixed(2)+" €"}</div></div>
                                     <div className="products-fold"><img width="100%" src={fold} alt=""/></div>
                                 </div>
@@ -135,7 +137,7 @@ export default function ProductDropDownComponent(props){
             :
                 <div className="products-list-element-title-unfold" onClick={()=>handleOpen()} on>
                     <div className="product-title-name">{props.product.label}</div>
-                    <div className="product-title-dlc" >{props.product.ubd}</div>
+                    <div className="product-title-dlc" >{props.product.ubd} jours</div>
                     <div className="product-title-prix"><div className="product-title-prix-align">{realPrice(props.product.price).toFixed(2)+" €"}</div></div>
                     <div className="products-fold"><img width="100%" src={unfold} alt=""/></div>
                 </div>
