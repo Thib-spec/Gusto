@@ -85,7 +85,7 @@ export default function Header() {
       <div className="header-top">
         <div className="header-top-logo-container">
           <div className="header-top-logo">
-            <img src={logo} alt="" />
+            <img src={logo} alt="" onClick={()=>handleAccueil()}/>
           </div>
         </div>
         <div className="header-top-name-container">
