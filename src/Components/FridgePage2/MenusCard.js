@@ -16,18 +16,17 @@ import ArrayController from "helpers/ArrayController";
 import mappers from "helpers/mappers";
 import reverse_mappers from "helpers/reverse_mappers";
 
-import InfoContext from "Context/FridgeInfoContext";
-import DropDownContext from "Context/FridgeDropDownComponentContext";
+import DropDownComponentContext from "Context/DropDownComponentContext";
 
 import MenuTableLine from "./MenuTableLine";
 
 export default function FridgeMenusCard({ name }) {
   // menus ajoutés dans le frigo
   const menus = new ArrayController(useState([]), useState([]));
-  const { fridge } = useContext(InfoContext);
+  const { fridge } = useContext(DropDownComponentContext);
 
   useEffect(() => {
-    getMenusInFridge();
+    getMenusInOneFridge();
   }, []);
 
   // useEffect(() => {
@@ -35,12 +34,12 @@ export default function FridgeMenusCard({ name }) {
   // }, [menus]);
 
   // appels api
-  async function getMenusInFridge() {
+  async function getMenusInOneFridge() {
     try {
-      const res = await api.getMenusInFridge({ id: fridge.id });
+      const res = await api.getMenusInOneFridge({ id: fridge.id });
       if (res.ok) {
         const resJSON = await res.json();
-        console.log("api.getMenusInFridge() : ", resJSON);
+        console.log("api.getMenusInOneFridge() : ", resJSON);
         menus.set([...resJSON.map(mappers.menusMapper)], { init: true });
       } else {
       }

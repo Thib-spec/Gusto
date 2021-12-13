@@ -6,6 +6,6 @@ const status = [
 ];
 
 export default (el) => {
-  const s = status.find((s) => s.id == el.id);
+  const s = status.find((s) => s.id == el.fk_id_status);
   return s ? s : status.find((s) => s.id == -1);
 };

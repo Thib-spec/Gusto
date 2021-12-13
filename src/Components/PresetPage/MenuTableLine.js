@@ -1,7 +1,7 @@
 import React, { Component, useState, useEffect } from "react";
 import Value from "helpers/Value";
 
-export default function FridgeMenuTableLine({ menu, parentProps }) {
+export default function FridgeMenuTableLine({ menu }) {
   const removeMenu = () => {
     menu.remove();
   };

@@ -6,7 +6,7 @@ import unfold from "Images/unfold.svg";
 import React, { Component, useState, useContext, createContext } from "react";
 import "CSS/FridgeDropDownCoponent.scss";
 
-import InfoContext from "Context/PresetInfoContext";
+import DropDownComponentContext from "Context/DropDownComponentContext";
 
 export default function DropDownComponent({ preset, children }) {
   const [open, setOpen] = useState(true);
@@ -24,7 +24,7 @@ export default function DropDownComponent({ preset, children }) {
 
   return (
     <>
-      <InfoContext.Provider value={preset}>
+      <DropDownComponentContext.Provider value={preset}>
         <div className="list-element">
           {open === true ? (
             <div>
@@ -61,7 +61,7 @@ export default function DropDownComponent({ preset, children }) {
             </div>
           )}
         </div>
-      </InfoContext.Provider>
+      </DropDownComponentContext.Provider>
     </>
   );
 }

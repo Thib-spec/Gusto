@@ -5,15 +5,24 @@ import nationalitiesMapper from "./nationalities.mapper";
 export default (el) => {
   return {
     id: el.id_user,
+    email: el.email,
     firstName: el.firstname,
     lastName: el.lastname,
-    language: nationalitiesMapper(el.Nationality).label,
+    language: el.Nationality
+      ? nationalitiesMapper(el.Nationality).label
+      : nationalitiesMapper({ fk_id_nationality: el.fk_id_nationality }).label,
     id_client: el.fk_id_client,
     id_level: el.fk_id_level,
-    client: clientsMapper(el.Client),
-    level: levelsMapper(el.Level),
-    nationality: nationalitiesMapper(el.Nationality),
+    id_nationality: el.fk_id_nationality,
+    client: el.Client
+      ? clientsMapper(el.Client)
+      : clientsMapper({ fk_id_client: el.fk_id_client }),
+    level: el.Level
+      ? levelsMapper(el.Level)
+      : levelsMapper({ fk_id_level: el.fk_id_level }),
+    nationality: el.Nationality
+      ? nationalitiesMapper(el.Nationality)
+      : nationalitiesMapper({ fk_id_nationality: el.fk_id_nationality }),
     // ...el,
   };
-  console.log(clientsMapper(el.Client));
 };

@@ -8,7 +8,7 @@ import "CSS/FridgeDropDownCoponent.scss";
 
 import Value from "helpers/Value";
 
-import InfoContext from "Context/FridgeInfoContext";
+import DropDownComponentContext from "Context/DropDownComponentContext";
 import { useTranslation } from "react-i18next";
 
 export default function DropDownComponent({ fridge, children }) {
@@ -35,7 +35,7 @@ export default function DropDownComponent({ fridge, children }) {
 
   return (
     <>
-      <InfoContext.Provider value={{ fridge, presetChosen }}>
+      <DropDownComponentContext.Provider value={{ fridge, presetChosen }}>
         <div className="list-element">
           {open === true ? (
             <div>
@@ -73,7 +73,7 @@ export default function DropDownComponent({ fridge, children }) {
             </div>
           )}
         </div>
-      </InfoContext.Provider>
+      </DropDownComponentContext.Provider>
     </>
   );
 }

@@ -29,16 +29,16 @@ export default function FridgeProductsCard({ name }) {
   const fridge = useContext(FridgeInfoContext);
 
   useEffect(() => {
-    getProductsInFridge();
+    getProductsInOneFridge();
   }, []);
 
   // appels api
-  async function getProductsInFridge() {
+  async function getProductsInOneFridge() {
     try {
-      const res = await api.getProductsInFridge({ id: fridge.id });
+      const res = await api.getProductsInOneFridge({ id: fridge.id });
       if (res.ok) {
         const resJSON = await res.json();
-        console.log("api.getProductsInFridge() : ", resJSON);
+        console.log("api.getProductsInOneFridge() : ", resJSON);
         products.set(resJSON.Products.map(mappers.productsInFridge), {
           init: true,
         });

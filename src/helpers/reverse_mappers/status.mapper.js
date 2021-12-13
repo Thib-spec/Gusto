@@ -1,7 +1,7 @@
 export default (el) => {
   return {
     id_status: el.id,
-    label: el.label,
+    label: el.label_trad,
     // ...el,
   };
 };

@@ -25,7 +25,7 @@ export default function FridgeProductsCard(props) {
   const products = new ArrayController(useState([]), useState([]));
 
   useEffect(() => {
-    getProductsInFridge();
+    getProductsInOneFridge();
   }, []);
 
   // useEffect(() => {
@@ -33,12 +33,12 @@ export default function FridgeProductsCard(props) {
   // }, [products.value]);
 
   // appels api
-  async function getProductsInFridge() {
+  async function getProductsInOneFridge() {
     try {
-      const res = await api.getProductsInFridge({ id: props.fridge.id });
+      const res = await api.getProductsInOneFridge({ id: props.fridge.id });
       if (res.ok) {
         const resJSON = await res.json();
-        console.log("api.getProductsInFridge() : ", resJSON);
+        console.log("api.getProductsInOneFridge() : ", resJSON);
         products.set(resJSON.Products.map(mappers.productsInFridge), {
           init: true,
         });
@@ -49,15 +49,15 @@ export default function FridgeProductsCard(props) {
     }
   }
 
-  async function addProductsInFridge() {
+  async function addProductsInOneFridge() {
     try {
-      const res = await api.addProductsInFridge({
+      const res = await api.addProductsInOneFridge({
         id: props.fridge.id,
         body: products.value,
       });
       if (res.ok) {
         const resJSON = await res.json();
-        console.log("api.addProductsInFridge() : ", resJSON);
+        console.log("api.addProductsInOneFridge() : ", resJSON);
         products.addOrUpdateMany([], { init: true });
       } else {
       }
@@ -74,7 +74,7 @@ export default function FridgeProductsCard(props) {
 
   // Save & Cancel
   const handleSaveButton = () => {
-    addProductsInFridge();
+    addProductsInOneFridge();
   };
   const handleCancelButton = () => {
     products.reset();

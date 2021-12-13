@@ -13,7 +13,6 @@ export default (el) => {
     Client: clientsMapper(el.client),
     Level: levelsMapper(el.level),
     Nationality: nationalitiesMapper(el.nationality),
-    // ...el,
+    ...el,
   };
-  console.log(clientsMapper(el.Client));
 };

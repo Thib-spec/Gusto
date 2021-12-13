@@ -20,13 +20,12 @@ const requester = (thiss) => {
     if (typeof authToken == "string") {
       options.headers["Authorization"] = `Bearer ${authToken}`;
     }
-    // options.headers["Authorization"] = localStorage.getItem("authToken");
 
-    if (body instanceof Object) options["body"] = JSON.stringify(body);
+    if (body instanceof Object) {
+      console.log("BODY : ", JSON.stringify(body));
+      options["body"] = JSON.stringify(body);
+    }
 
-    // fetch(thiss.url + path, options).then(res=>res.json()).then((resJSON)=>{
-    //   console.log("requete : ", thiss.url + path, resJSON);
-    // })
     return fetch(thiss.url + path, options);
   };
 };
