@@ -21,4 +21,7 @@ fridges.post("/:id/addQuantity",fridgeController.AddProductQuantity)
 fridges.put("/:id/editQuantity/:productId",fridgeController.EditProductQuantity)
 fridges.delete("/:id/removeQuantity/:productId",fridgeController.RemoveProductQuantity)
 
+fridges.post("/:id/addNationality", fridgeController.addNationalitytoFridge)
+fridges.post("/:id/addBadge", fridgeController.addBadgetoFridge)
+
 module.exports = fridges

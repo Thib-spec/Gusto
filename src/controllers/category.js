@@ -25,7 +25,7 @@ exports.getCategoryById = (req,res) => {
             return res.status(200).json(category)
         }
     })
-    .catch(error => res.json(error))
+    .catch(error => res.status(400).json(error))
  
     
 }
@@ -183,7 +183,8 @@ exports.editCategory =(req,res) => {
         }
     })
     
-    
+    .catch(error => res.status(400).json(error))
+
 }
 
 

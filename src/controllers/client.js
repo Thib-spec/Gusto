@@ -210,7 +210,7 @@ exports.editClient = (req,res) => {
         }
     })
     
-    .catch(error => console.log(error))
+    .catch(error => res.status(400).json(error))
 }
         
 
