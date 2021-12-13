@@ -103,7 +103,7 @@ function AdminRouter({ history }) {
     if (user.isLogged) {
       return (
         <>
-          <Header />
+          <Header/>
           {/* <HeaderL /> */}
           <Switch>
             <Route exact path="/" component={withTranslation()(HomePage)} />
