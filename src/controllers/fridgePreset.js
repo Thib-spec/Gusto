@@ -755,7 +755,7 @@ exports.getMenuByFridgePreset = (req,res) =>{
 }
 
 exports.addMenuInPreset = (req,res) =>{
-    // verif fk dans intervalle
+    // verif doublon
 
     const {fk_id_menu} = req.body
     const list_fk_menu = new Array()
@@ -792,16 +792,48 @@ exports.addMenuInPreset = (req,res) =>{
                     }
                     
                     if (req.body instanceof Array){
-                        for(let i=0;i<req.body.length;i++){
-                            console.log(req.body[i].fk_id_menu)
-                            preset.addMenus(req.body[i].fk_id_menu)
+
+                        if(Object.keys(req.body).length == 1){
+                            if(!list_fk_menu.includes(req.body[0].fk_id_menu)){
+                                return res.status(400).json({
+                                    message:"fk_id_menu does not match any id_menu"
+                                })
+                            }
                             
+                            else {
+                                preset.addMenus(req.body[0].fk_id_menu)
+                            }
+
+                            res.status(200).json({
+                                message:`Menu has been added to fridgePreset ${req.params.id}`
+                            })
+                             
+
                         }
-                        res.status(200).json({
-                            message:`Menus have been added to fridgePreset ${req.params.id}`
-                        })
+
+                        else {
+                            for(let i=0;i<req.body.length;i++){
+                            
+                                if(!list_fk_menu.includes(req.body[i].fk_id_menu)){
+                                    return res.status(400).json({
+                                        message:"fk_id_menu does not match any id_menu"
+                                    })
+                                }
+
+                                else {
+                                    preset.addMenus(req.body[i].fk_id_menu)
+                                }
+                            }
+                        
+                            res.status(200).json({
+                                message:`Menus have been added to fridgePreset ${req.params.id}`
+                            })
                          
+                        }
                     }
+                        
+
+                       
               
                     else {
                         if(!list_fk_menu.includes(fk_id_menu)){
