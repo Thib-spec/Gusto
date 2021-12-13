@@ -701,9 +701,7 @@ exports.addNationalitytoFridge = (req,res) =>{
                     for(let i=0;i<numberofNationalities;i++){
                         list_fk_nationalities.push(allNationalities[i].id_nationality)
                     }
-                    console.log(list_fk_nationalities)
-                    console.log(fk_id_nationality)
-
+                    
                     if(!list_fk_nationalities.includes(fk_id_nationality)){
                         return res.status(400).json({
                             message:"fk_id_nationalities does not match any id_nationality"
@@ -823,7 +821,7 @@ exports.addClienttoFridge = (req,res) =>{
 
             Model.Client.findAll()
             .then(allClients =>{
-                Model.Clients.count()
+                Model.Client.count()
                 .then(numberofClients =>{
                     for(let i=0;i<numberofClients;i++){
                         list_fk_clients.push(allClients[i].id_client)
