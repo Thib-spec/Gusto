@@ -14,7 +14,7 @@ fridgePreset.delete('/:id',fridgePresetController.deleteFridgePreset)
 
 
 fridgePreset.post('/:id/addProduct',fridgePresetController.addFrontProduct)
-fridgePreset.put('/:id/editProduct/:productId',fridgePresetController.editFrontProduct)
+fridgePreset.put('/:id/editProduct',fridgePresetController.editFrontProduct)
 fridgePreset.delete('/:id/removeProduct/:productId',fridgePresetController.removeProduct)
 
 fridgePreset.get("/:id/menus",fridgePresetController.getMenuByFridgePreset)

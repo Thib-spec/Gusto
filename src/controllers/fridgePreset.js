@@ -401,13 +401,15 @@ exports.addFrontProduct = (req,res) =>{
 
 // edit Preset
 exports.editFrontProduct = (req,res) =>{
-    const {quantity_max, quantity_min} = req.body
+    const {quantity_max, quantity_min,fk_id_product} = req.body
 
     const list_fk_product = new Array()
 
     const editProductSchema = Joi.object().keys({ 
         quantity_min:Joi.number(),
         quantity_max: Joi.number(),
+        fk_id_product:Joi.number()
+
     })
 
     const result = editProductSchema.validate(req.body)
@@ -431,32 +433,102 @@ exports.editFrontProduct = (req,res) =>{
         }
 
         else {
-            if (!valid) {
-                res.status(400).json({ 
-                  message: 'One or more parameters are not correctly written',
-                })
-              }
+           
+            Model.Products.findAll()
+            .then(allProduct => {
+                Model.Products.count()
+                .then(numberofproduct => {
+                    for (let i = 0;i< numberofproduct;i++){
+                        list_fk_product.push(allProduct[i].id_product)
+                    }
 
-            else {
+                    // if(!list_fk_product.includes(Number(req.params.productId))){
+                    //     res.status(400).json({
+                    //         message:"fk_id_product does not match any id_product"
+                    //     })
+                    // }
 
-                Model.Products.findAll()
-                .then(allProduct => {
-                    Model.Products.count()
-                    .then(numberofproduct => {
-                        for (let i = 0;i< numberofproduct;i++){
-                            list_fk_product.push(allProduct[i].id_product)
-                        }
+                    if(Object.keys(req.body).length == 0){
+                        res.status(400).json({
+                            message:"No parameters were passed"
+                        })
+                    }
 
-                        if(!list_fk_product.includes(Number(req.params.productId))){
-                            res.status(400).json({
-                                message:"fk_id_product does not match any id_product"
+                    else {
+                        if (req.body instanceof Array){
+
+                            var result = [];
+
+                            if(Object.keys(req.body).length == 1){
+                                if(!list_fk_product.includes(req.body[0].fk_id_product)){
+                                    return res.status(400).json({
+                                        message:`Fridgepreset ${req.params.id} does not contain product ${req.body[0].fk_id_product}`
+                                    })
+                                }
+
+                                else {
+                                    Model.fridgePresets_products.update({
+                                        quantity_max:req.body[0].quantity_max,
+                                        quantity_min:req.body[0].quantity_min,
+                                        fk_id_fridgePreset:req.params.id,
+                                        fk_id_product:req.body[0].fk_id_product
+                                    },
+                                    {
+                                        where:{
+                                            [Op.and]: [
+                                                { fk_id_fridgePreset:req.params.id },
+                                                { fk_id_product: req.body[0].fk_id_product }
+                                            ]
+                                        }
+                                    })
+                                    return res.status(200).json({
+                                        message:"Item has been updated"
+                                    })
+                                    
+                                }
+                            }
+                            
+
+                            else {
+
+                                for(i =0;i<(Object.keys(req.body).length) -1;i++){
+                                    if (!list_fk_product.includes(req.body[i].fk_id_product)){
+                                        return res.status(400).json({
+                                            message:`Fridgepreset ${req.params.id} does not contains product ${req.body[i].fk_id_product}`
+                                        })
+                                    }
+                                }
+                            }
+
+                            var promises = req.body.map(function(product) {
+                                return Model.fridgePresets_products.update({
+                                quantity_max:product.quantity_max,
+                                quantity_min:product.quantity_min,
+                                fk_id_fridgePreset:req.params.id,
+                                fk_id_product:product.fk_id_product
+                                },
+                                {
+                                    where:{
+                                        [Op.and]: [
+                                            { fk_id_fridgePreset:req.params.id },
+                                            { fk_id_product: product.fk_id_product }
+                                        ]
+                                    }
+                                })
+
+                                .then(function() {
+                                    result.push(product);
+                                })
+                    
                             })
-                        }
+                        
+                            Promise.all(promises)
+                                .then(function() {
+                                return res.json(result);
+                            });
 
-                        else if(Object.keys(req.body).length == 0){
-                            res.status(400).json({
-                                message:"No parameters were passed"
-                            })
+
+
                         }
 
                         else {
@@ -477,9 +549,10 @@ exports.editFrontProduct = (req,res) =>{
 
 
                                 else{
+
                                     Model.fridgePresets_products.update({
-                                    quantity_max:quantity_max,
-                                    quantity_min:quantity_min,
+                                        quantity_max:quantity_max,
+                                        quantity_min:quantity_min,
                                     },
                                     {
                                         where:{
@@ -497,13 +570,15 @@ exports.editFrontProduct = (req,res) =>{
                             })
                         }
 
-                       
- 
-                        })
-                    })
 
-                }
-            }
+                        
+                    }
+
+                })
+            })
+
+            
+        }
       
     })
     
