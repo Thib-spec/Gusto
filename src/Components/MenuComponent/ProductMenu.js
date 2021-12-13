@@ -1,18 +1,22 @@
 import React ,{useState,useEffect} from "react";
 import "../../CSS/menuPage.scss"
+import ArrayControllerMenu from "helpers/ArrayController/ArrayControllerMenu";
 
 
 export default function ProductMenu(props){
-
+    // const allProductsInMenu = new ArrayControllerMenu(useState([]), useState([]));
+    // allProductsInMenu.set(props.allProductsInMenu2, { init: true })
     const[show,setshow]=useState(true)
     console.log(props.product2)
     console.log("product2 ",props.product2.value.label)
     
       const removeProduct = () => {
           
-        
+            
             props.product2.remove();
-     
+            console.log(props.allProductsInMenu2)
+            props.product2.update()
+            
       };
 
     return(

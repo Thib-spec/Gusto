@@ -3,7 +3,7 @@ import styled from 'styled-components'
 import Uploader from './Uploader'
 
 const Container = styled.div`
-    width: 80%;
+    width: 100%;
     background: #fff;
     display: flex;
     flex-direction: column;

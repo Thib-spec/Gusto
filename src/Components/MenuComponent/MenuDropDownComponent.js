@@ -65,7 +65,6 @@ export default function MenuDropDownComponent(props){
 
     function handleDeleteMenu(){
         console.log("all products in menu : ",allProductsInMenu2)
-        console.log("all product in menu : ",allProductsInMenu2)
 
         allProductsInMenu2.reset()
 
@@ -109,7 +108,7 @@ export default function MenuDropDownComponent(props){
                                     {
                                         console.log("product : ",product.id_product)
                                     }
-                                    <ProductMenu product2={allProductsInMenu2.get(product.id_product)}/>
+                                    <ProductMenu product2={allProductsInMenu2.get(product.id_product)} allProductsInMenu2={allProductsInMenu2}/>
                                 </div>
                             )
                             }
