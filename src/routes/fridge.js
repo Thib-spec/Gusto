@@ -25,6 +25,6 @@ fridges.delete("/:id/removeQuantity/:productId",fridgeController.RemoveProductQu
 
 fridges.post("/:id/addNationality", fridgeController.addNationalitytoFridge)
 fridges.post("/:id/addBadge", fridgeController.addBadgetoFridge)
-fridges.post("/:id/addClient", fridgeController.addClienttoFridge)
+fridges.post("/:id/addClient", fridgeController.addClientToFridge)
 
 module.exports = fridges

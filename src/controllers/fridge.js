@@ -2,6 +2,7 @@ const Model = require("../database/models");
 const Joi = require('joi');
 
 const { Op } = require("sequelize");
+const { number } = require("joi");
 
 exports.listFridges = (req, res) => {
     Model.Fridges.findAll({
@@ -801,6 +802,9 @@ exports.addBadgetoFridge = (req,res) =>{
     const {fk_id_badge} = req.body
 
     const list_fk_badges = new Array()
+    let list_frigde_badges = []
+
+
     const postBadgetoFridgeSchema = Joi.object().keys({ 
         fk_id_badge : Joi.number().required()
     })
@@ -846,8 +850,25 @@ exports.addBadgetoFridge = (req,res) =>{
                                 })
                             }
                             else{
-                                fridge.addBadges(fk_id_badge)
-                                .then(addedBadge => res.status(200).json(addedBadge))
+
+                                fridge.getBadges()
+                                .then(fridgeBadge => {
+                                    for(let i =0;i<fridgeBadge.length;i++){
+                                        list_frigde_badges.push(fridgeBadge[i].id_badges)
+                                    }
+
+                                    if(list_frigde_badges.includes(fk_id_badge)){
+                                        return res.status(400).json({
+                                            message: `Fridge ${req.params.id} has already badge ${fk_id_badge}`
+                                        })
+                                    }
+
+                                    else {
+                                        fridge.addBadges(fk_id_badge)
+                                        .then(addedBadge => res.status(200).json(addedBadge))
+                                    }
+                                })
+                                
                             }
                         })
                         .catch(error => res.status(400).json(error))
@@ -859,10 +880,13 @@ exports.addBadgetoFridge = (req,res) =>{
     }
 }
 
-exports.addClienttoFridge = (req,res) =>{
+exports.addClientToFridge = (req,res) =>{
     const {fk_id_client} = req.body
+    
 
-    const list_fk_clients = new Array()
+    let list_fk_clients = []
+    let list_fridge_client = []
+
     const postClienttoFridgeSchema = Joi.object().keys({ 
         fk_id_client : Joi.number().required()
     })
@@ -879,45 +903,63 @@ exports.addClienttoFridge = (req,res) =>{
         info: 'Requires: fk_id_client' 
       })
     }
+
     else {
 
-            Model.Client.findAll()
-            .then(allClients =>{
-                Model.Clients.count()
-                .then(numberofClients =>{
-                    for(let i=0;i<numberofClients;i++){
-                        list_fk_clients.push(allClients[i].id_client)
-                    }
+        Model.Client.findAll()
+        .then(allClient => {
+            Model.Client.count()
+            .then(numberOfClient => {
+                for(let i=0;i<numberOfClient;i++){
+                    list_fk_clients.push(allClient[i].id_client)
+                }
 
-                    if(!list_fk_clients.includes(fk_id_client)){
-                        return res.status(400).json({
-                            message:"fk_id_client does not match any id_client"
-                        })
-                    }
+                if(!list_fk_clients.includes(fk_id_client)){
+                    return res.status(400).json({
+                        message: "fk_id_client does not match any id_client"
+                    })
+                }
 
-                    else {
-                        Model.Fridges.findOne({
-                            where:{
-                                id_fridge: req.params.id
-                            }
-                        })
-                        .then(fridge => {
-                            if(!fridge){
-                                return res.status(400).json({
-                                    message: 'Fridge does not exist'
-                                })
-                            }
-                            else{
-                                fridge.addClients(fk_id_client)
-                                .then(addedClient => res.status(200).json(addedClient))
-                            }
-                        })
-                        .catch(error => res.status(400).json(error))
-        
-                    }
-                })
-            })             
-            .catch(error => res.status(400).json(error))
+                else {
+                    Model.Fridges.findOne({
+                        where:{
+                            id_fridge:req.params.id
+                        }
+                    })
+                    .then(fridge => {
+                        if(!fridge){
+                            return res.status(400).json({
+                                message: 'Fridge does not exist'
+                            })
+                        }
+
+                        else {
+                            fridge.getClients()
+                            .then(client_fridge => {
+                                for(let i=0;i<client_fridge.length;i++){
+                                    list_fridge_client.push(client_fridge[i].id_client)
+                                }
+
+                                if(list_fridge_client.includes(fk_id_client)){
+                                    return res.status(400).json({
+                                        message:`Fridge ${req.params.id} has already been assigned to client ${fk_id_client}`
+                                    })
+                                }
+
+                                else {
+                                    fridge.addClients(fk_id_client)
+                                    .then(client => res.status(200).json(client))
+                                    .catch(error => res.status(400).json(error))
+                                }
+                            })
+
+                        }
+                    
+                    })
+                }
+            })
+        })
+
     }
 }
-
+   
