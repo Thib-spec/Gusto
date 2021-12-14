@@ -58,7 +58,7 @@ exports.addCategory = (req,res) =>{
     const { label, image, description} = req.body
 
 
-    const list_label = new Array()
+    let list_label = []
 
     const postCategorySchema = Joi.object().keys({ 
         label : Joi.string().required(),

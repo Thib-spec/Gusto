@@ -16,7 +16,7 @@ exports.listFridges = (req, res) => {
 
 exports.getFridgeForUser = (req,res) => {
 
-    const result = new Array()
+    let result = []
 
 
     Model.Fridges.findAll({
@@ -171,7 +171,7 @@ exports.listBadgeByFridge = (req,res) => {
 
 
 exports.listProductByOrderByFridge = (req,res) => {
-    let fk_list = new Array()
+    let fk_list = []
 
     Model.Orders.findAll()
     .then(allOrders => {
@@ -212,7 +212,7 @@ exports.listProductByOrderByFridge = (req,res) => {
 
 
 exports.listProductsBySaleByFridge = (req,res) => {
-    let sale_id_list = new Array()
+    let sale_id_list = []
 
     Model.Sales.findAll()
     .then(allSales => {
@@ -266,8 +266,8 @@ exports.AddProductQuantity = (req,res) => {
 
     const {fk_id_product, quantity} = req.body
 
-    const list_fk_product = new Array()
-    const list_fk_fridge_product = new Array()
+    let list_fk_product = []
+    let list_fk_fridge_product = []
 
     const postQuantitySchema = Joi.object().keys({ 
         quantity : Joi.number().required(),
@@ -356,7 +356,7 @@ exports.AddProductQuantity = (req,res) => {
 exports.EditProductQuantity = (req,res) => {
 
     const {quantity} = req.body
-    const fk_list_product = new Array()
+    let fk_list_product = []
 
     const editQuantitySchema = Joi.object().keys({ 
         quantity : Joi.number(),
@@ -455,7 +455,7 @@ exports.EditProductQuantity = (req,res) => {
 
 
 exports.RemoveProductQuantity = (req,res) => {
-    const list_fk_product = new Array()
+    let list_fk_product = []
 
     Model.Products.findAll()
     .then(allProducts =>{
@@ -552,8 +552,8 @@ exports.getFridgeById = (req,res) => {
 exports.addFridge = (req,res) =>{
     const { id_fridge,label, fk_id_technologies, fk_id_fridgePreset} = req.body
 
-    const fk_tech_list = new Array()
-    const fk_fridgePresetList = new Array()
+    let fk_tech_list = []
+    let fk_fridgePresetList = []
 
     const postFridgeSchema = Joi.object().keys({
         id_fridge: Joi.string().required(), 
@@ -718,7 +718,7 @@ exports.deleteFridge = (req,res) => {
 exports.addNationalitytoFridge = (req,res) =>{
     const {fk_id_nationality} = req.body
 
-    const list_fk_nationalities = new Array()
+    let list_fk_nationalities = []
     let list_fridges_nationalities = []
     const postLanguagetoFridgeSchema = Joi.object().keys({ 
         fk_id_nationality : Joi.number().required()
@@ -801,7 +801,7 @@ exports.addNationalitytoFridge = (req,res) =>{
 exports.addBadgetoFridge = (req,res) =>{
     const {fk_id_badge} = req.body
 
-    const list_fk_badges = new Array()
+    let list_fk_badges = []
     let list_frigde_badges = []
 
 

@@ -105,7 +105,7 @@ const Joi = require('joi');
 
     exports.addClient = (req,res) =>{
         const {label} = req.body;
-        const list_label = new Array()
+        let list_label = []
 
 
        const postClientSchema = Joi.object().keys({ 

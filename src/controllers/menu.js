@@ -66,8 +66,8 @@ const Joi = require('joi');
     exports.addProductInMenu = (req,res) => {
         const {fk_id_product} = req.body
 
-        const list_product = new Array()
-        const list_productOfMenu =new Array()
+        let list_product = []
+        let list_productOfMenu = []
 
 
         const postProductInMenuSchema = Joi.object().keys({ 
@@ -183,7 +183,7 @@ const Joi = require('joi');
 
     }
 
-    // a metre en array
+    
     exports.deleteProductInMenu = (req,res) => {
         const {fk_id_product} = req.body
 

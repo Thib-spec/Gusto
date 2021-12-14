@@ -47,7 +47,7 @@ exports.getProductinPreset = (req,res) => {
 exports.addFridgePreset = (req,res) =>{
     const {label} = req.body;
 
-    const list_label= new Array()
+    let list_label= []
 
 
     const postFridgePresetSchema = Joi.object().keys({ 
@@ -111,7 +111,7 @@ exports.addFridgePreset = (req,res) =>{
 
 exports.editFridgePreset = (req,res) => {
     const {label,fk_id_client} = req.body;
-    const list_fk_client = new Array()
+    let list_fk_client = []
 
     const editFridgePresetSchema = Joi.object().keys({ 
         label: Joi.string(),
@@ -220,8 +220,8 @@ exports.deleteFridgePreset = (req,res) => {
 
 exports.addFrontProduct = (req,res) =>{
     const {quantity_max, quantity_min, fk_id_product} = req.body
-    const list_fk_product = new Array()
-    const listFridgePreset =new Array()
+    let list_fk_product = []
+    let listFridgePreset = []
 
     const postProductSchema = Joi.object().keys({ 
         quantity_min:Joi.number().required(),
@@ -403,7 +403,7 @@ exports.addFrontProduct = (req,res) =>{
 exports.editFrontProduct = (req,res) =>{
     const {quantity_max, quantity_min,fk_id_product} = req.body
 
-    const list_fk_product = new Array()
+    let list_fk_product = []
 
     const editProductSchema = Joi.object().keys({ 
         quantity_min:Joi.number(),
@@ -588,7 +588,7 @@ exports.editFrontProduct = (req,res) =>{
 
 // remove preset
 exports.removeProduct = (req,res) =>{
-    const list_fk_product = new Array()
+    let list_fk_product = []
     const {fk_id_product} = req.body
 
     Model.FridgePresets.findOne({
@@ -758,7 +758,7 @@ exports.addMenuInPreset = (req,res) =>{
     // verif doublon
 
     const {fk_id_menu} = req.body
-    const list_fk_menu = new Array()
+    let list_fk_menu = []
 
     const postMenuSchema = Joi.object().keys({ 
         fk_id_menu: Joi.number().required()
@@ -866,7 +866,7 @@ exports.addMenuInPreset = (req,res) =>{
 }
 
 exports.removeMenuPreset = (req,res) => {
-    const list_fk_menu = new Array()
+    let list_fk_menu = []
     const {fk_id_menu} = req.body
 
     // vérif que le fridge Preset contienne bien le menu ciblé

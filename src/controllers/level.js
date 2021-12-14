@@ -10,7 +10,7 @@ const Joi = require('joi');
 
     exports.addLevels = (req,res) =>{
         const {label} = req.body;
-        const list_label = new Array()
+        let list_label = []
 
        const postLevelSchema = Joi.object().keys({ 
             label: Joi.string().required()

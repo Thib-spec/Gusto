@@ -38,8 +38,8 @@ exports.getTagById = (req,res) => {
 exports.addTag = (req,res) =>{
     const {id_tag,fk_id_product,fk_id_client} = req.body
 
-    const list_fk_product = new Array()
-    const list_fk_client = new Array()
+    let list_fk_product = []
+    let list_fk_client = []
 
     const postTagSchema = Joi.object().keys({
         id_tag:Joi.string().required(), 
@@ -117,8 +117,8 @@ exports.editTag =(req,res) => {
 
     const {fk_id_product,fk_id_client} = req.body
 
-    const list_fk_product = new Array()
-    const list_fk_client = new Array()
+    let list_fk_product = []
+    let list_fk_client = []
 
     Model.Tags.findOne({
         where: {

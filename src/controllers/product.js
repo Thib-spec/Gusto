@@ -35,8 +35,8 @@ exports.getProductById = (req,res) => {
 exports.addProduct = (req,res) =>{
     const {label, image, price, ubd, description, fk_id_category } = req.body
 
-    const fk_category_list = new Array()
-    const prodLabel = new Array()
+    let fk_category_list = []
+    let prodLabel = []
 
     const postProductSchema = Joi.object().keys({ 
         label : Joi.string().required(),

@@ -34,7 +34,7 @@ exports.getNationalityById = (req,res) => {
 
 exports.addNationality = (req,res) =>{
     const {label} = req.body
-    const list_nationality = new Array() 
+    let list_nationality = []
 
     const postNationalitySchema = Joi.object().keys({ 
         label : Joi.string().required()

@@ -34,8 +34,8 @@ const Joi = require('joi');
     exports.addBadge = (req,res) =>{
         const {id_badges, fk_id_client, fk_id_user} = req.body;
 
-        const list_fk_client = new Array()
-        const list_fk_user = new Array()
+        let list_fk_client = []
+        let list_fk_user = []
     
        const postBadgeSchema = Joi.object().keys({ 
             id_badges: Joi.string().required(),
@@ -112,8 +112,8 @@ const Joi = require('joi');
     exports.editBadge = (req,res) => {
         const {fk_id_client,fk_id_user} = req.body;
 
-        const list_fk_client = new Array()
-        const list_fk_user = new Array()
+        let list_fk_client = []
+        let list_fk_user =[]
 
         Model.Badges.findOne({
             where: {

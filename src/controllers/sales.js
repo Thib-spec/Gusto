@@ -33,7 +33,7 @@ exports.getSaleById = (req,res) => {
 exports.addSale = (req,res) =>{
     const { sales_timestamp, cbemv_amount, cbcless_amount,lv_amount,lv_quantity,cash_amount, fk_id_fridge} = req.body
 
-    const list_fk_fridge = new Array()
+    let list_fk_fridge = []
 
     const postSalesSchema = Joi.object().keys({ 
         sales_timestamp : Joi.string().required(),

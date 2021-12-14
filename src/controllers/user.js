@@ -100,11 +100,11 @@ const Joi = require('joi');
     exports.addUser = (req,res) =>{
         const { firstname, lastname, email, image,password,fk_id_level,fk_id_client,fk_id_nationality } = req.body;
 
-        const fk_level_list = new Array()
-        const fk_client_list = new Array()
-        const fk_nationality_list = new Array()
+        let fk_level_list = []
+        let fk_client_list = []
+        let fk_nationality_list = []
 
-        const email_list = new Array()
+        let email_list = []
 
        // Check email format 
        if(!email.match("^.{1,}@[^.]{1,}")){
@@ -229,7 +229,7 @@ const Joi = require('joi');
 
 exports.editUser = (req,res) => {
     const { firstname, lastname, email, image} = req.body;
-    const email_list = new Array()
+    let email_list = []
 
 
     Model.Users.findOne({
