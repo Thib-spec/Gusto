@@ -38,10 +38,10 @@ const Joi = require('joi');
                 Model.Levels.count()
                 .then(numberofLevel => {
                     for(let i =0;i<numberofLevel;i++){
-                        list_label.push(allLevels[i].label)
+                        list_label.push(allLevels[i].label.toLowerCase())
                     }
-
-                    if(list_label.includes(label)){
+                    
+                    if(list_label.includes(label.toLowerCase())){
                         res.status(400).json({
                             message:"This label already exists"
                         })
