@@ -732,6 +732,7 @@ exports.addMenuInPreset = (req,res) =>{
 
     const {fk_id_menu} = req.body
     let list_fk_menu = []
+    let fridgePreset_menu_list = []
 
     const postMenuSchema = Joi.object().keys({ 
         fk_id_menu: Joi.number().required()
@@ -774,14 +775,28 @@ exports.addMenuInPreset = (req,res) =>{
                             }
                             
                             else {
-                                preset.addMenus(req.body[0].fk_id_menu)
+
+                                preset.getMenus()
+                                .then(menu =>{
+                                    for(let i =0; i< menu.length;i++){
+                                        fridgePreset_menu_list.push(menu[i].id_menu)
+                                    }
+                                    
+                                    if(fridgePreset_menu_list.includes(fk_id_menu)){
+                                        return res.status(400).json({
+                                            message:`FridgePreset ${req.params.id} already contain Menu ${fk_id_menu}`
+                                        })
+                                    }
+
+                                    else {
+                                        preset.addMenus(req.body[0].fk_id_menu) 
+                                        res.status(200).json({
+                                            message:`Menu has been added to fridgePreset ${req.params.id}`
+                                        })
+                                    }
+
+                                })
                             }
-
-                            res.status(200).json({
-                                message:`Menu has been added to fridgePreset ${req.params.id}`
-                            })
-                             
-
                         }
 
                         else {
