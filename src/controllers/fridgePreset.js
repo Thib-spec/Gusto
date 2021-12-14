@@ -782,9 +782,9 @@ exports.addMenuInPreset = (req,res) =>{
                                         fridgePreset_menu_list.push(menu[i].id_menu)
                                     }
                                     
-                                    if(fridgePreset_menu_list.includes(fk_id_menu)){
+                                    if(fridgePreset_menu_list.includes(req.body[0].fk_id_menu)){
                                         return res.status(400).json({
-                                            message:`FridgePreset ${req.params.id} already contain Menu ${fk_id_menu}`
+                                            message:`FridgePreset ${req.params.id} already contain Menu ${req.body[0].fk_id_menu}`
                                         })
                                     }
 
@@ -838,9 +838,26 @@ exports.addMenuInPreset = (req,res) =>{
                         }
 
                         else {
-                            preset.addMenus(fk_id_menu)
-                            .then(res.status(200).json(`Menu ${fk_id_menu} has been added to FridgePreset ${req.params.id}`))
-                            .catch(error => res.status(400).json(error))
+
+                            preset.getMenus()
+                            .then(menu =>{
+                                for(let i =0; i< menu.length;i++){
+                                    fridgePreset_menu_list.push(menu[i].id_menu)
+                                }
+                                
+                                if(fridgePreset_menu_list.includes(fk_id_menu)){
+                                    return res.status(400).json({
+                                        message:`FridgePreset ${req.params.id} already contain Menu ${fk_id_menu}`
+                                    })
+                                }
+
+                                else {
+                                    preset.addMenus(fk_id_menu)
+                                    .then(res.status(200).json(`Menu ${fk_id_menu} has been added to FridgePreset ${req.params.id}`))
+                                    .catch(error => res.status(400).json(error))
+                                }
+                            })
+                           
                         }
 
                     }

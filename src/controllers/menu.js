@@ -114,12 +114,29 @@ const Joi = require('joi');
                                 }
                                 
                                 else {
-                                    menu.addProducts((req.body[0].fk_id_product))
+
+                                    menu.getProducts()
+                                    .then(allProd=>{
+                                        for(let i =0;i<allProd.length;i++){
+                                            list_productOfMenu.push(allProd[i].menus_products.fk_id_product)
+                                        }
+                                    
+                                        if(list_productOfMenu.includes(req.body[0].fk_id_product)){
+                                            res.status(400).json({
+                                                message:`Menu ${req.params.id} already contains product ${req.body[0].fk_id_product}`
+                                            })
+                                        }
+
+                                        else {
+                                            menu.addProducts((req.body[0].fk_id_product))
+                                            res.status(200).json({
+                                                message:"Product has been added"
+                                            })
+                                        }
+                                    })
+                                    
                                 }
         
-                                res.status(200).json({
-                                    message:"Product has been added"
-                                })
                                     
         
                             }
@@ -183,7 +200,7 @@ const Joi = require('joi');
 
     }
 
-    
+    // verif si produit appartient au menu pas possible
     exports.deleteProductInMenu = (req,res) => {
         const {fk_id_product} = req.body
 
