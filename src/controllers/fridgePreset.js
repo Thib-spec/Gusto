@@ -110,12 +110,10 @@ exports.addFridgePreset = (req,res) =>{
 
 
 exports.editFridgePreset = (req,res) => {
-    const {label,fk_id_client} = req.body;
-    let list_fk_client = []
+    const {label} = req.body;
 
     const editFridgePresetSchema = Joi.object().keys({ 
         label: Joi.string(),
-        fk_id_client: Joi.number()
     })
 
     const result = editFridgePresetSchema.validate(req.body)
@@ -149,36 +147,19 @@ exports.editFridgePreset = (req,res) => {
         } 
         
         else {
-            
-            Model.Client.findAll()
-            .then(allClient => {
-                Model.Client.count()
-                .then(numberOfClient => {
-                    for(let i =0;i<numberOfClient;i++){
-                        list_fk_client.push(allClient[i].id_client)
-                    }
-    
-                    if(!list_fk_client.includes(fk_id_client) && fk_id_client){
-                        res.status(400).json({
-                            message:"fk_id_client does not match any id_client"
-                        })
-                    }
-                    else {
-                          Model.FridgePresets.update({
-                            label: label,
-                            fk_id_client:fk_id_client
-                        },
-                        {
-                            where : {
-                                id_fridgePresets: req.params.id
-                            }
-                        })
-                        res.status(200).json({
-                            message: "Modification apply"}
-                        )
-                    }
-                })
+
+            Model.FridgePresets.update({
+                label: label,
+            },
+            {   
+                where : {
+                    id_fridgePresets: req.params.id
+                }
             })
+            res.status(200).json({
+                message: "Item has been updated"}
+            )
+                    
         }
     })
     
@@ -199,17 +180,17 @@ exports.deleteFridgePreset = (req,res) => {
                 message: 'FridgePreset not found',
             });
         }
-    Model.FridgePresets
-            .destroy({
+
+        else {
+            Model.FridgePresets.destroy({
                 where: {
                     id_fridgePresets: req.params.id
                 }
             })
             .then(res.status(200).json({
                 message: `FridgePreset with id : ${req.params.id} has been deleted`})
-            )
+            )}
         }
-
     )
     .catch(error => res.status(400).json(error))
 }
@@ -401,7 +382,7 @@ exports.addFrontProduct = (req,res) =>{
 
 // edit Preset
 exports.editFrontProduct = (req,res) =>{
-    const {quantity_max, quantity_min,fk_id_product} = req.body
+    const {quantity_max, quantity_min} = req.body
 
     let list_fk_product = []
 
@@ -442,12 +423,6 @@ exports.editFrontProduct = (req,res) =>{
                         list_fk_product.push(allProduct[i].id_product)
                     }
 
-                    // if(!list_fk_product.includes(Number(req.params.productId))){
-                    //     res.status(400).json({
-                    //         message:"fk_id_product does not match any id_product"
-                    //     })
-                    // }
-
                     if(Object.keys(req.body).length == 0){
                         res.status(400).json({
                             message:"No parameters were passed"
@@ -471,7 +446,6 @@ exports.editFrontProduct = (req,res) =>{
                                         quantity_max:req.body[0].quantity_max,
                                         quantity_min:req.body[0].quantity_min,
                                         fk_id_fridgePreset:req.params.id,
-                                        fk_id_product:req.body[0].fk_id_product
                                     },
                                     {
                                         where:{
@@ -505,7 +479,6 @@ exports.editFrontProduct = (req,res) =>{
                                 quantity_max:product.quantity_max,
                                 quantity_min:product.quantity_min,
                                 fk_id_fridgePreset:req.params.id,
-                                fk_id_product:product.fk_id_product
                                 },
                                 {
                                     where:{
@@ -869,7 +842,7 @@ exports.removeMenuPreset = (req,res) => {
     let list_fk_menu = []
     const {fk_id_menu} = req.body
 
-    // vérif que le fridge Preset contienne bien le menu ciblé
+    // vérif que le fridge Preset contienne bien le menu ciblé pas faisbale sauf création du model fridgeprest_menu
     Model.FridgePresets.findOne({
         where:{
             id_fridgePresets: req.params.id
