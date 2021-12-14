@@ -213,3 +213,94 @@ exports.deleteSale = (req,res) => {
     })
     
 }
+
+exports.addProductInSale = (req,res) => {
+    const {fk_id_product,quantity_product} = req.body
+    
+
+    let list_fk_product = []
+    let list_product_sales = []
+   
+    const postProductToSaleSchema = Joi.object().keys({ 
+        fk_id_product : Joi.number().required(),
+        quantity_product:Joi.number().required()
+    })
+
+    const result = postProductToSaleSchema.validate(req.body)
+
+    const {error } = result;
+
+    const valid = error == null;
+
+    if (!valid) {
+      res.status(400).json({ 
+        message: 'Missing required parameters',
+        info: 'Requires: fk_id_product, quantity_product' 
+      })
+    }
+
+    else {
+
+        Model.Products.findAll()
+        .then(allproduct => {
+            Model.Products.count()
+            .then(numberOfProduct => {
+                for(let i=0;i<numberOfProduct;i++){
+                    list_fk_product.push(allproduct[i].id_product)
+                }
+
+                if(!list_fk_product.includes(fk_id_product)){
+                    return res.status(400).json({
+                        message: "fk_id_product does not match any id_product"
+                    })
+                }
+
+                else {
+                    Model.Sales.findOne({
+                        where:{
+                            id_sale:req.params.id
+                        }
+                    })
+                    .then(sale => {
+                        if(!sale){
+                            return res.status(400).json({
+                                message: 'Sale does not exist'
+                            })
+                        }
+
+                        else {
+                            sale.getProducts()
+                            .then(product_sale => {
+                                for(let i=0;i<product_sale.length;i++){
+                                    list_product_sales.push(product_sale[i].id_product)
+                                }
+                                
+
+                                if(list_product_sales.includes(fk_id_product)){
+                                    return res.status(400).json({
+                                        message:`Product ${fk_id_product}  has already been assigned to Sale ${req.params.id} `
+                                    }) 
+                                }
+                                
+
+                                else {
+                                    Model.products_sales.create({
+                                        fk_id_product:fk_id_product,
+                                        fk_id_sale:req.params.id,
+                                        quantity_product:quantity_product
+
+                                    })
+                                    .then(product => res.status(200).json(product))
+                                    .catch(error => res.status(400).json(error))
+                                }
+                            })
+
+                        }
+                    
+                    })
+                }
+            })
+        })
+
+    }
+}
