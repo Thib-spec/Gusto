@@ -14,8 +14,7 @@ export default function ProductMenu(props){
           
             
             props.product2.remove();
-            console.log(props.allProductsInMenu2)
-            props.product2.update()
+            
             
       };
 

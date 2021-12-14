@@ -65,7 +65,7 @@ export default function MenuDropDownComponent(props){
 
     function handleDeleteMenu(){
         console.log("all products in menu : ",allProductsInMenu2)
-
+        
         allProductsInMenu2.reset()
 
         
@@ -80,7 +80,17 @@ export default function MenuDropDownComponent(props){
     }
 
     function handleSave(){
-        allProductsInMenu2.clear()
+        console.log(allProductsInMenu2,props.menu.id_menu)
+        axios.put("http://api.gustosolutions.fr/api/menu/"+props.menu.id_menu, {
+            })
+            .then((res) => {
+                console.log(res);
+                window.location.reload(false);
+            })
+            .catch((err) => {
+                console.log(err);
+            });
+
     }
 
 
@@ -107,6 +117,7 @@ export default function MenuDropDownComponent(props){
                                 <div>
                                     {
                                         console.log("product : ",product.id_product)
+
                                     }
                                     <ProductMenu product2={allProductsInMenu2.get(product.id_product)} allProductsInMenu2={allProductsInMenu2}/>
                                 </div>
