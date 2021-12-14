@@ -42,7 +42,7 @@ exports.addProduct = (req,res) =>{
         label : Joi.string().required(),
         image:Joi.string().required(),
         price:Joi.number().required(),
-        ubd:Joi.string().required(),
+        ubd:Joi.number().required(),
         description:Joi.string().required(),
         fk_id_category:Joi.number().required()
     })
@@ -137,7 +137,7 @@ exports.editProduct =(req,res) => {
             label : Joi.string(),
             image:Joi.string(),
             price:Joi.number(),
-            ubd:Joi.string(),
+            ubd:Joi.number(),
             description:Joi.string().allow("")
         })
 

@@ -237,7 +237,7 @@ exports.listProductsBySaleByFridge = (req,res) => {
 
                     Model.Sales.findAll({
                         where:{
-                            fk_id_fridge:fridge.id_fridge      
+                            fk_id_fridge:req.params.id      
                         },
                         include:{model:Model.Products},
                         order:[
@@ -246,15 +246,7 @@ exports.listProductsBySaleByFridge = (req,res) => {
                     })
     
                     .then(sales =>{
-                        if(!sale_id_list.includes(Number(req.params.id))){
-                            return res.status(400).json({
-                                message:"Fridge does not have any sale"
-                            })
-                        }
-        
-                        else {
-                            res.status(200).json(sales.slice(0,5))
-                        }
+                        res.status(200).json(sales.slice(0,5))
                     })
                 }
             })
@@ -726,6 +718,7 @@ exports.addNationalitytoFridge = (req,res) =>{
     const {fk_id_nationality} = req.body
 
     const list_fk_nationalities = new Array()
+    let list_fridges_nationalities = []
     const postLanguagetoFridgeSchema = Joi.object().keys({ 
         fk_id_nationality : Joi.number().required()
     })
@@ -751,8 +744,7 @@ exports.addNationalitytoFridge = (req,res) =>{
                     for(let i=0;i<numberofNationalities;i++){
                         list_fk_nationalities.push(allNationalities[i].id_nationality)
                     }
-                    console.log(list_fk_nationalities)
-                    console.log(fk_id_nationality)
+                 
 
                     if(!list_fk_nationalities.includes(fk_id_nationality)){
                         return res.status(400).json({
@@ -772,9 +764,27 @@ exports.addNationalitytoFridge = (req,res) =>{
                                     message: 'Fridge does not exist'
                                 })
                             }
-                            else{
-                                fridge.addNationalities(fk_id_nationality)
-                                .then(addedFridge => res.status(200).json(addedFridge))
+                            else {
+                                fridge.getNationalities()
+                                .then(fridgeNationality => {
+                                    for(let i =0;i<fridgeNationality.length;i++){
+                                        list_fridges_nationalities.push(fridgeNationality[i].id_nationality)
+                                    }
+
+                                   
+
+                                    if(list_fridges_nationalities.includes(fk_id_nationality)){
+                                        return res.status(400).json({
+                                            message: `Fridge ${req.params.id} has already been assign to nationality ${fk_id_nationality}`
+                                        })
+                                    }
+
+                                    else {
+                                        fridge.addNationalities(fk_id_nationality)
+                                        .then(addedNationlity => res.status(200).json(addedNationlity))
+                                    }
+                                })
+                                
                             }
                         })
                         .catch(error => res.status(400).json(error))
