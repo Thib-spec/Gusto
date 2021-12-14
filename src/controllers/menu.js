@@ -80,78 +80,115 @@ const Joi = require('joi');
 
         const valid = error == null;
 
-        if (!valid) {
-            res.status(400).json({ 
-            message: 'Missing required parameters',
-            info: 'Requires: fk_id_product' 
-            })
-        }
+        Model.Products.findAll()
+        .then(allProducts => {
+            Model.Products.count()
+            .then(numberOfProduct => {
+                for(let i =0;i<numberOfProduct;i++){
+                    list_product.push(allProducts[i].id_product)
+                }
 
-        else {
-
-            Model.Products.findAll()
-            .then(allProducts => {
-                Model.Products.count()
-                .then(numberOfProduct => {
-                    for(let i =0;i<numberOfProduct;i++){
-                        list_product.push(allProducts[i].id_product)
-                    }
-
-                    
-
-                    if(!list_product.includes(fk_id_product)){
-                        res.status(400).json({
-                            message:"fk_is_product does not match any id_product"
-                        })
+                Model.Menus.findOne({
+                    where:{
+                        id_menu:req.params.id
                     }
                 })
-            })
+        
+                .then((menu) => {
+                    if (!menu) {
+                        return res.status(400).json({
+                            message: 'Menu does not exist',
+                        });
+                    }
+        
+                    else {
+        
+                        if (req.body instanceof Array){
+        
+                            if(Object.keys(req.body).length == 1){
+            
+                                if(!list_product.includes(req.body[0].fk_id_product)){
+                                    return res.status(400).json({
+                                        message:"fk_id_product does not match any id_product"
+                                    })
+                                }
+                                
+                                else {
+                                    menu.addProducts((req.body[0].fk_id_product))
+                                }
+        
+                                res.status(200).json({
+                                    message:"Product has been added"
+                                })
+                                    
+        
+                            }
+        
+                            else {
+                                for(let i=0;i<req.body.length;i++){
+                                
+                                    if(!list_product.includes(req.body[i].fk_id_product)){
+                                        return res.status(400).json({
+                                            message:"fk_id_product does not match any id_product"
+                                        })
+                                    }
+        
+                                    else {
+                                        menu.addProducts(req.body[i].fk_id_product)
+                                    }
+                                }
+                            
+                                res.status(200).json({
+                                    message:"Products have been added"
+                                })
+                                
+                            }
+                        }
+        
+                        else {
+                            if (!valid) {
+                                res.status(400).json({ 
+                                message: 'Missing required parameters',
+                                info: 'Requires: fk_id_product' 
+                                })
+                            }
+        
+                            else {
+                                menu.getProducts()
+                                .then(allProd=>{
+                                    for(let i =0;i<allProd.length;i++){
+                                        list_productOfMenu.push(allProd[i].menus_products.fk_id_product)
+                                    }
+                                
+                                    if(list_productOfMenu.includes(fk_id_product)){
+                                        res.status(400).json({
+                                            message:`Menu ${req.params.id} already contains product ${fk_id_product}`
+                                        })
+                                    }
+        
+                                    else {
+                                        return menu.addProducts(fk_id_product)
+                                        .then(addedProduct => res.status(200).json(addedProduct))
+                                        .catch(error => res.status(400).json(error))
+                                    }
+                                }) 
+                            }
+                        
+                        }
+                    }
+                })
 
-            Model.Menus.findOne({
-            where:{
-                id_menu:req.params.id
-            }
+            })
         })
 
-            .then((menu) => {
-                if (!menu) {
-                    return res.status(400).json({
-                        message: 'Menu does not exist',
-                    });
-                }
-
-                else {
-                    menu.getProducts()
-                    .then(allProd=>{
-                        for(let i =0;i<allProd.length;i++){
-                            list_productOfMenu.push(allProd[i].menus_products.fk_id_product)
-                        }
-                        
-                        if(list_productOfMenu.includes(fk_id_product)){
-                            res.status(400).json({
-                                message:`Menu ${req.params.id} already contains product ${fk_id_product}`
-                            })
-                        }
-
-                        else {
-                            return menu.addProducts(fk_id_product)
-                            .then(addedProduct => res.status(200).json(addedProduct))
-                            .catch(error => res.status(400).json(error))
-                        }
-                    })
-                   
-                   
-                    
-                }
-            })
-        }
     }
 
-
+    // a metre en array
     exports.deleteProductInMenu = (req,res) => {
         const {fk_id_product} = req.body
 
-        const list_productOfMenu = new Array()
+        let list_productOfMenu = []
+        let list_product = []
 
 
         const postProductInMenuSchema = Joi.object().keys({ 
@@ -164,51 +201,106 @@ const Joi = require('joi');
 
         const valid = error == null;
 
-        if (!valid) {
-            res.status(400).json({ 
-            message: 'Missing required parameters',
-            info: 'Requires: fk_id_product' 
-            })
-        }
 
-        else {
-
-            Model.Menus.findOne({
-                where:{
-                    id_menu:req.params.id
-                }
-            })
-
-            .then((menu) => {
-                if (!menu) {
-                    return res.status(400).json({
-                        message: 'Menu does not exist',
-                    });
+        Model.Products.findAll()
+        .then(allProducts => {
+            Model.Products.count()
+            .then(numberOfProduct => {
+                for(let i =0;i<numberOfProduct;i++){
+                    list_product.push(allProducts[i].id_product)
                 }
 
-                else {
-
-                    menu.getProducts()
-                    .then(allProd=>{
-                        for(let i =0;i<allProd.length;i++){
-                            list_productOfMenu.push(allProd[i].menus_products.fk_id_product)
-                        }
-                        
-                        if(!list_productOfMenu.includes(fk_id_product)){
-                            res.status(400).json({
-                                message:"fk_id_product does not match any id_product"
-                            })
+                Model.Menus.findOne({
+                    where:{
+                        id_menu:req.params.id
+                    }
+                })
+    
+                .then((menu) => {
+                    if (!menu) {
+                        return res.status(400).json({
+                            message: 'Menu does not exist',
+                        });
+                    }
+    
+                    else {
+    
+                        if (req.body instanceof Array){
+            
+                            if(Object.keys(req.body).length == 1){
+            
+                                if(!list_product.includes(req.body[0].fk_id_product)){
+                                    return res.status(400).json({
+                                        message:"fk_id_product does not match any id_product"
+                                    })
+                                }
+                                
+                                else {
+                                    menu.removeProducts(req.body[0].fk_id_product)
+                                }
+        
+                                res.status(200).json({
+                                    message:"Product has been deleted"
+                                })
+                                    
+        
+                            }
+        
+                            else {
+                                for(let i=0;i<req.body.length;i++){
+                                
+                                    if(!list_product.includes(req.body[i].fk_id_product)){
+                                        return res.status(400).json({
+                                            message:"fk_id_product does not match any id_product"
+                                        })
+                                    }
+        
+                                    else {
+                                        menu.removeProducts(req.body[i].fk_id_product)
+                                    }
+                                }
+                            
+                                res.status(200).json({
+                                    message:"Products have been deleted"
+                                })
+                                
+                            }
                         }
 
                         else {
+                            
+                            menu.getProducts()
+                            .then(allProd=>{
+                                for(let i =0;i<allProd.length;i++){
+                                    list_productOfMenu.push(allProd[i].menus_products.fk_id_product)
+                                }
+                                
+                                if(!list_productOfMenu.includes(fk_id_product)){
+                                    res.status(400).json({
+                                        message:"fk_id_product does not match any id_product"
+                                    })
+                                }
 
-                            menu.removeProducts(fk_id_product)
-                            .then(res.status(200).json("Deletion completed"))
+                                else if (!valid) {
+                                    res.status(400).json({ 
+                                        message: 'Missing required parameters',
+                                        info: 'Requires: fk_id_product' 
+                                    })
+                                }
+        
+                                else {
+        
+                                    menu.removeProducts(fk_id_product)
+                                    .then(res.status(200).json("Deletion completed"))
+                                }
+                            })
                         }
-                    })
-                }
+    
+                        
+                    }
+                })
             })
-        }
+        })
     }
 
     exports.addMenu = (req,res) =>{
