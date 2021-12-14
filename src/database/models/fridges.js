@@ -24,6 +24,7 @@ module.exports = (sequelize) => {
             })
 
             Fridges.belongsToMany(models.State,{
+                as:"states",
                 through:"fridges_states",
                 foreignKey:"fk_id_fridge"
             })

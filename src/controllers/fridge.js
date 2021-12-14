@@ -962,4 +962,101 @@ exports.addClientToFridge = (req,res) =>{
 
     }
 }
+
+
+exports.addStateToFridge = (req,res) => {
+
+    const {fk_id_state} = req.body
+    
+
+    let list_fk_states = []
+    let list_fridge_state = []
+    let today = new Date()
+
+    let todayFormat = ("0" + today.getDate()).slice(-2) + "-" + ("0"+(today.getMonth()+1)).slice(-2) + "-" +today.getFullYear() + " " + ("0" + today.getHours()).slice(-2) + ":" + ("0" + today.getMinutes()).slice(-2) + ":" +("0" + today.getSeconds()).slice(-2)
+
+    const postStatetoFridgeSchema = Joi.object().keys({ 
+        fk_id_state : Joi.number().required()
+    })
+
+    const result = postStatetoFridgeSchema.validate(req.body)
+
+    const {error } = result;
+
+    const valid = error == null;
+
+    if (!valid) {
+      res.status(400).json({ 
+        message: 'Missing required parameters',
+        info: 'Requires: fk_id_state' 
+      })
+    }
+
+    else {
+
+        Model.State.findAll()
+        .then(allState => {
+            Model.State.count()
+            .then(numberOfState => {
+                for(let i=0;i<numberOfState;i++){
+                    list_fk_states.push(allState[i].id_state)
+                }
+
+                if(!list_fk_states.includes(fk_id_state)){
+                    return res.status(400).json({
+                        message: "fk_id_state does not match any id_state"
+                    })
+                }
+
+                else {
+                    Model.Fridges.findOne({
+                        where:{
+                            id_fridge:req.params.id
+                        }
+                    })
+                    .then(fridge => {
+                        if(!fridge){
+                            return res.status(400).json({
+                                message: 'Fridge does not exist'
+                            })
+                        }
+
+                        else {
+                            fridge.getStates()
+                            .then(fridge_state => {
+                                for(let i=0;i<fridge_state.length;i++){
+                                    list_fridge_state.push(fridge_state[i].id_state)
+                                }
+                                
+
+                                if(list_fridge_state.includes(fk_id_state)){
+                                    return res.status(400).json({
+                                        message:`Fridge ${req.params.id} has already been assigned to state ${fk_id_state}`
+                                    })
+                                }
+                                
+
+                                else {
+                                    Model.fridges_states.create({
+                                        fk_id_state:fk_id_state,
+                                        fk_id_fridge:req.params.id,
+                                        states_timestamp:todayFormat
+
+                                    })
+                                    .then(state => res.status(200).json(state))
+                                    .catch(error => res.status(400).json(error))
+                                }
+                            })
+
+                        }
+                    
+                    })
+                }
+            })
+        })
+
+    }
+    
+
+}
    
