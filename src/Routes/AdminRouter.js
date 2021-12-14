@@ -34,7 +34,7 @@ import PresetPage2 from "Pages/PresetPage2";
 import useIsMounted from "helpers/useInMount";
 import { withTranslation, useTranslation } from "react-i18next";
 import MentionsLegales from "Pages/MentionsLegales";
-import "../CSS/main.scss"
+import "../CSS/main.scss";
 
 function AdminRouter({ history }) {
   const user = useSelector((state) => state.user.value);
@@ -46,6 +46,7 @@ function AdminRouter({ history }) {
   const authToken = localStorage.getItem("authToken");
   const desac_login = false;
   const { t, i18n } = useTranslation();
+  console.log(process.env.REACT_APP_API_HOST);
 
   useEffect(() => {
     console.log("user : ", user);
@@ -103,7 +104,7 @@ function AdminRouter({ history }) {
     if (user.isLogged) {
       return (
         <>
-          <Header/>
+          <Header />
           {/* <HeaderL /> */}
           <Switch>
             <Route exact path="/" component={withTranslation()(HomePage)} />
@@ -136,7 +137,8 @@ function AdminRouter({ history }) {
                   state: {
                     from: `${location.pathname}`,
                   },
-                }}></Redirect>
+                }}
+              ></Redirect>
             </Route>
             <Route path="/" component={withTranslation()(NotFoundPage)} />
           </Switch>

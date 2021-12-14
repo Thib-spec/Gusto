@@ -33,7 +33,7 @@ export default function ProductsCard({ name }) {
   }, []);
 
   useEffect(() => {
-    getProductsInOnePreset();
+    if (presetChosen.value.id != -1) getProductsInOnePreset();
   }, [presetChosen.value]);
 
   // useEffect(() => {
@@ -65,7 +65,7 @@ export default function ProductsCard({ name }) {
       if (res.ok) {
         const resJSON = await res.json();
         console.log("api.getProductsInOnePreset() : ", resJSON);
-        productsInPreset.set(resJSON.map(mappers.productsInPreset), {
+        productsInPreset.set(resJSON.Products.map(mappers.productsInPreset), {
           init: true,
         });
       } else {

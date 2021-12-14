@@ -36,9 +36,9 @@ export default function ProductsCard({ name }) {
     getProductsInOnePreset();
   }, []);
 
-  // useEffect(() => {
-  //   console.log("products : ", products.value);
-  // }, [products]);
+  useEffect(() => {
+    console.log("products : ", products.value);
+  }, [products]);
 
   // appels api
   async function getProductsInOnePreset() {
@@ -137,6 +137,9 @@ export default function ProductsCard({ name }) {
       .forEach((product) => {
         addProducts.push(product);
       });
+    console.log("addProducts : ", addProducts);
+    console.log("removeProducts : ", removeProducts);
+    console.log("updateProducts : ", updateProducts);
     return [addProducts, removeProducts, updateProducts];
   };
 

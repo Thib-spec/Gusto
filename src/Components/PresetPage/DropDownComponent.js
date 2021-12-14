@@ -25,7 +25,7 @@ export default function DropDownComponent({ preset, children }) {
   return (
     <>
       <DropDownComponentContext.Provider value={preset}>
-        <div className="list-element">
+        <div className="list-element col-12">
           {open === true ? (
             <div>
               <div
@@ -51,7 +51,7 @@ export default function DropDownComponent({ preset, children }) {
             </div>
           ) : (
             <div
-              className={`${bgColor} list-element-title-unfold`}
+              className={`${bgColor} list-element-title-unfold col-12`}
               onClick={() => handleClick()}
             >
               <div className="title-name">{preset.name}</div>

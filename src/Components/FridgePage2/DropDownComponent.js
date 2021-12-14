@@ -36,7 +36,7 @@ export default function DropDownComponent({ fridge, children }) {
   return (
     <>
       <DropDownComponentContext.Provider value={{ fridge, presetChosen }}>
-        <div className="list-element">
+        <div className="list-element col-12">
           {open === true ? (
             <div>
               <div
@@ -63,10 +63,11 @@ export default function DropDownComponent({ fridge, children }) {
             </div>
           ) : (
             <div
-              className={`${bgColor} list-element-title-unfold`}
+              className={`${bgColor} list-element-title-unfold col-12`}
               onClick={() => handleClick()}
             >
               <div className="title-name">{fridge.name}</div>
+              <div>{t(`${fridge.status.label_trad}`)}</div>
               <div className="el-fold">
                 <img width="100%" src={unfold} alt="" />
               </div>
