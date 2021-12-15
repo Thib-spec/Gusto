@@ -15,7 +15,7 @@ id_products_sales:{
 },
 
     quantity_product: {
-        type: DataTypes.INTEGER,
+        type: DataTypes.TINYINT,
         allowNull: false
     },
 }, {

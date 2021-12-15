@@ -8,16 +8,16 @@ module.exports = (sequelize) => {
             FridgePresets.belongsToMany(models.Menus, {
                 as:"menus",
                 through: "fridgePresets_menus",
-                foreignKey: "fk_id_fridgePreset",
+                foreignKey: {name:"fk_id_fridgePreset",allowNull:false}
             });
 
             FridgePresets.belongsToMany(models.Products,{
                 through:"fridgePresets_products",
-                foreignKey:"fk_id_fridgePreset"
+                foreignKey:{name:"fk_id_fridgePreset", allowNull:false}
             })
 
             FridgePresets.belongsTo(models.Client,{
-                foreignKey:"fk_id_client"
+                foreignKey:{name:"fk_id_client", allowNull:false}
             })
         }
     }
@@ -32,7 +32,7 @@ module.exports = (sequelize) => {
     },
     
     label: {
-        type: DataTypes.STRING,
+        type: DataTypes.STRING(20),
         allowNull: false
     }
     

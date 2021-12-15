@@ -12,7 +12,7 @@ module.exports = (sequelize) => {
 
             Client.belongsToMany(models.Fridges,{    
                 through:"clients_fridges",
-                foreignKey:"fk_id_client"
+                foreignKey:{name:"fk_id_client", allowNull:false}
             })
         }
     }
@@ -25,7 +25,7 @@ Client.init({
         allowNull: false
     },
     label: {
-        type: DataTypes.STRING,
+        type: DataTypes.STRING(20),
         allowNull: false
     }
 }, {

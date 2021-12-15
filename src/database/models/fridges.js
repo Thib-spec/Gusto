@@ -5,7 +5,7 @@ module.exports = (sequelize) => {
         static associate(models){
 
             Fridges.belongsTo(models.Technologies, {
-                foreignKey: 'fk_id_technologies'
+                foreignKey: {name:'fk_id_technologies', allowNull:false}
             });
 
             Fridges.belongsTo(models.FridgePresets,{
@@ -14,30 +14,30 @@ module.exports = (sequelize) => {
 
             Fridges.belongsToMany(models.Client,{   
                 through:"clients_fridges",
-                foreignKey:"fk_id_fridge"
+                foreignKey:{name: "fk_id_fridge", allowNull:false}
             })
 
             Fridges.belongsToMany(models.Badges,{
                 as:"badges",       
                 through:"fridges_badges",
-                foreignKey:"fk_id_fridge"
+                foreignKey:{name:"fk_id_fridge", allowNull:false}
             })
 
             Fridges.belongsToMany(models.State,{
                 as:"states",
                 through:"fridges_states",
-                foreignKey:"fk_id_fridge"
+                foreignKey:{name:"fk_id_fridge", allowNull:false}
             })
 
             Fridges.belongsToMany(models.Products,{
                 through:'fridges_products',
-                foreignKey:"fk_id_fridge",
+                foreignKey:{name:"fk_id_fridge", allowNull:false}
             })
 
             Fridges.belongsToMany(models.Nationalities,{
                 as: 'nationalities',
                 through:'fridges_nationalities',
-                foreignKey:"fk_id_fridge",
+                foreignKey:{name:"fk_id_fridge", allowNull:false}
             })
         }
     }
@@ -51,7 +51,7 @@ module.exports = (sequelize) => {
         allowNull: false
     }, 
     label: {
-        type: DataTypes.STRING,
+        type: DataTypes.STRING(20),
         allowNull: false
     },
    
