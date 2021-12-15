@@ -1,9 +1,6 @@
 const Model = require("../database/models");
 const Joi = require('joi');
 
-// const Model = {
-//     Categories: require("../database/models/categories")(),           // config pour que l'ide propose les fonctions possibles
-// }
 
 exports.listTags = (req, res) => {
     Model.Tags.findAll()
@@ -43,8 +40,8 @@ exports.addTag = (req,res) =>{
 
     const postTagSchema = Joi.object().keys({
         id_tag:Joi.string().required(), 
-        fk_id_product : Joi.number().required(),
-        fk_id_client: Joi.number().required()
+        fk_id_product : Joi.number(),
+        fk_id_client: Joi.number()
     })
 
     const result = postTagSchema.validate(req.body)
@@ -56,7 +53,7 @@ exports.addTag = (req,res) =>{
     if (!valid) {
       res.status(400).json({ 
         message: 'Missing required parameters or parameters type are incorrect',
-        info: 'Requires: id_tag, fk_id_product, fk_id_client' 
+        info: 'Requires: id_tag' 
       })
     }
 
@@ -78,13 +75,13 @@ exports.addTag = (req,res) =>{
                             list_fk_client.push(allClient[j].id_client)
                         }
 
-                        if(!list_fk_client.includes(fk_id_client)){
+                        if(!list_fk_client.includes(fk_id_client) && fk_id_client != null){
                             res.status(400).json({
                                 message:"fk_id_client does not match any id_client"
                             })
                         }
 
-                        else if (!list_fk_product.includes(fk_id_product)){
+                        else if (!list_fk_product.includes(fk_id_product) && fk_id_product != null){
                             res.status(400).json({
                                 message: "fk_id_product does not match any id_product"
                             })

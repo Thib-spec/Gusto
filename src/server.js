@@ -4,8 +4,7 @@ const http = require('http')
 const path = require('path')
 
 // config variables d'environnement du projet
-let envPath = __dirname + '/../.env'
-require('dotenv').config({ path: envPath })
+
 
 // config serveur
 const HOST = "localhost"
