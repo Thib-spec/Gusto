@@ -26,9 +26,8 @@ module.exports = (sequelize) => {
 
     Tags.init({
     id_tag: {
-        type: DataTypes.INTEGER,
+        type: DataTypes.STRING,
         primaryKey: true,
-        autoIncrement: true,
         allowNull: false
     },
     

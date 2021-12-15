@@ -24,9 +24,8 @@ class Badges extends Model{         // passer badge en binary
 
 Badges.init({
     id_badges: {
-        type: DataTypes.INTEGER,
+        type: DataTypes.STRING,
         primaryKey: true,
-        autoIncrement: true,
         allowNull: false
     },
 },

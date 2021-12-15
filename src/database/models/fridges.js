@@ -45,9 +45,8 @@ module.exports = (sequelize) => {
 
     Fridges.init({
     id_fridge: {
-        type: DataTypes.INTEGER,
+        type: DataTypes.STRING,
         primaryKey: true,
-        autoIncrement: true,
         allowNull: false
     }, 
     label: {
