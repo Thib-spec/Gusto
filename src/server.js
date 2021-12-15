@@ -19,6 +19,7 @@ const passport = require("passport")
 const cors = require('cors');
 const webRoutes = require('./Routes/web');
 
+app.use(cors());
 app.use(webRoutes);
 
 const models=require("./database/models")
