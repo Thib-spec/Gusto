@@ -3,18 +3,29 @@
 import fold from "Images/fold.svg";
 import imgcategorie from "Images/imgcategorie.svg";
 import unfold from "Images/unfold.svg";
-import React, { Component, useState, useContext, createContext } from "react";
+import React, {
+  Component,
+  useState,
+  useContext,
+  createContext,
+  useEffect,
+} from "react";
 import "CSS/FridgeDropDownCoponent.scss";
 
 import Value from "helpers/Value";
+import PageContext from "Context/PageContext";
 
 import DropDownComponentContext from "Context/DropDownComponentContext";
 import { useTranslation } from "react-i18next";
+import useFridgePreset from "./useFridgePreset";
 
-export default function DropDownComponent({ fridge, children }) {
+export default function DropDownComponent({ contextValue, children }) {
   const [open, setOpen] = useState(true);
   const { t, i18n } = useTranslation();
   // const [open, setOpen] = useState(false);
+  const { allPresets } = useContext(PageContext);
+  const { fridge } = contextValue;
+  const presetChosen = useFridgePreset(fridge.id_preset, allPresets);
 
   function handleClick() {
     setOpen(!open);
@@ -31,11 +42,12 @@ export default function DropDownComponent({ fridge, children }) {
   }
 
   const [bgColor, setBgColor] = useState(chooseColor());
-  const presetChosen = new Value(useState({ id: -1, name: "Choose a Preset" }));
 
   return (
     <>
-      <DropDownComponentContext.Provider value={{ fridge, presetChosen }}>
+      <DropDownComponentContext.Provider
+        value={{ ...contextValue, presetChosen }}
+      >
         <div className="list-element col-12">
           {open === true ? (
             <div>
@@ -52,11 +64,7 @@ export default function DropDownComponent({ fridge, children }) {
               <div className="list-element-sub">
                 <div className="list-element-sub-description">
                   <div className="container h-100">
-                    <div className="row ">
-                      {children}
-                      {/* <FridgeProduitsCard name="Produits" />
-                      <FridgeMenusCard name="Menus" /> */}
-                    </div>
+                    <div className="row ">{children}</div>
                   </div>
                 </div>
               </div>

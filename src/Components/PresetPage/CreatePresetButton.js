@@ -1,14 +1,17 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import { Accordion, Row, Table, Card, Modal, Button } from "react-bootstrap";
 import api from "helpers/api";
 import mappers from "helpers/mappers";
 import reverse_mappers from "helpers/reverse_mappers";
+import PageContext from "Context/PageContext";
+
+let count = 5;
 
 function CreatePresetButton({}) {
   const [show, setShow] = useState(false);
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
-
+  const { allPresets } = useContext(PageContext);
   const [presetName, setPresetName] = useState("");
 
   const handleChangePresetName = (event) => {
@@ -17,12 +20,13 @@ function CreatePresetButton({}) {
 
   const handleSavePreset = async () => {
     try {
-      const body = reverse_mappers.presetsMapper({ name: presetName });
+      const preset = { id: count++, name: presetName };
+      const body = reverse_mappers.presetsMapper(preset);
       const res = await api.createOnePreset({ body });
       if (res.ok) {
         const resJSON = await res.json();
         console.log("api.createOnePreset() : ", resJSON);
-        // setAllMenus(resJSON.map(mappers.menusMapper));
+        allPresets.set([...allPresets.value, preset]);
       } else {
       }
     } catch (error) {

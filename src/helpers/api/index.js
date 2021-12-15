@@ -48,6 +48,14 @@ API.prototype.getAllFridges = function ({} = {}) {
   });
 };
 
+API.prototype.updateOneFridge = function ({ id, body } = {}) {
+  return this.requester({
+    method: "PUT",
+    path: `/api/fridge/${id}`,
+    body,
+  });
+};
+
 API.prototype.getProductsInOneFridge = function ({ id } = {}) {
   return this.requester({
     method: "GET",

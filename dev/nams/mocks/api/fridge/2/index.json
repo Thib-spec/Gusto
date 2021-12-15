@@ -1,7 +1,7 @@
 {
   "id_fridge": 2,
   "label": "fridge2",
-  "fk_id_status": 2,
+  "states": [{ "id_states": 2 }],
   "createdAt": "2021-12-07T11:28:14.000Z",
   "updatedAt": "2021-12-07T11:28:14.000Z",
   "fk_id_technologies": 1,

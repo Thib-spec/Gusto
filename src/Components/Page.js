@@ -2,8 +2,8 @@ import React, { Component, useState } from "react";
 // import "CSS/colors.css";
 import PageContext from "Context/PageContext";
 
-export default function Page({ children, contextValue }) {
-  return (
+export default function Page({ children, contextValue, isLoading }) {
+  return (isLoading ? !isLoading.value : true) ? (
     <PageContext.Provider value={contextValue}>
       <>
         <div className={`container-fluid pt-5 h-100 pb-5`}>
@@ -18,5 +18,7 @@ export default function Page({ children, contextValue }) {
         </div>
       </>
     </PageContext.Provider>
+  ) : (
+    <></>
   );
 }

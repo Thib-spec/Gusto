@@ -8,6 +8,8 @@ import mappers from "helpers/mappers";
 import reverse_mappers from "helpers/reverse_mappers";
 
 import DropDownComponentContext from "Context/DropDownComponentContext";
+import PageContext from "Context/PageContext";
+import useFridgePreset from "./useFridgePreset";
 
 import Page from "Components/Page";
 import {
@@ -24,8 +26,8 @@ import ProductTableLine from "./ProductTableLine";
 
 export default function ProductsCard({ name }) {
   // produits ajoutés dans le frigo
-  const products = new ArrayController(useState([]), useState([]));
-  const productsInPreset = new ArrayController(useState([]), useState([]));
+  const products = new ArrayController(useState, []);
+  const productsInPreset = new ArrayController(useState, []);
   const { fridge, presetChosen } = useContext(DropDownComponentContext);
 
   useEffect(() => {
@@ -35,10 +37,6 @@ export default function ProductsCard({ name }) {
   useEffect(() => {
     if (presetChosen.value.id != -1) getProductsInOnePreset();
   }, [presetChosen.value]);
-
-  // useEffect(() => {
-  //   console.log("value : ", products.value);
-  // }, [products]);
 
   // appels api
   async function getProductsInOneFridge() {
@@ -97,7 +95,6 @@ export default function ProductsCard({ name }) {
               <table className="table table-striped">
                 <thead>
                   <tr>
-                    {/* <th>#</th> */}
                     <th>Product</th>
                     <th>Quantity</th>
                     <th>Min</th>

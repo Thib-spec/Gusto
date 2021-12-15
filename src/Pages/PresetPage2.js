@@ -9,6 +9,7 @@ import CreatePresetButton from "Components/PresetPage/CreatePresetButton";
 import ProductsCard from "Components/PresetPage/ProductsCard";
 import MenusCard from "Components/PresetPage/MenusCard";
 import DropDownComponent from "Components/PresetPage/DropDownComponent";
+import ArrayController from "helpers/ArrayController";
 
 export default function PresetsPage() {
   function handleNothing() {}
@@ -25,7 +26,7 @@ export default function PresetsPage() {
       if (res.ok) {
         const resJSON = await res.json();
         console.log("api.getAllPresets() : ", resJSON);
-        setPresets(resJSON.map(mappers.presetsMapper));
+        allPresets.set(resJSON.map(mappers.presetsMapper));
       } else {
       }
     } catch (error) {
@@ -39,7 +40,7 @@ export default function PresetsPage() {
       if (res.ok) {
         const resJSON = await res.json();
         console.log("api.getAllProducts() : ", resJSON);
-        setAllProducts(resJSON.map(mappers.productsMapper));
+        allProducts.set(resJSON.map(mappers.productsMapper));
       } else {
       }
     } catch (error) {
@@ -61,10 +62,11 @@ export default function PresetsPage() {
     }
   }
 
-  const [presets, setPresets] = useState([]);
-  const [allProducts, setAllProducts] = useState([]);
+  // const [presets, setPresets] = useState([]);
+  // const [allProducts, setAllProducts] = useState([]);
+  const allProducts = new ArrayController(useState, []);
+  const allPresets = new ArrayController(useState, []);
   const [allMenus, setAllMenus] = useState([]);
-  const [allPresets, setAllPresets] = useState([]);
 
   return (
     <>
@@ -76,9 +78,9 @@ export default function PresetsPage() {
         }}
       >
         <CreatePresetButton />
-        {presets.map((preset) => {
+        {allPresets.value.map((preset) => {
           return (
-            <DropDownComponent preset={preset} key={preset.id}>
+            <DropDownComponent contextValue={{ preset }} key={preset.id}>
               <ProductsCard name="Produits" />
               <MenusCard name="Menus" />
             </DropDownComponent>

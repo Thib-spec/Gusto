@@ -1,7 +1,3 @@
 module.exports = (request, reply, next) => {
-  return [
-    require("../../../menu/index.json")[0],
-    require("../../../menu/index.json")[1],
-    require("../../../menu/index.json")[2],
-  ];
+  return [require("../../../menu/index.json")[2]];
 };
