@@ -59,10 +59,10 @@ exports.addState = (req,res) =>{
             Model.State.count()
             .then(numberOfStates => {
                 for(let i =0;i<numberOfStates;i++){
-                    list_label.push(allStates[i].label)
+                    list_label.push(allStates[i].label.toLowerCase())
                 }
 
-                if(list_label.includes(label)){
+                if(list_label.includes(label.toLowerCase())){
                     res.status(400).json({
                         message: "Label already exists"
                     })
@@ -130,7 +130,7 @@ exports.editState =(req,res) => {
                 }
             })
             .then(res.status(200).json({
-                message: "Modification apply"})
+                message: "Item has been updated"})
             )
             .catch(error => console.log(error))
         }
