@@ -245,16 +245,9 @@ const Joi = require('joi');
                         if (req.body instanceof Array){
             
                             if(Object.keys(req.body).length == 1){
-            
-                                if(!list_product.includes(req.body[0].fk_id_product)){
-                                    return res.status(400).json({
-                                        message:"fk_id_product does not match any id_product"
-                                    })
-                                }
+
+                                menu.removeProducts(req.body[0].fk_id_product)
                                 
-                                else {
-                                    menu.removeProducts(req.body[0].fk_id_product)
-                                }
         
                                 res.status(200).json({
                                     message:"Product has been deleted"
@@ -265,16 +258,9 @@ const Joi = require('joi');
         
                             else {
                                 for(let i=0;i<req.body.length;i++){
-                                
-                                    if(!list_product.includes(req.body[i].fk_id_product)){
-                                        return res.status(400).json({
-                                            message:"fk_id_product does not match any id_product"
-                                        })
-                                    }
-        
-                                    else {
-                                        menu.removeProducts(req.body[i].fk_id_product)
-                                    }
+
+                                    menu.removeProducts(req.body[i].fk_id_product)
+                                    
                                 }
                             
                                 res.status(200).json({
@@ -292,13 +278,8 @@ const Joi = require('joi');
                                     list_productOfMenu.push(allProd[i].menus_products.fk_id_product)
                                 }
                                 
-                                if(!list_productOfMenu.includes(fk_id_product)){
-                                    res.status(400).json({
-                                        message:"fk_id_product does not match any id_product"
-                                    })
-                                }
 
-                                else if (!valid) {
+                                if (!valid) {
                                     res.status(400).json({ 
                                         message: 'Missing required parameters',
                                         info: 'Requires: fk_id_product' 

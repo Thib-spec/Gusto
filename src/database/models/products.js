@@ -56,7 +56,6 @@ module.exports = (sequelize) => {
     },
     image: {
         type: DataTypes.STRING(150),
-        allowNull: false
     },
     price: {
         type: DataTypes.INTEGER,
@@ -65,11 +64,9 @@ module.exports = (sequelize) => {
    
     ubd: {
         type: DataTypes.STRING,
-        allowNull: false
     },
     description: {
         type: DataTypes.STRING(150),
-        allowNull: false
     },
     
 }, {

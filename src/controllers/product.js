@@ -40,10 +40,10 @@ exports.addProduct = (req,res) =>{
 
     const postProductSchema = Joi.object().keys({ 
         label : Joi.string().required(),
-        image:Joi.string().required(),
+        image:Joi.string(),
         price:Joi.number().required(),
-        ubd:Joi.number().required(),
-        description:Joi.string().required(),
+        ubd:Joi.number(),
+        description:Joi.string(),
         fk_id_category:Joi.number().required()
     })
 
@@ -56,7 +56,7 @@ exports.addProduct = (req,res) =>{
     if (!valid) {
       res.status(400).json({ 
         message: 'Missing required parameters or parameters type are incorrect',
-        info: 'Requires: label, image, price, ubd, description, fk_id_category' 
+        info: 'Requires: label, price, fk_id_category' 
       })
     }
 
@@ -84,10 +84,10 @@ exports.addProduct = (req,res) =>{
                         Model.Products.count()
                         .then(numberOfProduct => {
                             for(let i =0;i<numberOfProduct;i++){
-                                prodLabel.push(allproducts[i].label)
+                                prodLabel.push(allproducts[i].label.toLowerCase())
                             }
 
-                            if(prodLabel.includes(label)){
+                            if(prodLabel.includes(label.toLowerCase())){
                                 res.status(400).json({
                                     message: "This label alredy exists"
                                 })
@@ -138,7 +138,7 @@ exports.editProduct =(req,res) => {
             image:Joi.string(),
             price:Joi.number(),
             ubd:Joi.number(),
-            description:Joi.string().allow("")
+            description:Joi.string()
         })
 
         const result = editProductSchema.validate(req.body)
