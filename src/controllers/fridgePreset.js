@@ -254,6 +254,7 @@ exports.addFrontProduct = (req,res) =>{
                                     }
 
                                     if (req.body instanceof Array){
+                                        // A MODIFIER on récupère la liste des produits or il faut récuéprer la lsite des produits pour un preset
 
                                         var result = [];
 
