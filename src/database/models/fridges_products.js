@@ -15,7 +15,7 @@ id_fridges_products:{
 },
 
 quantity:{
-    type: DataTypes.INTEGER,
+    type: DataTypes.TINYINT,
     allowNull:false
 },
 

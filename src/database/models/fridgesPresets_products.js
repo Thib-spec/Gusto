@@ -15,12 +15,12 @@ module.exports = (sequelize) => {
     },
     
     quantity_min: {
-        type: DataTypes.INTEGER,
+        type: DataTypes.TINYINT,
         allowNull: false
     },
 
     quantity_max:{
-        type:DataTypes.INTEGER,
+        type:DataTypes.TINYINT,
         allowNull:false
     }
     

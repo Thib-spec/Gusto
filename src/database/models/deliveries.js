@@ -5,25 +5,25 @@ module.exports = (sequelize) => {
         static associate(models){
         
             Deliveries.belongsTo(models.Users, {
-                foreignKey: 'fk_id_user'
+                foreignKey: {name:'fk_id_user', allowNull:false}
             })
             Deliveries.belongsTo(models.Fridges, {
-                foreignKey: 'fk_id_fridge'
+                foreignKey: {name:'fk_id_fridge',allowNull:false}
             })
             
             Deliveries.belongsToMany(models.Tags, {     
                 through: "tags_deliveries",
-                foreignKey: "fk_id_delivery",
+                foreignKey: {name:"fk_id_delivery", allowNull:false}
             });
             
        
             Deliveries.belongsToMany(models.Products, {
                 through: "products_deliveries",
-                foreignKey: "fk_id_delivery",
+                foreignKey: {name:"fk_id_delivery", allowNull:false}
             });
 
             Deliveries.belongsTo(models.Orders,{
-                foreignKey:"fk_id_order"
+                foreignKey:{name:"fk_id_order", allowNull:false}
             })
             
         }
@@ -37,17 +37,15 @@ Deliveries.init({
         allowNull: false
     },
     delivery_timestamp: {
-        type: DataTypes.STRING,
-        allowNull: false
+        type: DataTypes.STRING(19),
     },
 
     planned_date:{
-        type:DataTypes.STRING,
-        allowNull:false
+        type:DataTypes.STRING(19),
     },
 
     creation_date:{
-        type:DataTypes.STRING,
+        type:DataTypes.STRING(19),
         allowNull:false
     }
    

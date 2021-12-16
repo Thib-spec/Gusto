@@ -10,12 +10,12 @@ module.exports = (sequelize) => {
 
             Tags.belongsToMany(models.Deliveries,{
                 through:"tags_deliveries",
-                foreignKey:"fk_id_tag"
+                foreignKey:{name:"fk_id_tag", allowNull:false}
             })
 
             Tags.belongsToMany(models.Sales,{       // liaison belongstomany avec sales
                 through:"tags_sales",
-                foreignKey:"fk_id_tag"
+                foreignKey:{name:"fk_id_tag", allowNull:false}
             })
 
             Tags.belongsTo(models.Client,{
@@ -26,9 +26,8 @@ module.exports = (sequelize) => {
 
     Tags.init({
     id_tag: {
-        type: DataTypes.INTEGER,
+        type: DataTypes.STRING,
         primaryKey: true,
-        autoIncrement: true,
         allowNull: false
     },
     

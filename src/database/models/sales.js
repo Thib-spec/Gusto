@@ -5,17 +5,17 @@ module.exports = (sequelize) => {
         static associate(models){
 
             Sales.belongsTo(models.Fridges, {
-                foreignKey: 'fk_id_fridge'
+                foreignKey: {name:'fk_id_fridge', allowNull:false}
             })
             
             Sales.belongsToMany(models.Tags, {
                 through: "tags_sales",
-                foreignKey: "fk_id_sale",
+                foreignKey: {name:"fk_id_sale", allowNull:false}
             });
             
             Sales.belongsToMany(models.Products, {
                 through: "products_sales",
-                foreignKey: "fk_id_sale",
+                foreignKey: {name:"fk_id_sale", allowNull:false}
             });
         }
     }
@@ -29,27 +29,27 @@ module.exports = (sequelize) => {
         allowNull: false
     },
     sales_timestamp: {
-        type: DataTypes.STRING,
+        type: DataTypes.STRING(19),
         allowNull: false
     },
     cbemv_amount: {
-        type: DataTypes.INTEGER,
+        type: DataTypes.SMALLINT,
         allowNull: false
     },
     cbcless_amount: {
-        type: DataTypes.INTEGER,
+        type: DataTypes.SMALLINT,
         allowNull: false
     },
     lv_amount: {
-        type: DataTypes.INTEGER,
+        type: DataTypes.SMALLINT,
         allowNull: false
     },
     lv_quantity: {
-        type: DataTypes.INTEGER,
+        type: DataTypes.TINYINT,
         allowNull: false
     },
     cash_amount: {
-        type: DataTypes.INTEGER,   
+        type: DataTypes.SMALLINT,   
         allowNull: false
     },
 }, {

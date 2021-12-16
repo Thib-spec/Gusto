@@ -7,7 +7,7 @@ class Categories extends Model{
     static associate(models){
         
        Categories.belongsTo(models.Client,{
-           foreignKey: 'fk_id_client'               // à tester
+           foreignKey:{ name: 'fk_id_client', allowNull:false }             
        })
     }
 }
@@ -21,13 +21,14 @@ Categories.init({
         allowNull: false
     },
     label: {
-        type: DataTypes.STRING,
+        type: DataTypes.STRING(20),
+        allowNull:false
     },
     image: {
-        type: DataTypes.STRING(150),
+        type: DataTypes.STRING(50),
     },
     description: {
-        type: DataTypes.STRING(150),
+        type: DataTypes.STRING(200),
     }
 
 }, {

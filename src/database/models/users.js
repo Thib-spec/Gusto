@@ -7,7 +7,7 @@ class Users extends Model{
 static associate(models){
   
     Users.belongsTo(models.Client, {
-    foreignKey: 'fk_id_client',
+    foreignKey: {name:'fk_id_client', allowNull:false},
     targetKey: "id_client"
   }) 
   Users.hasMany(models.Sessions, {
@@ -16,11 +16,11 @@ static associate(models){
   })
   
   Users.belongsTo(models.Levels,{
-    foreignKey:"fk_id_level"
+    foreignKey:{name:"fk_id_level", allowNull:false}
   })
 
   Users.belongsTo(models.Nationalities,{
-    foreignKey:"fk_id_nationality"
+    foreignKey:{name:"fk_id_nationality", allowNull:false}
   })
 
 }
@@ -35,27 +35,27 @@ Users.init({
       autoIncrement:true
     },
      email: {
-        type: DataTypes.STRING,
+        type: DataTypes.STRING(50),
         allowNull: false
     },
     password: {
         type: DataTypes.STRING,
+        allowNull:false,
         set(v){
           this.setDataValue('password', security.bcryptHashSync(v))
         }
       },
    
     firstname: {
-        type: DataTypes.STRING,
+        type: DataTypes.STRING(50),
         allowNull: false
     },
     lastname: {
-        type: DataTypes.STRING,
+        type: DataTypes.STRING(50),
         allowNull: false
     },
     image: {
-        type: DataTypes.STRING(150),
-        allowNull: false
+        type: DataTypes.STRING(50),
     },
 },
     {

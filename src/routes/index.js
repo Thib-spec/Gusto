@@ -13,9 +13,9 @@ const saleRouter = require("./sale")
 const stateRouter = require('./state');
 const tagRouter = require('./tag')
 const fridgePresetRouter = require("./fridgePreset")
-const pytonRouter = require("./python")
 const nationalityRouter = require("./nationality")
 const badgeRouter = require("./badges")
+const technologiesRouter = require("./technologies")
 
 
 /* ----------------------- */
@@ -46,9 +46,9 @@ router.use('/sale',saleRouter)
 router.use('/state', stateRouter);
 router.use('/tag',tagRouter)
 router.use('/fridgePreset',fridgePresetRouter)
-router.use("/python",pytonRouter)
 router.use("/nationality",nationalityRouter)
 router.use("/badge",badgeRouter)
+router.use("/technologies",technologiesRouter)
 
 
 // Handle other API routes, send Not found

@@ -3,6 +3,7 @@ const fridgeController = require("../controllers/fridge")
 const passport = require("passport")
 
 fridges.get('/',fridgeController.listFridges)
+fridges.get("/user",passport.authenticate("jwt",{session:false}),fridgeController.getFridgeForUser)
 fridges.get('/:id',fridgeController.getFridgeById)
 fridges.post('/',fridgeController.addFridge)
 fridges.put('/:id',fridgeController.editFridge)
@@ -15,6 +16,7 @@ fridges.get('/:id/products',fridgeController.listProductByFridge)
 fridges.get('/:id/clients',fridgeController.listClientByFridge)
 fridges.get('/:id/badges',fridgeController.listBadgeByFridge)
 
+
 fridges.get('/:id/orders/products',fridgeController.listProductByOrderByFridge)
 
 fridges.post("/:id/addQuantity",fridgeController.AddProductQuantity)
@@ -23,6 +25,7 @@ fridges.delete("/:id/removeQuantity/:productId",fridgeController.RemoveProductQu
 
 fridges.post("/:id/addNationality", fridgeController.addNationalitytoFridge)
 fridges.post("/:id/addBadge", fridgeController.addBadgetoFridge)
-fridges.post("/:id/addClient", fridgeController.addClienttoFridge)
+fridges.post("/:id/addClient", fridgeController.addClientToFridge)
+fridges.post("/:id/addState",fridgeController.addStateToFridge)
 
 module.exports = fridges

@@ -10,12 +10,12 @@ module.exports = (sequelize) => {
             })
 
             Orders.belongsTo(models.Fridges,{
-                foreignKey:"fk_id_fridge"
+                foreignKey:{name:"fk_id_fridge", allowNull:false}
             })
             
             Orders.belongsToMany(models.Products, {
                 through: "products_orders",
-                foreignKey: "fk_id_order",
+                foreignKey: {name:"fk_id_order", allowNull:true}
             });
             
         }
@@ -30,12 +30,10 @@ Orders.init({
         allowNull: false
     },
     delivery_date: {
-        type: DataTypes.STRING,
-        allowNull: false
+        type: DataTypes.STRING(19),
     },
     expected_delivery_date: {
-        type: DataTypes.STRING,
-        allowNull: false
+        type: DataTypes.STRING(19),
     },
 }, {
     sequelize,

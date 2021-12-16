@@ -1,27 +1,27 @@
 const Model = require("../database/models");
 const Joi = require('joi');
 
-exports.listStates = (req, res) => {
-    Model.State.findAll()
-    .then(state => res.status(200).json(state))
+exports.listTechnologies = (req, res) => {
+    Model.Technologies.findAll()
+    .then(technologies => res.status(200).json(technologies))
     .catch(error => res.status(400).json(error))
 }
 
-exports.getStateById = (req,res) => {
-    Model.State.findOne({
+exports.getTechnologiesById = (req,res) => {
+    Model.Technologies.findOne({
         where:{
-            id_state : req.params.id
+            id_technologies : req.params.id
         }
     })
-    .then((state) => {
-        if (!state) {
+    .then((technologies) => {
+        if (!technologies) {
             return res.status(400).json({
-                message: 'State does not exist',
+                message: 'Technology does not exist',
             });
         }
 
         else {
-            return res.status(200).json(state)
+            return res.status(200).json(technologies)
         }
     })
     .catch(error => res.json(error))
@@ -31,15 +31,15 @@ exports.getStateById = (req,res) => {
 
 
 
-exports.addState = (req,res) =>{
+exports.addTechnologies = (req,res) =>{
     const {label} = req.body
     let list_label = []
 
-    const postStateSchema = Joi.object().keys({ 
+    const postTechnologiesSchema = Joi.object().keys({ 
         label : Joi.string().required()
     })
 
-    const result = postStateSchema.validate(req.body)
+    const result = postTechnologiesSchema.validate(req.body)
 
     const {error } = result;
 
@@ -54,12 +54,12 @@ exports.addState = (req,res) =>{
 
     else {
 
-        Model.State.findAll()
-        .then(allStates => {
-            Model.State.count()
-            .then(numberOfStates => {
-                for(let i =0;i<numberOfStates;i++){
-                    list_label.push(allStates[i].label.toLowerCase())
+        Model.Technologies.findAll()
+        .then(allTechnologies => {
+            Model.Technologies.count()
+            .then(numberOfTechnologies => {
+                for(let i =0;i<numberOfTechnologies;i++){
+                    list_label.push(allTechnologies[i].label.toLowerCase())
                 }
 
                 if(list_label.includes(label.toLowerCase())){
@@ -69,11 +69,11 @@ exports.addState = (req,res) =>{
                 }
 
                 else {
-                    Model.State.create({
+                    Model.Technologies.create({
                         label : label
                     })
 
-                    .then(state => res.status(200).json(state))
+                    .then(technologies => res.status(200).json(technologies))
                     .catch(error => res.status(400).json(error))
                 }
             })
@@ -82,13 +82,13 @@ exports.addState = (req,res) =>{
     }
 }
 
-exports.editState =(req,res) => {
+exports.editTechnologies =(req,res) => {
 
     const {label} = req.body
 
-    Model.State.findOne({
+    Model.Technologies.findOne({
         where: {
-            id_state: req.params.id
+            id_technologies: req.params.id
         }
     })
 
@@ -121,12 +121,12 @@ exports.editState =(req,res) => {
         }
         
         else { 
-            Model.State.update({
+            Model.Technologies.update({
                 label : label
             },
             {
                 where : {
-                    id_state: req.params.id
+                    id_technologies: req.params.id
                 }
             })
             .then(res.status(200).json({
@@ -139,29 +139,29 @@ exports.editState =(req,res) => {
 }
 
 
-exports.deleteState = (req,res) => {
+exports.deleteTechnologies= (req,res) => {
     
-    Model.State.findOne({
+    Model.Technologies.findOne({
         where: {
-            id_state: req.params.id
+            id_technologies: req.params.id
         }
     })
-    .then((state) => {
-        if (!state) {
+    .then((technologies) => {
+        if (!technologies) {
             return res.status(400).json({
-                message: 'State does not exist',
+                message: 'Technologies does not exist',
             });
         }
 
         else {
-            Model.State.destroy({
+            Model.Technologies.destroy({
                 where: {
-                    id_state: req.params.id
+                    id_technologies: req.params.id
                 }
             })
             .then(res.status(200).json({
 
-                message: `State with id : ${req.params.id} has been deleted`})
+                message: `Technologies with id : ${req.params.id} has been deleted`})
             )
             .catch(error => res.status(400).json(error))
         }

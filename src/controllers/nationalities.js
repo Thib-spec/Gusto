@@ -33,11 +33,12 @@ exports.getNationalityById = (req,res) => {
 
 
 exports.addNationality = (req,res) =>{
-    const {label} = req.body
-    const list_nationality = new Array() 
+    const {label,image} = req.body
+    let list_nationality = []
 
     const postNationalitySchema = Joi.object().keys({ 
-        label : Joi.string().required()
+        label : Joi.string().required(),
+        image:Joi.string()
     })
 
     const result = postNationalitySchema.validate(req.body)
@@ -60,10 +61,10 @@ exports.addNationality = (req,res) =>{
             Model.Nationalities.count()
             .then(numberOfNationalities => {
                 for(let i =0;i<numberOfNationalities;i++){
-                    list_nationality.push(allNationalities[i].label)
+                    list_nationality.push(allNationalities[i].label.toLowerCase())
                 }
 
-                if(list_nationality.includes(label)){
+                if(list_nationality.includes(label.toLowerCase())){
                     res.status(400).json({
                         message: "Nationality already exists"
                     })
@@ -71,7 +72,8 @@ exports.addNationality = (req,res) =>{
 
                 else {
                     Model.Nationalities.create({
-                        label : label 
+                        label : label,
+                        image:image 
                     })
 
                     .then(nationality => res.status(200).json(nationality))
@@ -86,7 +88,7 @@ exports.addNationality = (req,res) =>{
 
 exports.editNationality =(req,res) => {
 
-    const {label} = req.body
+    const {label,image} = req.body
 
     Model.Nationalities.findOne({
         where: {
@@ -102,7 +104,8 @@ exports.editNationality =(req,res) => {
         }
 
         const editNationalitySchema = Joi.object().keys({ 
-            label : Joi.string()
+            label : Joi.string(),
+            image: Joi.string()
         })
 
         const result = editNationalitySchema.validate(req.body)
@@ -124,7 +127,8 @@ exports.editNationality =(req,res) => {
         
         else { 
             Model.Nationalities.update({
-                label : label
+                label : label,
+                image:image
             },
             {
                 where : {

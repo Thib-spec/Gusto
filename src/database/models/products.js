@@ -5,38 +5,38 @@ module.exports = (sequelize) => {
         static associate(models){
 
             Products.belongsTo(models.Categories, {
-                foreignKey: 'fk_id_category'
+                foreignKey: {name:'fk_id_category', allowNull:false}
             })
             
             Products.belongsToMany(models.Sales, {   
                 through: "products_sales",
-                foreignKey: "fk_id_product",
+                foreignKey: {name:"fk_id_product", allowNull:false}
             });
             
             Products.belongsToMany(models.Deliveries, {
                 through: "products_deliveries",
-                foreignKey: "fk_id_product",
+                foreignKey: {name:"fk_id_product", allowNull:false}
             });
 
             Products.belongsToMany(models.Menus, {      
                 through: "menus_products",
-                foreignKey: "fk_id_product",
+                foreignKey: {name:"fk_id_product", allowNull:false}
             });
 
             Products.belongsToMany(models.Orders, {
                 through: "products_orders",
-                foreignKey: "fk_id_product",
+                foreignKey: {name:"fk_id_product", allowNull:false}
             });
 
             Products.belongsToMany(models.FridgePresets,{
                 through:"fridgePresets_products",
-                foreignKey:"fk_id_product"
+                foreignKey:{name:"fk_id_product", allowNull:false}
             })
 
             
             Products.belongsToMany(models.Fridges,{
                 through:"fridges_products",
-                foreignKey:"fk_id_product",
+                foreignKey:{name:"fk_id_product", allowNull:false}
                 
             })
         }
@@ -51,25 +51,22 @@ module.exports = (sequelize) => {
     }, 
     
     label: {
-        type: DataTypes.STRING,
+        type: DataTypes.STRING(20),
         allowNull: false
     },
     image: {
-        type: DataTypes.STRING(150),
-        allowNull: false
+        type: DataTypes.STRING(50),
     },
     price: {
-        type: DataTypes.INTEGER,
+        type: DataTypes.SMALLINT,
         allowNull: false
     },
    
     ubd: {
-        type: DataTypes.STRING,
-        allowNull: false
+        type: DataTypes.TINYINT,
     },
     description: {
-        type: DataTypes.STRING(150),
-        allowNull: false
+        type: DataTypes.STRING(200),
     },
     
 }, {
