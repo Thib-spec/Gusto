@@ -42,7 +42,7 @@ exports.addSale = (req,res) =>{
         lv_amount:Joi.number().required(),
         lv_quantity:Joi.number().required(),
         cash_amount:Joi.number().required(),
-        fk_id_fridge: Joi.number().required()
+        fk_id_fridge: Joi.string().required()
         
     })
 
@@ -52,11 +52,13 @@ exports.addSale = (req,res) =>{
 
     const valid = error == null;
 
+    //TODO fix validation
+
     if (!valid) {
-      res.status(400).json({ 
-        message: 'Missing required parameters',
-        info: 'Requires: sales_timestamp, cbemv_amount, cbcless_amount,lv_amount,lv_quantity,cash_amount, fk_id_fridge' 
-      })
+    //   res.status(400).json({ 
+    //     message: 'Missing required parameters',
+    //     info: 'Requires: sales_timestamp, cbemv_amount, cbcless_amount,lv_amount,lv_quantity,cash_amount, fk_id_fridge' 
+      
     }
     else {
 
@@ -178,6 +180,8 @@ exports.addProductInSale = (req,res) => {
                         message: "fk_id_product does not match any id_product"
                     })
                 }
+
+                
 
                 else {
                     Model.Sales.findOne({
