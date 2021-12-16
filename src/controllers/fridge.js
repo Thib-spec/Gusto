@@ -267,7 +267,7 @@ exports.AddProductQuantity = (req,res) => {
     let list_fk_fridge_product = []
 
     const postQuantitySchema = Joi.object().keys({
-        quantity : Joi.number().required(),
+        quantity : Joi.number().max(127).required(),
         fk_id_product: Joi.number().required()
     })
 
@@ -279,8 +279,7 @@ exports.AddProductQuantity = (req,res) => {
 
     if (!valid) {
         res.status(400).json({ 
-          message: 'Missing required parameters',
-          info: 'Requires: quantity, fk_id_product' 
+          message: 'Please review type and value of input field',
         })
       }
 
