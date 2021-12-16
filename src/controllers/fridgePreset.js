@@ -198,12 +198,14 @@ exports.deleteFridgePreset = (req,res) => {
 
 
 // ajout d'un produit dans un preset
+// faire un findAll dans fridgepresetproduct avec where fkpreset = reqparamid =>faire un tableau avec ces fk product là
 
 exports.addFrontProduct = (req,res) =>{
     const {quantity_max, quantity_min, fk_id_product} = req.body
     let list_fk_product = []
     let listFridgePreset = []
-    let superInfo = []
+    let coupleFridgeProd = []
+    let validation = true
 
     const postProductSchema = Joi.object().keys({ 
         quantity_min:Joi.number().required(),
@@ -290,103 +292,113 @@ exports.addFrontProduct = (req,res) =>{
                                         
 
                                         else {
+                                            Model.fridgePresets_products.findAll({
+                                                where:{
+                                                    fk_id_fridgePreset: req.params.id
+                                                }
+                                            })
+                                            .then(preset => {
+                                                for(i=0;i<preset.length;i++){
+                                                    coupleFridgeProd.push(preset[i].fk_id_product)
+                                                   
+                                                }
+                                           
 
-                                        for(i =0;i<(Object.keys(req.body).length) -1;i++){
-                                            for(j =1;j<Object.keys(req.body).length;j++){
+                                                for(i =0;i<(Object.keys(req.body).length);i++){
 
+                                                    if(!list_fk_product.includes(req.body[i].fk_id_product)){
+                                                        validation = false
+                                                        return res.status(400).json({
+                                                            message:"fk_id_product does not match any id_product"
+                                                        })
+                                                    }
+
+                                                    else if(coupleFridgeProd.includes(req.body[i].fk_id_product)){
+                                                        validation = false
+                                                        return res.status(400).json({
+                                                            message:`FridgePreset ${req.params.id} already contains product ${req.body[i].fk_id_product}`
+                                                        })
+                                                        
+                                                    }
+                                        
+                                                }
+
+                                                if(validation){
+                                                    var promises = req.body.map(function(product) {
+
+                                                        return Model.fridgePresets_products.create({
+                                                            quantity_max:product.quantity_max,
+                                                            quantity_min:product.quantity_min,
+                                                            fk_id_fridgePreset:req.params.id,
+                                                            fk_id_product:product.fk_id_product
+                                                        })
+
+                                                        .then(function() {
+                                                            result.push(product);
+                                                        })
+                                                    })
+                                
+                                                    Promise.all(promises)
+                                                    .then(function() {
+                                                        return res.json(result);
+                                                    });
+                                                }
+                                            })
+                                        }
+                                    }
+
+
+                                    else {
+
+                                        if(!valid){
+                                            res.status(400).json({
+                                                message: 'Missing required parameters',
+                                                info: 'Requires: quantity_min, quantity_max,fk_id_product'
+                                            })
+                                        }
+
+                                        else {
+                                        
                                             
-                                                if(!list_fk_product.includes(req.body[i].fk_id_product)){
-                                                    return res.status(400).json({
-                                                        message:"fk_id_product does not match any id_product"
+                                            if(!list_fk_product.includes(fk_id_product)){
+                                                res.status(400).json({
+                                                    message:"fk_id_product does not match any id_product"
+                                                })
+                                            }
+                                            
+                                            Model.fridgePresets_products.findOne({
+                                                where: {
+                                                    [Op.and]: [
+                                                        { fk_id_fridgePreset: req.params.id },
+                                                        { fk_id_product: req.body[0].fk_id_product }
+                                                    ]
+                                                }
+                                            })
+                                            .then(result => {
+                                                if(result){
+                                                    res.status(400).json({
+                                                        message:`FridgePreset ${req.params.id} already contains product ${fk_id_product}`
                                                     })
                                                 }
 
-                                            
-                                                else if (req.body[i].fk_id_product == req.body[j].fk_id_product){
-                                                    return res.status(400).json({
-                                                        message: `fk_id_product ${req.body[j].fk_id_product} has been already put`
+                                                else {
+
+                                                return Model.fridgePresets_products.create({
+                                                        quantity_max:quantity_max,
+                                                        quantity_min:quantity_min,
+                                                        fk_id_fridgePreset:req.params.id,
+                                                        fk_id_product:fk_id_product
                                                     })
-                                                } 
-                                                        
-                                            }
-                                        }
-
-                                        var promises = req.body.map(function(product) {
-
-                                            return Model.fridgePresets_products.create({
-                                            quantity_max:product.quantity_max,
-                                            quantity_min:product.quantity_min,
-                                            fk_id_fridgePreset:req.params.id,
-                                            fk_id_product:product.fk_id_product
-                                        })
-
-                                            .then(function() {
-                                                result.push(product);
-                                            })
-                                        })
-                                    
-                                        Promise.all(promises)
-                                            .then(function() {
-                                            return res.json(result);
-                                        });
-
-                                    }
-                                }
-
-
-                                else {
-
-                                    if(!valid){
-                                        res.status(400).json({
-                                            message: 'Missing required parameters',
-                                            info: 'Requires: quantity_min, quantity_max,fk_id_product'
-                                        })
-                                    }
-
-                                    else{
-                                       
-                                        
-                                        if(!list_fk_product.includes(fk_id_product)){
-                                            res.status(400).json({
-                                                message:"fk_id_product does not match any id_product"
+                                                    .then(products=> res.status(200).json(products))
+                                                }
                                             })
                                         }
-                                        
-                                        Model.fridgePresets_products.findOne({
-                                            where: {
-                                                [Op.and]: [
-                                                  { fk_id_fridgePreset: req.params.id },
-                                                  { fk_id_product: req.body[0].fk_id_product }
-                                                ]
-                                            }
-                                        })
-                                        .then(result => {
-                                            if(result){
-                                                res.status(400).json({
-                                                    message:`FridgePreset ${req.params.id} already contains product ${fk_id_product}`
-                                                })
-                                            }
-
-                                            else {
-
-                                            return Model.fridgePresets_products.create({
-                                                    quantity_max:quantity_max,
-                                                    quantity_min:quantity_min,
-                                                    fk_id_fridgePreset:req.params.id,
-                                                    fk_id_product:fk_id_product
-                                                })
-                                                .then(products=> res.status(200).json(products))
-                                            }
-                                        })
                                     }
-                                }
                                 
-                            })
-                        })   
-                })
-            })
-
-            
+                                })
+                            })   
+                        })
+                    })
         }
     })
     
