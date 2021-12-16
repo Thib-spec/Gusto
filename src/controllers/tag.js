@@ -109,7 +109,6 @@ exports.addTag = (req,res) =>{
 }
 
 
-// AFAIRE
 exports.editTag =(req,res) => {
 
     const {fk_id_product,fk_id_client} = req.body

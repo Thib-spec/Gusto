@@ -306,7 +306,6 @@ const Joi = require('joi');
         
 
        const postMenuSchema = Joi.object().keys({ 
-        image: Joi.string().required(),
         price: Joi.number().required(),
         web_label: Joi.string().required(),
         fridge_label:Joi.string().required(),
@@ -321,7 +320,7 @@ const Joi = require('joi');
     if (!valid) {
       res.status(400).json({ 
         message: 'Missing required parameters',
-        info: 'Requires: image, price, web_label, fridge_label' 
+        info: 'Requires: price, web_label, fridge_label' 
       })
     }
 
