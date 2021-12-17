@@ -38,11 +38,11 @@ exports.addSale = (req,res) =>{
     let todayFormat = ("0" + today.getDate()).slice(-2) + "-" + ("0"+(today.getMonth()+1)).slice(-2) + "-" +today.getFullYear() + " " + ("0" + today.getHours()).slice(-2) + ":" + ("0" + today.getMinutes()).slice(-2) + ":" +("0" + today.getSeconds()).slice(-2)
 
     const postSalesSchema = Joi.object().keys({ 
-        cbemv_amount:Joi.number().required(),
-        cbcless_amount:Joi.number().required(),
-        lv_amount:Joi.number().required(),
-        lv_quantity:Joi.number().required(),
-        cash_amount:Joi.number().required(),
+        cbemv_amount:Joi.number().max(32767).required(),
+        cbcless_amount:Joi.number().max(32767).required(),
+        lv_amount:Joi.number().max(32767).required(),
+        lv_quantity:Joi.number().max(127).required(),
+        cash_amount:Joi.number().max(32767).required(),
         fk_id_fridge: Joi.string().required()
         
     })
@@ -55,7 +55,7 @@ exports.addSale = (req,res) =>{
 
     if (!valid) {
         return res.status(400).json({ 
-            message: 'Missing required parameters',
+            message: 'Please review required parameters and their value',
             info: 'Requires: cbemv_amount, cbcless_amount,lv_amount,lv_quantity,cash_amount, fk_id_fridge'
         }) 
       
@@ -142,7 +142,7 @@ exports.addProductInSale = (req,res) => {
    
     const postProductToSaleSchema = Joi.object().keys({ 
         fk_id_product : Joi.number().required(),
-        quantity_product:Joi.number().required()
+        quantity_product:Joi.number().max(127).required()
     })
 
     const result = postProductToSaleSchema.validate(req.body)
@@ -153,7 +153,7 @@ exports.addProductInSale = (req,res) => {
 
     if (!valid) {
       res.status(400).json({ 
-        message: 'Missing required parameters',
+        message: 'Please review required parameters and their value',
         info: 'Requires: fk_id_product, quantity_product' 
       })
     }
