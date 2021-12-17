@@ -7,6 +7,16 @@ const Joi = require('joi');
         .catch(error => res.status(400).json(error))
     }
 
+    exports.getMenuForUser = (req,res) => {
+        Model.Menus.findAll({
+            where:{
+                fk_id_client: req.user.fk_id_client
+            }
+        })
+        .then(userMenus => res.status(200).json(userMenus))
+        .catch(error => res.status(400).json(error))
+    }
+
 
     exports.getMenuById = (req,res) => {
         Model.Menus.findOne({
@@ -60,6 +70,58 @@ const Joi = require('joi');
             }
         })
         .catch(error => res.json(error))
+    }
+
+
+    exports.listProductsByMenusForUser = (req,res) => {
+
+        let menu_ids = []
+        Model.Menus.findAll({
+            where:{
+                fk_id_client:req.user.fk_id_client
+            },
+        })
+        .then(userMenus => {
+            for(let i =0;i<userMenus.length;i++){
+                menu_ids.push(userMenus[i].id_menu)
+            }
+            if(!menu_ids.includes(Number(req.params.id))){
+                res.status(400).json({
+                    message: `You are not all allowed to see content of menu ${req.params.id}`
+                })
+            }
+            else {
+                Model.Menus.findOne({
+                    where:{
+                        id_menu : req.params.id
+                    }
+                })
+                .then((menu) => {
+                    if (!menu) {
+                        return res.status(400).json({
+                            message: 'Menu does not exist',
+                        });
+                    }
+            
+                    else {
+                        menu.getProducts()
+                        .then(products =>{
+                    
+                            if(products.length == 0){
+                                return res.status(400).json({
+                                    message:`Menu with id ${req.params.id} does not have any product`
+                                })
+                            }
+                            
+                            else {
+                                return res.status(200).json(products)
+                            }
+                        })
+                    }
+                })
+                .catch(error => res.json(error))
+            }
+        })
     }
 
 

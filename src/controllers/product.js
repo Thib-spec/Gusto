@@ -8,6 +8,26 @@ exports.listProducts = (req, res) => {
     .catch(error => res.status(400).json(error))
 }
 
+exports.listProductForUser = (req,res) => {
+
+    let listUserProduct = []
+    Model.Products.findAll({
+        include:{model:Model.Categories}
+    })
+    .then(products => {
+        for(let i=0;i<products.length;i++){
+            if(products[i].Category.fk_id_client == req.user.fk_id_client) {
+                listUserProduct.push(products[i])
+            }
+        }
+
+        res.status(200).json(listUserProduct)
+    })
+
+    .catch(error => res.status(400).json(error))
+ 
+}
+
 exports.getProductById = (req,res) => {
     Model.Products.findOne({
         where:{

@@ -32,9 +32,9 @@ exports.getFridgeForUser = (req,res) => {
             }
            
         }
-        console.log(result)
-        res.json(result)
+        res.status(200).json(result)
     })
+    .catch(error => res.status(400).json(error))
    
     
 }
@@ -658,16 +658,13 @@ exports.editFridge =(req,res) => {
                                 fk_preset_list.push(allPreset[i].id_fridgePresets)
                             }
 
-                            if(!fk_tech_list.includes(fk_id_technologies)){
+                            if(!fk_tech_list.includes(fk_id_technologies) && fk_id_technologies != null){
                                 return res.status(400).json({
                                     message:"fk_id_technologies does not match any id_technologies"
                                 })
                             }
 
-                            console.log(fk_id_fridgePreset)
-                            console.log(fk_preset_list)
-
-                            if(!fk_preset_list.includes(fk_id_fridgePreset)){
+                            if(!fk_preset_list.includes(fk_id_fridgePreset) && fk_id_fridgePreset != null){
                                 return res.status(400).json({
                                     message:"fk_id_fridgePreset does not match any id_fridgePresets"
                                 })
