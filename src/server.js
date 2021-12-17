@@ -15,6 +15,11 @@ const PORT = process.env.PORT
 const app = require("express")()
 const serverHttp = http.createServer(app)
 const passport = require("passport")
+const cors = require('cors');
+const webRoutes = require('./Routes/web');
+
+app.use(cors());
+app.use(webRoutes);
 
 const models=require("./database/models")
 // config passport
@@ -26,5 +31,4 @@ require("./app")(app)
 serverHttp.listen(PORT,()=>{
     console.log(`server is running  at http://${HOST}:${PORT}/`)
 })
-
 
