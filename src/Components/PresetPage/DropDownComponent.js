@@ -8,10 +8,10 @@ import "CSS/FridgeDropDownCoponent.scss";
 
 import DropDownComponentContext from "Context/DropDownComponentContext";
 
-export default function DropDownComponent({ preset, children }) {
+export default function DropDownComponent({ contextValue, children }) {
   const [open, setOpen] = useState(true);
   // const [open, setOpen] = useState(false);
-
+  const { preset } = contextValue;
   function handleClick() {
     setOpen(!open);
   }
@@ -19,13 +19,12 @@ export default function DropDownComponent({ preset, children }) {
   function chooseColor() {
     return "blue";
   }
-
   const [bgColor, setBgColor] = useState(chooseColor());
 
   return (
     <>
-      <DropDownComponentContext.Provider value={preset}>
-        <div className="list-element">
+      <DropDownComponentContext.Provider value={contextValue}>
+        <div className="list-element col-12">
           {open === true ? (
             <div>
               <div
@@ -40,18 +39,14 @@ export default function DropDownComponent({ preset, children }) {
               <div className="list-element-sub">
                 <div className="list-element-sub-description">
                   <div className="container h-100">
-                    <div className="row ">
-                      {children}
-                      {/* <FridgeProduitsCard name="Produits" />
-                      <FridgeMenusCard name="Menus" /> */}
-                    </div>
+                    <div className="row ">{children}</div>
                   </div>
                 </div>
               </div>
             </div>
           ) : (
             <div
-              className={`${bgColor} list-element-title-unfold`}
+              className={`${bgColor} list-element-title-unfold col-12`}
               onClick={() => handleClick()}
             >
               <div className="title-name">{preset.name}</div>

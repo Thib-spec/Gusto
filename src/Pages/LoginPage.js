@@ -51,7 +51,7 @@ export default function LoginPage({ location, history, t }) {
 
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
-  const alert = new Value(useState(<div></div>), isMounted);
+  const alert = new Value(useState, <div></div>, isMounted);
 
   return (
     <>

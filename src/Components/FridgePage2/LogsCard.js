@@ -16,7 +16,7 @@ export default function FridgeLogsCard(props) {
           "/sales/products"
       )
       .then((res) => {
-        setsliceSales(res.data);
+        setsliceSales(typeof res.data == "array" ? res.data : []);
       })
       .catch((err) => console.log(err));
   }, []);
@@ -83,7 +83,7 @@ export default function FridgeLogsCard(props) {
                     <div className="logs-sales-produits">Panier</div>
                     <div className="logs-sales-prix">Montants</div>
                   </div>
-                  
+
                   <div className="logs-sales-content">
                     {sliceSales.map((sale) => (
                       <div key={sale.id_sale}>

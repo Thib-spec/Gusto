@@ -1,4 +1,4 @@
-import Value from "helpers/Value";
+import Value from "helpers/Value/ValueMenu.js";
 
 const copyy = (obj) => {
   return JSON.parse(JSON.stringify(obj));

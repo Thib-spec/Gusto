@@ -13,97 +13,128 @@ import GestionCard from "Components/FridgePage2/GestionCard";
 import DropDownPresetChoose from "Components/FridgePage2/DropDownPresetChoose";
 
 import Value from "helpers/Value";
+import { isRejected } from "@reduxjs/toolkit";
 
 export default function FridgesPage() {
   function handleNothing() {}
+  const isLoading = new Value(useState, true);
+
+  // useEffect(() => {
+  //   getAllFridges();
+  //   getAllPresets();
+  //   isLoading.set(true);
+  // }, []);
 
   useEffect(() => {
-    getAllFridges();
-    getAllPresets();
-    // getAllProducts();
-    // getAllMenus();
+    Promise.all([getAllFridges(), getAllPresets()])
+      .then(() => {
+        isLoading.set(false);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   }, []);
 
-  async function getAllFridges() {
-    try {
-      const res = await api.getAllFridges();
-      if (res.ok) {
-        const resJSON = await res.json();
-        console.log("api.getAllFridges() : ", resJSON);
-        setFridges(resJSON.map(mappers.fridgesMapper));
-      } else {
-      }
-    } catch (error) {
-      console.log(error);
-    }
+  useEffect(() => {
+    console.log("isLoading : ", isLoading.value);
+  }, [isLoading.value]);
+
+  // async function getAllFridges() {
+  //   try {
+  //     const res = await api.getAllFridges();
+  //     if (res.ok) {
+  //       const resJSON = await res.json();
+  //       console.log("api.getAllFridges() : ", resJSON);
+  //       console.log(
+  //         "api.getAllFridges() : ",
+  //         resJSON.map(mappers.fridgesMapper)
+  //       );
+  //       setFridges(resJSON.map(mappers.fridgesMapper));
+  //     } else {
+  //     }
+  //   } catch (error) {
+  //     console.log(error);
+  //   }
+  // }
+
+  function getAllFridges() {
+    return new Promise((resolve, reject) => {
+      api
+        .getAllFridges()
+        .then((res) => {
+          if (res.ok) {
+            res
+              .json()
+              .then((data) => {
+                console.log("api.getAllFridges() : ", data);
+                setFridges(data.map(mappers.fridgesMapper));
+                resolve();
+              })
+              .catch((err) => {
+                reject(err);
+              });
+          } else {
+          }
+        })
+        .catch((err) => {
+          reject(err);
+        });
+    });
   }
 
-  async function getAllPresets() {
-    try {
-      const res = await api.getAllPresets();
-      if (res.ok) {
-        const resJSON = await res.json();
-        console.log("api.getAllPresets() : ", resJSON);
-        setAllPresets(resJSON.map(mappers.presetsMapper));
-      } else {
-      }
-    } catch (error) {
-      console.log(error);
-    }
+  // async function getAllPresets() {
+  //   try {
+  //     const res = await api.getAllPresets();
+  //     if (res.ok) {
+  //       const resJSON = await res.json();
+  //       console.log("api.getAllPresets() : ", resJSON);
+  //       setAllPresets(resJSON.map(mappers.presetsMapper));
+  //     } else {
+  //     }
+  //   } catch (error) {
+  //     console.log(error);
+  //   }
+  // }
+
+  function getAllPresets() {
+    return new Promise((resolve, reject) => {
+      api
+        .getAllPresets()
+        .then((res) => {
+          if (res.ok) {
+            res
+              .json()
+              .then((data) => {
+                console.log("api.getAllPresets() : ", data);
+                setAllPresets(data.map(mappers.presetsMapper));
+                resolve();
+              })
+              .catch((err) => {
+                reject(err);
+              });
+          } else {
+          }
+        })
+        .catch((err) => {
+          reject(err);
+        });
+    });
   }
 
-  async function getAllProducts() {
-    try {
-      const res = await api.getAllProducts();
-      if (res.ok) {
-        const resJSON = await res.json();
-        console.log("api.getAllProducts() : ", resJSON);
-        setAllProducts(resJSON.map(mappers.productsMapper));
-      } else {
-      }
-    } catch (error) {
-      console.log(error);
-    }
-  }
-
-  async function getAllMenus() {
-    try {
-      const res = await api.getAllMenus();
-      if (res.ok) {
-        const resJSON = await res.json();
-        console.log("api.getAllMenus() : ", resJSON);
-        setAllMenus(resJSON.map(mappers.menusMapper));
-      } else {
-      }
-    } catch (error) {
-      console.log(error);
-    }
-  }
-
-  const [fridge, setFridges] = useState([]);
-  const [allProducts, setAllProducts] = useState([]);
-  const [allMenus, setAllMenus] = useState([]);
+  const [fridges, setFridges] = useState([]);
   const [allPresets, setAllPresets] = useState([]);
 
   return (
     <>
-      {/* <DropDownComponentContext.Provider
-        value={{
-          allProducts: allProducts,
-          allMenus: allMenus,
-          allPresets: allPresets,
-        }}
-      > */}
       <Page
         contextValue={{
-          allProducts: allProducts,
-          allMenus: allMenus,
           allPresets: allPresets,
         }}
+        isLoading={isLoading}
       >
-        {fridge.map((fridge) => {
+        {fridges.map((fridge) => {
           return (
-            <DropDownComponent fridge={fridge} key={fridge.id}>
+            <DropDownComponent contextValue={{ fridge }} key={fridge.id}>
               <DropDownPresetChoose />
               <div className="w-100"></div>
               <ProductsCard name="Produits" />
@@ -115,7 +146,6 @@ export default function FridgesPage() {
           );
         })}
       </Page>
-      {/* </DropDownComponentContext.Provider> */}
     </>
   );
 }

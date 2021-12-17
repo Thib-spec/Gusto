@@ -17,30 +17,32 @@ import mappers from "helpers/mappers";
 import reverse_mappers from "helpers/reverse_mappers";
 
 import DropDownComponentContext from "Context/DropDownComponentContext";
+import PageContext from "Context/PageContext";
 
 import MenuTableLine from "./MenuTableLine";
+import useFridgePreset from "./useFridgePreset";
 
 export default function FridgeMenusCard({ name }) {
   // menus ajoutés dans le frigo
-  const menus = new ArrayController(useState([]), useState([]));
-  const { fridge } = useContext(DropDownComponentContext);
+  const menus = new ArrayController(useState, []);
+  const menusInPreset = new ArrayController(useState, []);
+  const { fridge, presetChosen } = useContext(DropDownComponentContext);
 
   useEffect(() => {
-    getMenusInOneFridge();
-  }, []);
+    if (presetChosen.value.id != -1) getMenusInOnePreset();
+  }, [presetChosen.value]);
 
-  // useEffect(() => {
-  //   console.log("menus : ", menus.value);
-  // }, [menus]);
-
-  // appels api
-  async function getMenusInOneFridge() {
+  async function getMenusInOnePreset() {
     try {
-      const res = await api.getMenusInOneFridge({ id: fridge.id });
+      const res = await api.getMenusInOnePreset({
+        id: presetChosen.value.id,
+      });
       if (res.ok) {
         const resJSON = await res.json();
-        console.log("api.getMenusInOneFridge() : ", resJSON);
-        menus.set([...resJSON.map(mappers.menusMapper)], { init: true });
+        console.log("api.getMenusInOnePreset() : ", resJSON);
+        menusInPreset.set(resJSON.map(mappers.menusInPreset), {
+          init: true,
+        });
       } else {
       }
     } catch (error) {
@@ -75,10 +77,8 @@ export default function FridgeMenusCard({ name }) {
                   </tr>
                 </thead>
                 <tbody>
-                  {menus.value.map((menu) => {
-                    return (
-                      <MenuTableLine key={menu.id} menu={menus.get(menu)} />
-                    );
+                  {menusInPreset.value.map((menu) => {
+                    return <MenuTableLine key={menu.id} menu={menu} />;
                   })}
                 </tbody>
               </table>

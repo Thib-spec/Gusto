@@ -24,9 +24,9 @@ Element.prototype.remove = function () {
   this.ArrayController.removeMany([this.value]);
 };
 
-export default function ArrayController(valueUseState, initValueUseState) {
-  this._value = new Value(valueUseState);
-  this._initValue = new Value(initValueUseState);
+export default function ArrayController(useState, initValue) {
+  this._value = new Value(useState, initValue);
+  this._initValue = new Value(useState, initValue);
   this.value = this._value.value;
   this.initValue = this._initValue.value;
 }
