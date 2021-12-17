@@ -306,7 +306,7 @@ const Joi = require('joi');
         
 
        const postMenuSchema = Joi.object().keys({ 
-        price: Joi.number().required(),
+        price: Joi.number().max(32767).required(),
         web_label: Joi.string().required(),
         fridge_label:Joi.string().required(),
     })
@@ -319,7 +319,7 @@ const Joi = require('joi');
 
     if (!valid) {
       res.status(400).json({ 
-        message: 'Missing required parameters',
+        message: 'Please review required parameters and their value',
         info: 'Requires: price, web_label, fridge_label' 
       })
     }
@@ -369,7 +369,7 @@ exports.editMenu = (req,res) => {
 
         const editMenuSchema = Joi.object().keys({ 
             image: Joi.string(),
-            price: Joi.number(),
+            price: Joi.number().max(32767),
             web_label: Joi.string(), 
             fridge_label:Joi.string(),
         })
@@ -381,7 +381,7 @@ exports.editMenu = (req,res) => {
 
         if (!valid) { 
           res.status(400).json({ 
-            message: 'One or more fields are not well written', 
+            message: 'Please review type and value of input parameters', 
           }) 
         }
         

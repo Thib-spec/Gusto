@@ -41,8 +41,8 @@ exports.addProduct = (req,res) =>{
     const postProductSchema = Joi.object().keys({ 
         label : Joi.string().required(),
         image:Joi.string(),
-        price:Joi.number().required(),
-        ubd:Joi.number(),
+        price:Joi.number().max(32767).required(),
+        ubd:Joi.number().max(127),
         description:Joi.string(),
         fk_id_category:Joi.number().required()
     })
@@ -55,7 +55,7 @@ exports.addProduct = (req,res) =>{
 
     if (!valid) {
       res.status(400).json({ 
-        message: 'Missing required parameters or parameters type are incorrect',
+        message: 'Please review required parameters and their value',
         info: 'Requires: label, price, fk_id_category' 
       })
     }
@@ -136,8 +136,8 @@ exports.editProduct =(req,res) => {
         const editProductSchema = Joi.object().keys({ 
             label : Joi.string(),
             image:Joi.string(),
-            price:Joi.number(),
-            ubd:Joi.number(),
+            price:Joi.number().max(32767),
+            ubd:Joi.number().max(127),
             description:Joi.string()
         })
 
@@ -148,7 +148,7 @@ exports.editProduct =(req,res) => {
 
         if (!valid) { 
           res.status(400).json({ 
-            message: 'One or more fields are not well written', 
+            message: 'Please review type and value of input parameters', 
           }) 
         }
 
