@@ -843,7 +843,7 @@ exports.removeMenuPreset = (req,res) => {
     let list_fk_menu = []
 
     // vérif que le fridge Preset contienne bien le menu ciblé pas faisbale sauf création du model fridgeprest_menu
-    // possible avec find one where truc et truc
+ 
     Model.FridgePresets.findOne({
         where:{
             id_fridgePresets: req.params.id

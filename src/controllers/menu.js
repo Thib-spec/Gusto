@@ -64,17 +64,18 @@ const Joi = require('joi');
 
 
     exports.addProductInMenu = (req,res) => {
-        const {fk_id_product} = req.body
 
         let list_product = []
         let list_productOfMenu = []
 
 
-        const postProductInMenuSchema = Joi.object().keys({ 
-            fk_id_product: Joi.number().required()
-        })
+        const arraySchema = Joi.array().items(
+            Joi.object({
+                fk_id_product: Joi.number().required(),
+            })
+        )
 
-        const result = postProductInMenuSchema.validate(req.body)
+        const result = arraySchema.validate(req.body)
 
         const {error } = result;
 
@@ -112,6 +113,12 @@ const Joi = require('joi');
                                         message:"fk_id_product does not match any id_product"
                                     })
                                 }
+
+                                else if(!valid){
+                                    return res.status(400).json({
+                                        message: "Please review type and value of input parameters"
+                                    })
+                                }
                                 
                                 else {
 
@@ -127,6 +134,12 @@ const Joi = require('joi');
                                             })
                                         }
 
+                                        else if(!valid){
+                                            return res.status(400).json({
+                                                message: "Please review type and value of input parameters"
+                                            })
+                                        }
+
                                         else {
                                             menu.addProducts((req.body[0].fk_id_product))
                                             res.status(200).json({
@@ -136,7 +149,6 @@ const Joi = require('joi');
                                     })
                                     
                                 }
-        
                                     
         
                             }
@@ -161,37 +173,6 @@ const Joi = require('joi');
                                 
                             }
                         }
-        
-                        else {
-                            if (!valid) {
-                                res.status(400).json({ 
-                                message: 'Missing required parameters',
-                                info: 'Requires: fk_id_product' 
-                                })
-                            }
-        
-                            else {
-                                menu.getProducts()
-                                .then(allProd=>{
-                                    for(let i =0;i<allProd.length;i++){
-                                        list_productOfMenu.push(allProd[i].menus_products.fk_id_product)
-                                    }
-                                
-                                    if(list_productOfMenu.includes(fk_id_product)){
-                                        res.status(400).json({
-                                            message:`Menu ${req.params.id} already contains product ${fk_id_product}`
-                                        })
-                                    }
-        
-                                    else {
-                                        return menu.addProducts(fk_id_product)
-                                        .then(addedProduct => res.status(200).json(addedProduct))
-                                        .catch(error => res.status(400).json(error))
-                                    }
-                                }) 
-                            }
-                        
-                        }
                     }
                 })
 
@@ -202,17 +183,16 @@ const Joi = require('joi');
 
     // verif si produit appartient au menu pas possible
     exports.deleteProductInMenu = (req,res) => {
-        const {fk_id_product} = req.body
-
-        let list_productOfMenu = []
+       
         let list_product = []
 
+        const arraySchema = Joi.array().items(
+            Joi.object({
+                fk_id_product: Joi.number().required(),
+            })
+        )
 
-        const postProductInMenuSchema = Joi.object().keys({ 
-            fk_id_product: Joi.number().required()
-        })
-
-        const result = postProductInMenuSchema.validate(req.body)
+        const result = arraySchema.validate(req.body)
 
         const {error } = result;
 
@@ -246,55 +226,42 @@ const Joi = require('joi');
             
                             if(Object.keys(req.body).length == 1){
 
-                                menu.removeProducts(req.body[0].fk_id_product)
-                                
+                                if(!valid){
+                                    return res.status(400).json({
+                                        message: "Please review type and value of input parameters"
+                                    })
+                                }
+
+                                else {
+                                    menu.removeProducts(req.body[0].fk_id_product)
         
-                                res.status(200).json({
-                                    message:"Product has been deleted"
-                                })
-                                    
-        
+                                    res.status(200).json({
+                                        message:"Product has been deleted"
+                                    })
+
+                                }
                             }
         
                             else {
-                                for(let i=0;i<req.body.length;i++){
 
-                                    menu.removeProducts(req.body[i].fk_id_product)
-                                    
+                                if(!valid){
+                                    return res.status(400).json({
+                                        message: "Please review type and value of input parameters"
+                                    })
                                 }
+                                else {
+                                    for(let i=0;i<req.body.length;i++){
+
+                                        menu.removeProducts(req.body[i].fk_id_product)             
+                                    }
                             
-                                res.status(200).json({
-                                    message:"Products have been deleted"
-                                })
+                                    res.status(200).json({
+                                        message:"Products have been deleted"
+                                    })
+                                }  
                                 
                             }
                         }
-
-                        else {
-                            
-                            menu.getProducts()
-                            .then(allProd=>{
-                                for(let i =0;i<allProd.length;i++){
-                                    list_productOfMenu.push(allProd[i].menus_products.fk_id_product)
-                                }
-                                
-
-                                if (!valid) {
-                                    res.status(400).json({ 
-                                        message: 'Missing required parameters',
-                                        info: 'Requires: fk_id_product' 
-                                    })
-                                }
-        
-                                else {
-        
-                                    menu.removeProducts(fk_id_product)
-                                    .then(res.status(200).json("Deletion completed"))
-                                }
-                            })
-                        }
-    
-                        
                     }
                 })
             })
