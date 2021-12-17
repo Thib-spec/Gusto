@@ -21,12 +21,7 @@ export default function MenuDropDownComponent(props) {
     setShow(true);
   };
 
-    const [show, setShow] = useState(false);
-    const [show2, setShow2] = useState(false);
-
-    const [nameMenuDel, setnameMenuDel] = useState("");
-
-    const handleClose = () => setShow(false);
+   
     const handleClose2 = () => setShow2(false);
     const handleShow = () => {
         
@@ -84,7 +79,8 @@ export default function MenuDropDownComponent(props) {
     useEffect(() => {
         axios.get("http://api.gustosolutions.fr/api/menu/"+props.menu.id_menu+"/product")
             .then((res) =>{setallProductsInMenu(res.data)
-                allProductsInMenu2.set(res.data, { init: true }
+                console.log(res.data.map(product=>{return {...product, id:product.id_product}}))
+                allProductsInMenu2.set(res.data.map(product=>{return {...product, id:product.id_product}}), { init: true }
             )
             })
             .catch((err) => console.log(err));
