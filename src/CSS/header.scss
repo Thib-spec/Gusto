@@ -57,6 +57,7 @@
     margin-top: 0.5em;
     margin-bottom: 0.5em;
     margin-right:1em;
+    cursor: pointer;
 }
 
 .header-top-profil{
@@ -165,6 +166,34 @@
     z-index: 2;
     
     
+}
+
+.header-dropdown-profil{
+    background-color: #383636;
+    width: 140px;
+    display: flex;
+    color: white;
+    flex-direction: column;
+    position: absolute;
+    top: unset;
+    z-index: 2;
+    top: 4.5em;
+    right: 4.6em;
+}
+
+.header-dropdown-profil-element{
+    height: 3em;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding-left: 10px;
+    
+    
+    &:hover{
+        color:#2F4057;
+        background-color: white;
+        cursor: pointer;
+    }
 }
 
 .header-bottom-menuList-button{

@@ -34,6 +34,10 @@ export default function ProductDropDownComponent(props){
         try{
             let a=document.getElementById("productEditLabel"+props.product.id_product).value
             let b=document.getElementById("productEditUbd"+props.product.id_product).value
+            b=Number(b)
+            if (b<0){
+                b=0
+            }
             let c=document.getElementById("productEditPrice"+props.product.id_product).value
             let d=document.getElementById("productEditDescription"+props.product.id_product).value
             axios.put("http://api.gustosolutions.fr/api/product/"+props.product.id_product,{
