@@ -6,23 +6,18 @@ module.exports = (sequelize) => {
         static associate(models){
 
             Menus.belongsTo(models.Client, {
-                foreignKey: 'fk_id_client'
+                foreignKey: {name:'fk_id_client', allowNull:false}
             })
             
             Menus.belongsToMany(models.Products, {
                 as:"products",
                 through: "menus_products",
-                foreignKey: "fk_id_menu",
+                foreignKey: {name:"fk_id_menu", allowNull:false}
             });
 
             Menus.belongsToMany(models.FridgePresets,{
                 through: "fridgePresets_menus",
-                foreignKey: "fk_id_menu"
-            })
-
-            Menus.belongsToMany(models.Fridges,{
-                through:"fridges_menus",
-                foreignKey:"fk_id_menu"
+                foreignKey: {name:"fk_id_menu", allowNull:false}
             })
             
         }
@@ -38,19 +33,18 @@ Menus.init({
     },
     
     web_label: {
-        type: DataTypes.STRING,
+        type: DataTypes.STRING(20),
         allowNull: false
     },
     fridge_label: {
-        type: DataTypes.STRING,
+        type: DataTypes.STRING(20),
         allowNull: false
     },
     image: {
-        type: DataTypes.STRING(150),
-        allowNull: false
+        type: DataTypes.STRING(50),
     },
     price: {
-        type: DataTypes.INTEGER,
+        type: DataTypes.SMALLINT,
         allowNull: false
     },
     

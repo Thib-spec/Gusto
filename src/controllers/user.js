@@ -100,11 +100,11 @@ const Joi = require('joi');
     exports.addUser = (req,res) =>{
         const { firstname, lastname, email, image,password,fk_id_level,fk_id_client,fk_id_nationality } = req.body;
 
-        const fk_level_list = new Array()
-        const fk_client_list = new Array()
-        const fk_nationality_list = new Array()
+        let fk_level_list = []
+        let fk_client_list = []
+        let fk_nationality_list = []
 
-        const email_list = new Array()
+        let email_list = []
 
        // Check email format 
        if(!email.match("^.{1,}@[^.]{1,}")){
@@ -122,7 +122,7 @@ const Joi = require('joi');
         lastname: Joi.string().required(),
         password: Joi.string().required(),
         email:Joi.string().required(), 
-        image:Joi.string().required(),
+        image:Joi.string(),
         fk_id_client:Joi.number().required(),
         fk_id_level:Joi.number().required(),
         fk_id_nationality: Joi.number().required()
@@ -137,7 +137,7 @@ const Joi = require('joi');
     if (!valid) {
       res.status(400).json({ 
         message: 'Missing required parameters',
-        info: 'Requires: firstname, lastname, password, image, email, fk_id_level, fk_id_client, fk_id_nationality' 
+        info: 'Requires: firstname, lastname, password, email, fk_id_level, fk_id_client, fk_id_nationality' 
       })
     }
 
@@ -170,10 +170,10 @@ const Joi = require('joi');
                                 Model.Users.count()
                                 .then(numberOfUser => {
                                     for(let i =0;i<numberOfUser;i++){
-                                        email_list.push(allUser[i].email)
+                                        email_list.push(allUser[i].email.toLowerCase())
                                     }
 
-                                    if(email_list.includes(email)){
+                                    if(email_list.includes(email.toLowerCase())){
                                         res.status(400).json({
                                             message:"Email is already taken"
                                         })
@@ -228,8 +228,10 @@ const Joi = require('joi');
 
 
 exports.editUser = (req,res) => {
-    const { firstname, lastname, email, image} = req.body;
-    const email_list = new Array()
+    const { firstname, lastname, email, image, fk_id_level, fk_id_nationality} = req.body;
+    let email_list = []
+    let fk_nationality_list = []
+    let fk_level_list = []
 
 
     Model.Users.findOne({
@@ -250,6 +252,8 @@ exports.editUser = (req,res) => {
             lastname: Joi.string(),
             email: Joi.string(), 
             image:Joi.string(),
+            fk_id_level:Joi.number(),
+            fk_id_nationality:Joi.number()
         })
 
         const result = editUserSchema.validate(req.body)
@@ -272,46 +276,81 @@ exports.editUser = (req,res) => {
                     for(let i =0;i<numberOfUser;i++){
                         email_list.push(alluser[i].email)
                     }
-
-                    if(email_list.includes(email)){
-                        res.status(400).json({
-                            message:"Email is already taken"
-                        })
-                    }
-
-                    else if(Object.keys(req.body).length == 0){
-                        res.status(400).json({
-                            message:"No parameters were passed"
-                        })
-                    }
-
-                    else if(!email.match("^.{1,}@[^.]{1,}")){
-                        return res.status(400).json({
-                            message: "Invalid format for email",
-                            info:"email must match following pattern : abc@gmail.com"
-                        })
-                    }
-
-                    else {
-                        Model.Users.update({
-                            firstname: firstname,
-                            lastname: lastname,
-                            email: email,
-                            image:image,
-                        },
-                        {
-                            where : {
-                                id_user: req.params.id
+                    Model.Levels.findAll()
+                    .then(allLevels => {
+                        Model.Levels.count()
+                        .then(numberOfLevel => {
+                            for(let i= 0;i<numberOfLevel;i++){
+                                fk_level_list.push(allLevels[i].id_level)
                             }
+                            Model.Nationalities.findAll()
+                            .then(allNationalities => {
+                                Model.Nationalities.count()
+                                .then(numberOfNationalities => {
+                                    for(let i =0;i<numberOfNationalities;i++){
+                                        fk_nationality_list.push(allNationalities[i].id_nationality)
+                                    }
+
+                                    if(!fk_level_list.includes(fk_id_level)){
+                                        return res.status(400).json({
+                                            message:"fk_id_level does not match any id_level"
+                                        })
+                                    }
+
+                                    else if (!fk_nationality_list.includes(fk_id_nationality)){
+                                       return  res.status(400).json({
+                                            message: "fk_id_nationality does not match any id_nationality"
+                                        })
+                                    }
+        
+
+
+
+                                    if(email_list.includes(email)){
+                                        return res.status(400).json({
+                                            message:"Email is already taken"
+                                        })
+                                    }
+
+                                    else if(Object.keys(req.body).length == 0){
+                                        return res.status(400).json({
+                                            message:"No parameters were passed"
+                                        })
+                                    }
+
+                                    else if(!email.match("^.{1,}@[^.]{1,}")){
+                                        return res.status(400).json({
+                                            message: "Invalid format for email",
+                                            info:"email must match following pattern : abc@gmail.com"
+                                        })
+                                    }
+
+                                    else {
+                                        Model.Users.update({
+                                            firstname: firstname,
+                                            lastname: lastname,
+                                            email: email,
+                                            image:image,
+                                            fk_id_level:fk_id_level,
+                                            fk_id_nationality:fk_id_nationality
+                                        },
+                                        {
+                                            where : {
+                                                id_user: req.params.id
+                                            }
+                                        })
+                                        res.status(200).json({
+                                            message:"Item has been updated"
+                                        })
+                                        
+                                    }
+                                })
+                            })
+                            .catch(error => console.log(error))
                         })
-                        res.status(200).json({
-                            message:"Item has been updated"
-                        })
-                        
-                    }
+                    })
                 })
             })
-            .catch(error => console.log(error))
         }
     })
     

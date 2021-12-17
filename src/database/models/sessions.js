@@ -5,7 +5,7 @@ module.exports = (sequelize) => {
         static associate(models){
 
             Sessions.belongsTo(models.Users, {                   
-                foreignKey: 'fk_id_user',
+                foreignKey: {name:'fk_id_user', allowNull:false},
                 targetKey:"id_user"
             })
         }

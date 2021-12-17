@@ -8,7 +8,7 @@ menus.get('/:id/product', menuController.listProductByMenu)
 menus.post('/',passport.authenticate("jwt",{session:false}),menuController.addMenu)
 
 menus.post("/:id/products",menuController.addProductInMenu)
-menus.post("/:id/removeProduct",menuController.deleteProductInMenu)
+menus.delete("/:id/removeProduct",menuController.deleteProductInMenu)
 
 menus.put('/:id',menuController.editMenu)
 menus.delete('/:id',menuController.deleteMenu)

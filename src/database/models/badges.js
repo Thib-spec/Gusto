@@ -17,16 +17,15 @@ class Badges extends Model{         // passer badge en binary
         
         Badges.belongsToMany(models.Fridges,{       
             through:"fridges_badges",
-            foreignKey:"fk_id_badge"
+            foreignKey:{name:"fk_id_badge", allowNull:false}
         })
     }
 }
 
 Badges.init({
     id_badges: {
-        type: DataTypes.INTEGER,
+        type: DataTypes.STRING,
         primaryKey: true,
-        autoIncrement: true,
         allowNull: false
     },
 },

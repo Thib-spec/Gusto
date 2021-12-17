@@ -7,7 +7,7 @@ module.exports = (sequelize) => {
             
             Nationalities.belongsToMany(models.Fridges, {
                 through: "fridges_nationalities",
-                foreignKey: "fk_id_nationality",
+                foreignKey: {name:"fk_id_nationality", allowNull:false}
             });
             
         }
@@ -23,9 +23,13 @@ Nationalities.init({
     },
     
     label: {
-        type: DataTypes.STRING,
+        type: DataTypes.STRING(10),
         allowNull: false
     },
+
+    image: {
+        type:DataTypes.STRING(50),
+    }
     
 }, {
     sequelize,

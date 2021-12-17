@@ -34,13 +34,13 @@ const Joi = require('joi');
     exports.addBadge = (req,res) =>{
         const {id_badges, fk_id_client, fk_id_user} = req.body;
 
-        const list_fk_client = new Array()
-        const list_fk_user = new Array()
+        let list_fk_client = []
+        let list_fk_user = []
     
        const postBadgeSchema = Joi.object().keys({ 
             id_badges: Joi.string().required(),
-            fk_id_client:Joi.number().required(),
-            fk_id_user:Joi.number().required()
+            fk_id_client:Joi.number(),
+            fk_id_user:Joi.number()
 
         })
 
@@ -53,7 +53,7 @@ const Joi = require('joi');
         if (!valid) {
             res.status(400).json({ 
                 message: 'Missing required parameters',
-                info: 'Requires: id_badges, fk_id_client, fk_id_user' 
+                info: 'Requires: id_badges' 
             })
         }
 
@@ -77,13 +77,13 @@ const Joi = require('joi');
                                 list_fk_user.push(allUsers[i].id_user)
                             }
 
-                            if(!list_fk_user.includes(fk_id_user)){
+                            if(!list_fk_user.includes(fk_id_user) && fk_id_user != null){
                                 res.status(400).json({
                                     message:"fk_id_user does not match any id_user"
                                 })
                             }
                             
-                            else if(!list_fk_client.includes(fk_id_client)){
+                            else if(!list_fk_client.includes(fk_id_client) && fk_id_client != null){
                                 res.status(400).json({
                                     message: "fk_id_client does not match any id_client"
                                 })
@@ -112,8 +112,8 @@ const Joi = require('joi');
     exports.editBadge = (req,res) => {
         const {fk_id_client,fk_id_user} = req.body;
 
-        const list_fk_client = new Array()
-        const list_fk_user = new Array()
+        let list_fk_client = []
+        let list_fk_user =[]
 
         Model.Badges.findOne({
             where: {
@@ -131,7 +131,6 @@ const Joi = require('joi');
             const editBadgeSchema = Joi.object().keys({ 
                 fk_id_client:Joi.number(),
                 fk_id_user:Joi.number(),
-                id_badges: Joi.string()
             })
 
             const result = editBadgeSchema.validate(req.body)

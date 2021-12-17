@@ -47,7 +47,7 @@ exports.getProductinPreset = (req,res) => {
 exports.addFridgePreset = (req,res) =>{
     const {label} = req.body;
 
-    const list_label= new Array()
+    let list_label= []
 
 
     const postFridgePresetSchema = Joi.object().keys({ 
@@ -110,12 +110,10 @@ exports.addFridgePreset = (req,res) =>{
 
 
 exports.editFridgePreset = (req,res) => {
-    const {label,fk_id_client} = req.body;
-    const list_fk_client = new Array()
+    const {label} = req.body;
 
     const editFridgePresetSchema = Joi.object().keys({ 
         label: Joi.string(),
-        fk_id_client: Joi.number()
     })
 
     const result = editFridgePresetSchema.validate(req.body)
@@ -149,36 +147,19 @@ exports.editFridgePreset = (req,res) => {
         } 
         
         else {
-            
-            Model.Client.findAll()
-            .then(allClient => {
-                Model.Client.count()
-                .then(numberOfClient => {
-                    for(let i =0;i<numberOfClient;i++){
-                        list_fk_client.push(allClient[i].id_client)
-                    }
-    
-                    if(!list_fk_client.includes(fk_id_client) && fk_id_client){
-                        res.status(400).json({
-                            message:"fk_id_client does not match any id_client"
-                        })
-                    }
-                    else {
-                          Model.FridgePresets.update({
-                            label: label,
-                            fk_id_client:fk_id_client
-                        },
-                        {
-                            where : {
-                                id_fridgePresets: req.params.id
-                            }
-                        })
-                        res.status(200).json({
-                            message: "Modification apply"}
-                        )
-                    }
-                })
+
+            Model.FridgePresets.update({
+                label: label,
+            },
+            {   
+                where : {
+                    id_fridgePresets: req.params.id
+                }
             })
+            res.status(200).json({
+                message: "Item has been updated"}
+            )
+                    
         }
     })
     
@@ -199,17 +180,17 @@ exports.deleteFridgePreset = (req,res) => {
                 message: 'FridgePreset not found',
             });
         }
-    Model.FridgePresets
-            .destroy({
+
+        else {
+            Model.FridgePresets.destroy({
                 where: {
                     id_fridgePresets: req.params.id
                 }
             })
             .then(res.status(200).json({
                 message: `FridgePreset with id : ${req.params.id} has been deleted`})
-            )
+            )}
         }
-
     )
     .catch(error => res.status(400).json(error))
 }
@@ -218,18 +199,25 @@ exports.deleteFridgePreset = (req,res) => {
 
 // ajout d'un produit dans un preset
 
+
 exports.addFrontProduct = (req,res) =>{
-    const {quantity_max, quantity_min, fk_id_product} = req.body
-    const list_fk_product = new Array()
-    const listFridgePreset =new Array()
 
-    const postProductSchema = Joi.object().keys({ 
-        quantity_min:Joi.number().required(),
-        quantity_max: Joi.number().required(),
-        fk_id_product: Joi.number().required(),
-    })
+    let list_fk_product = []
+    let listFridgePreset = []
+    let coupleFridgeProd = []
+    let validation = true
 
-    const result = postProductSchema.validate(req.body)
+
+    const arraySchema = Joi.array().items(
+        Joi.object({
+            fk_id_product: Joi.number().required(),
+            quantity_min: Joi.number().max(127).required(),
+            quantity_max: Joi.number().max(127).required()
+        })
+    )
+
+
+    const result = arraySchema.validate(req.body)
 
     const {error } = result;
 
@@ -250,8 +238,6 @@ exports.addFrontProduct = (req,res) =>{
             });
         }
         
-
- 
 
         else {
 
@@ -277,107 +263,111 @@ exports.addFrontProduct = (req,res) =>{
                                         var result = [];
 
                                         if(Object.keys(req.body).length == 1){
-                                            if(listFridgePreset.includes(req.body[0].fk_id_product)){
-                                                return res.status(400).json({
-                                                    message:`Fridgepreset ${req.params.id} already contains product ${req.body[0].fk_id_product}`
-                                                })
-                                            }
-                                        }
 
-                                        else {
-
-                                        for(i =0;i<(Object.keys(req.body).length) -1;i++){
-                                            for(j =1;j<Object.keys(req.body).length;j++){
-
-                                            
-                                                if(!list_fk_product.includes(req.body[i].fk_id_product)){
-                                                    return res.status(400).json({
-                                                        message:"fk_id_product does not match any id_product"
+                                            Model.fridgePresets_products.findOne({
+                                                where: {
+                                                    [Op.and]: [
+                                                      { fk_id_fridgePreset: req.params.id },
+                                                      { fk_id_product: req.body[0].fk_id_product }
+                                                    ]
+                                                }
+                                            })
+                                            .then(result => {
+                                                if(result){
+                                                    res.status(400).json({
+                                                        message:`FridgePreset ${req.params.id} already contains product ${req.body[0].fk_id_product}`
                                                     })
                                                 }
 
-                                                else if (listFridgePreset.includes(req.body[j].fk_id_product)){
+                                                else if(!valid){
                                                     return res.status(400).json({
-                                                        message:`Fridgepreset ${req.params.id} already contains product ${req.body[i].fk_id_product}`
+                                                        message:"Please review input paramaters type and value"
                                                     })
                                                 }
 
-                                            
-                                                else if (req.body[i].fk_id_product == req.body[j].fk_id_product){
-                                                    return res.status(400).json({
-                                                        message: `fk_id_product ${req.body[j].fk_id_product} has been already put`
+
+                                                else {
+                                                    Model.fridgePresets_products.create({
+                                                        quantity_max:req.body[0].quantity_max,
+                                                        quantity_min:req.body[0].quantity_min,
+                                                        fk_id_fridgePreset:req.params.id,
+                                                        fk_id_product:req.body[0].fk_id_product
                                                     })
-                                                } 
-                                                
-                                            }
-                                        }
-
-                                        var promises = req.body.map(function(product) {
-                                            return Model.fridgePresets_products.create({
-                                            quantity_max:product.quantity_max,
-                                            quantity_min:product.quantity_min,
-                                            fk_id_fridgePreset:req.params.id,
-                                            fk_id_product:product.fk_id_product
-                                            })
-
-                                            .then(function() {
-                                                result.push(product);
-                                            })
-                                
-                                        })
-                                    
-                                        Promise.all(promises)
-                                            .then(function() {
-                                            return res.json(result);
-                                        });
-
-                                    }
-                                }
-
-
-                                else {
-
-                                    if(!valid){
-                                        res.status(400).json({
-                                            message: 'Missing required parameters',
-                                            info: 'Requires: quantity_min, quantity_max,fk_id_product'
-                                        })
-                                    }
-
-                                    else{
-                                       
-                                        
-                                        if(!list_fk_product.includes(fk_id_product)){
-                                            res.status(400).json({
-                                                message:"fk_id_product does not match any id_product"
+                                                    .then(product => res.status(200).json(product))
+                                                    .catch(error => res.status(400).json(error))
+                                                }
                                             })
                                         }
                                         
-                                        else if (listFridgePreset.includes(fk_id_product)){
-                                            res.status(400).json({
-                                                message:`Fridgepreset ${req.params.id} already contains product ${fk_id_product}`
-                                            })
-                                        }
 
                                         else {
-
-                                           return Model.fridgePresets_products.create({
-                                                quantity_max:quantity_max,
-                                                quantity_min:quantity_min,
-                                                fk_id_fridgePreset:req.params.id,
-                                                fk_id_product:fk_id_product
+                                            Model.fridgePresets_products.findAll({
+                                                where:{
+                                                    fk_id_fridgePreset: req.params.id
+                                                }
                                             })
-                                            .then(products=> res.status(200).json(products))
+                                            .then(preset => {
+                                                for(i=0;i<preset.length;i++){
+                                                    coupleFridgeProd.push(preset[i].fk_id_product)
+                                                   
+                                                }
+                                           
+
+                                                for(i =0;i<(Object.keys(req.body).length);i++){
+
+                                                    if(!list_fk_product.includes(req.body[i].fk_id_product)){
+                                                        validation = false
+                                                        return res.status(400).json({
+                                                            message:"fk_id_product does not match any id_product"
+                                                        })
+                                                    }
+
+                                                    else if(coupleFridgeProd.includes(req.body[i].fk_id_product)){
+                                                        validation = false
+                                                        return res.status(400).json({
+                                                            message:`FridgePreset ${req.params.id} already contains product ${req.body[i].fk_id_product}`
+                                                        })
+                                                        
+                                                    }
+
+                                                    else if(!valid){
+                                                        validation = false
+                                                        return res.status(400).json({
+                                                            message:"Please review input paramaters type and value"
+                                                        })
+                                                    }
+
+                                                    
+                                                }
+
+                                                if(validation){
+                                                    var promises = req.body.map(function(product) {
+
+                                                        return Model.fridgePresets_products.create({
+                                                            quantity_max:product.quantity_max,
+                                                            quantity_min:product.quantity_min,
+                                                            fk_id_fridgePreset:req.params.id,
+                                                            fk_id_product:product.fk_id_product
+                                                        })
+
+                                                        .then(function() {
+                                                            result.push(product);
+                                                        })
+                                                    })
+                                
+                                                    Promise.all(promises)
+                                                    .then(function() {
+                                                        return res.json(result);
+                                                    });
+                                                }
+                                            })
                                         }
                                     }
-                                }
                                 
-                            })
-                        })   
-                })
-            })
-
-            
+                                })
+                            })   
+                        })
+                    })
         }
     })
     
@@ -389,16 +379,20 @@ exports.addFrontProduct = (req,res) =>{
 
 // edit Preset
 exports.editFrontProduct = (req,res) =>{
-    const {quantity_max, quantity_min} = req.body
 
-    const list_fk_product = new Array()
+    let list_fk_product = []
+    let coupleFridgeProd = []
+    let validation = true
 
-    const editProductSchema = Joi.object().keys({ 
-        quantity_min:Joi.number(),
-        quantity_max: Joi.number(),
-    })
+    const arraySchema = Joi.array().items(
+        Joi.object({
+            fk_id_product: Joi.number().required(),
+            quantity_min: Joi.number().max(127),
+            quantity_max: Joi.number().max(127)
+        })
+    )
 
-    const result = editProductSchema.validate(req.body)
+    const result = arraySchema.validate(req.body)
 
     const {error } = result;
 
@@ -419,79 +413,148 @@ exports.editFrontProduct = (req,res) =>{
         }
 
         else {
-            if (!valid) {
-                res.status(400).json({ 
-                  message: 'One or more parameters are not correctly written',
-                })
-              }
+           
+            Model.Products.findAll()
+            .then(allProduct => {
+                Model.Products.count()
+                .then(numberofproduct => {
+                    for (let i = 0;i< numberofproduct;i++){
+                        list_fk_product.push(allProduct[i].id_product)
+                    }
 
-            else {
-
-                Model.Products.findAll()
-                .then(allProduct => {
-                    Model.Products.count()
-                    .then(numberofproduct => {
-                        for (let i = 0;i< numberofproduct;i++){
-                            list_fk_product.push(allProduct[i].id_product)
-                        }
-
-                        if(!list_fk_product.includes(Number(req.params.productId))){
-                            res.status(400).json({
-                                message:"fk_id_product does not match any id_product"
-                            })
-                        }
-
-                        else if(Object.keys(req.body).length == 0){
-                            res.status(400).json({
-                                message:"No parameters were passed"
-                            })
-                        }
-
-                        else {
-                            Model.fridgePresets_products.findOne({
-                                where:{
-                                    [Op.and]: [
-                                        { fk_id_fridgePreset:req.params.id },
-                                        { fk_id_product: req.params.productId }
-                                    ]
-                                }
-                            })
-                            .then(result =>{
-                                if(!result){
-                                    res.status(400).json({
-                                        message:`FridgePreset ${req.params.id} does not contain product ${req.params.productId}`
-                                    })
-                                }
-
-
-                                else{
-                                    Model.fridgePresets_products.update({
-                                    quantity_max:quantity_max,
-                                    quantity_min:quantity_min,
-                                    },
-                                    {
-                                        where:{
-                                            [Op.and]: [
-                                                { fk_id_fridgePreset:req.params.id },
-                                                { fk_id_product: req.params.productId }
-                                            ]
-                                        }
-                                    })
-                                    .then(res.status(200).json({
-                                        message: "Item has been updated"
-                                    }))
-                                }
-
-                            })
-                        }
-
-                       
- 
+                    if(Object.keys(req.body).length == 0){
+                        res.status(400).json({
+                            message:"No parameters were passed"
                         })
-                    })
+                    }
 
-                }
-            }
+                    else {
+                        if (req.body instanceof Array){
+
+                            var result = [];
+
+                            if(Object.keys(req.body).length == 1){
+
+                                Model.fridgePresets_products.findOne({
+                                    where: {
+                                        [Op.and]: [
+                                          { fk_id_fridgePreset: req.params.id },
+                                          { fk_id_product: req.body[0].fk_id_product }
+                                        ]
+                                    }
+                                })
+                                .then(fridgePres => {
+
+                                    if(!fridgePres){
+                                        validation = false
+                                        res.status(400).json({
+                                            message:`FridgePreset ${req.params.id} does not contains product ${req.body[0].fk_id_product}`
+                                        })
+                                    }
+
+                                    else if(!valid){
+                                        validation = false
+                                        return res.status(400).json({
+                                            message:"Please review type and value of input field"
+                                        })
+                                    }
+
+                                    else {
+                                        Model.fridgePresets_products.update({
+                                            quantity_max:req.body[0].quantity_max,
+                                            quantity_min:req.body[0].quantity_min,
+                                        },
+                                        {
+                                            where:{
+                                                [Op.and]: [
+                                                    { fk_id_fridgePreset:req.params.id },
+                                                    { fk_id_product: req.body[0].fk_id_product }
+                                                ]
+                                            }
+                                        })
+                                        res.status(200).json({
+                                            message:"Item has been updated"
+                                        })
+                                    }
+                                })
+                            }
+                            
+
+                            else {
+
+                                Model.fridgePresets_products.findAll({
+                                    where:{
+                                        fk_id_fridgePreset: req.params.id
+                                    }
+                                })
+                                .then(preset => {
+                                    for(i=0;i<preset.length;i++){
+                                        coupleFridgeProd.push(preset[i].fk_id_product)
+                                       
+                                    }
+
+                                    for(i =0;i<(Object.keys(req.body).length);i++){
+                                        
+                                        if(!list_fk_product.includes(req.body[i].fk_id_product)){
+                                            validation = false
+                                            return res.status(400).json({
+                                                message:"fk_id_product does not match any id_product"
+                                            })
+                                        }
+
+                                        else if(!coupleFridgeProd.includes(req.body[i].fk_id_product)){
+                                            validation = false
+                                            return res.status(400).json({
+                                                message:`FridgePreset ${req.params.id} does not contains product ${req.body[i].fk_id_product}`
+                                            })
+                                            
+                                        }
+
+                                        else if(!valid){
+                                            validation = false
+                                            return res.status(400).json({
+                                                message:"Please review type and value of input field"
+                                            })
+                                        }
+
+                                        
+                                    }
+
+                                    if(validation){
+                                        var promises = req.body.map(function(product) {
+                                            return Model.fridgePresets_products.update({
+                                                quantity_max:product.quantity_max,
+                                                quantity_min:product.quantity_min,
+                                                fk_id_fridgePreset:req.params.id,
+                                            },
+                                            {
+                                                where:{
+                                                    [Op.and]: [
+                                                        { fk_id_fridgePreset:req.params.id },
+                                                        { fk_id_product: product.fk_id_product }
+                                                    ]
+                                                }
+                                            })
+
+                                            .then(function() {
+                                                result.push(product);
+                                            })
+                            
+                                        })
+                                
+                                        Promise.all(promises)
+                                            .then(function() {
+                                            return res.json(result);
+                                        });
+                                    }
+                                })
+                            }
+                        } 
+                    }
+
+                })
+            }) 
+        }
       
     })
     
@@ -501,6 +564,10 @@ exports.editFrontProduct = (req,res) =>{
 
 // remove preset
 exports.removeProduct = (req,res) =>{
+    let list_fk_product = []
+    let coupleFridgeProd = []
+    let validation = true 
+
 
     Model.FridgePresets.findOne({
         where:{
@@ -515,40 +582,112 @@ exports.removeProduct = (req,res) =>{
         }
 
         else {
+            Model.Products.findAll()
+            .then(allProduct => {
+                Model.Products.count()
+                .then(numberofproduct => {
+                    for (let i = 0;i< numberofproduct;i++){
+                        list_fk_product.push(allProduct[i].id_product)
+                    }
 
-            Model.fridgePresets_products.findOne({
-                where:{
-                    [Op.and]: [
-                        { fk_id_fridgePreset:req.params.id },
-                        { fk_id_product: req.params.productId }
-                    ]
-                }
-            })
-            .then(result =>{
-                if(!result){
-                    res.status(400).json({
-                        message:`FridgePreset ${req.params.id} does not contain product ${req.params.productId}`
-                    })
-                }
+                    if (req.body instanceof Array){
 
-                else {
+                        var result = [];
 
-                    Model.fridgePresets_products.destroy({
-                        where:{
-                            [Op.and]: [
-                                { fk_id_fridgePreset:req.params.id },
-                                { fk_id_product: req.params.productId }
-                            ]
+                        if(Object.keys(req.body).length == 1){
+                            Model.fridgePresets_products.findOne({
+                                where:{
+                                    [Op.and]: [
+                                        { fk_id_fridgePreset:req.params.id },
+                                        { fk_id_product: req.body[0].fk_id_product }
+                                    ]
+                                }
+                            })
+                            .then(fridgePreset =>{
+                                if(!fridgePreset){
+                                    res.status(400).json({
+                                        message:`FridgePreset ${req.params.id} does not contain product ${req.body[0].fk_id_product}`
+                                    })
+                                }
+                                else {
+                                    Model.fridgePresets_products.destroy({
+                                    
+                                        where:{
+                                            [Op.and]: [
+                                                { fk_id_fridgePreset:req.params.id },
+                                                { fk_id_product: req.body[0].fk_id_product }
+                                            ]
+                                        }
+                                    })
+                                    return res.status(200).json({
+                                        message:"Deletion completed"
+                                    })
+                                }
+                            })
+                                
+                            
                         }
-                    })
+                        
 
-                    .then(res.status(200).json({
-                        message: "Deletion completed"
-                    }))
-                }
-           
+                        else {
+
+                            Model.fridgePresets_products.findAll({
+                                    where:{
+                                        fk_id_fridgePreset: req.params.id
+                                    }
+                            })
+                            .then(preset => {
+                                for(i=0;i<preset.length;i++){
+                                    coupleFridgeProd.push(preset[i].fk_id_product)
+                                    
+                                }
+
+                                for(i =0;i<(Object.keys(req.body).length);i++){
+
+                                    if(!coupleFridgeProd.includes(req.body[i].fk_id_product)){
+                                        validation = false
+                                        return res.status(400).json({
+                                            message:`FridgePreset ${req.params.id} does not contains product ${req.body[i].fk_id_product}`
+                                        })
+                                        
+                                    }
+                                }
+
+                                if(validation){
+                                    var promises = req.body.map(function(product) {
+                                        return Model.fridgePresets_products.destroy(
+                                        {
+                                            where:{
+                                                [Op.and]: [
+                                                    { fk_id_fridgePreset:req.params.id },
+                                                    { fk_id_product: product.fk_id_product }
+                                                ]
+                                            }
+                                        })
+
+                                        .then(function() {
+                                            result.push(product);
+                                        })
+                
+                                    })
+                
+                                    Promise.all(promises)
+                                        .then(function() {
+                                        return res.json(result);
+                                    });
+                                }
+
+                            })
+
+                        }
+
+                       
+
+                    }
+                })
             })
         }
+                   
     })
     
     .catch(error => console.log(error))
@@ -590,16 +729,16 @@ exports.getMenuByFridgePreset = (req,res) =>{
 }
 
 exports.addMenuInPreset = (req,res) =>{
-    // verif fk dans intervalle
 
-    const {fk_id_menu} = req.body
-    const list_fk_menu = new Array()
+    let list_fk_menu = []
+    let fridgePreset_menu_list = []
 
-    const postMenuSchema = Joi.object().keys({ 
-        fk_id_menu: Joi.number().required()
-    })
-
-    const result = postMenuSchema.validate(req.body)
+    const arraySchema = Joi.array().items(
+        Joi.object({
+            fk_id_menu: Joi.number().required(),
+        })
+    )
+    const result = arraySchema.validate(req.body)
 
     const {error } = result; 
     const valid = error == null; 
@@ -627,39 +766,72 @@ exports.addMenuInPreset = (req,res) =>{
                     }
                     
                     if (req.body instanceof Array){
-                        for(let i=0;i<req.body.length;i++){
-                            preset.addMenus(req.body[i].fk_id_menu)
-                            
-                        }
-                        res.status(200).json({
-                            message:`Menus have been added to fridgePreset ${req.params.id}`
-                        })
-                         
-                    }
-              
-                    else {
-                        if(!list_fk_menu.includes(fk_id_menu)){
-                            res.status(400).json({
-                                message:"fk_id_menu does not match any id_menu"
-                            })
-                        }
 
-                        else if(!valid){
-                            res.status(400).json({
-                                message: 'Missing required parameters',
-                                info: 'Requires: fk_id_menu'
-                            })
+                        if(Object.keys(req.body).length == 1){
+                            if(!list_fk_menu.includes(req.body[0].fk_id_menu)){
+                                return res.status(400).json({
+                                    message:"fk_id_menu does not match any id_menu"
+                                })
+                            }
+                            
+                            else {
+
+                                preset.getMenus()
+                                .then(menu =>{
+                                    for(let i =0; i< menu.length;i++){
+                                        fridgePreset_menu_list.push(menu[i].id_menu)
+                                    }
+                                    
+                                    if(fridgePreset_menu_list.includes(req.body[0].fk_id_menu)){
+                                        return res.status(400).json({
+                                            message:`FridgePreset ${req.params.id} already contain Menu ${req.body[0].fk_id_menu}`
+                                        })
+                                    }
+
+                                    else if(!valid){
+                                        return res.status(400).json({
+                                            message:"Please review type and value of input field"
+                                        })
+                                    }
+
+                                    else {
+                                        preset.addMenus(req.body[0].fk_id_menu) 
+                                        res.status(200).json({
+                                            message:`Menu has been added to fridgePreset ${req.params.id}`
+                                        })
+                                    }
+
+                                })
+                            }
                         }
 
                         else {
-                            preset.addMenus(fk_id_menu)
-                            .then(res.status(200).json(`Menu ${fk_id_menu} has been added to FridgePreset ${req.params.id}`))
-                            .catch(error => res.status(400).json(error))
-                        }
+                            for(let i=0;i<req.body.length;i++){
+                            
+                                if(!list_fk_menu.includes(req.body[i].fk_id_menu)){
+                                    return res.status(400).json({
+                                        message:"fk_id_menu does not match any id_menu"
+                                    })
+                                }
 
+                                else if(!valid){
+                                    return res.status(400).json({
+                                        message:"Please review type and value of input field"
+                                    })
+                                }
+
+                                else {
+                                    preset.addMenus(req.body[i].fk_id_menu)
+                                }
+                            }
+                        
+                            res.status(200).json({
+                                message:`Menus have been added to fridgePreset ${req.params.id}`
+                            })
+                         
+                        }
                     }
 
-                    
                 })
             })
         }
@@ -668,9 +840,10 @@ exports.addMenuInPreset = (req,res) =>{
 }
 
 exports.removeMenuPreset = (req,res) => {
-    const list_fk_menu = new Array()
+    let list_fk_menu = []
 
-    // vérif que le fridge Preset contienne bien le menu ciblé
+    // vérif que le fridge Preset contienne bien le menu ciblé pas faisbale sauf création du model fridgeprest_menu
+    // possible avec find one where truc et truc
     Model.FridgePresets.findOne({
         where:{
             id_fridgePresets: req.params.id
@@ -692,18 +865,45 @@ exports.removeMenuPreset = (req,res) => {
                         list_fk_menu.push(allMenus[i].id_menu)
                     }
 
-                    if(!list_fk_menu.includes(Number(req.params.menuId))){
-                        res.status(400).json({
-                            message:"fk_id_menu does not match any id_menu"
-                        })
-                    }
+                    if (req.body instanceof Array){
 
-                    else {
-                        preset.removeMenus(req.params.menuId)
-                        .then(res.status(200).json({
-                            message:"Deletion completed"
-                        }))
+                        if(Object.keys(req.body).length == 1){
+                            if(!list_fk_menu.includes(req.body[0].fk_id_menu)){
+                                return res.status(400).json({
+                                    message:"fk_id_menu does not match any id_menu"
+                                })
+                            }
+                            
+                            else {
+                                preset.removeMenus(req.body[0].fk_id_menu)
+                            }
 
+                            res.status(200).json({
+                                message:"Menu has been deleted"
+                            })
+                             
+
+                        }
+
+                        else {
+                            for(let i=0;i<req.body.length;i++){
+                            
+                                if(!list_fk_menu.includes(req.body[i].fk_id_menu)){
+                                    return res.status(400).json({
+                                        message:"fk_id_menu does not match any id_menu"
+                                    })
+                                }
+
+                                else {
+                                    preset.removeMenus(req.body[i].fk_id_menu)
+                                }
+                            }
+                        
+                            res.status(200).json({
+                                message:"Menus have been deleted"
+                            })
+                         
+                        }
                     }
                 })
             })

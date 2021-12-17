@@ -58,12 +58,12 @@ exports.addCategory = (req,res) =>{
     const { label, image, description} = req.body
 
 
-    const list_label = new Array()
+    let list_label = []
 
     const postCategorySchema = Joi.object().keys({ 
         label : Joi.string().required(),
-        image:Joi.string().required(),
-        description:Joi.string().required(),
+        image:Joi.string(),
+        description:Joi.string(),
     })
 
     const result = postCategorySchema.validate(req.body)
@@ -76,7 +76,7 @@ exports.addCategory = (req,res) =>{
     if (!valid) {
       res.status(400).json({ 
         message: 'Missing required parameters',
-        info: 'Requires: label, image, description' 
+        info: 'Requires: label' 
       })
     }
 
@@ -141,7 +141,7 @@ exports.editCategory =(req,res) => {
         const editCategorySchema = Joi.object().keys({ 
             label: Joi.string(),
             image: Joi.string(),
-            description: Joi.string().allow(""), 
+            description: Joi.string(), 
         })
 
         const result = editCategorySchema.validate(req.body)
@@ -171,7 +171,7 @@ exports.editCategory =(req,res) => {
                 where : {
                     id_category: req.params.id
                 },
-                returning:true,
+
               
             })
             .then(res.status(200).json({
