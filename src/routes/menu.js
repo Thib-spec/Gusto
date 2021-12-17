@@ -2,9 +2,13 @@ const menus = require('express').Router();
 const menuController = require("../controllers/menu")
 const passport = require("passport")
 
+menus.get("/user",passport.authenticate("jwt",{session:false}),menuController.getMenuForUser)
+
 menus.get('/:id',menuController.getMenuById)
 menus.get('/', menuController.listMenus)
+
 menus.get('/:id/product', menuController.listProductByMenu)
+menus.get("/:id/product/user",passport.authenticate("jwt",{session:false}),menuController.listProductsByMenusForUser)
 menus.post('/',passport.authenticate("jwt",{session:false}),menuController.addMenu)
 
 menus.post("/:id/products",menuController.addProductInMenu)
