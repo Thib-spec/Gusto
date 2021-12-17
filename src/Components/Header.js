@@ -16,6 +16,8 @@ import HeaderProfil from "./HeaderProfil";
 
 export default function Header() {
   const [open, setopen] = useState(false);
+  const [openProfil, setopenProfil] = useState(false);
+
   const [path, setpath] = useState("Accueil");
 
   const user = useSelector((state) => state.user.value);
@@ -93,15 +95,23 @@ export default function Header() {
             user.client ? user.client.name : ""
           }`}</div>
         </div>
-        <div className="header-top-profil-container">
+        <div className="header-top-profil-container" onClick={()=>setopenProfil(!openProfil)} onMouseLeave={()=>setopenProfil(false)}>
           <HeaderProfil
             lastName={user.lastName}
             firstName={user.firstName}
             level={user.level.label}
           />
+          {openProfil ? (
+        <div className="header-dropdown-profil">
+        <div className="header-dropdown-profil-element">Profil</div>
+        <div className="header-dropdown-profil-element" onClick={()=>handleLogout()}>Déconnexion</div>
+      </div>):(false)
+      }
         </div>
+        
+        
       </div>
-
+          
       <div className="header-bottom">
         <img
           src={iconeMenu}
@@ -114,26 +124,11 @@ export default function Header() {
         <div className="header-bottom-path">{path}</div>
       </div>
       {open ? (
-        <div
-          className="header-bottom-menuList"
-          onMouseEnter={onOver}
-          onMouseLeave={onNotOver}
-        >
-          <div
-            className="header-bottom-menuList-button"
-            onClick={handleAccueil}
-          >
-            Accueil
-          </div>
-          <div className="header-bottom-menuList-button" onClick={handleFrigo}>
-            Fridges
-          </div>
-          <div className="header-bottom-menuList-button" onClick={handlePreset}>
-            Preset
-          </div>
-          <div className="header-bottom-menuList-button" onClick={handleMenus}>
-            Menus
-          </div>
+        <div className="header-bottom-menuList"onMouseEnter={onOver} onMouseLeave={onNotOver}>
+          <div className="header-bottom-menuList-button" onClick={handleAccueil}>Accueil</div>
+          <div className="header-bottom-menuList-button" onClick={handleFrigo}>Fridges</div>
+          <div className="header-bottom-menuList-button" onClick={handlePreset}>Preset</div>
+          <div className="header-bottom-menuList-button" onClick={handleMenus}>Menus</div>
           {/* <div className="header-bottom-menuList-button" onClick={handlePromo}>
             Promotions
           </div> */}
@@ -150,13 +145,13 @@ export default function Header() {
             Catégories
           </div>
           {/* <div className="header-bottom-menuList-button" onClick={handleLogin}>Login</div> */}
-          <div className="header-bottom-menuList-button" onClick={handleLogout}>
-            Logout
-          </div>
+          
         </div>
       ) : (
         false
       )}
+
+      
     </div>
   );
 }
