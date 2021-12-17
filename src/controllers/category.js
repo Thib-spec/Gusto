@@ -16,6 +16,7 @@ exports.getCategoryForUser = (req,res) => {
         }
     })
     .then(categories =>res.json(categories))
+    .catch(error => res.status(400).json(error))
     
    
     
