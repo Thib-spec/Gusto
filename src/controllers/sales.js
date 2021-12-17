@@ -31,12 +31,13 @@ exports.getSaleById = (req,res) => {
 
 
 exports.addSale = (req,res) =>{
-    const { sales_timestamp, cbemv_amount, cbcless_amount,lv_amount,lv_quantity,cash_amount, fk_id_fridge} = req.body
+    const {cbemv_amount, cbcless_amount,lv_amount,lv_quantity,cash_amount, fk_id_fridge} = req.body
 
     let list_fk_fridge = []
+    let today = new Date()
+    let todayFormat = ("0" + today.getDate()).slice(-2) + "-" + ("0"+(today.getMonth()+1)).slice(-2) + "-" +today.getFullYear() + " " + ("0" + today.getHours()).slice(-2) + ":" + ("0" + today.getMinutes()).slice(-2) + ":" +("0" + today.getSeconds()).slice(-2)
 
     const postSalesSchema = Joi.object().keys({ 
-        sales_timestamp : Joi.string().required(),
         cbemv_amount:Joi.number().required(),
         cbcless_amount:Joi.number().required(),
         lv_amount:Joi.number().required(),
@@ -52,12 +53,11 @@ exports.addSale = (req,res) =>{
 
     const valid = error == null;
 
-    //TODO fix validation
-
     if (!valid) {
-    //   res.status(400).json({ 
-    //     message: 'Missing required parameters',
-    //     info: 'Requires: sales_timestamp, cbemv_amount, cbcless_amount,lv_amount,lv_quantity,cash_amount, fk_id_fridge' 
+        return res.status(400).json({ 
+            message: 'Missing required parameters',
+            info: 'Requires: cbemv_amount, cbcless_amount,lv_amount,lv_quantity,cash_amount, fk_id_fridge'
+        }) 
       
     }
     else {
@@ -76,16 +76,9 @@ exports.addSale = (req,res) =>{
                     })
                 }
 
-                else if(!sales_timestamp.match("[0-9]{4}-(0[1-9]|1[0-2])-(0[1-9]|[1-2][0-9]|3[0-1]) (2[0-3]|[01][0-9]):[0-5][0-9]:[0-5][0-9]")){
-                    res.status(400).json({
-                        message:"Wrong date format",
-                        info: "sales_timestamp must follow the pattern YYYY-MM-DD HH:MM:SS "
-                    })
-                }
-
                 else {
                     Model.Sales.create({
-                        sales_timestamp :sales_timestamp,
+                        sales_timestamp :todayFormat,
                         cbemv_amount:cbemv_amount,
                         cbcless_amount:cbcless_amount,
                         lv_amount:lv_amount,
