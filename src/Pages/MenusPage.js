@@ -6,6 +6,7 @@ import UploadForm from "Components/FormComponent/UploadForm"
 import React, { useState, useEffect }  from 'react'
 import axios from "axios";
 import MenuDropDownComponent from "Components/MenuComponent/MenuDropDownComponent"
+import MenuDropDownComponent2 from "Components/MenuComponent/MenuDropDownComponent2"
 
 
 export default function MenusPage(){
@@ -73,7 +74,7 @@ export default function MenusPage(){
                 {allMenus.map((menu) => (
                 <div>
                     <div>{console.log(menu)}</div>
-                    <MenuDropDownComponent menu={menu}/>
+                    <MenuDropDownComponent2 menu={menu}/>
                     
                 </div>
                     

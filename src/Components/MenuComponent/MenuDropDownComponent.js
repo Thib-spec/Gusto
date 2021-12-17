@@ -50,7 +50,8 @@ export default function MenuDropDownComponent(props){
     useEffect(() => {
         axios.get("http://api.gustosolutions.fr/api/menu/"+props.menu.id_menu+"/product")
             .then((res) =>{setallProductsInMenu(res.data)
-                allProductsInMenu2.set(res.data, { init: true }
+                console.log(res.data.map(product=>{return {...product, id:product.id_product}}))
+                allProductsInMenu2.set(res.data.map(product=>{return {...product, id:product.id_product}}), { init: true }
             )
             })
             .catch((err) => console.log(err));

@@ -79,6 +79,29 @@
 
 }
 
+.menu-container-button-addProduct{
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    margin-bottom: 2em;
+    margin-top: 1em;
+}
+
+.menu-button-addProduct{
+    background-color: rgb(96, 163, 96);
+    color: white;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 30%;
+    height: 3em;
+    &:hover{
+        background-color: rgb(59, 104, 59);
+        cursor: pointer;
+    }
+}
+
 .menu-list-element-sub-description-element-element{
     &#labelElementMenu{
         width: 30%;
