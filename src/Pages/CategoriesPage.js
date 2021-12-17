@@ -36,7 +36,6 @@ export default function CategoriesPage(){
     //when the client add a categorie and save it,
     function handleAddCatégorie(){
         let token = localStorage.getItem("authToken")
-        console.log("TOKEN : ",token)
         let config = {
             headers: {
               "Authorization": "Bearer "+token,
@@ -54,7 +53,8 @@ export default function CategoriesPage(){
             },config)
             .then((res) => {
                 console.log(res);
-                window.location.reload(false);
+                setallCategories([...allCategories,res.data])
+               
 
             })
             .catch((err) => {
@@ -68,7 +68,25 @@ export default function CategoriesPage(){
         }
     }
 
-    
+    const refreshCategorieDel = (data) => {
+        const array= new Array()
+        allCategories.map((el)=>
+
+            data.id_category!=el.id_category?array.push(el):false
+        )
+        setallCategories(array)
+
+      }
+
+      const refreshCategorieUpdate = (data) => {
+        const array= new Array()
+        allCategories.map((el)=>
+
+            data.id_category!=el.id_category?array.push(el):array.push(data)
+        )
+        setallCategories(array)
+
+      }
     
    
    
@@ -78,7 +96,7 @@ export default function CategoriesPage(){
             <div className="categories-list">
                 {allCategories.map((categorie) => (
                     
-                    <CategorieDropDownComponent categorie={categorie} key={categorie.id_category}/>
+                    <CategorieDropDownComponent func1={refreshCategorieUpdate} func={refreshCategorieDel} categorie={categorie} key={categorie.id_category}/>
                 ))}
                 
                 <button type="button" class="btn btn-warning categories-list-element-sub-buttons-element-addButton" onClick={handleShow}>Ajouter une catégorie</button>
