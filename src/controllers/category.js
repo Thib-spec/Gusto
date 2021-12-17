@@ -8,6 +8,19 @@ exports.listCategories = (req, res) => {
     .catch(error => res.status(400).json(error))
 }
 
+
+exports.getCategoryForUser = (req,res) => {
+    Model.Categories.findAll({
+        where:{
+            fk_id_client: req.user.fk_id_client
+        }
+    })
+    .then(categories =>res.json(categories))
+    
+   
+    
+}
+
 exports.getCategoryById = (req,res) => {
     Model.Categories.findOne({
         where:{
@@ -30,6 +43,7 @@ exports.getCategoryById = (req,res) => {
     
 }
 
+
 exports.listProductByCategory = (req,res) => {
     Model.Products.findAll({
         where: {
@@ -50,6 +64,47 @@ exports.listProductByCategory = (req,res) => {
 
     .catch(error => res.status(400).json(error))
     
+}
+
+
+exports.listProductsByCategoryForUser = (req,res) => {
+
+    let category_ids = []
+    Model.Categories.findAll({
+        where:{
+            fk_id_client:req.user.fk_id_client
+        },
+    })
+    .then(userCategories => {
+        for(let i =0;i<userCategories.length;i++){
+            category_ids.push(userCategories[i].id_category)
+        }
+        if(!category_ids.includes(Number(req.params.id))){
+            res.status(400).json({
+                message: `You are not all allowed to see content of category ${req.params.id}`
+            })
+        }
+        else {
+            Model.Products.findAll({
+                where: {
+                    fk_id_category:req.params.id
+                }
+            })
+            .then(product => {
+        
+                if(product.length ==0){
+                    res.status(400).json({
+                        message:`Category with id ${req.params.id} does not have any product or does not exists`
+                    })
+                }
+                else {
+                    res.status(200).json(product)
+                }
+            })
+        
+            .catch(error => res.status(400).json(error))
+        }
+    })
 }
 
 
