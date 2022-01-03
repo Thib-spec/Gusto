@@ -1,23 +1,12 @@
-import React from 'react'
-import styled from 'styled-components'
-import Uploader from './Uploader'
-
-const Container = styled.div`
-    width: 100%;
-    background: #fff;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    vertical-align: middle;
-    margin: 0 auto;
-`
+import React from 'react';
+import Uploader from './Uploader';
+import '../../CSS/UploadContainer.scss';
 
 const UploadContainer = () => {
     return (
-        <Container>
+        <div classname="uploaderBox">
             <Uploader />
-        </Container>
+        </div>
     )
 }
 

@@ -6,25 +6,49 @@ import api from "helpers/api";
 import PageContext from "Context/PageContext";
 import DropDownComponentContext from "Context/DropDownComponentContext";
 import Value from "helpers/Value";
+import useFridgePreset from "./useFridgePreset";
 
 export default function DropDownPresetChoose({ label }) {
   const { fridge, presetChosen } = useContext(DropDownComponentContext);
   const { allPresets } = useContext(PageContext);
 
-  const dropdownTitleChange = new Value(useState(false));
-  const handleSave = () => {};
-  const handleCancel = () => {};
+  const [fridgeC, setFridgeC] = useState({ ...fridge });
 
-  useEffect(() => {
-    const presetFound = allPresets.find(
-      (preset) => preset.id == fridge.id_preset
-    );
-    presetChosen.set(presetFound ? { ...presetFound } : presetChosen.value);
-  }, [allPresets]);
+  const dropdownTitleChange = new Value(useState, false);
+
+  const handleSave = async () => {
+    try {
+      const body = { fk_id_fridgePreset: presetChosen.value.id };
+      const res = await api.updateOneFridge({ id: fridgeC.id, body });
+      if (res.ok) {
+        const resJSON = await res.json();
+        console.log("api.updateOneFridge() : ", resJSON);
+        presetChosen.set({ ...presetChosen.value }, { init: true });
+        console.log("fridgeC", fridgeC);
+        setFridgeC({ ...fridgeC, id_preset: presetChosen.value.id });
+        dropdownTitleChange.set(false);
+      } else {
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+  const handleCancel = () => {
+    presetChosen.reset();
+  };
+
+  // useEffect(() => {
+  //   const presetFound = allPresets.find(
+  //     (preset) => preset.id == fridgeC.id_preset
+  //   );
+  //   presetChosen.set(presetFound ? { ...presetFound } : presetChosen.value, {
+  //     init: true,
+  //   });
+  // }, [allPresets, fridgeC]);
 
   useEffect(() => {
     if (
-      presetChosen.value.id == fridge.id_preset ||
+      presetChosen.value.id == fridgeC.id_preset ||
       presetChosen.value.id == -1
     )
       dropdownTitleChange.set(false);
@@ -51,11 +75,8 @@ export default function DropDownPresetChoose({ label }) {
               </Dropdown.Item>
             );
           })}
-          {/* <Dropdown.Item href="#/action-2">Another action</Dropdown.Item>
-        <Dropdown.Item href="#/action-3">Something else</Dropdown.Item> */}
         </Dropdown.Menu>
       </Dropdown>
-      {/* {console.log(loaded.value && dropdownTitleChange.value)} */}
       {dropdownTitleChange.value ? (
         <div>
           <button

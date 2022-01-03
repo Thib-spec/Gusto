@@ -8,6 +8,7 @@ const API = function ({ url, host, fake, ssl, port, authToken }) {
   this.url = url ? url : `${this.protocol}://${this.host}${this.port}`;
   this.fake = fake == true ? true : fake == false ? false : false;
   this.requester = requester(this);
+  console.log(this.url);
 };
 
 API.prototype.setAuthToken = function (authToken) {
@@ -44,6 +45,14 @@ API.prototype.getAllFridges = function ({} = {}) {
   return this.requester({
     method: "GET",
     path: "/api/fridge",
+  });
+};
+
+API.prototype.updateOneFridge = function ({ id, body } = {}) {
+  return this.requester({
+    method: "PUT",
+    path: `/api/fridge/${id}`,
+    body,
   });
 };
 

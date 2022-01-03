@@ -26,17 +26,13 @@ import MenuTableLine from "./MenuTableLine";
 
 export default function FridgeMenusCard({ name }) {
   // menus ajoutés dans le frigo
-  const menus = new ArrayController(useState([]), useState([]));
+  const menus = new ArrayController(useState, []);
   const { allMenus } = useContext(PageContext);
-  const preset = useContext(DropDownComponentContext);
+  const { preset } = useContext(DropDownComponentContext);
 
   useEffect(() => {
     getMenusInOnePreset();
   }, []);
-
-  // useEffect(() => {
-  //   console.log("menus : ", menus.value);
-  // }, [menus]);
 
   // appels api
   async function getMenusInOnePreset() {

@@ -1,6 +1,6 @@
 export default (el) => {
   return {
-    id: el.fk_id_product,
+    id: el.id_product,
     name: el.label,
     max: el.fridgePresets_products
       ? el.fridgePresets_products.quantity_max

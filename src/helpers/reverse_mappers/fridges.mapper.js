@@ -11,7 +11,6 @@ export default (el) => {
     id_fridge: el.id,
     label: el.name,
     fk_id_status: el.id_status,
-    fk_id_status: el.id_status,
     fk_id_technologie: el.id_technologies,
     // ...el,
   };
