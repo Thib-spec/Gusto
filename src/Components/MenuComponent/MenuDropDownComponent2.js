@@ -182,7 +182,6 @@ export default function MenuDropDownComponent2(props){
                                     <button type="button" className="menu-list-element-sub-buttons-element btn btn-danger" onClick={()=>handleShow()}>Supprimer</button>
                                 </div>
                             }
-                            
                         </div>
                     </div>
                 </div>

@@ -1,12 +1,13 @@
-import "../CSS/productPage.scss"
+
 import React, {useState} from "react"
-import fold from "../Images/fold.svg"
-import imgcategorie from "Images/imgcategorie.svg"
-import unfold from "../Images/unfold.svg"
 import axios from "axios";
 import {Modal, Button} from 'react-bootstrap'
-import TextAreaComponent from "./FormComponent/TextAreaComponent"
 
+import "../../CSS/productPage.scss"
+import fold from "Images/fold.svg"
+import imgcategorie from "Images/imgcategorie.svg"
+import unfold from "Images/unfold.svg"
+import TextAreaComponent from "../FormComponent/TextAreaComponent"
 
 
 export default function ProductDropDownComponent(props){

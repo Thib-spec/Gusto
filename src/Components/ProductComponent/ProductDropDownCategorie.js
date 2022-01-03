@@ -1,15 +1,10 @@
 import React ,{useEffect,useState} from "react";
-import "../CSS/productPage.scss"
+import "../../CSS/productPage.scss"
 import axios from "axios";
 import ProductDropDownComponent from "./ProductDropDownComponent";
-import DATACatégories from "Data/categories"
-import DATAProducts from "Data/products"
-import fold from "../Images/fold.svg"
-import foldBlack from "../Images/foldBlack.svg"
-import imgcategorie from "Images/imgcategorie.svg"
-import unfold from "../Images/unfold.svg"
+import foldBlack from "../../Images/foldBlack.svg"
 
-export default function CategorieinProductDropDown(props){
+export default function ProductDropDownCategorie(props){
 
     const [allProducts, setallProducts] = useState([]);
     useEffect(() => {

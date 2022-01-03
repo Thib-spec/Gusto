@@ -1,16 +1,10 @@
 import "CSS/productPage.scss"
 import UploadForm from "Components/FormComponent/UploadForm"
-import React, { Component, useState, useEffect }  from 'react'
-import DATAProducts from "Data/products"
-import fold from "../Images/fold.svg"
-import foldBlack from "../Images/foldBlack.svg"
-import imgcategorie from "Images/imgcategorie.svg"
-import unfold from "../Images/unfold.svg"
+import React, { useState, useEffect }  from 'react'
+
 import {Modal, Button} from 'react-bootstrap'
-import DATACatégories from "Data/categories"
-import ProductDropDownComponent from "Components/ProductDropDownComponent"
 import axios from "axios";
-import CategorieinProductDropDown from "Components/CategorieinProductDropDown"
+import ProductDropDownCategorie from "Components/ProductComponent/ProductDropDownCategorie"
 
 export default function ProductsPage(){
 
@@ -83,7 +77,7 @@ export default function ProductsPage(){
                 <button type="button" class="btn btn-warning products-addProductButton" onClick={handleShow}>Ajouter un produit</button>
 
                 {allCategories.map((catégorie) => (
-                    <CategorieinProductDropDown categorie={catégorie} key={catégorie.id_category}/>
+                    <ProductDropDownCategorie categorie={catégorie} key={catégorie.id_category}/>
                 ))}
                 
             </div>
