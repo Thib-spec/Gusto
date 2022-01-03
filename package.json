@@ -36,7 +36,6 @@
     "passport-jwt": "^4.0.0",
     "sequelize": "^6.9.0",
     "swagger-jsdoc": "^6.1.0",
-    "swagger-ui-express": "^4.1.6",
-    "util": "^0.12.4"
+    "swagger-ui-express": "^4.1.6"
   }
 }
