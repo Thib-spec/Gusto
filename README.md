@@ -35,8 +35,9 @@
 Pour accéder à la documentation de l'api il faut se rendre à l'adresse suivante : http://localhost:3001/api-docs/  ( ou en prod : http://api.gustosolutions.fr/api-docs/).
 On accède alors à l'ensemble des routes créées ainsi que les paramètres s'y rattachant.
 
-Afin de tester les différentes routes, il est possible de le faire depuis swagger directement ou alors de renseigner l'url http://localhost:3001/api/... en local ou http://api.gustosolutions.fr/api/... en production
+Afin de tester les différentes routes, il est possible de le faire depuis swagger directement ou alors de renseigner l'url http://localhost:3001/api/... en local 
+ou http://api.gustosolutions.fr/api/... en production
 
-Afin d'effectuer les différents test il est fortement conseillé d'utiliser Postman logiciel permettant d'appeler des reqêtes API facielment : https://www.postman.com/downloads/
+Afin d'effectuer les différents test il est fortement conseillé d'utiliser Postman logiciel permettant d'appeler des reqêtes API facilement : https://www.postman.com/downloads/
 
 
