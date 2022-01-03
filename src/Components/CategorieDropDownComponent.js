@@ -45,7 +45,14 @@ export default function CategorieDropDownComponent(props){
             })
             .then((res) => {
                 console.log(res);
-                window.location.reload(false);
+                setEdition(false)
+                props.func1({
+                    "id_category":props.categorie.id_category,
+                    "label":a,
+                    "image": "imageurl",
+                    "description" : b
+                
+                })
             })
             .catch((err) => {
                 console.log(err);
@@ -65,12 +72,13 @@ export default function CategorieDropDownComponent(props){
 
     function handleDeleteCatégorie(){
         try{
-            console.log(props.categorie.id_category)
+            handleClose()
             axios.delete("http://api.gustosolutions.fr/api/category/"+props.categorie.id_category)
             .then((res) => {
-                console.log("fg")
-                console.log("res : ",res);
-                window.location.reload(false);
+                console.log("1",props.categorie)
+                props.func(props.categorie)
+
+                console.log(res);
             })
             .catch((err) => {
                 console.log(err);

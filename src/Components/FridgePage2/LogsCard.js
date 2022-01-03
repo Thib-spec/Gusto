@@ -16,7 +16,7 @@ export default function FridgeLogsCard(props) {
           "/sales/products"
       )
       .then((res) => {
-        setsliceSales(typeof res.data == "array" ? res.data : []);
+        setsliceSales(res.data);
       })
       .catch((err) => console.log(err));
   }, []);

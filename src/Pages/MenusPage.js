@@ -5,7 +5,7 @@ import {Modal, Button} from 'react-bootstrap'
 import UploadForm from "Components/FormComponent/UploadForm"
 import React, { useState, useEffect }  from 'react'
 import axios from "axios";
-import MenuDropDownComponent from "Components/MenuComponent/MenuDropDownComponent"
+import MenuDropDownComponent2 from "Components/MenuComponent/MenuDropDownComponent2"
 
 
 export default function MenusPage(){
@@ -19,19 +19,33 @@ export default function MenusPage(){
             })
             .catch((err) => console.log(err));
     }, [])
-
+    console.log(allMenus)
     function handleAddMenu(){
+        let a=document.getElementById("fridgeLabelMenu").value
+        let b=document.getElementById("webLabelMenu").value
+        let c=document.getElementById("priceMenu").value
+        
+        c=Number(c)
+        console.log(a,typeof(a))
+        console.log(b,typeof(b))
+        console.log(c,typeof(c))
+        let token = localStorage.getItem("authToken")
+        let config = {
+            headers: {
+              "Authorization": "Bearer "+token,
+            }
+          }
+
         axios.post("http://api.gustosolutions.fr/api/menu", {
-            "web_label": "TestwebLabel",
-            "fridge_label": "TestfridgeLabel",
-            "image": "",
-            "price": 789,
-            "fk_id_client": 1
-          })
+            "web_label": b,
+            "fridge_label": a,
+            "image": "image",
+            "price": c*100,
+          },config)
 
             .then((res) => {
                 console.log(res);
-                window.location.reload(false);
+                setallMenus([...allMenus,res.data])
             })
             .catch((err) => {
                 console.log(err);
@@ -59,7 +73,7 @@ export default function MenusPage(){
                 {allMenus.map((menu) => (
                 <div>
                     <div>{console.log(menu)}</div>
-                    <MenuDropDownComponent menu={menu}/>
+                    <MenuDropDownComponent2 menu={menu}/>
                     
                 </div>
                     
@@ -75,14 +89,17 @@ export default function MenusPage(){
                 <Modal.Body>
                     <div className="addProduct-container">
                         <div className="addProduct-container-form">
-                            <input type="text" class="form-control" id="labelCatégorie" placeholder="Nom de la catégorie"/>
+                            <input type="text" class="form-control" id="webLabelMenu" placeholder="Nom du menu web"/>
+                            <input type="text" class="form-control" id="fridgeLabelMenu" placeholder="Nom du menu frigo"/>
+                            <input type="number" class="form-control" id="priceMenu" placeholder="Prix du menu"/>
+
                             <UploadForm/>
                         </div>
                     </div> 
                 </Modal.Body>
                 <Modal.Footer>
                     <Button variant="secondary" onClick={handleClose}>Close</Button>
-                    <Button variant="primary" >Save Changes</Button>
+                    <Button variant="primary" onClick={()=>handleAddMenu()}>Save Changes</Button>
                 </Modal.Footer>
             </Modal>
         </div>

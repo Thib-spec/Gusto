@@ -43,6 +43,12 @@ export default function ProductsPage(){
             let e=document.getElementById("description").value
             c=Number(c)
             a=Number(a)
+            d=Number(d)
+            console.log("d",d,typeof(d))
+            console.log("c",c,typeof(c))
+            console.log("a",a,typeof(a))
+
+            
             
             axios.post("http://api.gustosolutions.fr/api/product",{
                 "label":b,

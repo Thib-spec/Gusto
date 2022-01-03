@@ -44,10 +44,8 @@ export default function HomePage(){
 
     return(
 
-      
-
         <div className="m-5 h1">Welcome {user.firstName} {user.lastName}
-        <UploadContainer/>
+          <UploadContainer/>
         </div>
         
         
