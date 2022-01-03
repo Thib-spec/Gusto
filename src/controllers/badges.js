@@ -2,12 +2,15 @@ const Model = require("../database/models");
 const Joi = require('joi');
 
 
+    // Permet de récupérer la liste des badges
+
     exports.listBadges = (req, res) => {
         Model.Badges.findAll()
         .then(badges => res.status(200).json(badges))
         .catch(error => res.status(400).json(error))
     }
 
+    // Récupère un badge par son id
 
     exports.getBadgeById = (req,res) => {
         Model.Badges.findOne({
@@ -31,12 +34,15 @@ const Joi = require('joi');
         
     }
 
+    // Ajoute un badge
+
     exports.addBadge = (req,res) =>{
         const {id_badges, fk_id_client, fk_id_user} = req.body;
 
         let list_fk_client = []
         let list_fk_user = []
     
+       // Vérifie le type des données rentrées dans le corps de la réponse 
        const postBadgeSchema = Joi.object().keys({ 
             id_badges: Joi.string().required(),
             fk_id_client:Joi.number(),
@@ -60,6 +66,7 @@ const Joi = require('joi');
     
 
         else {
+            // list fk_user et list_fk_client contiennent respectivement tous les id_user et tous les id_client
 
             Model.Client.findAll()
             .then(allClient => {
@@ -76,6 +83,8 @@ const Joi = require('joi');
                             for(let i=0;i<numberOfUser;i++){
                                 list_fk_user.push(allUsers[i].id_user)
                             }
+
+                            // si fk_id_user n'existe pas on renvoie une erreur
 
                             if(!list_fk_user.includes(fk_id_user) && fk_id_user != null){
                                 res.status(400).json({
@@ -108,6 +117,7 @@ const Joi = require('joi');
         } 
     }
 
+    // Modifie un badge existant
 
     exports.editBadge = (req,res) => {
         const {fk_id_client,fk_id_user} = req.body;
@@ -144,6 +154,8 @@ const Joi = require('joi');
                     message: 'One or more fields are not well written', 
                 }) 
             }
+
+            // Si le body est vide in renvoi une erreur
             
             else if(Object.keys(req.body).length == 0){
                 res.status(400).json({
@@ -152,6 +164,8 @@ const Joi = require('joi');
             }
             
             else {
+
+                // raisonnement similaire au post
                 
                 Model.Client.findAll()
                 .then(allClient => {
@@ -205,30 +219,31 @@ const Joi = require('joi');
         
     }
         
+    // Supprime un badge
 
-exports.deleteBadge = (req,res) => {
-    
-    Model.Badges.findOne({
-        where: {
-            id_badges: req.params.id
-        }
-    })
-    .then((badge) => {
-        if (!badge) {
-            return res.status(400).json({
-                message: 'Badge not found',
-            });
-        }
-        Model.Badges.destroy({
-                where: {
-                    id_badges: req.params.id
-                }
-            })
-            res.status(200).json({
-                message : `Badge with id : ${req.params.id} has been deleted`
-            })
+    exports.deleteBadge = (req,res) => {
+        
+        Model.Badges.findOne({
+            where: {
+                id_badges: req.params.id
+            }
         })
+        .then((badge) => {
+            if (!badge) {
+                return res.status(400).json({
+                    message: 'Badge not found',
+                });
+            }
+            Model.Badges.destroy({
+                    where: {
+                        id_badges: req.params.id
+                    }
+                })
+                res.status(200).json({
+                    message : `Badge with id : ${req.params.id} has been deleted`
+                })
+            })
 
-    
+        
     .catch(error => res.status(400).json(error))
 }

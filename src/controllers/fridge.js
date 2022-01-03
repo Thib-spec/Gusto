@@ -1,21 +1,23 @@
 const Model = require("../database/models");
 const Joi = require('joi');
-const { Op } = require("sequelize");
+const { Op } = require("sequelize"); // permet d'utiliser les opérateurs "AND" et "OR" de SQL
+
+// Récupère l'ensemble des frigos
 
 exports.listFridges = (req, res) => {
     Model.Fridges.findAll({
-        include:{all:true}
+        include:{all:true}      // permet d'obtenir les informations des tables liées à fridge (permet entre autre d'accéder à la nationalité du frigo en une seule requête)
     })
     .then(fridge => res.status(200).json(fridge))
     .catch(error => res.status(400).json(error))
 }
 
 
+// Récupère l'ensemble des frigos associés à l'utilisateur connecté
 
 exports.getFridgeForUser = (req,res) => {
 
     let result = []
-
 
     Model.Fridges.findAll({
         include:{all:true}
@@ -35,9 +37,10 @@ exports.getFridgeForUser = (req,res) => {
         res.status(200).json(result)
     })
     .catch(error => res.status(400).json(error))
-   
     
 }
+
+// Renvoi la nationalité d'un frigo
 
 exports.getFridgeNationality = (req,res) =>{
     Model.Fridges.findOne({
@@ -62,6 +65,7 @@ exports.getFridgeNationality = (req,res) =>{
 }
 
 
+// Renvoi l'ensemble des produits contenus dans un frigo
 
 exports.listProductByFridge = (req,res) =>{
     Model.Fridges.findOne({
@@ -91,8 +95,7 @@ exports.listProductByFridge = (req,res) =>{
 }
 
 
-   
-    
+// Renvoi l'ensemble des frigos rattachés à un frigo
 
 exports.listClientByFridge = (req,res) => {
     Model.Fridges.findOne({
@@ -109,7 +112,7 @@ exports.listClientByFridge = (req,res) => {
         }
 
         else {
-            fridge.getClients()
+            fridge.getClients()     // getClients() est une fonction créée par sequelize qui se charge de récupérer automatiquement les clients associés à un frigo (voir dans database/models/fridge.js)
             .then(clients =>{
                 if(clients.length == 0){
                     return res.status(400).json({
@@ -129,6 +132,7 @@ exports.listClientByFridge = (req,res) => {
     
     
 
+// Récupère l'ensemble des bagdges associés à un frigo
 
 exports.listBadgeByFridge = (req,res) => {
     Model.Fridges.findOne({
@@ -167,6 +171,7 @@ exports.listBadgeByFridge = (req,res) => {
 
 
 
+// Récupére l'ensemble des produits contenus dans une commande pour un frigo spécifiques
 
 exports.listProductByOrderByFridge = (req,res) => {
     let fk_list = []
@@ -208,6 +213,7 @@ exports.listProductByOrderByFridge = (req,res) => {
     .catch(error => res.json(error))
 }
 
+// Récupère l'ensemble des produits contenu dans la vente spécifique pour un frigo spécifique
 
 exports.listProductsBySaleByFridge = (req,res) => {
     let sale_id_list = []
@@ -239,13 +245,13 @@ exports.listProductsBySaleByFridge = (req,res) => {
                             fk_id_fridge:req.params.id      
                         },
                         include:{model:Model.Products},
-                        order:[
+                        order:[                             // permet de trier les données selon le champ "updatedAt" par ordre décroissant
                             ["updatedAt",'DESC']
                         ]
                     })
     
                     .then(sales =>{
-                        res.status(200).json(sales.slice(0,5))
+                        res.status(200).json(sales.slice(0,5)) // On ne récupère que les 5 dernières ventes les plus récentes
                     })
                 }
             })
@@ -258,6 +264,7 @@ exports.listProductsBySaleByFridge = (req,res) => {
 
 
 
+// Ajoute une quantité pour un produit dans un frigo
 
 exports.AddProductQuantity = (req,res) => {
 
@@ -349,6 +356,7 @@ exports.AddProductQuantity = (req,res) => {
     }
 }
 
+// Modifie la quantoté d'un produit contenu dans un frigo
 
 exports.EditProductQuantity = (req,res) => {
 
@@ -449,6 +457,7 @@ exports.EditProductQuantity = (req,res) => {
 }
 
 
+// Supprime un produit contenu dans un frigo
 
 exports.RemoveProductQuantity = (req,res) => {
     let list_fk_product = []
@@ -514,6 +523,7 @@ exports.RemoveProductQuantity = (req,res) => {
 }
 
 
+// Récupère un frigo apr son id
 
 exports.getFridgeById = (req,res) => {
     Model.Fridges.findOne({
@@ -537,6 +547,7 @@ exports.getFridgeById = (req,res) => {
   
 }
 
+// Ajoute un frigo
 
 exports.addFridge = (req,res) =>{
     const { id_fridge,label, fk_id_technologies,fk_id_fridgePreset} = req.body
@@ -597,6 +608,7 @@ exports.addFridge = (req,res) =>{
         
 }
 
+// Modifie un frigo
 
 exports.editFridge =(req,res) => {
 
@@ -698,6 +710,7 @@ exports.editFridge =(req,res) => {
 
 }
 
+// Supprime un frigo
 
 exports.deleteFridge = (req,res) => {
     
@@ -726,6 +739,7 @@ exports.deleteFridge = (req,res) => {
     .catch(error => res.status(400).json(error))
 }
 
+// Ajoute une nationalité à un frigo
 
 exports.addNationalitytoFridge = (req,res) =>{
     const {fk_id_nationality} = req.body
@@ -810,6 +824,7 @@ exports.addNationalitytoFridge = (req,res) =>{
     }
 }
 
+// Ajoute un badge à un frigo
 
 exports.addBadgetoFridge = (req,res) =>{
     const {fk_id_badge} = req.body
@@ -836,63 +851,64 @@ exports.addBadgetoFridge = (req,res) =>{
     }
     else {
 
-            Model.Badges.findAll()
-            .then(allBadges =>{
-                Model.Badges.count()
-                .then(numberofBadges =>{
-                    for(let i=0;i<numberofBadges;i++){
-                        list_fk_badges.push(allBadges[i].id_badges)
-                    }
+        Model.Badges.findAll()
+        .then(allBadges =>{
+            Model.Badges.count()
+            .then(numberofBadges =>{
+                for(let i=0;i<numberofBadges;i++){
+                    list_fk_badges.push(allBadges[i].id_badges)
+                }
 
-                    if(!list_fk_badges.includes(fk_id_badge)){
-                        return res.status(400).json({
-                            message:"fk_id_badge does not match any id_badges"
-                        })
-                    }
+                if(!list_fk_badges.includes(fk_id_badge)){
+                    return res.status(400).json({
+                        message:"fk_id_badge does not match any id_badges"
+                    })
+                }
 
-                    else {
-                        Model.Fridges.findOne({
-                            where:{
-                                id_fridge: req.params.id
-                            }
-                        })
-                        .then(fridge => {
-                            if(!fridge){
-                                return res.status(400).json({
-                                    message: 'Fridge does not exist'
-                                })
-                            }
-                            else{
+                else {
+                    Model.Fridges.findOne({
+                        where:{
+                            id_fridge: req.params.id
+                        }
+                    })
+                    .then(fridge => {
+                        if(!fridge){
+                            return res.status(400).json({
+                                message: 'Fridge does not exist'
+                            })
+                        }
+                        else{
 
-                                fridge.getBadges()
-                                .then(fridgeBadge => {
-                                    for(let i =0;i<fridgeBadge.length;i++){
-                                        list_frigde_badges.push(fridgeBadge[i].id_badges)
-                                    }
+                            fridge.getBadges()
+                            .then(fridgeBadge => {
+                                for(let i =0;i<fridgeBadge.length;i++){
+                                    list_frigde_badges.push(fridgeBadge[i].id_badges)
+                                }
 
-                                    if(list_frigde_badges.includes(fk_id_badge)){
-                                        return res.status(400).json({
-                                            message: `Fridge ${req.params.id} has already badge ${fk_id_badge}`
-                                        })
-                                    }
+                                if(list_frigde_badges.includes(fk_id_badge)){
+                                    return res.status(400).json({
+                                        message: `Fridge ${req.params.id} has already badge ${fk_id_badge}`
+                                    })
+                                }
 
-                                    else {
-                                        fridge.addBadges(fk_id_badge)
-                                        .then(addedBadge => res.status(200).json(addedBadge))
-                                    }
-                                })
-                                
-                            }
-                        })
-                        .catch(error => res.status(400).json(error))
-        
-                    }
-                })
-            })             
-            .catch(error => res.status(400).json(error))
+                                else {
+                                    fridge.addBadges(fk_id_badge)
+                                    .then(addedBadge => res.status(200).json(addedBadge))
+                                }
+                            })
+                            
+                        }
+                    })
+                    .catch(error => res.status(400).json(error))
+    
+                }
+            })
+        })             
+        .catch(error => res.status(400).json(error))
     }
 }
 
+// Associe (ajoute) un client à un frigo
 exports.addClientToFridge = (req,res) =>{
     const {fk_id_client} = req.body
     
@@ -976,6 +992,7 @@ exports.addClientToFridge = (req,res) =>{
     }
 }
 
+// Associe un état à un frigo
 
 exports.addStateToFridge = (req,res) => {
 
@@ -986,6 +1003,7 @@ exports.addStateToFridge = (req,res) => {
     let list_fridge_state = []
     let today = new Date()
 
+    // impose un format de date DD/MM/YYYY HH:MM:SS
     let todayFormat = ("0" + today.getDate()).slice(-2) + "-" + ("0"+(today.getMonth()+1)).slice(-2) + "-" +today.getFullYear() + " " + ("0" + today.getHours()).slice(-2) + ":" + ("0" + today.getMinutes()).slice(-2) + ":" +("0" + today.getSeconds()).slice(-2)
 
     const postStatetoFridgeSchema = Joi.object().keys({ 

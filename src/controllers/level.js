@@ -1,69 +1,68 @@
 const Model = require("../database/models");
 const Joi = require('joi');
 
+// Retroune tous les levels des utilisateurs (admin/livreur ...)
 
-    exports.listLevels = (req, res) => {
-        Model.Levels.findAll()
-        .then(level => res.status(200).json(level))
-        .catch(error => res.status(400).json(error))
-    }
-
-    exports.addLevels = (req,res) =>{
-        const {label} = req.body;
-        let list_label = []
-
-       const postLevelSchema = Joi.object().keys({ 
-            label: Joi.string().required()
-        })
-
-        const result = postLevelSchema.validate(req.body)
-
-        const {error } = result;
-
-        const valid = error == null;
-
-        if (!valid) {
-            res.status(400).json({ 
-                message: 'Missing required parameters',
-                info: 'Requires: label' 
-            })
-        }
-
-    
-
-        else {
-
-            Model.Levels.findAll()
-            .then(allLevels => {
-                Model.Levels.count()
-                .then(numberofLevel => {
-                    for(let i =0;i<numberofLevel;i++){
-                        list_label.push(allLevels[i].label.toLowerCase())
-                    }
-                    
-                    if(list_label.includes(label.toLowerCase())){
-                        res.status(400).json({
-                            message:"This label already exists"
-                        })
-                    }
-
-                    else {
-
-                        Model.Levels.create({
-                            label: label
-                        })
-                        
-                        .then(level => res.status(200).json(level))
-                        .catch(error => res.status(400).json(error))
-                    }
-                    
-                })
-            })
-        }
-
-      
+exports.listLevels = (req, res) => {
+    Model.Levels.findAll()
+    .then(level => res.status(200).json(level))
+    .catch(error => res.status(400).json(error))
 }
 
+// Ajoute un level
+
+exports.addLevels = (req,res) =>{
+    const {label} = req.body;
+    let list_label = []
+
+    const postLevelSchema = Joi.object().keys({ 
+        label: Joi.string().required()
+    })
+
+    const result = postLevelSchema.validate(req.body)
+
+    const {error } = result;
+
+    const valid = error == null;
+
+    if (!valid) {
+        res.status(400).json({ 
+            message: 'Missing required parameters',
+            info: 'Requires: label' 
+        })
+    }
+
+    else {
+
+        Model.Levels.findAll()
+        .then(allLevels => {
+            Model.Levels.count()
+            .then(numberofLevel => {
+                for(let i =0;i<numberofLevel;i++){
+                    list_label.push(allLevels[i].label.toLowerCase())
+                }
+                
+                if(list_label.includes(label.toLowerCase())){
+                    res.status(400).json({
+                        message:"This label already exists"
+                    })
+                }
+
+                else {
+                    Model.Levels.create({
+                        label: label
+                    })
+                    
+                    .then(level => res.status(200).json(level))
+                    .catch(error => res.status(400).json(error))
+                }
+                
+            })
+        })
+    }
+}
+
+// Modifie un level
 
 exports.editLevels = (req,res) => {
     const {label} = req.body;
@@ -120,6 +119,7 @@ exports.editLevels = (req,res) => {
     .catch(error => res.status(400).json(error))
 }
         
+// Supprime un level
 
 exports.deleteLevels = (req,res) => {
     

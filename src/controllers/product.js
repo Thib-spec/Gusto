@@ -1,12 +1,15 @@
 const Model = require("../database/models");
 const Joi = require('joi');
 
+// Retourne l'ensemble des produits
 
 exports.listProducts = (req, res) => {
     Model.Products.findAll()
     .then(product => res.status(200).json(product))
     .catch(error => res.status(400).json(error))
 }
+
+// Retourne l'ensemble des produits associés à l'utilisateur connecté
 
 exports.listProductForUser = (req,res) => {
 
@@ -27,6 +30,8 @@ exports.listProductForUser = (req,res) => {
     .catch(error => res.status(400).json(error))
  
 }
+
+// Récupère un produit par son id
 
 exports.getProductById = (req,res) => {
     Model.Products.findOne({
@@ -51,6 +56,7 @@ exports.getProductById = (req,res) => {
 }
 
 
+// Ajout d'un produit
 
 exports.addProduct = (req,res) =>{
     const {label, image, price, ubd, description, fk_id_category } = req.body
@@ -81,7 +87,6 @@ exports.addProduct = (req,res) =>{
     }
 
     else {
-
         Model.Categories.findAll()
 
         .then(allCategories => {
@@ -135,6 +140,8 @@ exports.addProduct = (req,res) =>{
         })
     }
 }
+
+// Modifie un produit
 
 exports.editProduct =(req,res) => {
 
@@ -196,11 +203,9 @@ exports.editProduct =(req,res) => {
             .catch(error => res.status(400).json(error))
         }
     })
-    
-  
-
 }
 
+// Supprime un produit
 
 exports.deleteProduct = (req,res) => {
     
