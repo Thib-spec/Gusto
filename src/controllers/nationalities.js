@@ -1,12 +1,15 @@
 const Model = require("../database/models");
 const Joi = require('joi');
 
+// Retourne l'ensemble des nationalités
 
 exports.listNationalities = (req, res) => {
     Model.Nationalities.findAll()
     .then(nationality => res.status(200).json(nationality))
     .catch(error => res.status(400).json(error))
 }
+
+// Récupère une nationalité par son id
 
 exports.getNationalityById = (req,res) => {
     Model.Nationalities.findOne({
@@ -31,6 +34,7 @@ exports.getNationalityById = (req,res) => {
 }
 
 
+// Ajoute une nationalité
 
 exports.addNationality = (req,res) =>{
     const {label,image} = req.body
@@ -85,6 +89,8 @@ exports.addNationality = (req,res) =>{
         })
     }      
 }
+
+// Modifie une nationalité
 
 exports.editNationality =(req,res) => {
 
@@ -144,6 +150,7 @@ exports.editNationality =(req,res) => {
 
 }
 
+// Supprimeune nationalité
 
 exports.deleteNationality = (req,res) => {
     

@@ -2,6 +2,8 @@ const Model = require("../database/models");
 const Joi = require('joi');
 
 
+// Retorune l'ensemble des tags
+
 exports.listTags = (req, res) => {
     Model.Tags.findAll()
     .then(tag => res.status(200).json(tag))
@@ -9,6 +11,20 @@ exports.listTags = (req, res) => {
 }
 
 
+// Récupère l'ensemble des tags associés à l'utilisateur connecté
+
+exports.listTagsForUser = (req,res) => {
+    Model.Tags.findAll({
+        where:{
+            fk_id_client: req.user.fk_id_client
+        }
+    })
+
+    .then(tags => res.status(200).json(tags))
+    .catch(error => res.status(400).json(error))
+}
+
+// Récupère un tag par son id
 
 exports.getTagById = (req,res) => {
     Model.Tags.findOne({
@@ -31,6 +47,8 @@ exports.getTagById = (req,res) => {
  
     
 }
+
+// Ajoute un tag
 
 exports.addTag = (req,res) =>{
     const {id_tag,fk_id_product,fk_id_client} = req.body
@@ -104,10 +122,10 @@ exports.addTag = (req,res) =>{
         })
     
     }
-
         
 }
 
+// Modifie un tag
 
 exports.editTag =(req,res) => {
 
@@ -199,11 +217,7 @@ exports.editTag =(req,res) => {
                     })
                 })            
             })
-
-          
         }
     })
-    
-    
 
 }

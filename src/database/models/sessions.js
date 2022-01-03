@@ -1,4 +1,7 @@
-const {DataTypes, Model, Sequelize } = require("sequelize");
+const {DataTypes, Model} = require("sequelize");
+
+
+// Cette table existe uniquement pour assurer le bon foctionnement de notre login et logout
 
 module.exports = (sequelize) => {
     class Sessions extends Model{

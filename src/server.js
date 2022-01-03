@@ -3,9 +3,6 @@
 const http = require('http')
 const path = require('path')
 
-// config variables d'environnement du projet
-
-
 // config serveur
 const HOST = "localhost"
 const PORT = process.env.PORT

@@ -1,6 +1,10 @@
+/* ----------------------------------- */
+/* L'ensemble des fichiers dans "routes" sont construits de la même manière  où selon le type de requête on vient spécifier l'url de la requête ainsi que la fonction à appliquer*/
+/* ----------------------------------- */
+
 const badges = require('express').Router();
 const badgeController = require("../controllers/badges")
-const passport = require("passport")
+
 
 badges.get('/',badgeController.listBadges)
 badges.get('/:id', badgeController.getBadgeById)

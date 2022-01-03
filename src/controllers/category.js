@@ -1,6 +1,7 @@
 const Model = require("../database/models");
 const Joi = require('joi');
 
+// Récupère toutes les catégories
 
 exports.listCategories = (req, res) => {
     Model.Categories.findAll()
@@ -8,6 +9,7 @@ exports.listCategories = (req, res) => {
     .catch(error => res.status(400).json(error))
 }
 
+// Récupère l'ensemble des catégories associées à l'utilisateur connecté
 
 exports.getCategoryForUser = (req,res) => {
     Model.Categories.findAll({
@@ -21,6 +23,8 @@ exports.getCategoryForUser = (req,res) => {
    
     
 }
+
+// Récupère une catégorie par son id
 
 exports.getCategoryById = (req,res) => {
     Model.Categories.findOne({
@@ -44,6 +48,7 @@ exports.getCategoryById = (req,res) => {
     
 }
 
+// Renvoi l'ensemble des produits appartenant à une catégorie
 
 exports.listProductByCategory = (req,res) => {
     Model.Products.findAll({
@@ -67,10 +72,11 @@ exports.listProductByCategory = (req,res) => {
     
 }
 
-
+// Renvoi l'ensemble des produits appartenant aux catégories associées à l'utilisateur connecté
 exports.listProductsByCategoryForUser = (req,res) => {
 
     let category_ids = []
+
     Model.Categories.findAll({
         where:{
             fk_id_client:req.user.fk_id_client
@@ -109,6 +115,7 @@ exports.listProductsByCategoryForUser = (req,res) => {
 }
 
 
+// Ajoute une catégorie
 
 exports.addCategory = (req,res) =>{
     const { label, image, description} = req.body
@@ -146,6 +153,8 @@ exports.addCategory = (req,res) =>{
                     list_label.push(allCategories[i].label)
                 }
 
+                // Vérifie que le nom de la catégorie ajouté n'est pas déjà pris
+
                 if(list_label.includes(label)){
                     res.status(400).json({
                         message:"Category with this label already exists"
@@ -153,7 +162,7 @@ exports.addCategory = (req,res) =>{
                 }
 
                 else {
-
+                    // req.user permet d'accéder à l'ensemble des informations de l'utilisateur connecté, on peut donc récupérer le client auquel il est associé
                     Model.Client.findOne({
                         where:{
                             id_client:req.user.fk_id_client
@@ -176,6 +185,7 @@ exports.addCategory = (req,res) =>{
     }
 }
 
+// Modifie une catégorie
 
 exports.editCategory =(req,res) => {
 
@@ -243,6 +253,7 @@ exports.editCategory =(req,res) => {
 
 }
 
+// Supprime une catégorie
 
 exports.deleteCategory = (req,res) => {
     

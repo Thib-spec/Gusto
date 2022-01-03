@@ -32,7 +32,7 @@ fs
   .filter(file => {
     return (file.indexOf('.') !== 0) && (file !== basename) && (file.slice(-3) === '.js');
   })
-  .forEach(file => {
+  .forEach(file => {                                                // on indique à sequelize d'aller chercher nos modèles dans le dossier "models"
     const model = require(path.join(__dirname, file))(sequelize);
     db[model.name] = model;
   });

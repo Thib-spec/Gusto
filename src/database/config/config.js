@@ -1,3 +1,5 @@
+// Les variables d'environnement ont été défini dans le fichier ".env"
+
 module.exports = {
     "development": {
       "username": process.env.DB_USER_B,
