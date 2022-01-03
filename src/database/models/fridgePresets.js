@@ -4,6 +4,10 @@ module.exports = (sequelize) => {
     class FridgePresets extends Model{
 
         static associate(models){
+
+            // Dans ce cas précis, on ajoute le mot clef "as" ce qui permet à sequelize de crééer des fonctions automatiquement pour interagir avec notre model dans les controllers
+            // Avec ce mot clef sequelize créé les fonction getMenus()/ addMenu() / removeMenu() suivant la valeur indiqué pour "as"
+        
             
             FridgePresets.belongsToMany(models.Menus, {
                 as:"menus",

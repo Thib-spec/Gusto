@@ -1,6 +1,5 @@
 const clients = require('express').Router();
 const clientController = require("../controllers/client")
-const passport = require("passport")
 
 clients.get('/',clientController.listClients)
 clients.get('/:id',clientController.getClientById)

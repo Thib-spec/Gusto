@@ -1,6 +1,5 @@
 const levels = require('express').Router();
 const levelController = require("../controllers/level")
-const passport = require("passport")
 
 levels.get('/',levelController.listLevels)
 levels.post('/',levelController.addLevels)

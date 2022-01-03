@@ -1,6 +1,5 @@
 const router = require('express').Router();
 const swaggerUi = require('swagger-ui-express');
-// const swaggerDocument = require('./swagger.json');
 
 const yaml = require('js-yaml');
 const fs = require('fs');
