@@ -11,7 +11,7 @@ exports.upload =  async (req, res) => {
         }
     
         res.status(200).send({
-        message: "Uploaded the file successfully: ",
+        message: "Uploaded the file successfully",
         });
     } catch (err) {
         res.status(500).send({
