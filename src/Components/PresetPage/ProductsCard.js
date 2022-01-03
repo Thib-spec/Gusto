@@ -59,7 +59,7 @@ export default function ProductsCard({ name }) {
 
   async function addProductsInOnePreset(addProducts) {
     try {
-      const body = addProducts.map(reverse_mappers.productsInPreset);
+      const body = addProducts.map(reverse_mappers.productsInPreset)
       // const body = products.value.map(reverse_mappers.productsInPreset);
       const res = await api.addProductsInOnePreset({
         id: preset.id,
@@ -67,7 +67,7 @@ export default function ProductsCard({ name }) {
       });
       if (res.ok) {
         const resJSON = await res.json();
-        console.log("api.addProductsInOnePreset() : ", resJSON);
+        console.log("api.addProductsInOnePreset() : ", resJSON)
         products.addOrUpdateMany([], { init: true });
         // addProducts.reset();
       } else {
