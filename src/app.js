@@ -46,11 +46,6 @@ module.exports=(app)=>{
 
         }
         return next(createError(404, "Page not found"))
-        return next({
-            success:0,
-            status:404,
-            message:"Page not found"
-        })
     })
     
     // Error Handler
@@ -66,5 +61,5 @@ module.exports=(app)=>{
     
         res.status(response.status)
         res.json(response)
-        })
+    })
 }

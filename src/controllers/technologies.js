@@ -1,11 +1,15 @@
 const Model = require("../database/models");
 const Joi = require('joi');
 
+// Retourne l'ensemble des technologies
+
 exports.listTechnologies = (req, res) => {
     Model.Technologies.findAll()
     .then(technologies => res.status(200).json(technologies))
     .catch(error => res.status(400).json(error))
 }
+
+// Récupère une technologie par son id
 
 exports.getTechnologiesById = (req,res) => {
     Model.Technologies.findOne({
@@ -30,6 +34,7 @@ exports.getTechnologiesById = (req,res) => {
 }
 
 
+// Ajoute une technologie
 
 exports.addTechnologies = (req,res) =>{
     const {label} = req.body
@@ -81,6 +86,8 @@ exports.addTechnologies = (req,res) =>{
     
     }
 }
+
+// Modifie une technologie
 
 exports.editTechnologies =(req,res) => {
 
@@ -138,6 +145,7 @@ exports.editTechnologies =(req,res) => {
 
 }
 
+// Supprime une technologie
 
 exports.deleteTechnologies= (req,res) => {
     

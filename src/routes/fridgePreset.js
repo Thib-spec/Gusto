@@ -1,7 +1,6 @@
 const fridgePreset = require('express').Router();
 const fridgePresetController = require("../controllers/fridgePreset")
 const passport = require("passport");
-const fridgePresets = require('../database/models/fridgePresets');
 
 fridgePreset.get("/user",passport.authenticate("jwt",{session:false}),fridgePresetController.getFridgePresetForUser)
 fridgePreset.get("/:id/product/user",passport.authenticate("jwt",{session:false}),fridgePresetController.getProductinPresetForUser)

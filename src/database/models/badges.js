@@ -1,9 +1,15 @@
 const {Model, DataTypes} = require('sequelize');
 
+/* -------------------------------------- */
+/* L'ensemble des fichiers dans le dossier "models" sont constitués de la même manière */
+/* On définit d'abord nos associations one-to-many/ many-to-many ... en spécifiant les foreign keys */
+/* On initialise ensuite notre model en lui passant les différents attributs avec diverses options (clef primaire / type / non null ...) */
+/* -------------------------------------- */
+
 
 module.exports = (sequelize) => {
 
-class Badges extends Model{         // passer badge en binary
+class Badges extends Model{  
 
     static associate(models){
         

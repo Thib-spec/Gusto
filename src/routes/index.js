@@ -24,18 +24,9 @@ const technologiesRouter = require("./technologies")
 /* ----------------------- */
 
 
-/* ----- Public API Routes ----- */
-
-// Handle root
-
-
-// // Handle login
-// router.use('/login', loginRouter);
-
-
-/* ----- Private API Routes ----- */
 
 // Handle main API routes
+
 router.use('/user', userRouter);
 router.use('/category', categoryRouter);
 router.use('/product', productRouter)

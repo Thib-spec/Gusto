@@ -42,7 +42,7 @@ Users.init({
         type: DataTypes.STRING,
         allowNull:false,
         set(v){
-          this.setDataValue('password', security.bcryptHashSync(v))
+          this.setDataValue('password', security.bcryptHashSync(v)) // permet de "hascher" le mot de passe en base de données
         }
       },
    

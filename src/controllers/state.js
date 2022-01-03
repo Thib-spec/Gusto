@@ -1,11 +1,15 @@
 const Model = require("../database/models");
 const Joi = require('joi');
 
+// Retourne la liste de tous les états
+
 exports.listStates = (req, res) => {
     Model.State.findAll()
     .then(state => res.status(200).json(state))
     .catch(error => res.status(400).json(error))
 }
+
+// Récupère un état par son id
 
 exports.getStateById = (req,res) => {
     Model.State.findOne({
@@ -25,11 +29,10 @@ exports.getStateById = (req,res) => {
         }
     })
     .catch(error => res.json(error))
- 
     
 }
 
-
+// Ajout d'un état
 
 exports.addState = (req,res) =>{
     const {label} = req.body
@@ -81,6 +84,8 @@ exports.addState = (req,res) =>{
     
     }
 }
+
+// Modifie un état
 
 exports.editState =(req,res) => {
 
@@ -138,6 +143,7 @@ exports.editState =(req,res) => {
 
 }
 
+// Supprime un état
 
 exports.deleteState = (req,res) => {
     
@@ -166,6 +172,4 @@ exports.deleteState = (req,res) => {
             .catch(error => res.status(400).json(error))
         }
     })
-    
-    
 }

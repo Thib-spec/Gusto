@@ -1,8 +1,8 @@
-const { session } = require("passport");
 const Model = require("../database/models");
 const security = require("../helpers/security")
 const Joi = require('joi');
 
+    // Retourne l'ensemble des utilisateurs
 
     exports.listUsers = (req, res) => {
         Model.Users.findAll({
@@ -12,6 +12,8 @@ const Joi = require('joi');
         .then(user =>res.json(user))
         .catch(error => res.status(400).json(error))
     }
+
+    // Renvoi les utilisateurs selon le level spécifié
 
     exports.listUserByLevel = (req, res) => {
         Model.Levels.findOne({
@@ -42,6 +44,8 @@ const Joi = require('joi');
         
     }
 
+    // Récupère un utilisateur par son id
+
     exports.getUserById = (req,res) => {
         Model.Users.findOne({
             where:{
@@ -62,10 +66,9 @@ const Joi = require('joi');
             }
         })
         .catch(error => res.status(400).json(error))
-     
-        
     }
 
+    // Retourne la nationalité d'un utilisateur
 
     exports.getUserNationality = (req,res) =>{
         Model.Users.findOne({
@@ -95,7 +98,7 @@ const Joi = require('joi');
         
     }
 
-
+    // Ajoute un utilisateur
 
     exports.addUser = (req,res) =>{
         const { firstname, lastname, email, image,password,fk_id_level,fk_id_client,fk_id_nationality } = req.body;
@@ -113,9 +116,6 @@ const Joi = require('joi');
                info:"email must match following pattern : abc@gmail.com"
            })
        }
-
-   
-
 
        const postUserSchema = Joi.object().keys({ 
         firstname: Joi.string().required(),
@@ -226,6 +226,7 @@ const Joi = require('joi');
 }
 
 
+// Modifie un utilisateur
 
 exports.editUser = (req,res) => {
     const { firstname, lastname, email, image, fk_id_level, fk_id_nationality} = req.body;
@@ -357,6 +358,7 @@ exports.editUser = (req,res) => {
     
 }
         
+// Supprime un utilisateur
 
 exports.deleteUser = (req,res) => {
     
@@ -388,9 +390,7 @@ exports.deleteUser = (req,res) => {
 
 }
            
-        
-
-
+// Autehntifie un utilisateur
 
 exports.login = (req,res) => {
     const { email,password} = req.body
@@ -408,7 +408,7 @@ exports.login = (req,res) => {
             })
         }
         
-        else if (security.bcryptCompareSync(password, user.password)){
+        else if (security.bcryptCompareSync(password, user.password)){ // on vérifie que le mot de passe correspond bien à celui entré dans le corps de la requête puis on créé une session
             user.createSession()
             .then(session=> {
 
@@ -431,6 +431,7 @@ exports.login = (req,res) => {
         
 }
 
+// Déonnecte un utilisateur
 
 exports.logout = (req,res) =>{
     const user = req.user
@@ -439,6 +440,9 @@ exports.logout = (req,res) =>{
     .then(res.status(200).json("User has been deconnected"))
     .catch(error => res.json(error))
 }
+
+
+// Permet d'accéder aux informations de l'utilisateur connecté
 
 exports.userInfo = (req,res) => {
     Model.Users.findOne({
@@ -450,52 +454,3 @@ exports.userInfo = (req,res) => {
     .then(user =>  res.status(200).json(user))
     
 }
-
-
-
-
-
-
-//   /**
-//    * validate le password de l'user
-//    * @param {string} password
-//    * @returns {Boolean}
-//    */
-//   Users.prototype.isPasswordValid = function (password){
-//     return security.bcryptCompareSync(password, this.password)
-//   }
-
-//   /**
-//   * génère authToken en fonction de l'user
-//   * 1. cree une session et la lie avec un jwt
-//   * @returns {Promise<jwtToken>}
-//   */
-//   Users.prototype.genAuthToken = async function () {
-//     try {
-//       const session = await this.createSession()
-//       return security.jwtGenTokenSync({
-//         sub: this.id,
-//         sessionId:session.id,
-//         expiresIn: 3600, // en seconde
-//       })
-//     } catch (err) {
-//       throw err
-//     }
-//   }
-
-//   /**
-//    * Valid un jwtPayload en fonction des sessions existantes
-//    * @param {object} payload
-//    * @returns {Boolean}
-//    */
-//   Users.prototype.isAuthTokenPayloadValid = async function (payload) {
-//     try {
-//       const sessions = await this.getSessions({where:{id:payload.sessionId}})
-//       if (sesnsios.length) return true
-//       else return false
-//     } catch (err) {
-//       throw err
-//     }
-//   }
-
-

@@ -1,7 +1,11 @@
+/* --------------------------------------------------------------------------------------------------------------------------- */
+/* Ce fichier permet de charger une image depuis le site pour pouvoir ensuite l'enregistrer dans le dossiers "images" côté Back,
+   Le process fonctionne bien en local mais provoque une erreur serveur en production  */
+/* --------------------------------------------------------------------------------------------------------------------------- */
+
 const uploadFile = require("../middleware/upload");
 
 exports.upload =  async (req, res) => {
-  
     
     try {
         await uploadFile(req, res);
