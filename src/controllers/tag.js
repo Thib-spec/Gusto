@@ -13,6 +13,17 @@ exports.listTags = (req, res) => {
 
 // Récupère l'ensemble des tags associés à l'utilisateur connecté
 
+exports.listTagsForUser = (req,res) => {
+    Model.Tags.findAll({
+        where:{
+            fk_id_client: req.user.fk_id_client
+        }
+    })
+
+    .then(tags => res.status(200).json(tags))
+    .catch(error => res.status(400).json(error))
+}
+
 // Récupère un tag par son id
 
 exports.getTagById = (req,res) => {
