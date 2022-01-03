@@ -8,6 +8,16 @@ exports.listFridgePreset = (req, res) => {
     .catch(error => res.status(400).json(error))
 }
 
+exports.getFridgePresetForUser = (req,res) => {
+    Model.FridgePresets.findAll({
+        where:{
+            fk_id_client: req.user.fk_id_client
+        }
+    })
+    .then(preset =>res.status(200).json(preset))
+    .catch(error => res.staus(400).json(error))
+}
+
 
 exports.getFridegPresetById = (req,res) => {
     Model.FridgePresets.findOne({
@@ -40,6 +50,38 @@ exports.getProductinPreset = (req,res) => {
     })
     .then(preset => res.status(200).json(preset))
     .catch(error => res.status(400).json(error))
+}
+
+exports.getProductinPresetForUser = (req,res) => {
+    let preset_ids = []
+    Model.FridgePresets.findAll({
+        where:{
+            fk_id_client:req.user.fk_id_client
+        },
+    })
+    .then(userPreset => {
+        for(let i =0;i<userPreset.length;i++){
+            preset_ids.push(userPreset[i].id_fridgePresets)
+        }
+
+        if(!preset_ids.includes(Number(req.params.id))){
+            res.status(400).json({
+                message: `You are not all allowed to see content of fridgePreset ${req.params.id}`
+            })
+        }
+        else {
+            Model.FridgePresets.findOne({
+                where:{
+                    id_fridgePresets:req.params.id
+                },
+                include:{model:Model.Products}
+            })
+            .then(preset => res.status(200).json(preset))
+            .catch(error => res.status(400).json(error))
+        }
+        
+    })
+
 }
 
 
@@ -726,6 +768,61 @@ exports.getMenuByFridgePreset = (req,res) =>{
         }
     })
     .catch(error => res.status(400).json(error))
+}
+
+
+exports.getMenuByFridgePresetForUser = (req,res) => {
+
+    let preset_ids = []
+    Model.FridgePresets.findAll({
+        where:{
+            fk_id_client:req.user.fk_id_client
+        },
+    })
+    .then(userPreset => {
+        for(let i =0;i<userPreset.length;i++){
+            preset_ids.push(userPreset[i].id_fridgePresets)
+        }
+
+        if(!preset_ids.includes(Number(req.params.id))){
+            res.status(400).json({
+                message: `You are not all allowed to see content of fridgePreset ${req.params.id}`
+            })
+        }
+        else {
+            Model.FridgePresets.findOne({
+                where:{
+                    id_fridgePresets:req.params.id
+                },
+            })
+            .then(preset =>{
+        
+                if(!preset){
+                    res.status(400).json({
+                        message: "FridgePreset does not exists"
+                    })
+                }
+        
+                else {
+                    preset.getMenus()
+                    .then(menus => {
+                        if(menus.length == 0){
+                            res.status(400).json({
+                                message: `FridgePreset ${req.params.id} does not have any menu`
+                            })
+                        }
+        
+                        else {
+                            res.status(200).json(menus)
+                        }
+                    })   
+                    .catch(error => res.status(400).json(error))
+                }
+            })
+            .catch(error => res.status(400).json(error))
+        }
+    })
+
 }
 
 exports.addMenuInPreset = (req,res) =>{
