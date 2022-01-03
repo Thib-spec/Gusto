@@ -10,7 +10,7 @@
 .categories-list{
     display: flex;
     flex-direction: column;
-    width: 80%;
+    width: 60%;
 }
 
 .categories-list-element{
@@ -108,7 +108,16 @@
     width: 35%;
  }
 
+
+ @media (max-width: 1000px) {
+    .categories-list{
+      
+        width: 80%;
+    }
+}
+
  @media (max-width: 500px) {
+
     .categories-title-container{
         display: flex;
         flex-direction: column;
@@ -156,7 +165,7 @@
 .categories-list-element-sub-buttons-element-addButton{
     margin-right: 30%;
     margin-left: 30%;
-    margin-bottom: 15%;
+    margin-bottom: 0;
     margin-top:2%;
 }
 

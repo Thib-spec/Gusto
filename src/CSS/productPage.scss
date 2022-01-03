@@ -8,7 +8,7 @@
 .products-list{
     display: flex;
     flex-direction: column;
-    width: 80%;
+    width: 60%;
 }
 
 .products-list-element{
@@ -86,7 +86,7 @@
  .products-addProductButton{
     margin-right: 30%;
     margin-left: 30%;
-    margin-bottom: 15%;
+    margin-bottom: 0;
     margin-top:2%;
  }
 
@@ -175,8 +175,18 @@
     transform: rotate(180deg);
  }
 
+ @media (max-width: 1000px) {
+    .products-list{
+        width: 80%;
+    }
+ }
+
+
  @media (max-width: 700px) {
-     .product-title-dlc{
+    
+
+
+    .product-title-dlc{
          display: none;
      }
 

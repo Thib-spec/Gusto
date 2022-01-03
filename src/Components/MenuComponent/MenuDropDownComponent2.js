@@ -173,7 +173,7 @@ export default function MenuDropDownComponent2(props){
                             {
                                 edition?
                                 <div class="menu-list-element-sub-buttons ">
-                                    <button type="button" className="menu-list-element-sub-buttons-element btn btn-secondary" onClick={()=>handleCancel()}>Annuler</button>
+                                    <button type="button" className="menu-list-element-sub-buttons-element btn btn-secondary" onClick={()=>handleCancel()}>Exit</button>
                             
                                 </div>
                                 :

@@ -94,12 +94,13 @@ export default function CategoriesPage(){
     return(
         <div className="categories-container">
             <div className="categories-list">
+                <button type="button" class="btn btn-warning categories-list-element-sub-buttons-element-addButton" onClick={handleShow}>Ajouter une catégorie</button>
+
                 {allCategories.map((categorie) => (
                     
                     <CategorieDropDownComponent func1={refreshCategorieUpdate} func={refreshCategorieDel} categorie={categorie} key={categorie.id_category}/>
                 ))}
                 
-                <button type="button" class="btn btn-warning categories-list-element-sub-buttons-element-addButton" onClick={handleShow}>Ajouter une catégorie</button>
             </div>
 
             <Modal show={show} onHide={handleClose}>

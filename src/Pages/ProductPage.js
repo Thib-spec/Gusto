@@ -80,11 +80,12 @@ export default function ProductsPage(){
     return(
         <div className="products-container">
             <div className="products-list">
+                <button type="button" class="btn btn-warning products-addProductButton" onClick={handleShow}>Ajouter un produit</button>
+
                 {allCategories.map((catégorie) => (
                     <CategorieinProductDropDown categorie={catégorie} key={catégorie.id_category}/>
                 ))}
                 
-                <button type="button" class="btn btn-warning products-addProductButton" onClick={handleShow}>Ajouter un produit</button>
             </div>
         
             <Modal show={show} onHide={handleClose}>
