@@ -21,23 +21,7 @@ components:
     bearerAuth:            # arbitrary name for the security scheme
       type: http
       scheme: bearer
-      bearerFormat: JWT 
-    bearerAuth2:            # arbitrary name for the security scheme
-      type: http
-      scheme: bearer
-      bearerFormat: JWT 
-    bearerAuth3:            # arbitrary name for the security scheme
-      type: http
-      scheme: bearer
-      bearerFormat: JWT
-    bearerAuth4:            # arbitrary name for the security scheme
-      type: http
-      scheme: bearer
-      bearerFormat: JWT
-    bearerAuth5:            # arbitrary name for the security scheme
-      type: http
-      scheme: bearer
-      bearerFormat: JWT 
+      bearerFormat: JWT  
 
 tags: [  
     
@@ -91,7 +75,15 @@ tags: [
     {
       "name": "Nationality",
       "description": ""
-    },  
+    },
+    {
+      "name": "Badge",
+      "description": ""
+    },
+    {
+      "name": "Technology",
+      "description": ""
+    }  
   ]
 paths:
   
@@ -115,7 +107,7 @@ paths:
 
       post:
         security:
-          - bearerAuth3: []
+          - bearerAuth: []
         tags: [Category]
         summary: Add a category
         requestBody:
@@ -269,6 +261,64 @@ paths:
               application/json:
                   example:
                     message: "Category does not exists or doest not have any product"
+
+  /category/user:
+      get:
+        security:
+          - bearerAuth: [] 
+        tags: [Category]
+        summary: Returns the specified category.
+        responses:
+          '200':    # status code
+            description: The category to get
+            content:
+              application/json:
+                  example:
+                    id_category: 1
+                    label: fruits
+                    image : https://www.google.com/imgres?imgurl=https%3A%2F%2Fmedia.istockphoto.com
+                    description: some description
+                    createdAt: 2021-11-26T13:38:27.000Z
+                    updatedAt : 2021-11-26T13:38:27.000Z
+                    fk_id_client: 8
+          '400':
+            description: An error message
+            content:
+              application/json:
+                  example:
+                    message: "Category does not exist"
+
+  /category/{id}/products/user:
+      get:
+        security:
+          - bearerAuth: [] 
+        tags: [Category]
+        summary: Returns the specified category.
+        parameters:
+        - name: id
+          in: path
+          type: integer
+          required: true
+          description: Numeric ID of the category to get.
+        responses:
+          '200':    # status code
+            description: The category to get
+            content:
+              application/json:
+                  example:
+                    id_category: 1
+                    label: fruits
+                    image : https://www.google.com/imgres?imgurl=https%3A%2F%2Fmedia.istockphoto.com
+                    description: some description
+                    createdAt: 2021-11-26T13:38:27.000Z
+                    updatedAt : 2021-11-26T13:38:27.000Z
+                    fk_id_client: 8
+          '400':
+            description: An error message
+            content:
+              application/json:
+                  example:
+                    message: "Category does not exist"
 
   /client:
       get:
@@ -988,6 +1038,39 @@ paths:
                   example:
                     message: "Fridge does not exists or client with such ids does not exist"
 
+  /fridge/{id}/addState:
+      post:
+        tags: [Fridge]
+        summary: Assigns a state to the specified fridge by their id
+        parameters:
+        - name: id
+          in: path
+          type: integer
+          required: true
+          description: Numeric ID of the fridge to get.
+        requestBody:
+          required: true
+          content:
+            application/json:
+              schema: 
+                properties:
+                  fk_id_state:
+                    type: integer
+        responses:
+          '200':    # status code
+            description: A successful message
+            content:
+              application/json:
+                  example:
+                    message: "State has been added"
+    
+          '400':
+            description: An error message
+            content:
+              application/json:
+                  example:
+                    message: "Fridge does not exists or state with such ids does not exist"
+
 
   /product:
     get:
@@ -1144,6 +1227,33 @@ paths:
               application/json:
                   example:
                     message: "Product does not exists"
+
+  /product/user:
+      get:
+        security:
+          - bearerAuth: [] 
+        tags: [Product]
+        summary: Returns the specified product.
+        responses:
+          '200':    # status code
+            description: The product to get
+            content:
+              application/json:
+                  example:
+                    id_product: 1
+                    label: fruits
+                    image : https://www.google.com/imgres?imgurl=https%3A%2F%2Fmedia.istockphoto.com
+                    ubd : 01/07/2021
+                    description: some description
+                    createdAt: 2021-11-26T13:38:27.000Z
+                    updatedAt : 2021-11-26T13:38:27.000Z
+                    fk_id_category: 2
+          '400':
+            description: An error message
+            content:
+              application/json:
+                  example:
+                    message: "User does not exist"
 
   /user:
       get:
@@ -1353,7 +1463,7 @@ paths:
   /user/logout:
       get:
         security:
-          - bearerAuth2: []
+          - bearerAuth: []
         tags: [User]
         summary: Returns the user that belongs to this logout.
         parameters:
@@ -1472,7 +1582,7 @@ paths:
                   fk_id_client: 2
     post:
       security:
-          - bearerAuth5: []
+          - bearerAuth: []
       tags: [Menu]
       summary: Add a menu
       requestBody:  
@@ -1634,16 +1744,16 @@ paths:
                     message: "Menu does not exist or does not have any products"
 
   /menu/{id}/removeProduct:
-      post:
+       delete:
         tags: [Menu]
-        summary: Remove a product 
+        summary: Allow to delete a product from a menu
         parameters:
         - name: id
           in: path
           type: integer
           required: true
-          description: Product of the menu.
-        requestBody:  
+          description: Numeric ID of the menu where to delete.
+        requestBody:
           required: true
           content:
             application/json:
@@ -1652,19 +1762,18 @@ paths:
                   fk_id_product:
                     type: integer
         responses:
-          '200':    # status code
-            description: The menu added
+          '200':   
+            description: A successful message
+            content: 
+              application/json:
+                  example:
+                    message: "Product with id : x has been deleted"
+          '400':
+            description: An error message
             content:
               application/json:
                   example:
-                    id_product: 1
-                    label: tomate
-                    image : https://www.google.com/imgres?imgurl=https%3A%2F%2Fmedia.istockphoto.com
-                    ubd : 01/07/2021
-                    description: some description
-                    createdAt: 2021-11-26T13:38:27.000Z
-                    updatedAt : 2021-11-26T13:38:27.000Z
-                    fk_id_category: 2
+                    message: "Product does not exist"
 
   /menu/{id}/products:
       post:
@@ -1698,6 +1807,66 @@ paths:
                     createdAt: 2021-11-26T13:38:27.000Z
                     updatedAt : 2021-11-26T13:38:27.000Z
                     fk_id_category: 2
+
+  /menu/user:
+      get:
+        security:
+          - bearerAuth: [] 
+        tags: [Menu]
+        summary: Returns the specified menus.
+        responses:
+          '200':    # status code
+            description: The menus to get
+            content:
+              application/json:
+                  example:
+                    id_menu: 1
+                    web_label: salade
+                    fridge_label: salade 
+                    image : https://www.google.com/imgres?imgurl=https%3A%2F%2Fmedia.istockphoto.com
+                    price: 5.30
+                    createdAt: 2021-11-26T13:38:27.000Z
+                    updatedAt : 2021-11-26T13:38:27.000Z
+                    fk_id_client: 2
+          '400':
+            description: An error message
+            content:
+              application/json:
+                  example:
+                    message: "Menu does not exist"
+
+  /menu/{id}/product/user:
+      get:
+        security:
+          - bearerAuth: [] 
+        tags: [Menu]
+        summary: Returns the specified preset menus.
+        parameters:
+        - name: id
+          in: path
+          type: integer
+          required: true
+          description: Numeric ID of the menu to get.
+        responses:
+          '200':    # status code
+            description: The menus to get
+            content:
+              application/json:
+                  example:
+                    id_menu: 1
+                    web_label: salade
+                    fridge_label: salade 
+                    image : https://www.google.com/imgres?imgurl=https%3A%2F%2Fmedia.istockphoto.com
+                    price: 5.30
+                    createdAt: 2021-11-26T13:38:27.000Z
+                    updatedAt : 2021-11-26T13:38:27.000Z
+                    fk_id_client: 2
+          '400':
+            description: An error message
+            content:
+              application/json:
+                  example:
+                    message: "Menu does not exist"
 
   /sale:
     get:
@@ -2207,7 +2376,7 @@ paths:
 
       post:
         security:
-          - bearerAuth4: []
+          - bearerAuth: []
         tags: [FridgePreset]
         summary: Add a fridgePreset
         requestBody:  
@@ -2521,6 +2690,32 @@ paths:
                   example:
                     message: "fridgePreset does not exist"
 
+  /fridgePreset/{id}/product:
+      get:
+        tags: [FridgePreset]
+        summary: Returns the list of all the products of a fridge preset.
+        parameters:
+        - name: id
+          in: path
+          type: integer
+          required: true
+          description: Numeric ID of the fridgePreset.
+        responses:
+          '200':    # status code
+            description: A JSON array of products
+            content:
+              application/json:
+                  example:
+                    id_product: 1
+                    label: fruits
+                    image : https://www.google.com/imgres?imgurl=https%3A%2F%2Fmedia.istockphoto.com
+                    ubd : 01/07/2021
+                    price: integer
+                    description: some description
+                    createdAt: 2021-11-26T13:38:27.000Z
+                    updatedAt : 2021-11-26T13:38:27.000Z
+                    fk_id_category: 2
+
   /nationality:
       get:
         tags: [Nationality]
@@ -2644,3 +2839,258 @@ paths:
               application/json:
                   example:
                     message: "Id does not exist"
+
+  /badge:
+      get:
+        tags: [Badge]
+        summary: Returns the list of all the badges.
+        responses:
+          '200':    # status code
+            description: A JSON array of badges
+            content:
+              application/json:
+                  example:
+                    id_badges: 1
+                    createdAt: 2021-11-26T13:38:27.000Z
+                    updatedAt : 2021-11-26T13:38:27.000Z
+                    fk_id_client: 1
+                    fk_id_user: 2
+
+      post:
+        tags: [Badge]
+        summary: Add a badge
+        requestBody:
+          required: true
+          content:
+            application/json:
+              schema: 
+                properties:
+                  fk_id_user:
+                    type: integer
+                  fk_id_client:
+                    type: integer
+        responses:
+          '200':    # status code
+            description: The badge added
+            content:
+              application/json:
+                  example:
+                    id_badges: 1
+                    createdAt: 2021-11-26T13:38:27.000Z
+                    updatedAt : 2021-11-26T13:38:27.000Z
+                    fk_id_client: 1
+                    fk_id_user: 2
+          '400':
+            description: An error message
+            content:
+              application/json:
+                  example:
+                    message: "Missing required parameters"
+
+  /badge/{id}:
+      get:
+        tags: [Badge]
+        summary: Returns the specified badge.
+        parameters:
+        - name: id
+          in: path
+          type: integer
+          required: true
+          description: Numeric ID of the badge to get.
+        responses:
+          '200':    # status code
+            description: The badge to get
+            content:
+              application/json:
+                  example:
+                    id_badges: 1
+                    createdAt: 2021-11-26T13:38:27.000Z
+                    updatedAt : 2021-11-26T13:38:27.000Z
+                    fk_id_client: 1
+                    fk_id_user: 2
+          '400':
+            description: An error message
+            content:
+              application/json:
+                  example:
+                    message: "Badge does not exists"
+
+      put:
+        tags: [Badge]
+        summary: Update badge
+        parameters:
+        - name: id
+          in: path
+          type: integer
+          required: true
+          description: Numeric ID of the badge to update.
+        requestBody:
+          required: true
+          content:
+            application/json:
+              schema: 
+                properties:
+                  fk_id_user:
+                    type: integer
+                  fk_id_client:
+                    type: integer
+        responses:
+          '200':    # status code
+            description: A successful message
+            content:
+              application/json:
+                  example:
+                    message: "item has been updated"
+          '400':
+            description: An error message
+            content:
+              application/json:
+                  example:
+                    message: "Specified badge does not exist"
+              
+      delete:
+        tags: [Badge]
+        summary: Allow to delete a badge
+        parameters:
+        - name: id
+          in: path
+          type: integer
+          required: true
+          description: Numeric ID of the badge to delete.
+        responses:
+          '200':   
+            description: A successful message
+            content: 
+              application/json:
+                  example:
+                    message: "Badge with id : x has been deleted"
+          '400':
+            description: An error message
+            content:
+              application/json:
+                  example:
+                    message: "Badge does not exist"
+
+  /technologies:
+      get:
+        tags: [Technology]
+        summary: Returns the list of all the technologies.
+        responses:
+          '200':    # status code
+            description: A JSON array of technologies
+            content:
+              application/json:
+                  example:
+                    id_technologies: 1
+                    label: hightech
+                    createdAt: 2021-11-26T13:38:27.000Z
+                    updatedAt : 2021-11-26T13:38:27.000Z
+
+      post:
+        tags: [Technology]
+        summary: Add a technology
+        requestBody:
+          required: true
+          content:
+            application/json:
+              schema: 
+                properties:
+                  label:
+                    type: string 
+        responses:
+          '200':    # status code
+            description: The technology added
+            content:
+              application/json:
+                  example:
+                    id_technologies: 1
+                    label: hightech
+                    createdAt: 2021-11-26T13:38:27.000Z
+                    updatedAt : 2021-11-26T13:38:27.000Z
+          '400':
+            description: An error message
+            content:
+              application/json:
+                  example:
+                    message: "Missing required parameters"
+
+  /technologies/{id}:
+      get:
+        tags: [Technology]
+        summary: Returns the specified technology.
+        parameters:
+        - name: id
+          in: path
+          type: integer
+          required: true
+          description: Numeric ID of the technology to get.
+        responses:
+          '200':    # status code
+            description: The technology to get
+            content:
+              application/json:
+                  example:
+                    id_technologies: 1
+                    label: hightech
+                    createdAt: 2021-11-26T13:38:27.000Z
+                    updatedAt : 2021-11-26T13:38:27.000Z
+          '400':
+            description: An error message
+            content:
+              application/json:
+                  example:
+                    message: "Technology does not exist"
+
+      put:
+        tags: [Technology]
+        summary: Update technology
+        parameters:
+        - name: id
+          in: path
+          type: integer
+          required: true
+          description: Numeric ID of the technology to update.
+        requestBody:
+          required: true
+          content:
+            application/json:
+              schema: 
+                properties:
+                  label:
+                    type: string
+        responses:
+          '200':    # status code
+            description: A successful message
+            content:
+              application/json:
+                  example:
+                    message: "item has been updated"
+          '400':
+            description: An error message
+            content:
+              application/json:
+                  example:
+                    message: "Specified technology does not exist"
+              
+      delete:
+        tags: [Technology]
+        summary: Allow to delete a technology
+        parameters:
+        - name: id
+          in: path
+          type: integer
+          required: true
+          description: Numeric ID of the technology to delete.
+        responses:
+          '200':   
+            description: A successful message
+            content: 
+              application/json:
+                  example:
+                    message: "Technology with id : x has been deleted"
+          '400':
+            description: An error message
+            content:
+              application/json:
+                  example:
+                    message: "Technology does not exist"
