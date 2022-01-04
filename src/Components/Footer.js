@@ -4,7 +4,7 @@ import iconGusto from "../Charte_graphique/Icon/Colors/Icon_Gusto_Colors.svg"
 import { useHistory } from "react-router";
 
 
-export default function Footer(){
+export default function Footer({fixed}){
 
     let history = useHistory();
 
@@ -14,7 +14,7 @@ export default function Footer(){
 
     return(
         
-        <div className="container-footer">
+        <div className={fixed==true?"container-footer-fixed":"container-footer"}>
             <img className="footer-logo" src={iconGusto} alt=""/>
             <div className="footer-contact">
                 <div className="fs-4">Contact :</div>

@@ -23,7 +23,7 @@
     width: 6.8em;
     position:relative;
     left: 4em;
-    background-color: rgb(34, 106, 134);
+    background-color: rgb(255, 255, 255);
     border-bottom-right-radius: 50%;
     border-top-right-radius: 50%;
 
@@ -32,13 +32,13 @@
 .headerProfil-pp-container{
     height: 100%;
     border-radius: 50%;
-    border: solid black 0.1em;
     z-index: 1;
 
 }
 
 .headerProfil-pp{
     height: 100%;
+    border-radius: 50%;
 
 }
 

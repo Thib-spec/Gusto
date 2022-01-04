@@ -6,6 +6,8 @@ import foldBlack from "../../Images/foldBlack.svg"
 
 export default function ProductDropDownCategorie(props){
 
+    
+    //On récupère la liste des produits 
     const [allProducts, setallProducts] = useState([]);
     useEffect(() => {
         axios.get("http://api.gustosolutions.fr/api/product")
@@ -14,6 +16,25 @@ export default function ProductDropDownCategorie(props){
             .catch((err) => console.log(err));
     }, [])
 
+    //Fonction appelé lors de la mise à jour des informations d'un produits
+    const refreshProductUpdate = (data) => {
+        const array= new Array()
+        allProducts.map((el)=>
+            data.id_product!=el.id_product?array.push(el):array.push(data)
+        )
+        console.log(array)
+        setallProducts(array)
+    }
+
+    //Fonction appelé lors de la suppression d'un produit
+    const refreshProductDelete = (data) => {
+        const array= new Array()
+        allProducts.map((el)=>
+
+            data.id_product!=el.id_product?array.push(el):false
+        )
+        setallProducts(array)
+    }
 
 
      //open and close the dropdown on click
@@ -30,11 +51,13 @@ export default function ProductDropDownCategorie(props){
             </div>
             {open?
                 <div>
-                {allProducts.map((product) => (
-                    product.fk_id_category==props.categorie.id_category?
-                        <ProductDropDownComponent product={product} key={product.id_product} id_category={props.categorie.id_category}/>
-                    :false
-                ))}
+                    {/*On map la liste des produits de la catégorie*/}
+                    {allProducts.map((product) => (
+                        
+                        product.fk_id_category==props.categorie.id_category?
+                            <ProductDropDownComponent funcDeleteProduct={refreshProductDelete} funcUpdate={refreshProductUpdate} product={product} key={product.id_product} id_category={props.categorie.id_category}/>
+                        :false
+                    ))}
                 </div>
             :false
             }

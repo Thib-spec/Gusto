@@ -5,7 +5,7 @@ const data = {
   labels: ['Jan', 'Mar', 'May', 'July', 'Oct'],
   datasets: [
     {
-      label: 'Iphone sales',
+      label: 'Sales',
       data: [400, 1000, 4000, 800, 1500],
       backgroundColor: ["darkblue", "grey", "darkblue", "grey","darkblue"],
       borderColor: ["grey", "darkblue", "grey", "darkblue","grey"],
@@ -16,7 +16,6 @@ const data = {
 
 const options = {
     
-    
     maintainAspectRatio: false,
   scales: {
     y:{
@@ -26,17 +25,13 @@ const options = {
       },
       
     },
-    
-
-      
-    
   },
 };
 
 function BarChart() {
   return (
     <div className="App">
-      <h2>Quarterly sales for mobile phones</h2>
+      <h2>Sales</h2>
       <Bar data={data} options={options} height={400}
         width={600}/>
     </div>

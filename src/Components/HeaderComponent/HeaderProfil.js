@@ -1,9 +1,9 @@
-import "../CSS/HeaderProfil.scss";
+import "../../CSS/HeaderProfil.scss";
 import React from "react";
-import profilpp from "../Charte_graphique/Logo/Colors/user.svg";
+import profilpp from "../../Images/user-default-pp.png";
 
 export default function HeaderProfil(props) {
-  return (
+  return(
     <div className="container-HeaderProfil">
       <div className="headerProfil-profilInformation">
         <div className="headerProfil-profilInformation-name">

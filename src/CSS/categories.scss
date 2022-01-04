@@ -15,10 +15,11 @@
 
 .categories-list-element{
     margin-top:5%;
-    cursor: pointer;
+    
 }
 
 .categories-list-element-title-fold{
+    cursor: pointer;
     font-size: 200%;
     background-color: #2F4057;
     color: white;
@@ -34,6 +35,7 @@
 }
 
 .categories-list-element-title-unfold{
+    cursor: pointer;
     font-size: 200%;
     background-color: #2F4057;
     color: white;
@@ -111,7 +113,6 @@
 
  @media (max-width: 1000px) {
     .categories-list{
-      
         width: 80%;
     }
 }

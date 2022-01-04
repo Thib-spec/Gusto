@@ -1,38 +1,32 @@
 import React , {useState} from "react";
-import "../CSS/categories.scss"
-import DATAProducts from "../Data/products"
-import dot from "Images/dots.png"
-import InputForm from "Components/FormComponent/InputForm"
+import "CSS/categories.scss"
 import imgcategorie from "Images/imgcategorie.svg"
-import fold from "../Images/fold.svg"
-import unfold from "../Images/unfold.svg"
+import fold from "Images/fold.svg"
+import unfold from "Images/unfold.svg"
 import axios from "axios";
 import {Modal, Button} from 'react-bootstrap'
-import TextAreaComponent from "./FormComponent/TextAreaComponent";
+import TextAreaComponent from "../FormComponent/TextAreaComponent";
 
 
 
 export default function CategorieDropDownComponent(props){
+
+    //Initialisation des variables
     const[edition,setEdition]=useState(false)
-
     const [show, setShow] = useState(false);
-    const [nameCategorieDel, setnameCategorieDel] = useState("");
 
+
+    //Open and close the modal 
     const handleClose = () => setShow(false);
-
     const handleShow = () => {
         setShow(true);
-        setnameCategorieDel(props.categorie.label)
 
    }
 
 
-    //Update categorie
+    //Update categorie    
 
-    //hooks value of updated categories
-    
-
-    //when the client update a categorie and confirm it, 
+    //when the client update a categorie, 
     function handleUpdateCategorie(){
         try{
             let a=document.getElementById("categoriesEditLabel"+props.categorie.id_category).value
@@ -67,9 +61,7 @@ export default function CategorieDropDownComponent(props){
 
     //Delete categorie
 
-    //when the client delete a categorie and confirm it, 
-    
-
+    //when the client delete a categorie and confirm it,
     function handleDeleteCatégorie(){
         try{
             handleClose()
@@ -155,7 +147,7 @@ export default function CategorieDropDownComponent(props){
                     <Modal.Title>Suppression</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
-                    <h4>Êtes-vous sûr de vouloir supprimer la catégorie : {nameCategorieDel} </h4>
+                    <h4>Êtes-vous sûr de vouloir supprimer la catégorie : {props.categorie.label} </h4>
                     
                 </Modal.Body>
                 <Modal.Footer>

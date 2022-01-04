@@ -1,10 +1,7 @@
-import DATASales from "Data/dataSales";
 import React, { useState, useEffect } from "react";
 import "../../CSS/logsFridge.scss";
-import ButtonFridge from "./ButtonFridge";
 import axios from "axios";
 import LogSaleComponent from "./LogSaleComponent";
-import DATAfridgeproduct from "Data/datafridgeproduct";
 
 export default function FridgeLogsCard(props) {
   const [sliceSales, setsliceSales] = useState([]);

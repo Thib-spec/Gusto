@@ -5,7 +5,7 @@ const data = {
   labels: ['Jan', 'Mar', 'May', 'July', 'Oct'],
   datasets: [
     {
-      label: 'Iphone sales',
+      label: 'Sales',
       data: [400, 1000, 4000, 800, 1500],
       fill: true,
       backgroundColor:"#2e4355",
@@ -46,7 +46,7 @@ const options = {
 function LineChart() {
   return (
     <div className="App">
-      <h2>Quarterly sales for mobile phones</h2>
+      <h2>Sale</h2>
       <Line data={data} options={options}/>
     </div>
   );
