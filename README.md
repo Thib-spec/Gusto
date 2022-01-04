@@ -40,6 +40,15 @@ ou http://api.gustosolutions.fr/api/... en production
 
 Afin d'effectuer les différents tests il est fortement conseillé d'utiliser Postman, logiciel permettant d'appeler des reqêtes API facilement : https://www.postman.com/downloads/
 
+On précise les routes dont le body prend la forme d'un array : 
+* POST => api/fridgePreset/id/addProduct
+* PUT => api/fridgePreset/id/editProduct
+* DELETE => api/fridgePreset/id/removeProduct
+* POST => api/fridgePreset/id/addMenu
+* DELETE => api/fridgePreset/id/removeMenu
+* POST => api/menu/id/products
+* DELETE  => api/menu/id/removeProduct
+
  ## Fonctionalités non achevées
  
  ### Upload
