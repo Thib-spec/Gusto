@@ -105,130 +105,6 @@ paths:
                     updatedAt : 2021-11-26T13:38:27.000Z
                     fk_id_client: 8
 
-      post:
-        security:
-          - bearerAuth: []
-        tags: [Category]
-        summary: Add a category
-        requestBody:
-          required: true
-          content:
-            application/json:
-              schema: 
-                properties:
-                  label:
-                    type: string
-                  image:
-                    type: string
-                  description:
-                    type: string
-        responses:
-          '200':    # status code
-            description: The category added
-            content:
-              application/json:
-                  example:
-                    id_category: 1
-                    label: fruits
-                    image : https://www.google.com/imgres?imgurl=https%3A%2F%2Fmedia.istockphoto.com
-                    description: some description
-                    createdAt: 2021-11-26T13:38:27.000Z
-                    updatedAt : 2021-11-26T13:38:27.000Z
-                    fk_id_client: 8
-          '400':
-            description: An error message
-            content:
-              application/json:
-                  example:
-                    message: "Missing required parameters"
-
-  /category/{id}:
-      get:
-        tags: [Category]
-        summary: Returns the specified category.
-        parameters:
-        - name: id
-          in: path
-          type: integer
-          required: true
-          description: Numeric ID of the category to get.
-        responses:
-          '200':    # status code
-            description: The category to get
-            content:
-              application/json:
-                  example:
-                    id_category: 1
-                    label: fruits
-                    image : https://www.google.com/imgres?imgurl=https%3A%2F%2Fmedia.istockphoto.com
-                    description: some description
-                    createdAt: 2021-11-26T13:38:27.000Z
-                    updatedAt : 2021-11-26T13:38:27.000Z
-                    fk_id_client: 8
-          '400':
-            description: An error message
-            content:
-              application/json:
-                  example:
-                    message: "Category does not exists"
-
-      put:
-        tags: [Category]
-        summary: Update category
-        parameters:
-        - name: id
-          in: path
-          type: integer
-          required: true
-          description: Numeric ID of the category to update.
-        requestBody:
-          required: true
-          content:
-            application/json:
-              schema: 
-                properties:
-                  label:
-                    type: string
-                  image:
-                    type: string
-                  description:
-                    type: string
-        responses:
-          '200':    # status code
-            description: A successful message
-            content:
-              application/json:
-                  example:
-                    message: "item has been updated"
-          '400':
-            description: An error message
-            content:
-              application/json:
-                  example:
-                    message: "Specified Category does not exist"
-              
-      delete:
-        tags: [Category]
-        summary: Allow to delete a category
-        parameters:
-        - name: id
-          in: path
-          type: integer
-          required: true
-          description: Numeric ID of the category to delete.
-        responses:
-          '200':   
-            description: A successful message
-            content: 
-              application/json:
-                  example:
-                    message: "Category with id : x has been deleted"
-          '400':
-            description: An error message
-            content:
-              application/json:
-                  example:
-                    message: "Category does not exists"
 
   /category/{id}/products:
       get:
@@ -319,6 +195,131 @@ paths:
               application/json:
                   example:
                     message: "Category does not exist"
+
+  /category/{id}:
+      get:
+        tags: [Category]
+        summary: Returns the specified category.
+        parameters:
+        - name: id
+          in: path
+          type: integer
+          required: true
+          description: Numeric ID of the category to get.
+        responses:
+          '200':    # status code
+            description: The category to get
+            content:
+              application/json:
+                  example:
+                    id_category: 1
+                    label: fruits
+                    image : https://www.google.com/imgres?imgurl=https%3A%2F%2Fmedia.istockphoto.com
+                    description: some description
+                    createdAt: 2021-11-26T13:38:27.000Z
+                    updatedAt : 2021-11-26T13:38:27.000Z
+                    fk_id_client: 8
+          '400':
+            description: An error message
+            content:
+              application/json:
+                  example:
+                    message: "Category does not exists"
+
+      post:
+        security:
+          - bearerAuth: []
+        tags: [Category]
+        summary: Add a category
+        requestBody:
+          required: true
+          content:
+            application/json:
+              schema: 
+                properties:
+                  label:
+                    type: string
+                  image:
+                    type: string
+                  description:
+                    type: string
+        responses:
+          '200':    # status code
+            description: The category added
+            content:
+              application/json:
+                  example:
+                    id_category: 1
+                    label: fruits
+                    image : https://www.google.com/imgres?imgurl=https%3A%2F%2Fmedia.istockphoto.com
+                    description: some description
+                    createdAt: 2021-11-26T13:38:27.000Z
+                    updatedAt : 2021-11-26T13:38:27.000Z
+                    fk_id_client: 8
+          '400':
+            description: An error message
+            content:
+              application/json:
+                  example:
+                    message: "Missing required parameters"
+
+      put:
+        tags: [Category]
+        summary: Update category
+        parameters:
+        - name: id
+          in: path
+          type: integer
+          required: true
+          description: Numeric ID of the category to update.
+        requestBody:
+          required: true
+          content:
+            application/json:
+              schema: 
+                properties:
+                  label:
+                    type: string
+                  image:
+                    type: string
+                  description:
+                    type: string
+        responses:
+          '200':    # status code
+            description: A successful message
+            content:
+              application/json:
+                  example:
+                    message: "item has been updated"
+          '400':
+            description: An error message
+            content:
+              application/json:
+                  example:
+                    message: "Specified Category does not exist"
+              
+      delete:
+        tags: [Category]
+        summary: Allow to delete a category
+        parameters:
+        - name: id
+          in: path
+          type: integer
+          required: true
+          description: Numeric ID of the category to delete.
+        responses:
+          '200':   
+            description: A successful message
+            content: 
+              application/json:
+                  example:
+                    message: "Category with id : x has been deleted"
+          '400':
+            description: An error message
+            content:
+              application/json:
+                  example:
+                    message: "Category does not exists"
 
   /client:
       get:
@@ -1767,7 +1768,7 @@ paths:
                     message: "Menu does not exist or does not have any products"
 
   /menu/{id}/removeProduct:
-       delete:
+      delete:
         tags: [Menu]
         summary: Allow to delete a product from a menu
         parameters:
@@ -2631,7 +2632,7 @@ paths:
                   example:
                     message: "Missing required parameters"
 
-  /fridgePreset/{id}/editProduct/{productId}:
+  /fridgePreset/{id}/editProduct:
       put:
         tags: [FridgePreset]
         summary: Update products in fridgePreset
@@ -2641,11 +2642,6 @@ paths:
           type: integer
           required: true
           description: Numeric ID of the fridgePreset.
-        - name: productId
-          in: path
-          type: integer
-          required: true
-          description: Numeric ID of the products to update in fridgePreset.
         requestBody:
           required: true
           content:
@@ -2655,6 +2651,8 @@ paths:
                   quantity_min:
                     type: integer
                   quantity_max:
+                    type: integer
+                  fk_id_product:
                     type: integer
         responses:
           '200':    # status code
@@ -2670,7 +2668,7 @@ paths:
                   example:
                     message: "Specified fridgePreset does not exist"
 
-  /fridgePreset/{id}/removeProduct/{productId}:           
+  /fridgePreset/{id}/removeProduct:           
       delete:
         tags: [FridgePreset]
         summary: Allow to delete a product from a fridgePreset
@@ -2680,11 +2678,14 @@ paths:
           type: integer
           required: true
           description: Numeric ID of the fridgePreset.
-        - name: productId
-          in: path
-          type: integer
+        requestBody:
           required: true
-          description: Numeric ID of the product to delete from a fridgePreset.
+          content:
+            application/json:
+              schema: 
+                properties:
+                  fk_id_product:
+                    type: integer
         responses:
           '200':   
             description: A successful message
@@ -2763,7 +2764,7 @@ paths:
                   example:
                     message: "Missing required parameters"
 
-  /fridgePreset/{id}/removeMenu/{menuId}:           
+  /fridgePreset/{id}/removeMenu:           
       delete:
         tags: [FridgePreset]
         summary: Allow to delete a menu from a fridgePreset
@@ -2773,11 +2774,14 @@ paths:
           type: integer
           required: true
           description: Numeric ID of the fridgePreset.
-        - name: menuId
-          in: path
-          type: integer
+        requestBody:
           required: true
-          description: Numeric ID of the menu to delete from a fridgePreset.
+          content:
+            application/json:
+              schema: 
+                properties:
+                  fk_id_menu:
+                    type: integer
         responses:
           '200':   
             description: A successful message
