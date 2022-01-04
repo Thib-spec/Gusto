@@ -16,7 +16,7 @@ const fridgePresetRouter = require("./fridgePreset")
 const nationalityRouter = require("./nationality")
 const badgeRouter = require("./badges")
 const technologiesRouter = require("./technologies")
-//const uploadRouter = require("./upload")
+//const uploadRouter = require("./upload")           A décommenter pour tester la route upload en local
 
 
 /* ----------------------- */
@@ -41,7 +41,7 @@ router.use('/fridgePreset',fridgePresetRouter)
 router.use("/nationality",nationalityRouter)
 router.use("/badge",badgeRouter)
 router.use("/technologies",technologiesRouter)
-//router.use("/upload",uploadRouter)
+//router.use("/upload",uploadRouter)            A décommenter pour tester la route upload en local
 
 
 // Handle other API routes, send Not found
