@@ -6,6 +6,14 @@
 * Lancer la commande "npm install" afin d'installer les dépendances
 * Lancer la commande "npm start" afin de lancer le serveur
 
+
+## Mise en production
+
+Afin de mettre à jour le site en production il est nécessaire de lancer la commande : 
+scp -P 41149 -r C:\\Github\\Gusto\\src  gustoss@sshcloud.cluster024.hosting.ovh.net:~/api
+
+Il suffit ensuite de redémarrer le site api.gustosolutions.fr depuis le panneau de contrôle de OVH
+
 ## Architecture
 
 ![image](https://user-images.githubusercontent.com/60107479/147947505-6c194878-8892-437c-9029-52685740e3a3.png)
