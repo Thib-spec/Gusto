@@ -1,12 +1,6 @@
-import "../CSS/header.scss";
+import "CSS/header.scss";
 import logo from "Charte_graphique/Logo/Colors/Logo_Gusto_Colors.svg";
-import profilpp from "Charte_graphique/Logo/Colors/user.svg";
-import profilpp1 from "../Images/imageprofil.png";
-
-import DATAUtilisateurs from "../Data/utilisateurs";
 import iconeMenu from "Charte_graphique/Logo/Colors/menu.svg";
-import iconeMenu1 from "../Images/iconeMenu.png";
-
 import React, { useState } from "react";
 import { useHistory } from "react-router";
 import { useSelector, useDispatch } from "react-redux";
@@ -14,13 +8,15 @@ import api from "helpers/api";
 import userActions from "store/actions/userActions";
 import HeaderProfil from "./HeaderProfil";
 
+
 export default function Header() {
+
+  //Initialisation des variables
   const [open, setopen] = useState(false);
   const [openProfil, setopenProfil] = useState(false);
-
   const [path, setpath] = useState("Accueil");
 
-  const user = useSelector((state) => state.user.value);
+  const user = useSelector((state) => state.user.value);//On récupère le user
   const dispatch = useDispatch();
 
   function onOver(){
@@ -36,10 +32,7 @@ export default function Header() {
 
   let history = useHistory();
 
-  function handleLogin() {
-    history.push("/Login");
-    setpath("Login");
-  }
+  //Fonction permettant de changer l'url de l'app et ainsi changer de page grâce au adminRouter.js
   async function handleLogout() {
     try {
       console.log("api.logout() : ");
@@ -53,6 +46,7 @@ export default function Header() {
       }
     } catch (error) {}
   }
+
   function handleProducts() {
     history.push("/products");
     setpath("Produits");
@@ -91,36 +85,23 @@ export default function Header() {
           </div>
         </div>
         <div className="header-top-name-container">
-          <div className="header-top-name">{`${
-            user.client ? user.client.name : ""
-          }`}</div>
+          <div className="header-top-name">{`${user.client ? user.client.name : ""}`}</div>
         </div>
         <div className="header-top-profil-container" onClick={()=>setopenProfil(!openProfil)} onMouseLeave={()=>setopenProfil(false)}>
-          <HeaderProfil
-            lastName={user.lastName}
-            firstName={user.firstName}
-            level={user.level.label}
-          />
+          <HeaderProfil lastName={user.lastName} firstName={user.firstName} level={user.level.label}/>
           {openProfil ? (
-        <div className="header-dropdown-profil">
-        <div className="header-dropdown-profil-element">Profil</div>
-        <div className="header-dropdown-profil-element" onClick={()=>handleLogout()}>Déconnexion</div>
-      </div>):(false)
-      }
-        </div>
-        
-        
+            <div className="header-dropdown-profil">
+              <div className="header-dropdown-profil-element">Profil</div>
+              <div className="header-dropdown-profil-element" onClick={()=>handleLogout()}>Déconnexion</div>
+            </div>)
+          :
+          (false)
+          }
+        </div>   
       </div>
-          
+      
       <div className="header-bottom">
-        <img
-          src={iconeMenu}
-          alt=""
-          className="header-bottom-menuIcone"
-          onMouseEnter={onOver}
-          onMouseLeave={onNotOver}
-          onClick={()=>onClicked()}
-        />
+        <img src={iconeMenu} alt="" className="header-bottom-menuIcone" onMouseEnter={onOver} onMouseLeave={onNotOver} onClick={()=>onClicked()}/>
         <div className="header-bottom-path">{path}</div>
       </div>
       {open ? (
@@ -129,29 +110,13 @@ export default function Header() {
           <div className="header-bottom-menuList-button" onClick={handleFrigo}>Fridges</div>
           <div className="header-bottom-menuList-button" onClick={handlePreset}>Preset</div>
           <div className="header-bottom-menuList-button" onClick={handleMenus}>Menus</div>
-          {/* <div className="header-bottom-menuList-button" onClick={handlePromo}>
-            Promotions
-          </div> */}
-          <div
-            className="header-bottom-menuList-button"
-            onClick={handleProducts}
-          >
-            Produits
-          </div>
-          <div
-            className="header-bottom-menuList-button"
-            onClick={handleCategories}
-          >
-            Catégories
-          </div>
-          {/* <div className="header-bottom-menuList-button" onClick={handleLogin}>Login</div> */}
-          
+          {/* <div className="header-bottom-menuList-button" onClick={handlePromo}>Promotions</div> */}
+          <div className="header-bottom-menuList-button" onClick={handleProducts}>Produits</div>
+          <div className="header-bottom-menuList-button" onClick={handleCategories}>Catégories</div>
         </div>
       ) : (
         false
-      )}
-
-      
+      )} 
     </div>
   );
 }

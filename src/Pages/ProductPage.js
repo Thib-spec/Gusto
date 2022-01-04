@@ -1,19 +1,14 @@
 import "CSS/productPage.scss"
 import UploadForm from "Components/FormComponent/UploadForm"
-import React, { Component, useState, useEffect }  from 'react'
-import DATAProducts from "Data/products"
-import fold from "../Images/fold.svg"
-import foldBlack from "../Images/foldBlack.svg"
-import imgcategorie from "Images/imgcategorie.svg"
-import unfold from "../Images/unfold.svg"
+import React, { useState, useEffect }  from 'react'
 import {Modal, Button} from 'react-bootstrap'
-import DATACatégories from "Data/categories"
-import ProductDropDownComponent from "Components/ProductDropDownComponent"
 import axios from "axios";
-import CategorieinProductDropDown from "Components/CategorieinProductDropDown"
+import ProductDropDownCategorie from "Components/ProductComponent/ProductDropDownCategorie"
+
 
 export default function ProductsPage(){
 
+    //On récupère la liste des catégories 
     const [allCategories, setallCategories] = useState([]);
     useEffect(() => {
         axios.get("http://api.gustosolutions.fr/api/category")
@@ -22,19 +17,16 @@ export default function ProductsPage(){
             .catch((err) => console.log(err));
     }, [])
 
-    
 
+    //show the addProduct modal or not
+    const [show, setShow] = useState(false);
+    const handleClose = () => setShow(false);
+    const handleShow = () => setShow(true);
 
-
-     //show the addProduct modal or not
-     const [show, setShow] = useState(false);
-     const handleClose = () => setShow(false);
-     const handleShow = () => setShow(true);
- 
-     //hooks value of added products
+    //hooks value of added products
      
-     //when the client add a product and save it, 
-     function handleSave(){
+    //when the client add a product and save it, 
+    function handleSave(){
         try{
             let a=document.getElementById('prix').value
             let b=document.getElementById('label').value
@@ -44,11 +36,6 @@ export default function ProductsPage(){
             c=Number(c)
             a=Number(a)
             d=Number(d)
-            console.log("d",d,typeof(d))
-            console.log("c",c,typeof(c))
-            console.log("a",a,typeof(a))
-
-            
             
             axios.post("http://api.gustosolutions.fr/api/product",{
                 "label":b,
@@ -75,16 +62,16 @@ export default function ProductsPage(){
      }
 
     
-    
 
     return(
         <div className="products-container">
             <div className="products-list">
+                <button type="button" class="btn btn-warning products-addProductButton" onClick={handleShow}>Ajouter un produit</button>
+                {/*On map les catégories et pour chaque catégorie on affiche ProductDropDownCategorie*/}
                 {allCategories.map((catégorie) => (
-                    <CategorieinProductDropDown categorie={catégorie} key={catégorie.id_category}/>
+                    <ProductDropDownCategorie categorie={catégorie} key={catégorie.id_category}/>
                 ))}
                 
-                <button type="button" class="btn btn-warning products-addProductButton" onClick={handleShow}>Ajouter un produit</button>
             </div>
         
             <Modal show={show} onHide={handleClose}>

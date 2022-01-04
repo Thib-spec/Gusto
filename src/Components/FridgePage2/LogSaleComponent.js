@@ -17,8 +17,7 @@ export default function LogSaleComponent({ sale }) {
       <div className="logs-sales-content-element-products">
         {sale.Products.map((el) => (
           <div className="logs-sales-content-element-products-element" key={el.id_product}>
-            <div>{el.products_sales.quantity_product} {el.label}</div>
-            
+            <div>{el.products_sales.quantity_product}{el.label}</div>
           </div>
         ))}
       </div>

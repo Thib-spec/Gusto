@@ -1,18 +1,22 @@
-import "../CSS/productPage.scss"
+
 import React, {useState} from "react"
-import fold from "../Images/fold.svg"
-import imgcategorie from "Images/imgcategorie.svg"
-import unfold from "../Images/unfold.svg"
 import axios from "axios";
 import {Modal, Button} from 'react-bootstrap'
-import TextAreaComponent from "./FormComponent/TextAreaComponent"
 
+import "../../CSS/productPage.scss"
+import fold from "Images/fold.svg"
+import imgcategorie from "Images/imgcategorie.svg"
+import unfold from "Images/unfold.svg"
+import TextAreaComponent from "../FormComponent/TextAreaComponent"
 
 
 export default function ProductDropDownComponent(props){
-    const[edition,setEdition]=useState(false)
 
+    //On initialise les variables 
+    const[edition,setEdition]=useState(false)
     const [open, setOpen] = useState(false);
+
+    //Fonction d'ouverture et de fermeture du dropdown 
     function handleOpen() {
         setOpen(!open);
     }
@@ -29,7 +33,7 @@ export default function ProductDropDownComponent(props){
 
     }
 
-
+    //Fonction de mise à jour d'un produit
     function handleUpdateProduct(){
         try{
             let a=document.getElementById("productEditLabel"+props.product.id_product).value
@@ -48,7 +52,16 @@ export default function ProductDropDownComponent(props){
               })
             .then((res) => {
                 console.log(res);
-                window.location.reload(false);
+                props.funcUpdate({
+                    "id_product":props.product.id_product,
+                    "label":a,
+                    "ubd": b,
+                    "description": d,
+                    "price": c*100,
+                    "image": "image",
+                    "fk_id_category": props.id_category
+                })
+                setEdition(false)
             })
             .catch((err) => {
                 console.log(err);
@@ -60,13 +73,13 @@ export default function ProductDropDownComponent(props){
     }
 
 
-
+    //Fonction de suppression d'un produit 
     function handleDeleteProduct(){
         try{
             axios.delete("http://api.gustosolutions.fr/api/product/"+props.product.id_product)
             .then((res) => {
                 console.log(res);
-                window.location.reload(false);
+                props.funcDeleteProduct(props.product)
             })
             .catch((err) => {
                 console.log(err);
@@ -77,6 +90,7 @@ export default function ProductDropDownComponent(props){
         }
     }
     
+    //Permet de faire la conversion du prix entre l'affichage web et la bdd 
     function realPrice(prix){
         return(prix/100)
         

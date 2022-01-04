@@ -2,7 +2,7 @@ import logoGustoColors from "Images/Logo_Gusto_Colors.svg";
 // import "CSS/loginPage.css";
 
 import React, { useState } from "react";
-import { useSelector, useDispatch } from "react-redux";
+import {  useDispatch } from "react-redux";
 
 import api from "helpers/api";
 import userActions from "store/actions/userActions";
@@ -12,7 +12,7 @@ import Value from "helpers/Value";
 import _LanguageSelector from "Components/_LanguageSelector";
 
 export default function LoginPage({ location, history, t }) {
-  const user = useSelector((state) => state.user.value);
+  //const user = useSelector((state) => state.user.value);
   const dispatch = useDispatch();
   const isMounted = useIsMounted();
 

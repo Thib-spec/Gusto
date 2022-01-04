@@ -1,17 +1,14 @@
 import "CSS/categories.scss"
-import DATACatégories from "../Data/categories"
-
 import {Modal, Button} from 'react-bootstrap'
 import UploadForm from "Components/FormComponent/UploadForm"
 import React, { useState, useEffect }  from 'react'
-import CategorieDropDownComponent from "Components/CategorieDropDownComponent"
+import CategorieDropDownComponent from "Components/CategoryComponent/CategorieDropDownComponent"
 import axios from "axios";
+
 
 export default function CategoriesPage(){
 
-
-
-
+    //On récupère la liste des catégories
     const [allCategories, setallCategories] = useState([]);
     useEffect(() => {
         axios.get("http://api.gustosolutions.fr/api/category")
@@ -20,13 +17,10 @@ export default function CategoriesPage(){
             .catch((err) => console.log(err));
     }, [])
 
-  
-
-
 
     //Add catégorie
 
-    //show the addProduct modal or not
+    //show the addCategory modal or not
     const [show, setShow] = useState(false);
     const handleClose = () => setShow(false);
     const handleShow = () => setShow(true);
@@ -42,6 +36,7 @@ export default function CategoriesPage(){
             }
           }
         try{
+            //GetElementById pour les réponse du formulaire 
             let a=document.getElementById('labelCatégorie').value
             let b=document.getElementById('descriptionCategorie').value
 
@@ -68,6 +63,7 @@ export default function CategoriesPage(){
         }
     }
 
+    //Fonction appelé lors de la suppression d'une catégorie afin de supprimer l'affichage de la catégorie 
     const refreshCategorieDel = (data) => {
         const array= new Array()
         allCategories.map((el)=>
@@ -75,31 +71,28 @@ export default function CategoriesPage(){
             data.id_category!=el.id_category?array.push(el):false
         )
         setallCategories(array)
+    }
 
-      }
-
-      const refreshCategorieUpdate = (data) => {
+    //Fonction appelé lors d'une mise à jour des information d'une catégorie 
+    const refreshCategorieUpdate = (data) => {
         const array= new Array()
         allCategories.map((el)=>
-
             data.id_category!=el.id_category?array.push(el):array.push(data)
         )
         setallCategories(array)
-
-      }
+    }
     
-   
-   
     
     return(
         <div className="categories-container">
             <div className="categories-list">
+                <button type="button" class="btn btn-warning categories-list-element-sub-buttons-element-addButton" onClick={handleShow}>Ajouter une catégorie</button>
+
                 {allCategories.map((categorie) => (
                     
                     <CategorieDropDownComponent func1={refreshCategorieUpdate} func={refreshCategorieDel} categorie={categorie} key={categorie.id_category}/>
                 ))}
                 
-                <button type="button" class="btn btn-warning categories-list-element-sub-buttons-element-addButton" onClick={handleShow}>Ajouter une catégorie</button>
             </div>
 
             <Modal show={show} onHide={handleClose}>
