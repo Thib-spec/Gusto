@@ -351,6 +351,7 @@ const Joi = require('joi');
         price: Joi.number().max(32767).required(),
         web_label: Joi.string().required(),
         fridge_label:Joi.string().required(),
+        image:Joi.string()
     })
 
     const result = postMenuSchema.validate(req.body)
