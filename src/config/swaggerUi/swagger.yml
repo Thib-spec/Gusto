@@ -527,6 +527,8 @@ paths:
             application/json:
               schema: 
                 properties:
+                  id_fridge:
+                    type: string
                   label:
                     type: string
                   fk_id_technologies:
@@ -1071,6 +1073,29 @@ paths:
                   example:
                     message: "Fridge does not exists or state with such ids does not exist"
 
+  /fridge/user:
+      get:
+        security:
+          - bearerAuth: [] 
+        tags: [Fridge]
+        summary: Returns the specified fridge.
+        responses:
+          '200':    # status code
+            description: The fridge to get
+            content:
+              application/json:
+                  example:
+                    id_fridge: 1
+                    label: fridge1
+                    createdAt: 2021-11-26T13:38:27.000Z
+                    updatedAt : 2021-11-26T13:38:27.000Z
+                    fk_id_technologies: 1
+          '400':
+            description: An error message
+            content:
+              application/json:
+                  example:
+                    message: "Fridge does not exist"
 
   /product:
     get:
@@ -1189,8 +1214,6 @@ paths:
                     type: string
                   description:
                     type: string
-                  fk_id_category:
-                    type: integer
         responses:
           '200':    # status code
             description: A successful message
@@ -1490,7 +1513,7 @@ paths:
   /user/login: 
       post:
         tags: [User]
-        summary: Add a login
+        summary: Create a user session
         requestBody:  
           required: true
           content:
@@ -1897,8 +1920,6 @@ paths:
           application/json:
             schema: 
               properties:
-                sales_timestamp:
-                  type: string
                 cbemv_amount:
                   type: integer
                 cbcless_amount :
@@ -1966,46 +1987,49 @@ paths:
               application/json:
                   example:
                     message: "Sale does not exist"
-      put:
+      post:
         tags: [Sale]
-        summary: Update sale
-        parameters:
-        - name: id
-          in: path
-          type: integer
-          required: true
-          description: Numeric ID of the sale to update.
-        requestBody:
+        summary: Add a sale
+        requestBody:  
           required: true
           content:
             application/json:
               schema: 
                 properties:
-                  sales_timestamp:
-                    type: string
                   cbemv_amount:
-                    type: number
+                    type: integer
                   cbcless_amount :
-                    type: number
+                    type: integer
                   lv_amount:
-                    type: number
+                    type: integer
                   lv_quantity:
-                    type: number
+                    type: integer
                   cash_amount:
-                    type: number
+                    type: integer
+                  fk_id_fridge:
+                    type: integer
         responses:
           '200':    # status code
-            description: A successful message
+            description: The sale added
             content:
               application/json:
                   example:
-                    message: "item has been updated"
+                    id_sale: 1
+                    sales_timestamp: 10:38
+                    cbemv_amount: 5.50
+                    cbcless_amount : 3.50
+                    lv_amount: 5.30
+                    lv_quantity: 3
+                    cash_amount: 5.50
+                    createdAt: 2021-11-26T13:38:27.000Z
+                    updatedAt : 2021-11-26T13:38:27.000Z
+                    fk_id_fridge: 2
           '400':
             description: An error message
             content:
               application/json:
                   example:
-                    message: "Specified sale does not exist"
+                    message: "Missing required parameters"
               
       delete:
         tags: [Sale]
@@ -2178,6 +2202,8 @@ paths:
             application/json:
               schema: 
                 properties:
+                  id_tag:
+                    type: string
                   fk_id_product:
                     type: integer
                   fk_id_client:
@@ -2260,6 +2286,30 @@ paths:
               application/json:
                   example:
                     message: "Specified tag does not exist"
+
+  /tag/user:
+      get:
+        security:
+          - bearerAuth: [] 
+        tags: [Tag]
+        summary: Returns the specified tags.
+        responses:
+          '200':    # status code
+            description: The tags to get
+            content:
+              application/json:
+                  example:
+                    id_category: 1
+                    createdAt: 2021-11-26T13:38:27.000Z
+                    updatedAt : 2021-11-26T13:38:27.000Z
+                    fk_id_product: 1
+                    fk_id_client: 5
+          '400':
+            description: An error message
+            content:
+              application/json:
+                  example:
+                    message: "Tag does not exist"
 
   /level:
       get:
@@ -2405,6 +2455,60 @@ paths:
                   example:
                     message: "Missing required parameters"
 
+  /fridgePreset/user:
+      get:
+        security:
+          - bearerAuth: [] 
+        tags: [FridgePreset]
+        summary: Returns the specified fridgePreset.
+        responses:
+          '200':    # status code
+            description: The fridgePreset to get
+            content:
+              application/json:
+                  example:
+                    id_fridgePresets: 1
+                    label: config1
+                    createdAt: 2021-11-26T13:38:27.000Z
+                    updatedAt : 2021-11-26T13:38:27.000Z
+                    fk_id_client: 2
+          '400':
+            description: An error message
+            content:
+              application/json:
+                  example:
+                    message: "FridgePreset does not exist"
+
+  /fridgePreset/{id}/product/user:
+      get:
+        security:
+          - bearerAuth: [] 
+        tags: [FridgePreset]
+        summary: Returns the specified fridgePreset.
+        parameters:
+        - name: id
+          in: path
+          type: integer
+          required: true
+          description: Numeric ID of the fridegPreset.
+        responses:
+          '200':    # status code
+            description: The fridgePreset to get
+            content:
+              application/json:
+                  example:
+                    id_fridgePresets: 1
+                    label: config1
+                    createdAt: 2021-11-26T13:38:27.000Z
+                    updatedAt : 2021-11-26T13:38:27.000Z
+                    fk_id_client: 2
+          '400':
+            description: An error message
+            content:
+              application/json:
+                  example:
+                    message: "FridgePreset does not exist"                    
+
   /fridgePreset/{id}:
       get:
         tags: [FridgePreset]
@@ -2450,8 +2554,6 @@ paths:
                 properties:
                   label:
                     type: string
-                  fk_id_client:
-                    type: integer
         responses:
           '200':    # status code
             description: A successful message
@@ -2716,6 +2818,36 @@ paths:
                     updatedAt : 2021-11-26T13:38:27.000Z
                     fk_id_category: 2
 
+  /fridgePreset/{id}/menu/user:
+      get:
+        security:
+          - bearerAuth: [] 
+        tags: [FridgePreset]
+        summary: Returns the specified fridgePreset.
+        parameters:
+        - name: id
+          in: path
+          type: integer
+          required: true
+          description: Numeric ID of the fridegPreset.
+        responses:
+          '200':    # status code
+            description: The fridgePreset to get
+            content:
+              application/json:
+                  example:
+                    id_fridgePresets: 1
+                    label: config1
+                    createdAt: 2021-11-26T13:38:27.000Z
+                    updatedAt : 2021-11-26T13:38:27.000Z
+                    fk_id_client: 2
+          '400':
+            description: An error message
+            content:
+              application/json:
+                  example:
+                    message: "FridgePreset does not exist"                     
+
   /nationality:
       get:
         tags: [Nationality]
@@ -2740,6 +2872,8 @@ paths:
             application/json:
               schema: 
                 properties:
+                  image:
+                    type: string
                   label:
                     type: string
         responses:
@@ -2801,6 +2935,8 @@ paths:
             application/json:
               schema: 
                 properties:
+                  image:
+                    type: string
                   label:
                     type: string
         responses:
@@ -2865,6 +3001,8 @@ paths:
             application/json:
               schema: 
                 properties:
+                  id_badges:
+                    type: string
                   fk_id_user:
                     type: integer
                   fk_id_client:
