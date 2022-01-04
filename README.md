@@ -2,7 +2,7 @@
 
 ## Exécution
 
-* Ouvrir une invit de commande et se positionner dans le dossier src
+* Ouvrir une invite de commande et se positionner dans le dossier src
 * Lancer la commande "npm install" afin d'installer les dépendances
 * Lancer la commande "npm start" afin de lancer le serveur
 
@@ -40,16 +40,25 @@ ou http://api.gustosolutions.fr/api/... en production
 
 Afin d'effectuer les différents tests il est fortement conseillé d'utiliser Postman, logiciel permettant d'appeler des reqêtes API facilement : https://www.postman.com/downloads/
 
+On précise les routes dont le body prend la forme d'un array : 
+* POST => api/fridgePreset/id/addProduct
+* PUT => api/fridgePreset/id/editProduct
+* DELETE => api/fridgePreset/id/removeProduct
+* POST => api/fridgePreset/id/addMenu
+* DELETE => api/fridgePreset/id/removeMenu
+* POST => api/menu/id/products
+* DELETE  => api/menu/id/removeProduct
+
  ## Fonctionalités non achevées
  
  ### Upload
-L'upload d'image fonctionne grâce à 3 fichiers, "upload.js" dans le dossier "middleware", "upload.js" dans le dossier "controller" et "upload.js" dans le dossier "routes". Le but de cette route est de pouvoir sauvegarder côté serveur une image qui aura été déposé via un système de drag and drop dans le front. Cette route fonctionne très bien en local mais provoque une erreur serveur en production dès la connexion au site.
+L'upload d'image fonctionne grâce à 3 fichiers, "upload.js" dans le dossier "middleware", "upload.js" dans le dossier "controller" et "upload.js" dans le dossier "routes". Le but de cette route est de pouvoir sauvegarder côté serveur une image qui aura été déposée via un système de drag and drop dans le front. Cette route fonctionne très bien en local mais provoque une erreur serveur en production dès la connexion au site.
  
  ### Sécurisation des routes avec des middleware
  Il est nécessaire de sécuriser l'ensemble des routes créées via l'implémentation de middleware. Le but est de vérifier pour chaque route en appelant req.user (pour avoir les informations de l'utilisateur connecté) que l'utilisateur a bien la permisssion d'appeler la route.
  
  ### Routes avec passport
- Pour l'instant certaines routes possèdent une configuration passport permettant d'accéder aux informations de l'utilisateur connecté. Il est alors possible de limiter les infos reçues par l'api en renvoyant uniquement les informations propres à l'utilisateur. Pour le moment seules les routes GET renvoi les informations propre à l'utilisateur mais il est nécessaire d'appliquer la même logique pour les routes POST, PUT et DELETE.
+ Pour l'instant certaines routes possèdent une configuration passport permettant d'accéder aux informations de l'utilisateur connecté. Il est alors possible de limiter les infos reçues par l'api en renvoyant uniquement les informations propres à l'utilisateur. Pour le moment seules les routes GET renvoi les informations propres à l'utilisateur mais il est nécessaire d'appliquer la même logique pour les routes POST, PUT et DELETE.
  
 ### Implémentation de test pour certains controllers
 Des tests ne sont pas implémentés dans certaines fonctions du dossier "controller" (voir code) . Pour les implémenter il serait nécessaire de créer des modèles sur la base du modèle "fridge_product" afin de pouvoir accéder à cette table depuis le code et donc d'effectuer la vérification.
