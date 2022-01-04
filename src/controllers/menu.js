@@ -1,11 +1,15 @@
 const Model = require("../database/models");
 const Joi = require('joi');
 
+    // Retourne l'ensemble des menus
+
     exports.listMenus = (req, res) => {
         Model.Menus.findAll()
         .then(menu => res.status(200).json(menu))
         .catch(error => res.status(400).json(error))
     }
+
+    // Retourne l'ensemble des menus associés à l'utilisateur connecté
 
     exports.getMenuForUser = (req,res) => {
         Model.Menus.findAll({
@@ -17,6 +21,7 @@ const Joi = require('joi');
         .catch(error => res.status(400).json(error))
     }
 
+    // Récupère un menu par son id
 
     exports.getMenuById = (req,res) => {
         Model.Menus.findOne({
@@ -39,6 +44,8 @@ const Joi = require('joi');
      
         
     }
+
+    // Retourne l'ensemble des produits contenus dans un menu
 
     exports.listProductByMenu = (req, res) => {
         Model.Menus.findOne({
@@ -72,6 +79,7 @@ const Joi = require('joi');
         .catch(error => res.json(error))
     }
 
+    // Retourne l'ensemble des produits contenus dans les menus associés à l'utilisateur connecté
 
     exports.listProductsByMenusForUser = (req,res) => {
 
@@ -124,6 +132,7 @@ const Joi = require('joi');
         })
     }
 
+    // Ajoute un produit dans un menu (le body est un array)
 
     exports.addProductInMenu = (req,res) => {
 
@@ -243,7 +252,9 @@ const Joi = require('joi');
 
     }
 
-    // verif si produit appartient au menu pas possible
+    // Supprime un produit d'un menu (le body est un tableau)
+    // Le fait de vérifier si produit appartient au menu pas possible pour l'instant sauf création du model fridgePreset_menus
+
     exports.deleteProductInMenu = (req,res) => {
        
         let list_product = []
@@ -330,6 +341,8 @@ const Joi = require('joi');
         })
     }
 
+    // Ajoute un menu
+
     exports.addMenu = (req,res) =>{
         const { image, price, web_label, fridge_label} = req.body;
         
@@ -379,6 +392,7 @@ const Joi = require('joi');
 }
 
 
+// Modifie un menu
 
 exports.editMenu = (req,res) => {
     const { image, price, web_label, fridge_label} = req.body;
@@ -442,6 +456,7 @@ exports.editMenu = (req,res) => {
     .catch(error => console.log(error))
 }
         
+// Supprime un menu
 
 exports.deleteMenu = (req,res) => {
     

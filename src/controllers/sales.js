@@ -1,6 +1,7 @@
 const Model = require("../database/models");
 const Joi = require('joi');
 
+// Retourne la liste de toutes les ventes
 
 exports.listSales = (req, res) => {
     Model.Sales.findAll()
@@ -8,6 +9,7 @@ exports.listSales = (req, res) => {
     .catch(error => res.status(400).json(error))
 }
 
+// Récupère une vente par son id
 
 exports.getSaleById = (req,res) => {
     Model.Sales.findOne({
@@ -29,12 +31,14 @@ exports.getSaleById = (req,res) => {
     .catch(error => res.json(error))
 }
 
+// Ajout d'une vente
 
 exports.addSale = (req,res) =>{
     const {cbemv_amount, cbcless_amount,lv_amount,lv_quantity,cash_amount, fk_id_fridge} = req.body
 
     let list_fk_fridge = []
     let today = new Date()
+    // Impose le format DD/MM/YYYY HH:MM:SS pour la date
     let todayFormat = ("0" + today.getDate()).slice(-2) + "-" + ("0"+(today.getMonth()+1)).slice(-2) + "-" +today.getFullYear() + " " + ("0" + today.getHours()).slice(-2) + ":" + ("0" + today.getMinutes()).slice(-2) + ":" +("0" + today.getSeconds()).slice(-2)
 
     const postSalesSchema = Joi.object().keys({ 
@@ -99,8 +103,7 @@ exports.addSale = (req,res) =>{
         
 }
 
-
-
+// Supprime une vente
 
 exports.deleteSale = (req,res) => {
     
@@ -127,11 +130,10 @@ exports.deleteSale = (req,res) => {
             )   
             .catch(error => res.status(400).json(error))
         }
-
- 
     })
-    
 }
+
+// Associe un produit à une vente
 
 exports.addProductInSale = (req,res) => {
     const {fk_id_product,quantity_product} = req.body

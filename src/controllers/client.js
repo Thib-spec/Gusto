@@ -1,12 +1,15 @@
 const Model = require("../database/models");
 const Joi = require('joi');
 
+    // Récupère la liste de tous les clients
 
     exports.listClients = (req, res) => {
         Model.Client.findAll()
         .then(client => res.status(200).json(client))
         .catch(error => res.status(400).json(error))
     }
+
+    // Récupère toutes les catégories associées à un client
 
     exports.listCategoryByClient = (req,res) => {
         Model.Client.findOne({
@@ -44,6 +47,8 @@ const Joi = require('joi');
         .catch(error => res.status(400).json(error))
     }
 
+    // Récupère la liste de tous les tags associés à un client
+
     exports.listTagsbyClients = (req,res) =>{
         Model.Client.findOne({
             where:{
@@ -80,6 +85,7 @@ const Joi = require('joi');
         .catch(error => res.status(400).json(error))
     }
 
+    // Récupère un client par son id
 
     exports.getClientById = (req,res) => {
         Model.Client.findOne({
@@ -102,7 +108,8 @@ const Joi = require('joi');
      
         
     }
-
+    // Ajoute un client
+    
     exports.addClient = (req,res) =>{
         const {label} = req.body;
         let list_label = []
@@ -156,86 +163,89 @@ const Joi = require('joi');
         }
     }
 
+    // Modifie un client
 
-exports.editClient = (req,res) => {
-    const {label} = req.body;
+    exports.editClient = (req,res) => {
+        const {label} = req.body;
 
-    Model.Client.findOne({
-        where: {
-            id_client: req.params.id
-        }
-    })
-
-    .then((client) => {
-        if (!client) {
-            return res.status(400).json({
-                message: 'Client not found',
-            });
-        }
-
-        const editClientSchema = Joi.object().keys({ 
-            label: Joi.string()
+        Model.Client.findOne({
+            where: {
+                id_client: req.params.id
+            }
         })
 
-        const result = editClientSchema.validate(req.body)
+        .then((client) => {
+            if (!client) {
+                return res.status(400).json({
+                    message: 'Client not found',
+                });
+            }
 
-        
-        const {error } = result; 
-        const valid = error == null; 
-      
-        if (!valid) { 
-          res.status(400).json({ 
-            message: 'One or more fields are not well written', 
-          }) 
-        }
-        
-       else if(Object.keys(req.body).length == 0){
-            res.status(400).json({
-                message:"No parameters were passed"
+            const editClientSchema = Joi.object().keys({ 
+                label: Joi.string()
             })
-        }
-        
-        else { 
-            Model.Client.update({
-                label: label
-            },
-            {
-                where : {
-                    id_client: req.params.id
-                }
-            })
-            return res.status(200).json({
-                message:"Item has been updated"
-            })
-        }
-    })
-    
-    .catch(error => res.status(400).json(error))
-}
-        
 
-exports.deleteClient = (req,res) => {
+            const result = editClientSchema.validate(req.body)
+
+            
+            const {error } = result; 
+            const valid = error == null; 
+        
+            if (!valid) { 
+            res.status(400).json({ 
+                message: 'One or more fields are not well written', 
+            }) 
+            }
+            
+            else if(Object.keys(req.body).length == 0){
+                res.status(400).json({
+                    message:"No parameters were passed"
+                })
+            }
+            
+            else { 
+                Model.Client.update({
+                    label: label
+                },
+                {
+                    where : {
+                        id_client: req.params.id
+                    }
+                })
+                return res.status(200).json({
+                    message:"Item has been updated"
+                })
+            }
+        })
+        
+        .catch(error => res.status(400).json(error))
+    }
+        
+    // Supprime un client
     
-            Model.Client.findOne({
+    exports.deleteClient = (req,res) => {
+        Model.Client.findOne({
+            where: {
+                id_client: req.params.id
+            }
+        })
+        .then((client) => {
+            if (!client) {
+                return res.status(400).json({
+                    message: 'Client not found',
+                });
+            }
+            Model.Client.destroy({
                 where: {
                     id_client: req.params.id
                 }
             })
-            .then((client) => {
-                if (!client) {
-                    return res.status(400).json({
-                        message: 'Client not found',
-                    });
-                }
-                Model.Client.destroy({
-                            where: {
-                                id_client: req.params.id
-                            }
-                        })
-                        .then(res.status(200).json({
-                            message:`Client with id : ${req.params.id} has been deleted`
-                        }))
-                        .catch(error => res.status(400).json(error))
-            })
+
+            .then(res.status(200).json({
+                message:`Client with id : ${req.params.id} has been deleted`
+            }))
+
+            .catch(error => res.status(400).json(error))
+        })
             
-        }
+    }

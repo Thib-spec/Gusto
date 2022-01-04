@@ -1,6 +1,5 @@
 const sales = require('express').Router();
 const salesController = require("../controllers/sales")
-const passport = require("passport")
 
 sales.get('/',salesController.listSales)
 sales.get('/:id', salesController.getSaleById)

@@ -16,6 +16,7 @@ const fridgePresetRouter = require("./fridgePreset")
 const nationalityRouter = require("./nationality")
 const badgeRouter = require("./badges")
 const technologiesRouter = require("./technologies")
+//const uploadRouter = require("./upload")
 
 
 /* ----------------------- */
@@ -23,18 +24,9 @@ const technologiesRouter = require("./technologies")
 /* ----------------------- */
 
 
-/* ----- Public API Routes ----- */
-
-// Handle root
-
-
-// // Handle login
-// router.use('/login', loginRouter);
-
-
-/* ----- Private API Routes ----- */
 
 // Handle main API routes
+
 router.use('/user', userRouter);
 router.use('/category', categoryRouter);
 router.use('/product', productRouter)
@@ -49,6 +41,7 @@ router.use('/fridgePreset',fridgePresetRouter)
 router.use("/nationality",nationalityRouter)
 router.use("/badge",badgeRouter)
 router.use("/technologies",technologiesRouter)
+//router.use("/upload",uploadRouter)
 
 
 // Handle other API routes, send Not found
