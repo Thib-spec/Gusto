@@ -98,6 +98,13 @@ Cette section a été déplacée ici : [https://facebook.github.io/create-react-
 
 # Dossiers & Fichiers
 
+Le dossier page renseigne toutes les pages existantes sur l'app. 
+Le dossier Components renseigne toute les fonctionnalités de l'app avec 1 dossier par fonctionnalité ainsi chaque page possède un dossier attitré dans components.
+
+![image](https://user-images.githubusercontent.com/65896884/148081713-4f3f01c7-4ea4-4caf-9888-72b527f17136.png)
+![image](https://user-images.githubusercontent.com/65896884/148081854-4bd27fd9-2a73-4d90-a60c-86ce796cc2cb.png)
+![image](https://user-images.githubusercontent.com/65896884/148081940-5a68735f-b79b-407e-a2c7-ed03f437cf74.png)
+
 ## Lucas
 
     - Components/FridgePage2/*
@@ -131,9 +138,9 @@ Cette section a été déplacée ici : [https://facebook.github.io/create-react-
     
 # Fonctionalités inachevés 
 
-Setup de la librairie Chart.js permettant de faire des graphiquues en js. Cela permettrai de d'informer le clients de ses ventes dans un format plus visuel qui serait fficher sur la page d'accueil.
+Setup de la librairie Chart.js permettant de faire des graphiques. Cela permettrait de d'informer le client de ses ventes dans un format plus visuel qui serait affiché sur la page d'accueil.
 
-Setup de l'upload d'image coté front cette fonctionalité fonctionne en local mais pas en production.
+Setup de l'upload d'image coté front cette fonctionnalité fonctionne en local, mais pas en production.
 
 
 
