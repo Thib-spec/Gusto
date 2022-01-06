@@ -9,7 +9,7 @@ const env = require(path.join(__dirname, "env.json"));
 
 const middlewares = jsonServer.defaults();
 
-const PORT = process.env.MOCK_API_PORT;
+const PORT = process.env.MOCK_API_PORT ||4000;
 
 server.use(middlewares);
 server.use([

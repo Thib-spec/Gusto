@@ -5,12 +5,12 @@ import { useSelector, useDispatch } from "react-redux";
 import api from "helpers/api";
 import mappers from "helpers/mappers";
 
-import ProductsCard from "Components/FridgePage2/ProductsCard";
-import MenusCard from "Components/FridgePage2/MenusCard";
-import DropDownComponent from "Components/FridgePage2/DropDownComponent";
-import LogsCard from "Components/FridgePage2/LogsCard";
-import GestionCard from "Components/FridgePage2/GestionCard";
-import DropDownPresetChoose from "Components/FridgePage2/DropDownPresetChoose";
+import ProductsCard from "Components/FridgePage/ProductsCard";
+import MenusCard from "Components/FridgePage/MenusCard";
+import DropDownComponent from "Components/FridgePage/DropDownComponent";
+import LogsCard from "Components/FridgePage/LogsCard";
+import GestionCard from "Components/FridgePage/GestionCard";
+import DropDownPresetChoose from "Components/FridgePage/DropDownPresetChoose";
 
 import Value from "helpers/Value";
 import { isRejected } from "@reduxjs/toolkit";
@@ -130,7 +130,7 @@ export default function FridgesPage() {
         contextValue={{
           allPresets: allPresets,
         }}
-        isLoading={isLoading}
+        isLoading={isLoading.value}
       >
         {fridges.map((fridge) => {
           return (

@@ -1,6 +1,14 @@
-//Fichier permettant de faire le routage de l'app
 
-import React, { useState, useEffect } from "react";
+/**
+ * Router principal de l'application
+ * utilise le module react-router
+ * voir https://github.com/remix-run/react-router/blob/main/docs/getting-started/installation.md
+ * pour plus d'information
+ */
+
+import Test1 from "Components/TestHistory";
+import Test2 from "Components/TestHistory2";
+import React, { Component, useState, useEffect } from "react";
 import "CSS/colors.css";
 import "CSS/loginPage.css";
 import MenusPage from "Pages/MenusPage";
@@ -20,15 +28,16 @@ import LoginPage from "Pages/LoginPage";
 import ProductsPage from "Pages/ProductPage";
 // import FridgesPage2 from "Pages/_FridgesPage2";
 // import FridgesPage3 from "Pages/_FridgesPage3";
-import FridgesPage4 from "Pages/FridgesPage4";
+import FridgesPage4 from "Pages/FridgesPage";
 import NotFoundPage from "Pages/NotFoundPage";
-import Header from "Components/HeaderComponent/Header";
+import TestData from "Components/TestData";
+import Header from "Components/Header";
 import { useSelector, useDispatch } from "react-redux";
 import api from "helpers/api";
-import userActions from "store/actions/userActions";
+import userActions from "store/actions/user.actions";
 import Footer from "Components/Footer";
 // import PresetPage from "Pages/_PresetPage";
-import PresetPage2 from "Pages/PresetPage2";
+import PresetPage2 from "Pages/PresetPage";
 import useIsMounted from "helpers/useInMount";
 import { withTranslation, useTranslation } from "react-i18next";
 import MentionsLegales from "Pages/MentionsLegales";
@@ -113,8 +122,7 @@ function AdminRouter({ history }) {
       return (
         <div id="aaa">
           <Header />
-          {/* <HeaderL /> */}
-          <Switch className="bbb">
+          <Switch>
             <Route exact path="/" component={withTranslation()(HomePage)} />
             <Route path="/categories">
               <CategoriesPage user={user} />

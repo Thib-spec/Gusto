@@ -1,6 +1,22 @@
+
+/**
+ * Class permettant d'utiliser l'API de façon plus "userFriendly"
+ * utilise la variable d'environnement "process.env.REACT_APP_API_URL"
+ * voir https://create-react-app.dev/docs/adding-custom-environment-variables/ pour 
+ *  plus d'information sur l'utilisation des variables d'environnements avec React
+ * Le but de cette classe est de ne pas a avoir à modifier tout le code si
+ *  les url d'api amènent à changer. 
+ * Par exemple ici les url renseignées permettent à récupérer toutes les informations
+ *  peu importe l'utilisateur qui les demande. A terme elles devront être changées pour 
+ *  que les informations données à l'utilisateur ne soient que pour lui. 
+ *  Cependant le code restera le même.
+ * Cette Class accède automatiquement au token d'authentification grâce à localStorage.getItem("authToken").
+ *  Le token est mis automatiquement dans les requêtes effectuées (voir requester.js)
+ */
+
 import requester from "./requester";
 
-const API = function ({ url, host, fake, ssl, port, authToken }) {
+const API = function ({ url, host, fake, ssl, port }) {
   this.ssl = ssl == true ? true : ssl == false ? false : false;
   this.protocol = this.ssh ? "https" : "http";
   this.host = host ? host : "localhost";
@@ -9,14 +25,6 @@ const API = function ({ url, host, fake, ssl, port, authToken }) {
   this.fake = fake == true ? true : fake == false ? false : false;
   this.requester = requester(this);
   console.log(this.url);
-};
-
-API.prototype.setAuthToken = function (authToken) {
-  this.authToken = authToken;
-};
-
-API.prototype.removeAuthToken = function () {
-  this.authToken = undefined;
 };
 
 // ---------- user ---------- //
@@ -237,34 +245,6 @@ API.prototype.updateOneMenuInOnePreset = function ({ id, idMenu, body } = {}) {
 
 // ---------- users ---------- //
 
-// API.prototype.getUsers = async function ({}) {
-//   const res = await this.requester({ method: "GET", path: "/users" });
-//   return res;
-// };
-
-// API.prototype.createUser = async function ({ body }) {
-//   const res = await this.requester({ method: "POST", path: "/users", body });
-//   return res;
-// };
-
-// API.prototype.getOneUser = async function ({ id }) {
-//   const res = await this.requester({ method: "GET", path: `/users/${id}` });
-//   return res;
-// };
-
-// API.prototype.updateOneUser = async function ({ id, body }) {
-//   const res = await this.requester({
-//     method: "POST",
-//     path: `/users/${id}`,
-//     body,
-//   });
-//   return res;
-// };
-
-// API.prototype.deleteOneUser = async function ({ id }) {
-//   const res = await this.requester({ method: "DELETE", path: `/users/${id}` });
-//   return res;
-// };
 
 // export default new API({ url: process.env.API_HOST, fake: true });
 export default new API({

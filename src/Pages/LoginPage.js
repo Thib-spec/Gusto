@@ -5,7 +5,7 @@ import React, { useState } from "react";
 import {  useDispatch } from "react-redux";
 
 import api from "helpers/api";
-import userActions from "store/actions/userActions";
+import userActions from "store/actions/user.actions";
 import Page from "Components/Page";
 import useIsMounted from "helpers/useInMount";
 import Value from "helpers/Value";
@@ -29,7 +29,6 @@ export default function LoginPage({ location, history, t }) {
         console.log("api.login() : ", resJSON);
         dispatch(userActions.login({ ...resJSON }));
         localStorage.setItem("authToken", resJSON.token);
-        api.setAuthToken(resJSON.token);
       })
       .catch((error) => {
         if (error.res) {

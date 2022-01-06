@@ -40,11 +40,9 @@
     "build": "react-scripts build",
     "test": "jest",
     "eject": "react-scripts eject",
-    "start_wenv": "node -r dotenv/config ./node_modules/.bin/react-scripts start dotenv_config_path=.env",
-    "build_wenv": "node -r dotenv/config ./node_modules/.bin/react-scripts build dotenv_config_path=.env",
     "json-server-start:development": "env-cmd -f .env.development.local nodemon --watch ./dev/json-server -e json,js ./dev/json-server/server.js",
     "nams-start:development": "env-cmd -f .env.development.local nodemon --watch ./dev/nams -e json,js ./dev/nams/server.js",
-    "dev:js": "concurrently 'npm:json-server-start:development' 'npm:react-start'",
+    "dev:json-server": "concurrently 'npm:json-server-start:development' 'npm:react-start'",
     "dev:nams": "concurrently 'npm:nams-start:development' 'npm:react-start'"
   },
   "eslintConfig": {

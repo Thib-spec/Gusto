@@ -1,3 +1,10 @@
+
+/**
+ * Class permettant une utilisation des array plus "friendly"
+ * Surtout utilisé pour l'utilisation des tableaux (add remove edit)
+ * Fichier utilisé par Nicolas
+ */
+
 import Value from "helpers/Value/ValueMenu.js";
 
 const copyy = (obj) => {
