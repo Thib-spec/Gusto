@@ -442,7 +442,8 @@ exports.editFrontProduct = (req,res) =>{
     const arraySchema = Joi.array().items(
         Joi.object({
             quantity_min: Joi.number().max(127),
-            quantity_max: Joi.number().max(127)
+            quantity_max: Joi.number().max(127),
+            fk_id_product:Joi.number()
         })
     )
 
