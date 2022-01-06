@@ -2,8 +2,15 @@ import React, { Component, useState } from "react";
 // import "CSS/colors.css";
 import PageContext from "Context/PageContext";
 
+/**
+ * Composant d'un page afin qu'elle se ressemble toutes
+ * utilisation pour les pages Login, FridgePreset, Fridge
+ * possibilité d'ajouter un Loader si la page n'est pas prête a être chargé
+ */
+
 export default function Page({ children, contextValue, isLoading }) {
-  return (isLoading ? !isLoading.value : true) ? (
+  console.log(isLoading)
+  return (isLoading ? !isLoading : true) ? (
     <PageContext.Provider value={contextValue}>
       <>
         <div className={`container-fluid pt-5 h-100 pb-5`}>
@@ -19,6 +26,6 @@ export default function Page({ children, contextValue, isLoading }) {
       </>
     </PageContext.Provider>
   ) : (
-    <></>
+    <>LOADER</> // Ajouter Loader 
   );
 }

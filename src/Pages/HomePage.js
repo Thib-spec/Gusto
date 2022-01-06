@@ -16,7 +16,7 @@ import LineChart from 'Components/ChartJSComponent/LineChart';
 import BarChart from 'Components/ChartJSComponent/BarChart';
 import Header from 'Components/Header';
 import { useSelector, useDispatch } from "react-redux";
-import userActions from "store/actions/userActions";
+import userActions from "store/actions/user.actions";
 import api from "helpers/api";
 import TextAreaComponent from 'Components/FormComponent/TextAreaComponent';
 import UploadContainer from 'Components/GestionPhoto/UploadContainer';

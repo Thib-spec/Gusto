@@ -1,35 +1,52 @@
-# Getting Started with Create React App
+# Explication des scripts du project Front
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+## Scripts disponibles : 
 
-## Available Scripts
+Dans le dossier du projet, vous pouvez exécuter :
 
-In the project directory, you can run:
+### `npm start`
+(Execute `npm run dev:nams`)\
+Ce script a pour but de : 
+- lancer l'application React dans le mode **development**
+- lancer un mock server api
 
-### `yarn start`
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+### `npm run react-start`
+(Execute `react-scripts start`)\
+Script de base lors de la création d'une application React.\
+Execute l'application web dans le mode **development**.\
+Ouvrez [http://localhost:3000](http://localhost:3000) pour voir l'application dans votre navigateur.
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+### `npm run dev:nams`
+Execute simultanément les scripts `npm run nams-start:development` & `npm run react-start`.
 
-### `yarn test`
+### `npm run dev:json-server`
+Execute simultanément les scripts `npm run json-server-start:development` & `npm run react-start`.
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+### `npm run nams-start:development`
+Lance un mock serveur basé sur le module npm [nams](https://www.npmjs.com/package/nams).\
+La configuration de ce server se situe dans le dossier `dev/nams`.
 
-### `yarn build`
+### `npm run json-server-start:development`
+Lance un mock serveur basé sur le module npm [json-server](https://www.npmjs.com/package/json-server).\
+La configuration de ce server se situe dans le dossier `dev/json-server`.
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+### `npm run test`
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+Script de base lors de la création d'une application React.
+Lance les test dans un mode interactif.\
+regardez la section [running tests](https://facebook.github.io/create-react-app/docs/running-tests) pour plus d'informations.
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+### `npm run build`
 
-### `yarn eject`
+*Build* l'application pour la production dans le dossier `build`.\
+Crée un bundles de l'application React dans le mode **production** et optimise le *build* pour une meilleure performance.
+
+Regardez la section [deployment](https://facebook.github.io/create-react-app/docs/deployment) pour plus d'informations.
+
+### `npm run eject`
+
+Script de base lors de la création d'une application React.
 
 **Note: this is a one-way operation. Once you `eject`, you can’t go back!**
 
@@ -39,32 +56,66 @@ Instead, it will copy all the configuration files and the transitive dependencie
 
 You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
 
-## Learn More
+## En Savoir plus
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+Vous pouvez en savoir plus dans la [documentation de Create React App](https://facebook.github.io/create-react-app/docs/getting-started).
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+pour apprendre React, consultez la [documentation React](https://reactjs.org/).
 
 ### Code Splitting
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+Cette section a été déplacée ici : [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
 
-### Analyzing the Bundle Size
+### Analyse de la taille du Bundle
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+Cette section a été déplacée ici : [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
 
-### Making a Progressive Web App
+### Créer une application Web progressive
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
+Cette section a été déplacée ici : [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
 
-### Advanced Configuration
+### Configuration avancée
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
+Cette section a été déplacée ici : [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
 
-### Deployment
+### Déploiement
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
+Cette section a été déplacée ici : [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
 
-### `yarn build` fails to minify
+### `npm run build` échoue a minifier
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+Cette section a été déplacée ici : [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+
+# Vu des composants
+
+
+# Dossiers & Fichiers
+
+## Lucas
+
+    - Components/FridgePage2/*
+    - Components/PresetPage/*
+    - Components/_LanguageSelector
+    - Components/Page
+
+    - configFiles/i18n
+
+    - Context/*
+
+    - CSS/colors
+    - CSS/loginPage
+    - CSS/presetPage.scss
+
+    - helpers/*
+
+    - Pages/FridgesPage4
+    - Pages/LoginPage
+    - Pages/PresetPage2
+
+    - Routes/AdminRouter
+
+    - store/*
+
+## Nicolas
+
+    - autres

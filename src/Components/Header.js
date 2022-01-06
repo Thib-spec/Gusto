@@ -11,7 +11,7 @@ import React, { useState } from "react";
 import { useHistory } from "react-router";
 import { useSelector, useDispatch } from "react-redux";
 import api from "helpers/api";
-import userActions from "store/actions/userActions";
+import userActions from "store/actions/user.actions";
 import HeaderProfil from "./HeaderProfil";
 
 export default function Header() {

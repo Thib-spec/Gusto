@@ -5,7 +5,7 @@ import React, { useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 
 import api from "helpers/api";
-import userActions from "store/actions/userActions";
+import userActions from "store/actions/user.actions";
 import Page from "Components/Page";
 import useIsMounted from "helpers/useInMount";
 import Value from "helpers/Value";

@@ -20,17 +20,16 @@ import LoginPage from "Pages/LoginPage";
 import ProductsPage from "Pages/ProductPage";
 // import FridgesPage2 from "Pages/_FridgesPage2";
 // import FridgesPage3 from "Pages/_FridgesPage3";
-import FridgesPage4 from "Pages/FridgesPage4";
+import FridgesPage4 from "Pages/FridgesPage";
 import NotFoundPage from "Pages/NotFoundPage";
 import TestData from "Components/TestData";
 import Header from "Components/Header";
-import HeaderL from "Components/HeaderL";
 import { useSelector, useDispatch } from "react-redux";
 import api from "helpers/api";
-import userActions from "store/actions/userActions";
+import userActions from "store/actions/user.actions";
 import Footer from "Components/Footer";
 // import PresetPage from "Pages/_PresetPage";
-import PresetPage2 from "Pages/PresetPage2";
+import PresetPage2 from "Pages/PresetPage";
 import useIsMounted from "helpers/useInMount";
 import { withTranslation, useTranslation } from "react-i18next";
 import MentionsLegales from "Pages/MentionsLegales";
@@ -105,7 +104,6 @@ function AdminRouter({ history }) {
       return (
         <>
           <Header />
-          {/* <HeaderL /> */}
           <Switch>
             <Route exact path="/" component={withTranslation()(HomePage)} />
             <Route path="/categories">

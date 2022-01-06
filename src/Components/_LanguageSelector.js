@@ -1,6 +1,11 @@
 import React from "react";
 import { useTranslation } from "react-i18next";
 
+/**
+ * exemple d'utilisation du module de traduction 
+ * visible sur la page login
+ */
+
 export default function LanguageSelector() {
   const { t, i18n } = useTranslation();
 

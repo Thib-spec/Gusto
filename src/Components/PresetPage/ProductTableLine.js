@@ -5,7 +5,7 @@ import ProductsCardContext from "Context/ProductsCardContext";
 export default function FridgeProductTableLine({ product }) {
   const handleProductChangeValue = (property) => (event) => {
     const body = {};
-    body[property] = event.target.value;
+    body[property] = parseInt(event.target.value);
     product.update(body);
   };
 
