@@ -24,7 +24,7 @@ function CreatePresetButton({}) {
       if (res.ok) {
         const resJSON = await res.json();
         console.log("api.createOnePreset() : ", resJSON);
-        allPresets.set([...allPresets.value, preset]);
+        allPresets.set([...allPresets.value, mappers.presetsMapper(resJSON)]);
         setShow(false)
       } else {
       }

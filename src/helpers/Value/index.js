@@ -1,7 +1,3 @@
-// const copyy = (obj) => {
-//   return JSON.parse(JSON.stringify(obj));
-// };
-
 const copyy = require("deepcopy");
 
 export default function Value(useState, initValue, isMounted) {
@@ -21,7 +17,6 @@ Value.prototype.set = function (newValue, { init } = { init: false }) {
     this._setValue(newValue);
   }
   if (init) {
-    console.log("WWWWSSS");
     this.initValue = copyy(newValue);
   }
 };

@@ -47,7 +47,6 @@ export default function Header() {
       if (res.ok) {
         dispatch(userActions.logout());
         localStorage.removeItem("authToken");
-        api.removeAuthToken();
         history.push("/");
       } else {
       }

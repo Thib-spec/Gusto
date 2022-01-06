@@ -1,3 +1,11 @@
+
+/**
+ * Router principal de l'application
+ * utilise le module react-router
+ * voir https://github.com/remix-run/react-router/blob/main/docs/getting-started/installation.md
+ * pour plus d'information
+ */
+
 import Test1 from "Components/TestHistory";
 import Test2 from "Components/TestHistory2";
 import React, { Component, useState, useEffect } from "react";

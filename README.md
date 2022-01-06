@@ -86,14 +86,17 @@ Cette section a été déplacée ici : [https://facebook.github.io/create-react-
 
 Cette section a été déplacée ici : [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
 
-# Vu des composants
+# Localisation des composants
 
-![_gusto_addModal](https://user-images.githubusercontent.com/65892547/148312892-4dd0d2f6-cebf-4c15-9084-357c0d2f2b18.png)
-![_gusto_fridgeCards](https://user-images.githubusercontent.com/65892547/148312893-94cd9dc8-4551-4608-953a-a628dc62c6a3.png)
+## Page **Fridge**
 ![_gusto_fridgeList](https://user-images.githubusercontent.com/65892547/148312895-599143dd-f60b-4ce7-b129-4dd2fadd45a2.png)
-![_gusto_loginPage](https://user-images.githubusercontent.com/65892547/148312898-a02d7984-4ef3-4979-b9f6-08edfb8d0d74.png)
+![_gusto_fridgeCards](https://user-images.githubusercontent.com/65892547/148312893-94cd9dc8-4551-4608-953a-a628dc62c6a3.png)
+## Page **Preset**
 ![_gusto_presetCards](https://user-images.githubusercontent.com/65892547/148312899-add84774-d230-47d3-9199-a434f9ddc351.png)
 ![_gusto_PresetList](https://user-images.githubusercontent.com/65892547/148312901-bb3924f9-2d9b-4328-9c15-44bfa513dd05.png)
+![_gusto_addModal](https://user-images.githubusercontent.com/65892547/148312892-4dd0d2f6-cebf-4c15-9084-357c0d2f2b18.png)
+## Page **Login**
+![_gusto_loginPage](https://user-images.githubusercontent.com/65892547/148312898-a02d7984-4ef3-4979-b9f6-08edfb8d0d74.png)
 
 
 # Dossiers & Fichiers

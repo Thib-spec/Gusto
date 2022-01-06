@@ -29,7 +29,6 @@ export default function LoginPage({ location, history, t }) {
         console.log("api.login() : ", resJSON);
         dispatch(userActions.login({ ...resJSON }));
         localStorage.setItem("authToken", resJSON.token);
-        api.setAuthToken(resJSON.token);
       })
       .catch((error) => {
         if (error.res) {
