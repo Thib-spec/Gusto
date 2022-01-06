@@ -127,3 +127,13 @@ Cette section a été déplacée ici : [https://facebook.github.io/create-react-
 ## Nicolas
 
     - autres
+    
+    
+# Fonctionalités inachevés 
+
+Setup de la librairie Chart.js permettant de faire des graphiquues en js. Cela permettrai de d'informer le clients de ses ventes dans un format plus visuel qui serait fficher sur la page d'accueil.
+
+Setup de l'upload d'image coté front cette fonctionalité fonctionne en local mais pas en production.
+
+
+
