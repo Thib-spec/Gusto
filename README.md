@@ -85,6 +85,8 @@ Cette section a été déplacée ici : [https://facebook.github.io/create-react-
 
 # Localisation des composants
 
+## Page **Header**
+![_gusto_Header](https://user-images.githubusercontent.com/65896884/148683821-78e0951b-d9ec-407e-8061-44bcf5563c04.png)
 ## Page **Fridge**
 ![_gusto_fridgeList](https://user-images.githubusercontent.com/65892547/148312895-599143dd-f60b-4ce7-b129-4dd2fadd45a2.png)
 ![_gusto_fridgeCards](https://user-images.githubusercontent.com/65892547/148312893-94cd9dc8-4551-4608-953a-a628dc62c6a3.png)
@@ -94,6 +96,14 @@ Cette section a été déplacée ici : [https://facebook.github.io/create-react-
 ![_gusto_addModal](https://user-images.githubusercontent.com/65892547/148312892-4dd0d2f6-cebf-4c15-9084-357c0d2f2b18.png)
 ## Page **Login**
 ![_gusto_loginPage](https://user-images.githubusercontent.com/65892547/148312898-a02d7984-4ef3-4979-b9f6-08edfb8d0d74.png)
+## Page **Menu**
+![_gusto_Menu1](https://user-images.githubusercontent.com/65896884/148684124-3e8bd2b9-7f3d-4265-a888-074d619b0a42.png)
+![_gusto_Menu2](https://user-images.githubusercontent.com/65896884/148684142-2e22b603-68af-4fbe-8936-05775bcbabca.png)
+## Page **Product**
+![_gusto_Product1](https://user-images.githubusercontent.com/65896884/148684611-30fa6434-1fe7-4720-b298-6717d1e7b636.png)
+![_gusto_Product2](https://user-images.githubusercontent.com/65896884/148684585-00d6edc4-c4c3-4a1a-8ad0-a13b6067f8cc.png)
+## Page **Category**
+![_gusto_Category](https://user-images.githubusercontent.com/65896884/148684898-9a90c02c-a366-4316-810f-9c037744fcbb.png)
 
 
 # Dossiers & Fichiers
