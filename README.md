@@ -112,7 +112,7 @@ import HttpBackend from "i18next-http-backend";
 import LanguageDetector from "i18next-browser-languagedetector";
 import { initReactI18next } from "react-i18next";
 
-const apiKey = "wTK05CZfhi8tuXbSaKl8HQ";
+const apiKey = "kjvfhkdvfhiqjvivkvfnisvruik";
 const loadPath = `https://api.i18nexus.com/project_resources/translations/{{lng}}/{{ns}}.json?api_key=${apiKey}`;
 
 i18next
