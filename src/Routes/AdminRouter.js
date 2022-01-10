@@ -6,8 +6,6 @@
  * pour plus d'information
  */
 
-import Test1 from "Components/TestHistory";
-import Test2 from "Components/TestHistory2";
 import React, { Component, useState, useEffect } from "react";
 import "CSS/colors.css";
 import "CSS/loginPage.css";
@@ -30,8 +28,7 @@ import ProductsPage from "Pages/ProductPage";
 // import FridgesPage3 from "Pages/_FridgesPage3";
 import FridgesPage4 from "Pages/FridgesPage";
 import NotFoundPage from "Pages/NotFoundPage";
-import TestData from "Components/TestData";
-import Header from "Components/Header";
+import Header from "Components/HeaderComponent/Header";
 import { useSelector, useDispatch } from "react-redux";
 import api from "helpers/api";
 import userActions from "store/actions/user.actions";
@@ -103,11 +100,7 @@ function AdminRouter({ history }) {
       });
   }
 
-  const [footerfixedBottom,setfooterfixedBottom] = useState(false)
-  const footerBottom = (data) => {
-    setfooterfixedBottom(data)
-    console.log(data)
-  }
+  
 
   
 
@@ -135,7 +128,10 @@ function AdminRouter({ history }) {
               path="/fridges"
               component={withTranslation()(FridgesPage4)}
             />
-            <Route  path="/menus"  ><MenusPage func={footerBottom}/></Route>
+            <Route  
+              path="/menus"  
+              component={withTranslation()(MenusPage)}
+            />
             <Route
               path="/mentions"
               component={withTranslation()(MentionsLegales)}
@@ -156,7 +152,7 @@ function AdminRouter({ history }) {
             </Route>
             <Route path="/" component={withTranslation()(NotFoundPage)} />
           </Switch>
-          <Footer fixed={footerfixedBottom}/>
+          <Footer/>
         </div>
       );
     } else {
