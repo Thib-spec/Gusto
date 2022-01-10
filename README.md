@@ -99,6 +99,91 @@ Cette section a été déplacée ici : [https://facebook.github.io/create-react-
 ![_gusto_loginPage](https://user-images.githubusercontent.com/65892547/148312898-a02d7984-4ef3-4979-b9f6-08edfb8d0d74.png)
 
 
+# Traduction
+
+La traduction de l'application se fait grâce au module `i18next` qui est l'une des solutions d'internationalisation les plus populaires.
+
+Exemple d'intégration dans une application React\
+(utilisation de la solution app.i18nexus.com dans cette exemple) : 
+
+```js
+import i18next from "i18next";
+import HttpBackend from "i18next-http-backend";
+import LanguageDetector from "i18next-browser-languagedetector";
+import { initReactI18next } from "react-i18next";
+
+const apiKey = "wTK05CZfhi8tuXbSaKl8HQ";
+const loadPath = `https://api.i18nexus.com/project_resources/translations/{{lng}}/{{ns}}.json?api_key=${apiKey}`;
+
+i18next
+  .use(HttpBackend)
+  .use(LanguageDetector)
+  .use(initReactI18next)
+  .init({
+    fallbackLng: "en",
+
+    ns: ["default","common","validation"],
+    defaultNS: "default",
+
+    supportedLngs: ["en","de","fr"],
+    
+    backend: {
+      loadPath: loadPath
+    }
+  })
+```
+
+Dans notre cas, nous utilisons des fichier JSON de traduction accessibles à l'URL `http://{front_ip}:{front:port}/locales/{{lng}}/{{ns}}.json`, et dans le code dans le dossier `public`.\
+Par convention les différents namespace sont `common`, `default` et `validation`. (voir si nécessaire) :
+
+```js
+import i18n from "i18next";
+import Backend from "i18next-http-backend";
+import { initReactI18next } from "react-i18next";
+
+/**
+ * fichier de configuration du module i18n (module d'internationalisation)
+ * voir https://i18nexus.com/ pour plus d'informations
+ */
+
+const loadPath = "/locales/{{lng}}/{{ns}}.json"; // can be an URL
+
+i18n
+  .use(Backend)
+  .use(initReactI18next)
+  .init({
+    fallbackLng: "en",
+    backend: {
+      loadPath
+    },
+    ns: ["default","common","validation"],
+    defaultNS: "common",
+    lng: "en",
+    supportedLngs: ["en","fr"],
+    debug: true,
+  });
+
+export default i18n;
+```
+
+Exemple des clés utilisés dans le fichier JSON `public/locales/fr/common.json`:
+```json
+{
+  "language.french": "Francais",
+  "language.english": "Anglais",
+  "LoginPage.placeholder.email": "Email",
+  "LoginPage.placeholder.password": "Mot de passe",
+  "LoginPage.Text.stayConnected": "Rester connecté ?",
+  "LoginPage.Text.forgottenPassword": "Mot de passe oublié ?",
+  "Button.connexion": "Connexion",
+  "fridge.status.livraisonEnCours": "Livraison en cours",
+  "fridge.status.horsService": "Hors service",
+  "fridge.status.inProduction": "En production"
+}
+
+```
+
+
 # Dossiers & Fichiers
 
 ## Lucas
