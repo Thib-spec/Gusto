@@ -9,7 +9,7 @@ import "CSS/FridgeDropDownCoponent.scss";
 import DropDownComponentContext from "Context/DropDownComponentContext";
 
 export default function DropDownComponent({ contextValue, children }) {
-  const [open, setOpen] = useState(true);
+  const [open, setOpen] = useState(false);
   // const [open, setOpen] = useState(false);
   const { preset } = contextValue;
   function handleClick() {

@@ -4,6 +4,7 @@ import UploadForm from "Components/FormComponent/UploadForm"
 import React, { useState, useEffect }  from 'react'
 import CategorieDropDownComponent from "Components/CategoryComponent/CategorieDropDownComponent"
 import axios from "axios";
+import UploadContainer from "Components/GestionPhoto/UploadContainer"
 
 
 export default function CategoriesPage(){
@@ -104,7 +105,7 @@ export default function CategoriesPage(){
                         <div className="addProduct-container-form">
                             <input type="text" class="form-control" id="labelCatégorie" placeholder="Nom de la catégorie"/>
                             <textarea type="text" className="form-control textAreaResize" id="descriptionCategorie" placeholder="Description"></textarea>
-                            <UploadForm/>
+                            <UploadContainer/>
                         </div>
                     </div> 
                 </Modal.Body>

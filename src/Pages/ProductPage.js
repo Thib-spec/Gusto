@@ -4,6 +4,7 @@ import React, { useState, useEffect }  from 'react'
 import {Modal, Button} from 'react-bootstrap'
 import axios from "axios";
 import ProductDropDownCategorie from "Components/ProductComponent/ProductDropDownCategorie"
+import UploadContainer from "Components/GestionPhoto/UploadContainer";
 
 
 export default function ProductsPage(){
@@ -91,7 +92,7 @@ export default function ProductsPage(){
                     <input type="text" class="form-control" id="ubd" placeholder="Date de péremption" />
                     <textarea type="text" className="form-control textAreaResize" id="description" placeholder="Description"></textarea>
 
-                    <UploadForm/>
+                    <UploadContainer/>
                 </Modal.Body>
                 <Modal.Footer>
                     <Button variant="secondary" onClick={handleClose}>Close</Button>

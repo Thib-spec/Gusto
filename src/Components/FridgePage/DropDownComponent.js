@@ -20,7 +20,7 @@ import { useTranslation } from "react-i18next";
 import useFridgePreset from "./useFridgePreset";
 
 export default function DropDownComponent({ contextValue, children }) {
-  const [open, setOpen] = useState(true);
+  const [open, setOpen] = useState(false);
   const { t, i18n } = useTranslation();
   // const [open, setOpen] = useState(false);
   const { allPresets } = useContext(PageContext);
